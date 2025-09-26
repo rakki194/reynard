@@ -1,6 +1,26 @@
 # reynard-components-core
 
-Core UI primitives, navigation, and layout components for Reynard.
+Higher-level UI components, navigation, and layout components for Reynard. Built on top of `reynard-primitives` for fundamental UI elements.
+
+## 🏗️ Recent Architectural Changes
+
+**September 2025**: This package has been refactored to resolve circular dependencies:
+
+- **✅ Moved Primitives**: Basic components (Button, Card, TextField) moved to `reynard-primitives`
+- **✅ Focused Scope**: Now contains only higher-level components with dependencies
+- **✅ Clean Imports**: Imports basic components from `reynard-primitives`
+- **✅ Resolved Dependencies**: No more circular import issues
+
+### Migration Guide
+
+```typescript
+// ❌ Old imports (no longer available)
+import { Button, Card, TextField } from "reynard-components-core";
+
+// ✅ New imports
+import { Button, Card, TextField } from "reynard-primitives";
+import { Modal, Tooltip, IconButton } from "reynard-components-core";
+```
 
 ## Architecture
 
@@ -14,18 +34,15 @@ graph TB
         A --> F[Styling System]
         A --> G[Theme Integration]
 
-        subgraph "🧱 Primitives"
-            B --> B1[Button]
-            B --> B2[Badge]
-            B --> B3[Card]
-            B --> B4[Checkbox]
-            B --> B5[IconButton]
-            B --> B6[Select]
-            B --> B7[SidebarButton]
-            B --> B8[Slider]
-            B --> B9[Tabs]
-            B --> B10[TextField]
-            B --> B11[Toggle]
+        subgraph "🧱 Higher-Level Components"
+            B --> B1[IconButton]
+            B --> B2[SidebarButton]
+            B --> B3[Modal]
+            B --> B4[Tooltip]
+            B --> B5[Dropdown]
+            B --> B6[Form Components]
+            B --> B7[Navigation]
+            B --> B8[Layout Components]
             B1 --> B1A[Multiple Variants]
             B1 --> B1B[Loading States]
             B1 --> B1C[Icon Support]

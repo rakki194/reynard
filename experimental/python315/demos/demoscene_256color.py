@@ -80,46 +80,19 @@ def get_color_256(r, g, b):
     return f"\033[38;5;{color}m"
 
 
-def draw_ascii_art(text, color_func, frame=0):
-    """Draw ASCII art with color effects"""
-    lines = text.split("\n")
-    for i, line in enumerate(lines):
-        colored_line = ""
-        for j, char in enumerate(line):
-            if char != " ":
-                color = color_func(i, j, frame)
-                colored_line += color + char + Colors256.RESET
-            else:
-                colored_line += " "
-        print(colored_line)
-
-
-def python_logo_color(i, j, frame):
-    """Color function for Python logo"""
-    # Create a pulsing rainbow effect
-    phase = (frame * 0.1) % (2 * math.pi)
-    color_index = int((i + j + frame * 2) % len(Colors256.RAINBOW))
-    return Colors256.RAINBOW[color_index]
-
-
-def reynard_logo_color(i, j, frame):
-    """Color function for Reynard logo"""
-    # Fox-inspired orange gradient
-    intensity = int(255 * (0.5 + 0.5 * math.sin(frame * 0.2 + i * 0.1)))
-    return get_color_256(intensity, intensity // 2, 0)
-
-
 def matrix_rain():
     """Matrix-style digital rain effect"""
     width = 80
     height = 24
 
-    # Initialize rain drops
+    # Initialize rain drops with varying speeds
     drops = []
+    speeds = []
     for _ in range(width):
         drops.append(random.randint(0, height))
+        speeds.append(random.uniform(0.3, 1.0))
 
-    for frame in range(100):
+    for frame in range(150):
         clear_screen()
         hide_cursor()
 
@@ -127,7 +100,7 @@ def matrix_rain():
         print(
             Colors256.BRIGHT_CYAN
             + Colors256.BOLD
-            + "🐍 PYTHON 3.15.0a0 DEMOSCENE"
+            + "🌧️ MATRIX DIGITAL RAIN"
             + Colors256.RESET,
         )
         print(Colors256.CYAN + "=" * 50 + Colors256.RESET)
@@ -138,13 +111,13 @@ def matrix_rain():
             line = ""
             for x in range(width):
                 if drops[x] == y:
-                    # Head of drop
+                    # Head of drop - bright character
                     char = chr(random.randint(33, 126))
                     color = Colors256.BRIGHT_GREEN
-                elif drops[x] > y and drops[x] - y < 10:
-                    # Tail of drop
+                elif drops[x] > y and drops[x] - y < 15:
+                    # Tail of drop with gradient
                     char = chr(random.randint(33, 126))
-                    intensity = 255 - (drops[x] - y) * 25
+                    intensity = max(0, 255 - (drops[x] - y) * 15)
                     color = get_color_256(0, intensity, 0)
                 else:
                     char = " "
@@ -154,14 +127,15 @@ def matrix_rain():
 
             print(line)
 
-        # Update drops
+        # Update drops with varying speeds
         for x in range(width):
-            if drops[x] > height or random.random() < 0.02:
+            if drops[x] > height + 15 or random.random() < 0.01:
                 drops[x] = 0
+                speeds[x] = random.uniform(0.3, 1.0)
             else:
-                drops[x] += 1
+                drops[x] += speeds[x]
 
-        time.sleep(0.1)
+        time.sleep(0.08)
 
     show_cursor()
 
@@ -216,21 +190,6 @@ def plasma_effect():
 
 def python_logo_animation():
     """Animated Python logo"""
-    python_logo = """
-    ╔═══════════════════════════════════════╗
-    ║                                       ║
-    ║    ██████╗ ██╗   ██╗████████╗██╗  ██╗ ║
-    ║   ██╔═══██╗╚██╗ ██╔╝╚══██╔══╝██║  ██║ ║
-    ║   ██║   ██║ ╚████╔╝    ██║   ███████║ ║
-    ║   ██║   ██║  ╚██╔╝     ██║   ██╔══██║ ║
-    ║   ╚██████╔╝   ██║      ██║   ██║  ██║ ║
-    ║    ╚═════╝    ╚═╝      ╚═╝   ╚═╝  ╚═╝ ║
-    ║                                       ║
-    ║           3.15.0a0 DEMO               ║
-    ║                                       ║
-    ╚═══════════════════════════════════════╝
-    """
-
     for frame in range(100):
         clear_screen()
         hide_cursor()
@@ -243,9 +202,10 @@ def python_logo_animation():
         )
         print()
 
-        draw_ascii_art(python_logo, python_logo_color, frame)
-
+        # Simple text display instead of ASCII art
+        print(Colors256.BRIGHT_YELLOW + "PYTHON 3.15.0a0" + Colors256.RESET)
         print()
+
         print(Colors256.CYAN + "Features being showcased:" + Colors256.RESET)
         features = [
             "✨ PEP 734: Multiple Interpreters",
@@ -266,21 +226,6 @@ def python_logo_animation():
 
 def reynard_fox_animation():
     """Animated Reynard fox logo"""
-    fox_logo = """
-    ╔═══════════════════════════════════════╗
-    ║                                       ║
-    ║        🦊 REYNARD FRAMEWORK           ║
-    ║                                       ║
-    ║           /\\_/\\                       ║
-    ║          (  o.o  )                    ║
-    ║           > ^ <                       ║
-    ║                                       ║
-    ║    Cunning Agile Development          ║
-    ║    Python 3.15.0a0 Integration        ║
-    ║                                       ║
-    ╚═══════════════════════════════════════╝
-    """
-
     for frame in range(150):
         clear_screen()
         hide_cursor()
@@ -293,9 +238,12 @@ def reynard_fox_animation():
         )
         print()
 
-        draw_ascii_art(fox_logo, reynard_logo_color, frame)
-
+        # Simple text display instead of ASCII art
+        print(Colors256.BRIGHT_RED + "🦊 REYNARD FRAMEWORK" + Colors256.RESET)
+        print(Colors256.YELLOW + "Cunning Agile Development" + Colors256.RESET)
+        print(Colors256.CYAN + "Python 3.15.0a0 Integration" + Colors256.RESET)
         print()
+
         print(Colors256.YELLOW + "Experimental Features:" + Colors256.RESET)
         features = [
             "🔧 MCP Server Integration",
@@ -310,6 +258,272 @@ def reynard_fox_animation():
             print(f"  {color}{feature}{Colors256.RESET}")
 
         time.sleep(0.08)
+
+    show_cursor()
+
+
+def mandelbrot_fractal():
+    """Animated Mandelbrot set fractal"""
+    width = 80
+    height = 24
+
+    for frame in range(100):
+        clear_screen()
+        hide_cursor()
+
+        print(
+            Colors256.BRIGHT_MAGENTA
+            + Colors256.BOLD
+            + "🌀 MANDELBROT FRACTAL"
+            + Colors256.RESET,
+        )
+        print(Colors256.MAGENTA + "=" * 50 + Colors256.RESET)
+        print()
+
+        # Animate zoom and position
+        zoom = 0.5 + 0.3 * math.sin(frame * 0.05)
+        offset_x = 0.3 * math.sin(frame * 0.03)
+        offset_y = 0.2 * math.cos(frame * 0.04)
+
+        for y in range(height):
+            line = ""
+            for x in range(width):
+                # Map screen coordinates to complex plane
+                cx = (x - width/2) * zoom / width + offset_x
+                cy = (y - height/2) * zoom / height + offset_y
+
+                # Mandelbrot calculation
+                zx, zy = 0, 0
+                iterations = 0
+                max_iter = 50
+
+                while zx*zx + zy*zy < 4 and iterations < max_iter:
+                    zx, zy = zx*zx - zy*zy + cx, 2*zx*zy + cy
+                    iterations += 1
+
+                # Color based on iterations
+                if iterations == max_iter:
+                    char = "█"
+                    color = Colors256.BLACK
+                else:
+                    intensity = int(iterations * 255 / max_iter)
+                    color = get_color_256(intensity, intensity//2, 255-intensity)
+                    chars = [" ", "░", "▒", "▓", "█"]
+                    char = chars[min(iterations // 10, 4)]
+
+                line += color + char + Colors256.RESET
+
+            print(line)
+
+        time.sleep(0.1)
+
+    show_cursor()
+
+
+def spiral_animation():
+    """Animated spiral effect"""
+    width = 80
+    height = 24
+
+    for frame in range(200):
+        clear_screen()
+        hide_cursor()
+
+        print(
+            Colors256.BRIGHT_YELLOW
+            + Colors256.BOLD
+            + "🌀 SPIRAL ANIMATION"
+            + Colors256.RESET,
+        )
+        print(Colors256.YELLOW + "=" * 50 + Colors256.RESET)
+        print()
+
+        # Create spiral pattern
+        for y in range(height):
+            line = ""
+            for x in range(width):
+                # Calculate distance from center
+                center_x, center_y = width // 2, height // 2
+                dx = x - center_x
+                dy = y - center_y
+                distance = math.sqrt(dx*dx + dy*dy)
+
+                # Calculate angle
+                angle = math.atan2(dy, dx)
+
+                # Create spiral pattern
+                spiral_radius = distance * 0.3 + frame * 0.1
+                spiral_angle = angle + frame * 0.05
+
+                # Calculate spiral value
+                spiral_value = math.sin(spiral_radius - spiral_angle * 3)
+
+                # Color and character based on spiral value
+                if abs(spiral_value) > 0.7:
+                    intensity = int((spiral_value + 1) * 127.5)
+                    color = get_color_256(intensity, 255-intensity, intensity//2)
+                    char = "█"
+                elif abs(spiral_value) > 0.4:
+                    intensity = int((spiral_value + 1) * 127.5)
+                    color = get_color_256(intensity//2, intensity, intensity//2)
+                    char = "▓"
+                elif abs(spiral_value) > 0.1:
+                    intensity = int((spiral_value + 1) * 127.5)
+                    color = get_color_256(intensity//3, intensity//3, intensity)
+                    char = "▒"
+                else:
+                    char = " "
+                    color = Colors256.RESET
+
+                line += color + char + Colors256.RESET
+
+            print(line)
+
+        time.sleep(0.05)
+
+    show_cursor()
+
+
+def fire_effect():
+    """ASCII fire animation"""
+    width = 80
+    height = 24
+
+    # Initialize fire buffer
+    fire_buffer = [[0 for _ in range(width)] for _ in range(height)]
+
+    for frame in range(150):
+        clear_screen()
+        hide_cursor()
+
+        print(
+            Colors256.BRIGHT_RED
+            + Colors256.BOLD
+            + "🔥 FIRE EFFECT"
+            + Colors256.RESET,
+        )
+        print(Colors256.RED + "=" * 50 + Colors256.RESET)
+        print()
+
+        # Generate fire at bottom
+        for x in range(width):
+            fire_buffer[height-1][x] = random.randint(0, 255)
+
+        # Propagate fire upward
+        for y in range(height-2, -1, -1):
+            for x in range(width):
+                # Average with neighbors and add randomness
+                left = fire_buffer[y+1][max(0, x-1)]
+                center = fire_buffer[y+1][x]
+                right = fire_buffer[y+1][min(width-1, x+1)]
+
+                avg = (left + center + right) // 3
+                fire_buffer[y][x] = max(0, avg - random.randint(0, 20))
+
+        # Render fire
+        for y in range(height):
+            line = ""
+            for x in range(width):
+                intensity = fire_buffer[y][x]
+
+                if intensity > 200:
+                    char = "█"
+                    color = Colors256.BRIGHT_RED
+                elif intensity > 150:
+                    char = "▓"
+                    color = Colors256.RED
+                elif intensity > 100:
+                    char = "▒"
+                    color = Colors256.BRIGHT_YELLOW
+                elif intensity > 50:
+                    char = "░"
+                    color = Colors256.YELLOW
+                else:
+                    char = " "
+                    color = Colors256.RESET
+
+                line += color + char + Colors256.RESET
+
+            print(line)
+
+        time.sleep(0.08)
+
+    show_cursor()
+
+
+def rainbow_wave():
+    """Rainbow wave animation"""
+    width = 80
+    height = 24
+
+    for frame in range(200):
+        clear_screen()
+        hide_cursor()
+
+        print(
+            Colors256.BRIGHT_CYAN
+            + Colors256.BOLD
+            + "🌈 RAINBOW WAVE"
+            + Colors256.RESET,
+        )
+        print(Colors256.CYAN + "=" * 50 + Colors256.RESET)
+        print()
+
+        for y in range(height):
+            line = ""
+            for x in range(width):
+                # Create wave pattern
+                wave1 = math.sin(x * 0.2 + frame * 0.1)
+                wave2 = math.sin(y * 0.3 + frame * 0.05)
+                wave3 = math.sin((x + y) * 0.1 + frame * 0.08)
+
+                combined_wave = (wave1 + wave2 + wave3) / 3
+
+                # Map to rainbow colors
+                hue = (combined_wave + 1) * 180  # 0-360 degrees
+
+                # Convert HSV to RGB
+                h = hue / 60
+                i = int(h)
+                f = h - i
+                p = 0
+                q = 1 - f
+                t = f
+
+                if i == 0:
+                    r, g, b = 1, t, p
+                elif i == 1:
+                    r, g, b = q, 1, p
+                elif i == 2:
+                    r, g, b = p, 1, t
+                elif i == 3:
+                    r, g, b = p, q, 1
+                elif i == 4:
+                    r, g, b = t, p, 1
+                else:
+                    r, g, b = 1, p, q
+
+                # Convert to 256-color
+                r = int(r * 255)
+                g = int(g * 255)
+                b = int(b * 255)
+                color = get_color_256(r, g, b)
+
+                # Choose character based on wave intensity
+                if abs(combined_wave) > 0.7:
+                    char = "█"
+                elif abs(combined_wave) > 0.4:
+                    char = "▓"
+                elif abs(combined_wave) > 0.1:
+                    char = "▒"
+                else:
+                    char = "░"
+
+                line += color + char + Colors256.RESET
+
+            print(line)
+
+        time.sleep(0.06)
 
     show_cursor()
 
@@ -358,6 +572,91 @@ def color_palette_demo():
     input("Press Enter to continue...")
 
 
+def bouncing_balls():
+    """Bouncing balls animation with physics"""
+    width = 80
+    height = 24
+
+    # Initialize balls
+    balls = []
+    for _ in range(5):
+        ball = {
+            'x': random.uniform(5, width - 5),
+            'y': random.uniform(5, height - 5),
+            'vx': random.uniform(-2, 2),
+            'vy': random.uniform(-2, 2),
+            'color': random.choice(Colors256.RAINBOW),
+            'size': random.randint(1, 3)
+        }
+        balls.append(ball)
+
+    for frame in range(200):
+        clear_screen()
+        hide_cursor()
+
+        print(
+            Colors256.BRIGHT_BLUE
+            + Colors256.BOLD
+            + "⚽ BOUNCING BALLS"
+            + Colors256.RESET,
+        )
+        print(Colors256.BLUE + "=" * 50 + Colors256.RESET)
+        print()
+
+        # Create screen buffer
+        screen = [[' ' for _ in range(width)] for _ in range(height)]
+
+        # Update and draw balls
+        for ball in balls:
+            # Update position
+            ball['x'] += ball['vx']
+            ball['y'] += ball['vy']
+
+            # Bounce off walls
+            if ball['x'] <= ball['size'] or ball['x'] >= width - ball['size']:
+                ball['vx'] = -ball['vx']
+                ball['x'] = max(ball['size'], min(width - ball['size'], ball['x']))
+
+            if ball['y'] <= ball['size'] or ball['y'] >= height - ball['size']:
+                ball['vy'] = -ball['vy']
+                ball['y'] = max(ball['size'], min(height - ball['size'], ball['y']))
+
+            # Add gravity
+            ball['vy'] += 0.1
+
+            # Draw ball
+            x, y = int(ball['x']), int(ball['y'])
+            size = ball['size']
+
+            for dy in range(-size, size + 1):
+                for dx in range(-size, size + 1):
+                    if 0 <= x + dx < width and 0 <= y + dy < height:
+                        if dx*dx + dy*dy <= size*size:
+                            screen[y + dy][x + dx] = '●'
+
+        # Render screen
+        for y in range(height):
+            line = ""
+            for x in range(width):
+                if screen[y][x] == '●':
+                    # Find which ball this belongs to
+                    for ball in balls:
+                        bx, by = int(ball['x']), int(ball['y'])
+                        if abs(x - bx) <= ball['size'] and abs(y - by) <= ball['size']:
+                            if (x - bx)*(x - bx) + (y - by)*(y - by) <= ball['size']*ball['size']:
+                                line += ball['color'] + '●' + Colors256.RESET
+                                break
+                    else:
+                        line += ' '
+                else:
+                    line += ' '
+            print(line)
+
+        time.sleep(0.1)
+
+    show_cursor()
+
+
 def main():
     """Main demoscene sequence"""
     print(
@@ -373,6 +672,11 @@ def main():
         color_palette_demo()
         matrix_rain()
         plasma_effect()
+        mandelbrot_fractal()
+        spiral_animation()
+        fire_effect()
+        rainbow_wave()
+        bouncing_balls()
         python_logo_animation()
         reynard_fox_animation()
 
@@ -393,6 +697,17 @@ def main():
         print(Colors256.GREEN + "✅ 256-Color Terminal Support" + Colors256.RESET)
         print(Colors256.GREEN + "✅ Enhanced Error Messages" + Colors256.RESET)
         print(Colors256.GREEN + "✅ Performance Improvements" + Colors256.RESET)
+        print()
+        print(
+            Colors256.CYAN + "🎨 ASCII Animation Effects:" + Colors256.RESET,
+        )
+        print(Colors256.GREEN + "✅ Matrix Digital Rain" + Colors256.RESET)
+        print(Colors256.GREEN + "✅ Plasma Effect" + Colors256.RESET)
+        print(Colors256.GREEN + "✅ Mandelbrot Fractal" + Colors256.RESET)
+        print(Colors256.GREEN + "✅ Spiral Animation" + Colors256.RESET)
+        print(Colors256.GREEN + "✅ Fire Effect" + Colors256.RESET)
+        print(Colors256.GREEN + "✅ Rainbow Wave" + Colors256.RESET)
+        print(Colors256.GREEN + "✅ Bouncing Balls Physics" + Colors256.RESET)
         print()
         print(
             Colors256.YELLOW

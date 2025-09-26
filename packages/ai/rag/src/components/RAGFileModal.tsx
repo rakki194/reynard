@@ -4,7 +4,7 @@
  * Modal for displaying file content with syntax highlighting
  * and chunk navigation for RAG search results.
  */
-import { Modal } from "reynard-components-core";
+import { Modal } from "reynard-primitives";
 import { useFileModal } from "../composables/useFileModal";
 import { FileModalHeader } from "./FileModalHeader";
 import { ChunkNavigation } from "./ChunkNavigation";

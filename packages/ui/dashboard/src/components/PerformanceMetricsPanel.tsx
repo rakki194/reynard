@@ -3,7 +3,7 @@
  * Integration component that uses both reynard-charts and reynard-components
  */
 import { Chart } from "reynard-charts";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 

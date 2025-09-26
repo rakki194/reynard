@@ -3,7 +3,7 @@
  *
  * Controls for file display options like line numbers, wrapping, font size, etc.
  */
-import { Button, Select, Icon } from "reynard-components-core";
+import { Button, Select, Icon } from "reynard-primitives";
 export const FileControls = (props: any) => {
   return (
     <div class="file-controls">

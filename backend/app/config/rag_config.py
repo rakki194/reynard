@@ -80,6 +80,23 @@ class RAGConfig:
         default_factory=lambda: int(os.getenv("RAG_INGEST_RATE_LIMIT_PER_MINUTE", "10")),
     )
 
+    # Document categorization configuration
+    document_categorization_enabled: bool = field(
+        default_factory=lambda: os.getenv("DOCUMENT_CATEGORIZATION_ENABLED", "true").lower() == "true",
+    )
+    auto_categorize_papers: bool = field(
+        default_factory=lambda: os.getenv("AUTO_CATEGORIZE_PAPERS", "true").lower() == "true",
+    )
+    categorization_cache_enabled: bool = field(
+        default_factory=lambda: os.getenv("CATEGORIZATION_CACHE_ENABLED", "true").lower() == "true",
+    )
+    min_confidence_threshold: float = field(
+        default_factory=lambda: float(os.getenv("MIN_CONFIDENCE_THRESHOLD", "0.3")),
+    )
+    papers_directory: str = field(
+        default_factory=lambda: os.getenv("PAPERS_DIRECTORY", "/home/kade/runeset/reynard/backend/data/papers"),
+    )
+
     # Embedding backend configuration
     embedding_backends: EmbeddingBackendsConfig = field(
         default_factory=EmbeddingBackendsConfig,
@@ -104,6 +121,11 @@ class RAGConfig:
             "rag_ingest_backoff_base_s": self.ingest_backoff_base_s,
             "rag_query_rate_limit_per_minute": self.query_rate_limit_per_minute,
             "rag_ingest_rate_limit_per_minute": self.ingest_rate_limit_per_minute,
+            "document_categorization_enabled": self.document_categorization_enabled,
+            "auto_categorize_papers": self.auto_categorize_papers,
+            "categorization_cache_enabled": self.categorization_cache_enabled,
+            "min_confidence_threshold": self.min_confidence_threshold,
+            "papers_directory": self.papers_directory,
             "embedding_backends": self.embedding_backends.to_dict(),
         }
 

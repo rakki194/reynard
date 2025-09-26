@@ -26,7 +26,7 @@
     "solid-js": "1.9.9",
     "@solidjs/router": "^0.12.0",
     "reynard-core": "^0.1.1",
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-components-charts": "workspace:*",
     "reynard-components-dashboard": "workspace:*",
     "reynard-components-themes": "workspace:*",

@@ -60,9 +60,9 @@ export function useStaggeredAnimation(options: UseStaggeredAnimationOptions = {}
 
   const start = async (itemCount: number): Promise<void> => {
     if (isAnimating()) {
-      log.warn("Already animating, ignoring start request", undefined, { 
-        component: "useStaggeredAnimation", 
-        function: "start" 
+      log.warn("Already animating, ignoring start request", undefined, {
+        component: "useStaggeredAnimation",
+        function: "start",
       });
       return;
     }

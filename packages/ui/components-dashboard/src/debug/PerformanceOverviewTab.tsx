@@ -2,7 +2,7 @@
  * PerformanceOverviewTab Component
  * Overview tab for performance dashboard
  */
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 export const PerformanceOverviewTab = props => {
   // Format memory usage
   const formatMemory = bytes => {

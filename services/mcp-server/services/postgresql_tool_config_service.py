@@ -375,3 +375,10 @@ class ToolConfigService(PostgreSQLToolConfigService):
         """Reload configuration from backend."""
         self.clear_cache()
         logger.info("Configuration reloaded from PostgreSQL backend")
+    
+    def auto_sync_all_tools(self) -> None:
+        """Auto-sync all tools from the registry."""
+        # For PostgreSQL service, we don't need to sync tools as they're already in the database
+        # This method is here for compatibility with the old JSON-based service
+        logger.info("Auto-sync not needed for PostgreSQL-based tool configuration service")
+        pass

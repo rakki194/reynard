@@ -37,6 +37,7 @@ from app.api.mcp import endpoints as mcp_endpoints
 from app.api.mcp import tool_config_endpoints as mcp_tool_config_endpoints
 from app.api.mcp import tools_endpoints as mcp_tools_endpoints
 from app.api.mcp import pdf_processing_endpoints
+from app.api.mcp_bridge import endpoints as mcp_bridge_endpoints
 from app.api.nlweb import router as nlweb_router
 from app.api.notebooks import endpoints as notebooks_endpoints
 from app.api.notes import endpoints as notes_endpoints
@@ -175,6 +176,7 @@ def _setup_routers(app: FastAPI) -> None:
     app.include_router(mcp_endpoints.router, prefix="/api")
     app.include_router(mcp_tools_endpoints.router, prefix="/api")
     app.include_router(mcp_tool_config_endpoints.router)
+    app.include_router(mcp_bridge_endpoints.router, prefix="/api")
     app.include_router(pdf_processing_endpoints.router, prefix="/api")
     
     # MCP Bootstrap Router (for initial authentication)

@@ -22,7 +22,7 @@
  */
 
 import { Component, createSignal, createEffect, onMount, onCleanup, createMemo, Show, For } from "solid-js";
-import { Card, Button, Badge, Tabs, Input, Select, Checkbox, TextArea } from "reynard-components-core/primitives";
+import { Card, Button, Badge, Tabs, Input, Select, Checkbox, TextArea } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { EventEmitter } from "events";
 

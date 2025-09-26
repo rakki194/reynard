@@ -3,7 +3,7 @@
  * Package usage analytics and performance monitoring interface
  */
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button, TextField, Select } from "reynard-components-core/primitives";
+import { Button, TextField, Select } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 export const PackageAnalyticsPanel = props => {
@@ -189,10 +189,15 @@ export const PackageAnalyticsPanel = props => {
       setSummary(mockSummary);
       setLastUpdate(new Date());
     } catch (error) {
-      log.error("Failed to refresh analytics data", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "PackageAnalyticsPanel",
-        function: "refreshAnalyticsData"
-      });
+      log.error(
+        "Failed to refresh analytics data",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "PackageAnalyticsPanel",
+          function: "refreshAnalyticsData",
+        }
+      );
     } finally {
       setIsRefreshing(false);
     }

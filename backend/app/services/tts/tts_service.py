@@ -576,3 +576,40 @@ class TTSService:
         except Exception as e:
             logger.error(f"TTS health check failed: {e}")
             return False
+
+    async def shutdown(self) -> None:
+        """Gracefully shutdown the TTS service and cleanup resources."""
+        logger.info("Shutting down TTS service...")
+
+        try:
+            # Shutdown all backend services
+            for backend_name, backend_service in self._backend_services.items():
+                try:
+                    if hasattr(backend_service, "shutdown"):
+                        await backend_service.shutdown()
+                    logger.debug(f"TTS backend {backend_name} shutdown")
+                except Exception as e:
+                    logger.warning(f"Failed to shutdown TTS backend {backend_name}: {e}")
+
+            # Clear backend services
+            self._backend_services.clear()
+
+            # Shutdown audio processor
+            if self._audio_processor and hasattr(self._audio_processor, "shutdown"):
+                try:
+                    await self._audio_processor.shutdown()
+                    logger.debug("Audio processor shutdown")
+                except Exception as e:
+                    logger.warning(f"Failed to shutdown audio processor: {e}")
+
+            # Reset service state
+            self._enabled = False
+            self._kokoro_warmed = False
+            self._kokoro_request_count = 0
+            self._kokoro_last_used = None
+            self._backend_health_status.clear()
+
+            logger.info("TTS service shutdown complete")
+
+        except Exception as e:
+            logger.error(f"Error during TTS service shutdown: {e}")

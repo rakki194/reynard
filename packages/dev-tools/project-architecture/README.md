@@ -207,7 +207,7 @@ graph TB
             B --> B5[docs/ - 5 packages]
             B --> B6[media/ - 9 packages]
             B --> B7[services/ - 5 packages]
-            B --> B8[ui/ - 17 packages]
+            B --> B8[ui/ - 18 packages]
 
             B1 --> B1A[rag, annotating-*, caption-*, comfy, model-management, multimodal, nlweb, tool-calling]
             B2 --> B2A[core, testing, validation, composables, config, connection, features, i18n, settings]
@@ -216,7 +216,7 @@ graph TB
             B5 --> B5A[docs-generator, docs-site, docs-core, docs-components, diagram-generator]
             B6 --> B6A[image, 3d, video, audio, gallery-*, segmentation, boundingbox]
             B7 --> B7A[api-client, auth, chat, email]
-            B8 --> B8A[animation, charts, components-*, dashboard, floating-panel, themes, ui]
+            B8 --> B8A[animation, charts, components-*, dashboard, floating-panel, primitives, themes, ui]
         end
 
         subgraph "🐍 Backend Services"
@@ -734,7 +734,7 @@ reynard/
 │   ├── docs/          # Documentation generation (5 packages)
 │   ├── media/         # Media processing packages (9 packages)
 │   ├── services/      # Frontend service packages (5 packages)
-│   └── ui/            # User interface packages (17 packages)
+│   └── ui/            # User interface packages (18 packages)
 ├── backend/           # Python backend services (critical)
 ├── services/          # Root-level Python microservices (critical)
 │   ├── agent-naming/  # Agent naming system with 105+ spirit types

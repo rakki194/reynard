@@ -5,8 +5,8 @@
  * with EmbeddingGemma integration, 3D visualization, and advanced features.
  */
 import { createSignal, createEffect, Show } from "solid-js";
-import { Tabs, Button, Select, TextField } from "reynard-components-core";
-import { Icon } from "reynard-components-core";
+import { Tabs, Button, Select, TextField } from "reynard-primitives";
+import { Icon } from "reynard-primitives";
 import { RAGTabPanels } from "./RAGTabPanels";
 import { useRAGSearchComponent } from "./useRAGSearchComponent";
 import { createRAGTabConfig } from "./tab-config";

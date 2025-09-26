@@ -4,7 +4,7 @@
  * Renders the tab panels for RAG search interface
  * following Reynard modular conventions.
  */
-import { TabPanel } from "reynard-components-core";
+import { TabPanel } from "reynard-primitives";
 import { SearchTab } from "./SearchTab";
 import { DocumentsTab } from "./DocumentsTab";
 import { UploadTab } from "./UploadTab";

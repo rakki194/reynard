@@ -11,6 +11,31 @@ Welcome to the **Notes & Todos Restoration Quest**! This is your epic journey to
 **Estimated Time**: 3-4 weeks
 **Prerequisites**: SolidJS, PostgreSQL, Alembic, FastAPI, and Reynard ecosystem knowledge
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for notes/todos features (Owner, Collaborator, Reader)
+- [ ] Identify resource permissions needed (create, read, update, delete, share)
+- [ ] Plan context-specific access control (notebook-level, note-level permissions)
+- [ ] Design audit trail requirements (who accessed what, when)
+
+### **Integration Points**
+
+- [ ] Update API endpoints with RBAC middleware
+- [ ] Add permission checks to service layer
+- [ ] Implement role-based UI components
+- [ ] Add audit logging for access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based access control for notes/todos
+- [ ] Verify permission inheritance in notebooks
+- [ ] Test context-specific permissions (private vs shared)
+- [ ] Validate audit trail functionality
+
 ## 🏆 Current Progress
 
 **Total Points Earned**: 1,600 points

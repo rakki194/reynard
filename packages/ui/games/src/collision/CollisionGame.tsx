@@ -1,5 +1,5 @@
 import { createSignal, createEffect, onMount } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import "./CollisionGame.css";
 export function CollisionGame(props: any = {}) {
   const [balls, setBalls] = createSignal([]);

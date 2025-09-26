@@ -20,7 +20,7 @@ particularly when integrating with Cursor IDE. Based on real-world troubleshooti
 1. **Schema Format Issues**: Using `parameters` instead of `inputSchema`
 2. **Connection Problems**: Cursor not properly connected to MCP server
 3. **Authentication Blocking**: Middleware blocking requests
-4. **Tool Configuration**: Tools disabled in `tool_config.json`
+4. **Tool Configuration**: Tools disabled in PostgreSQL (via API)
 
 #### Solutions
 
@@ -83,17 +83,8 @@ if token_payload is None:
 
 ##### Tool Configuration Check
 
-```python
-# Verify tools are enabled in tool_config.json
-import json
-
-with open('tool_config.json', 'r') as f:
-    config = json.load(f)
-
-tools_config = config.get('tools', {})
-enabled_tools = [name for name, tool in tools_config.items()
-                if tool.get('enabled', False)]
-print(f'Enabled tools: {len(enabled_tools)}')
+```bash
+curl -s http://localhost:8000/api/mcp/tool-config/tools | jq 'map(select(.enabled==true)) | length'
 ```
 
 ### 2. MCP Server Startup Issues
@@ -316,26 +307,9 @@ asyncio.run(test_tool())
 
 ### Configuration Validation
 
-```python
-# Validate tool configuration
-import json
-
-def validate_tool_config():
-    with open('tool_config.json', 'r') as f:
-        config = json.load(f)
-
-    # Check structure
-    assert 'tools' in config, "Missing 'tools' key"
-    assert 'version' in config, "Missing 'version' key"
-
-    # Check each tool
-    for tool_name, tool_config in config['tools'].items():
-        assert 'enabled' in tool_config, f"Missing 'enabled' for {tool_name}"
-        assert 'category' in tool_config, f"Missing 'category' for {tool_name}"
-
-    print("✅ Tool configuration is valid")
-
-validate_tool_config()
+```bash
+# Validate tool configuration stored in PostgreSQL via API
+curl -s http://localhost:8000/api/mcp/tool-config/statistics | jq
 ```
 
 ## Prevention Strategies
@@ -348,7 +322,7 @@ validate_tool_config()
 
 ### 2. Configuration Management
 
-- Keep `tool_config.json` in version control
+- Manage tool configuration via the FastAPI backend
 - Document tool categories and dependencies
 - Use consistent naming conventions
 
@@ -369,14 +343,14 @@ validate_tool_config()
 ### Quick Fixes
 
 1. **Restart MCP Server**: `pkill -f "python3 main.py" && python3 main.py`
-2. **Reset Configuration**: Restore `tool_config.json` from backup
-3. **Clear Cache**: Remove any cached tool definitions
+2. **Verify DB Connectivity**: `curl -s http://localhost:8000/api/mcp/tool-config/health`
+3. **Clear MCP Cache**: Restart server or call reload endpoint
 4. **Reinstall Dependencies**: `pip install -r requirements.txt --force-reinstall`
 
 ### Full Recovery
 
 1. **Backup Current State**: Save logs and configuration
-2. **Restore from Git**: `git checkout HEAD -- tool_config.json`
+2. **Run Alembic Migrations**: `alembic -c alembic/mcp.ini upgrade head`
 3. **Recreate Virtual Environment**: `rm -rf venv && python -m venv venv`
 4. **Reinstall Everything**: `pip install -r requirements.txt`
 

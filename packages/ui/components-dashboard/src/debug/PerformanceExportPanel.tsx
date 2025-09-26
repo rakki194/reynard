@@ -4,8 +4,8 @@
  * Refactored to be modular and under 140 lines
  */
 import { Show, For } from "solid-js";
-import { Button, Select } from "reynard-components-core/primitives";
-import { Toggle } from "reynard-components-core/primitives";
+import { Button, Select } from "reynard-primitives";
+import { Toggle } from "reynard-primitives";
 import { Icon } from "reynard-fluent-icons";
 import { usePerformanceExport } from "./composables/usePerformanceExport";
 export const PerformanceExportPanel = props => {

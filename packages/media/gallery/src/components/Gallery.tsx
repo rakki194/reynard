@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, For, createSignal, createEffect, splitProps } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { GalleryGrid } from "./GalleryGrid";
 import { BreadcrumbNavigation } from "./BreadcrumbNavigation";
 import { FileUploadZone } from "./FileUploadZone";

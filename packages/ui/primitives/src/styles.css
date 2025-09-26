@@ -1,0 +1,563 @@
+/**
+ * Reynard Primitives Styles
+ * Basic styling for primitive components with no external dependencies
+ */
+
+/* ==========================================================================
+   CSS Variables & Theme Integration
+   ========================================================================== */
+
+:root {
+  /* Component spacing */
+  --reynard-spacing-xs: 0.25rem;
+  --reynard-spacing-sm: 0.5rem;
+  --reynard-spacing-md: 1rem;
+  --reynard-spacing-lg: 1.5rem;
+  --reynard-spacing-xl: 2rem;
+
+  /* Component colors */
+  --reynard-color-primary: #3b82f6;
+  --reynard-color-primary-hover: #2563eb;
+  --reynard-color-primary-active: #1d4ed8;
+  --reynard-color-secondary: #6b7280;
+  --reynard-color-secondary-hover: #4b5563;
+  --reynard-color-secondary-active: #374151;
+  --reynard-color-danger: #ef4444;
+  --reynard-color-danger-hover: #dc2626;
+  --reynard-color-danger-active: #b91c1c;
+  --reynard-color-success: #10b981;
+  --reynard-color-success-hover: #059669;
+  --reynard-color-success-active: #047857;
+  --reynard-color-warning: #f59e0b;
+  --reynard-color-warning-hover: #d97706;
+  --reynard-color-warning-active: #b45309;
+
+  /* Component borders */
+  --reynard-border-radius-sm: 0.25rem;
+  --reynard-border-radius-md: 0.375rem;
+  --reynard-border-radius-lg: 0.5rem;
+  --reynard-border-width: 1px;
+  --reynard-border-color: #e5e7eb;
+
+  /* Component shadows */
+  --reynard-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --reynard-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --reynard-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Component typography */
+  --reynard-font-size-xs: 0.75rem;
+  --reynard-font-size-sm: 0.875rem;
+  --reynard-font-size-md: 1rem;
+  --reynard-font-size-lg: 1.125rem;
+  --reynard-font-size-xl: 1.25rem;
+  --reynard-font-weight-normal: 400;
+  --reynard-font-weight-medium: 500;
+  --reynard-font-weight-semibold: 600;
+  --reynard-font-weight-bold: 700;
+}
+
+/* ==========================================================================
+   Button Component
+   ========================================================================== */
+
+.reynard-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--reynard-spacing-sm);
+  padding: var(--reynard-spacing-sm) var(--reynard-spacing-md);
+  border: var(--reynard-border-width) solid transparent;
+  border-radius: var(--reynard-border-radius-md);
+  font-size: var(--reynard-font-size-md);
+  font-weight: var(--reynard-font-weight-medium);
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  user-select: none;
+}
+
+.reynard-button:focus {
+  outline: 2px solid var(--reynard-color-primary);
+  outline-offset: 2px;
+}
+
+.reynard-button--primary {
+  background-color: var(--reynard-color-primary);
+  color: white;
+}
+
+.reynard-button--primary:hover:not(:disabled) {
+  background-color: var(--reynard-color-primary-hover);
+}
+
+.reynard-button--primary:active:not(:disabled) {
+  background-color: var(--reynard-color-primary-active);
+}
+
+.reynard-button--secondary {
+  background-color: var(--reynard-color-secondary);
+  color: white;
+}
+
+.reynard-button--secondary:hover:not(:disabled) {
+  background-color: var(--reynard-color-secondary-hover);
+}
+
+.reynard-button--secondary:active:not(:disabled) {
+  background-color: var(--reynard-color-secondary-active);
+}
+
+.reynard-button--tertiary {
+  background-color: transparent;
+  color: var(--reynard-color-primary);
+  border-color: var(--reynard-color-primary);
+}
+
+.reynard-button--tertiary:hover:not(:disabled) {
+  background-color: var(--reynard-color-primary);
+  color: white;
+}
+
+.reynard-button--ghost {
+  background-color: transparent;
+  color: var(--reynard-color-secondary);
+}
+
+.reynard-button--ghost:hover:not(:disabled) {
+  background-color: var(--reynard-color-secondary);
+  color: white;
+}
+
+.reynard-button--danger {
+  background-color: var(--reynard-color-danger);
+  color: white;
+}
+
+.reynard-button--danger:hover:not(:disabled) {
+  background-color: var(--reynard-color-danger-hover);
+}
+
+.reynard-button--danger:active:not(:disabled) {
+  background-color: var(--reynard-color-danger-active);
+}
+
+.reynard-button--success {
+  background-color: var(--reynard-color-success);
+  color: white;
+}
+
+.reynard-button--success:hover:not(:disabled) {
+  background-color: var(--reynard-color-success-hover);
+}
+
+.reynard-button--success:active:not(:disabled) {
+  background-color: var(--reynard-color-success-active);
+}
+
+.reynard-button--warning {
+  background-color: var(--reynard-color-warning);
+  color: white;
+}
+
+.reynard-button--warning:hover:not(:disabled) {
+  background-color: var(--reynard-color-warning-hover);
+}
+
+.reynard-button--warning:active:not(:disabled) {
+  background-color: var(--reynard-color-warning-active);
+}
+
+.reynard-button--sm {
+  padding: var(--reynard-spacing-xs) var(--reynard-spacing-sm);
+  font-size: var(--reynard-font-size-sm);
+}
+
+.reynard-button--lg {
+  padding: var(--reynard-spacing-md) var(--reynard-spacing-lg);
+  font-size: var(--reynard-font-size-lg);
+}
+
+.reynard-button--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.reynard-button--loading {
+  position: relative;
+  color: transparent;
+}
+
+.reynard-button--full-width {
+  width: 100%;
+}
+
+.reynard-button--icon-only {
+  padding: var(--reynard-spacing-sm);
+}
+
+.reynard-button__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   Card Component
+   ========================================================================== */
+
+.reynard-card {
+  background-color: white;
+  border: var(--reynard-border-width) solid var(--reynard-border-color);
+  border-radius: var(--reynard-border-radius-lg);
+  box-shadow: var(--reynard-shadow-sm);
+  overflow: hidden;
+}
+
+.reynard-card__header {
+  padding: var(--reynard-spacing-lg);
+  border-bottom: var(--reynard-border-width) solid var(--reynard-border-color);
+}
+
+.reynard-card__content {
+  padding: var(--reynard-spacing-lg);
+}
+
+.reynard-card__footer {
+  padding: var(--reynard-spacing-lg);
+  border-top: var(--reynard-border-width) solid var(--reynard-border-color);
+  background-color: #f9fafb;
+}
+
+/* ==========================================================================
+   TextField Component
+   ========================================================================== */
+
+.reynard-textfield {
+  display: block;
+  width: 100%;
+  padding: var(--reynard-spacing-sm) var(--reynard-spacing-md);
+  border: var(--reynard-border-width) solid var(--reynard-border-color);
+  border-radius: var(--reynard-border-radius-md);
+  font-size: var(--reynard-font-size-md);
+  line-height: 1.5;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.reynard-textfield:focus {
+  outline: none;
+  border-color: var(--reynard-color-primary);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+.reynard-textfield:disabled {
+  background-color: #f9fafb;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Select Component
+   ========================================================================== */
+
+.reynard-select {
+  display: block;
+  width: 100%;
+  padding: var(--reynard-spacing-sm) var(--reynard-spacing-md);
+  border: var(--reynard-border-width) solid var(--reynard-border-color);
+  border-radius: var(--reynard-border-radius-md);
+  font-size: var(--reynard-font-size-md);
+  line-height: 1.5;
+  background-color: white;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.reynard-select:focus {
+  outline: none;
+  border-color: var(--reynard-color-primary);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+.reynard-select:disabled {
+  background-color: #f9fafb;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Toggle Component
+   ========================================================================== */
+
+.reynard-toggle {
+  position: relative;
+  display: inline-block;
+  width: 3rem;
+  height: 1.5rem;
+}
+
+.reynard-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.reynard-toggle__slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 1.5rem;
+}
+
+.reynard-toggle__slider:before {
+  position: absolute;
+  content: "";
+  height: 1.25rem;
+  width: 1.25rem;
+  left: 0.125rem;
+  bottom: 0.125rem;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.reynard-toggle input:checked + .reynard-toggle__slider {
+  background-color: var(--reynard-color-primary);
+}
+
+.reynard-toggle input:checked + .reynard-toggle__slider:before {
+  transform: translateX(1.5rem);
+}
+
+.reynard-toggle input:disabled + .reynard-toggle__slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Slider Component
+   ========================================================================== */
+
+.reynard-slider {
+  width: 100%;
+  height: 0.5rem;
+  border-radius: var(--reynard-border-radius-md);
+  background: #ddd;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.reynard-slider:hover {
+  opacity: 1;
+}
+
+.reynard-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--reynard-color-primary);
+  cursor: pointer;
+}
+
+.reynard-slider::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--reynard-color-primary);
+  cursor: pointer;
+  border: none;
+}
+
+/* ==========================================================================
+   Badge Component
+   ========================================================================== */
+
+.reynard-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--reynard-spacing-xs) var(--reynard-spacing-sm);
+  font-size: var(--reynard-font-size-xs);
+  font-weight: var(--reynard-font-weight-medium);
+  line-height: 1;
+  border-radius: var(--reynard-border-radius-md);
+  background-color: var(--reynard-color-secondary);
+  color: white;
+}
+
+.reynard-badge--primary {
+  background-color: var(--reynard-color-primary);
+}
+
+.reynard-badge--success {
+  background-color: var(--reynard-color-success);
+}
+
+.reynard-badge--warning {
+  background-color: var(--reynard-color-warning);
+}
+
+.reynard-badge--danger {
+  background-color: var(--reynard-color-danger);
+}
+
+/* ==========================================================================
+   Checkbox Component
+   ========================================================================== */
+
+.reynard-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--reynard-spacing-sm);
+  cursor: pointer;
+}
+
+.reynard-checkbox input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--reynard-color-primary);
+}
+
+.reynard-checkbox:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   IconButton Component
+   ========================================================================== */
+
+.reynard-iconbutton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: var(--reynard-border-width) solid transparent;
+  border-radius: var(--reynard-border-radius-md);
+  background-color: transparent;
+  color: var(--reynard-color-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.reynard-iconbutton:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  color: var(--reynard-color-primary);
+}
+
+.reynard-iconbutton:focus {
+  outline: 2px solid var(--reynard-color-primary);
+  outline-offset: 2px;
+}
+
+.reynard-iconbutton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   SidebarButton Component
+   ========================================================================== */
+
+.reynard-sidebarbutton {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-spacing-sm);
+  width: 100%;
+  padding: var(--reynard-spacing-sm) var(--reynard-spacing-md);
+  border: none;
+  border-radius: var(--reynard-border-radius-md);
+  background-color: transparent;
+  color: var(--reynard-color-secondary);
+  font-size: var(--reynard-font-size-md);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.reynard-sidebarbutton:hover:not(:disabled) {
+  background-color: #f3f4f6;
+  color: var(--reynard-color-primary);
+}
+
+.reynard-sidebarbutton:focus {
+  outline: 2px solid var(--reynard-color-primary);
+  outline-offset: 2px;
+}
+
+.reynard-sidebarbutton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Tabs Component
+   ========================================================================== */
+
+.reynard-tabs {
+  display: flex;
+  flex-direction: column;
+}
+
+.reynard-tabs__list {
+  display: flex;
+  border-bottom: var(--reynard-border-width) solid var(--reynard-border-color);
+}
+
+.reynard-tabs__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--reynard-spacing-sm);
+  padding: var(--reynard-spacing-sm) var(--reynard-spacing-md);
+  border: none;
+  border-bottom: 2px solid transparent;
+  background-color: transparent;
+  color: var(--reynard-color-secondary);
+  font-size: var(--reynard-font-size-md);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.reynard-tabs__trigger:hover:not(:disabled) {
+  color: var(--reynard-color-primary);
+}
+
+.reynard-tabs__trigger[data-state="active"] {
+  color: var(--reynard-color-primary);
+  border-bottom-color: var(--reynard-color-primary);
+}
+
+.reynard-tabs__content {
+  padding: var(--reynard-spacing-lg);
+}
+
+.reynard-tabs__panel {
+  display: none;
+}
+
+.reynard-tabs__panel[data-state="active"] {
+  display: block;
+}

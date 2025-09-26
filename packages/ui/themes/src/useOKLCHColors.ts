@@ -77,7 +77,7 @@ export function useTagColors() {
 
     log.debug(`getTagStyle called for tag: ${tag}, theme: ${currentTheme}`, undefined, {
       component: "useOKLCHColors",
-      function: "getTagStyle"
+      function: "getTagStyle",
     });
 
     const backgroundColor = generateTagColor(currentTheme, tag, intensity);
@@ -109,10 +109,14 @@ export function useTagColors() {
       "--tag-color": textColor,
     };
 
-    log.debug(`getTagStyle result for ${tag}`, { result }, {
-      component: "useOKLCHColors",
-      function: "getTagStyle"
-    });
+    log.debug(
+      `getTagStyle result for ${tag}`,
+      { result },
+      {
+        component: "useOKLCHColors",
+        function: "getTagStyle",
+      }
+    );
 
     return result;
   });

@@ -8,4 +8,4 @@ export * from "./components";
 
 // Re-export commonly used types and utilities
 export type { RealTimeDataPoint } from "reynard-charts";
-export type { ButtonProps, ToggleProps, SliderProps } from "reynard-components-core";
+export type { ButtonProps, ToggleProps, SliderProps } from "reynard-primitives";

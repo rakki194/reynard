@@ -3,7 +3,7 @@
  *
  * Individual search history item display component.
  */
-import { Button, Card, Badge, Icon } from "reynard-components-core";
+import { Button, Card, Badge, Icon } from "reynard-primitives";
 import { formatTimestamp, getModalityIcon, getModalityColor, getScoreColor } from "../utils/searchHistoryUtils";
 export const SearchHistoryItem = (props: any) => {
   return (

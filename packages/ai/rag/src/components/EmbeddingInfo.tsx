@@ -4,8 +4,8 @@
  * Displays embedding vector information and statistics
  */
 import { Show } from "solid-js";
-import { Card, Button } from "reynard-components-core";
-import { Icon } from "reynard-components-core";
+import { Card, Button } from "reynard-primitives";
+import { Icon } from "reynard-primitives";
 export const EmbeddingInfo = (props: any) => {
   const calculateMagnitude = (vector: any) => {
     return Math.sqrt(vector.reduce((sum: any, val: any) => sum + val * val, 0));

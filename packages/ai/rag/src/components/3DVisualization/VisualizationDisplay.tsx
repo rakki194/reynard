@@ -4,7 +4,7 @@
  * Renders the 3D point cloud visualization and related UI elements
  */
 import { Show } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 export const VisualizationDisplay = (props: any) => {
   return (
     <div class="rag-3d-visualization">

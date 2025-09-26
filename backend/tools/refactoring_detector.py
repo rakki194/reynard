@@ -414,7 +414,7 @@ class RefactoringDetector:
             "configuration": "Use ServiceConfigManager for centralized configuration",
             "logging": "Use get_service_logger() for consistent logging",
             "api_endpoints": "Inherit from BaseServiceRouter for consistent API patterns",
-            "service_initialization": "Use EnhancedServiceRegistry for service lifecycle management",
+            "service_initialization": "Use ServiceRegistry for service lifecycle management",
             "error_handler_function": "Extract to centralized error handling system",
             "health_check_function": "Standardize using health check framework",
             "config_function": "Move to centralized configuration management",

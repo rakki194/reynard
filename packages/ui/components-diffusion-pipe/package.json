@@ -43,7 +43,7 @@
     "prebuild": "pnpm clean:build"
   },
   "dependencies": {
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-charts": "workspace:*",
     "reynard-diffusion-pipe": "workspace:*",

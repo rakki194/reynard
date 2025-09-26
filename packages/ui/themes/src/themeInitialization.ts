@@ -15,17 +15,25 @@ export const getInitialTheme = (defaultTheme?: ThemeName): ThemeName => {
   const savedTheme = localStorage.getItem("reynard-theme") as ThemeName;
   const systemTheme = getSystemThemePreference();
 
-  log.debug("Theme initialization", { savedTheme, themes, systemTheme, defaultTheme }, {
-    component: "themeInitialization",
-    function: "getInitialTheme"
-  });
+  log.debug(
+    "Theme initialization",
+    { savedTheme, themes, systemTheme, defaultTheme },
+    {
+      component: "themeInitialization",
+      function: "getInitialTheme",
+    }
+  );
 
   const finalTheme = savedTheme && themes[savedTheme] ? savedTheme : defaultTheme || systemTheme;
 
-  log.debug("Final theme selected", { finalTheme }, {
-    component: "themeInitialization",
-    function: "getInitialTheme"
-  });
+  log.debug(
+    "Final theme selected",
+    { finalTheme },
+    {
+      component: "themeInitialization",
+      function: "getInitialTheme",
+    }
+  );
 
   return finalTheme;
 };

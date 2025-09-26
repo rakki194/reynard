@@ -3,7 +3,7 @@
  * Displays and manages the list of packages for configuration
  */
 import { For, Show } from "solid-js";
-import { Button, TextField, Select } from "reynard-components-core/primitives";
+import { Button, TextField, Select } from "reynard-primitives";
 import { Icon } from "reynard-fluent-icons";
 export const PackageList = props => {
   const filteredPackages = () => {

@@ -323,9 +323,57 @@ function AuthApp() {
 }
 ```
 
+### reynard-primitives
+
+**NEW (September 2025)**: Dependency-free fundamental UI components that form the foundation of the Reynard UI ecosystem.
+
+#### Primitives Components
+
+- **Button** - Fundamental button component with variants and states
+- **Card** - Container component for content grouping and layout
+- **TextField** - Basic text input component with validation support
+- **Text** - Typography component for consistent text rendering
+- **Container** - Layout container with responsive behavior
+- **Flex** - Flexbox layout component for flexible arrangements
+- **Grid** - Grid layout component for structured layouts
+- **Input** - Generic input component with type safety
+- **Label** - Form label component with accessibility features
+- **Fieldset** - Form fieldset component for grouping related inputs
+
+#### Primitives Features
+
+- **Zero Dependencies** - Only depends on SolidJS (peer dependency)
+- **Self-Contained Styling** - Includes all necessary CSS without external dependencies
+- **TypeScript Support** - Full type safety and IntelliSense
+- **Accessibility** - Built with ARIA support and keyboard navigation
+- **Performance** - Optimized for minimal bundle size and tree-shaking
+
+#### Primitives Example Usage
+
+```tsx
+import { Button, Card, TextField, Text } from "reynard-primitives";
+
+function UserForm() {
+  return (
+    <Card padding="lg">
+      <Text size="xl" weight="bold">
+        Create Account
+      </Text>
+      <TextField placeholder="Enter your name" />
+      <TextField placeholder="Enter your email" type="email" />
+      <Button variant="primary" size="lg">
+        Create Account
+      </Button>
+    </Card>
+  );
+}
+```
+
 ### reynard-charts
 
 Advanced data visualization components built on Chart.js with real-time updates and comprehensive theming.
+
+**FIXED (September 2025)**: Resolved TypeScript compilation errors and circular dependency issues. Now builds successfully with proper dependency management.
 
 #### Chart Types
 
@@ -1142,7 +1190,7 @@ Install packages individually based on your needs:
 
 ```bash
 # Core packages
-pnpm install reynard-core reynard-themes reynard-components
+pnpm install reynard-core reynard-themes reynard-primitives reynard-components-core
 
 # Specialized packages
 pnpm install reynard-chat reynard-rag reynard-auth reynard-charts

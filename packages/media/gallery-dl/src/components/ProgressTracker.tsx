@@ -4,7 +4,7 @@
  * Displays download progress with detailed statistics and visual indicators.
  */
 import { Component, Show } from "solid-js";
-import { Card, Icon } from "reynard-components-core";
+import { Card, Icon } from "reynard-primitives";
 
 export interface ProgressTrackerProps {
   progress: number;

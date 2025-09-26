@@ -34,6 +34,7 @@ export { QualityGateEvaluator } from "./QualityGateEvaluator";
 export { DocstringAnalyzer } from "./DocstringAnalyzer";
 export { EmojiRoleplayScanner } from "./EmojiRoleplayScanner";
 export { JunkFileDetector } from "./JunkFileDetector";
+export { NamingViolationScanner } from "./NamingViolationScanner";
 export type { JunkFileAnalysis, JunkFileResult } from "./JunkFileDetector";
 export type {
   DocstringAnalysis,
@@ -42,6 +43,7 @@ export type {
   ClassDocstring,
   ModuleDocstring,
 } from "./DocstringAnalyzer";
+export type { NamingViolation, NamingRule, ScanResult } from "./NamingViolationScanner";
 import { AIAnalysisEngine } from "./AIAnalysisEngine";
 import { AnalysisOrchestrator } from "./AnalysisOrchestrator";
 import { BehavioralAnalysisEngine } from "./BehavioralAnalysisEngine";

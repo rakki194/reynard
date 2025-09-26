@@ -57,7 +57,7 @@ export interface APIError extends Error {
   details?: any;
 }
 
-export class UnifiedRepositoryAPI {
+export class RepositoryAPI {
   private config: APIConfig;
 
   constructor(config: APIConfig) {

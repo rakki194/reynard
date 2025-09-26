@@ -6,7 +6,7 @@
  */
 
 import type { BaseAIService } from "reynard-ai-shared";
-import type { UnifiedRepository } from "../services/UnifiedRepository";
+import type { Repository } from "../services/Repository";
 import { RepositoryError } from "../types";
 
 export interface APIConfig {
@@ -64,8 +64,8 @@ export interface PaginatedResponse<T> extends APIResponse<T[]> {
   };
 }
 
-export class UnifiedRepositoryAPI extends BaseAIService {
-  private repository: UnifiedRepository;
+export class RepositoryAPI extends BaseAIService {
+  private repository: Repository;
   private initialized = false;
   private server: any;
 
@@ -107,17 +107,17 @@ export class UnifiedRepositoryAPI extends BaseAIService {
 
     try {
       // Initialize repository
-      this.repository = new UnifiedRepository();
+      this.repository = new Repository();
       await this.repository.initialize();
 
       // Initialize Express server
       await this.initializeServer();
 
       this.initialized = true;
-      this.logger.info("UnifiedRepositoryAPI initialized successfully");
+      this.logger.info("RepositoryAPI initialized successfully");
     } catch (error) {
-      this.logger.error("Failed to initialize UnifiedRepositoryAPI:", error);
-      throw new RepositoryError("Failed to initialize UnifiedRepositoryAPI", "API_INIT_ERROR", error);
+      this.logger.error("Failed to initialize RepositoryAPI:", error);
+      throw new RepositoryError("Failed to initialize RepositoryAPI", "API_INIT_ERROR", error);
     }
   }
 
@@ -129,7 +129,7 @@ export class UnifiedRepositoryAPI extends BaseAIService {
       await this.repository.shutdown();
     }
     this.initialized = false;
-    this.logger.info("UnifiedRepositoryAPI shutdown complete");
+    this.logger.info("RepositoryAPI shutdown complete");
   }
 
   async healthCheck(): Promise<any> {
@@ -1107,10 +1107,7 @@ export class UnifiedRepositoryAPI extends BaseAIService {
 
   private ensureInitialized(): void {
     if (!this.initialized) {
-      throw new RepositoryError(
-        "UnifiedRepositoryAPI not initialized. Call initialize() first.",
-        "API_NOT_INITIALIZED"
-      );
+      throw new RepositoryError("RepositoryAPI not initialized. Call initialize() first.", "API_NOT_INITIALIZED");
     }
   }
 }

@@ -4,7 +4,7 @@
  * Configuration panel for batch processing options.
  */
 
-import { Toggle } from "reynard-components-core";
+import { Toggle } from "reynard-primitives";
 import { Component, For } from "solid-js";
 
 export interface BatchConfigurationProps {

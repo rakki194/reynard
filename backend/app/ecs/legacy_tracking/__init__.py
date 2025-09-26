@@ -23,7 +23,7 @@ from .success_advisor_8_tracker import (
     SuccessAdvisor8Activity,
     SuccessAdvisor8LegacyTracker,
 )
-from .unified_parser import UnifiedChangelogParser
+from .unified_parser import ChangelogParser
 
 __all__ = [
     "BehavioralPattern",
@@ -41,5 +41,5 @@ __all__ = [
     "SuccessAdvisor8GenomeTracker",
     "SuccessAdvisor8LegacyTracker",
     "SuccessAdvisor8Release",
-    "UnifiedChangelogParser",
+    "ChangelogParser",
 ]

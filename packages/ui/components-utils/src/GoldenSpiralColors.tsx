@@ -7,7 +7,7 @@
 import { Component, createSignal, onMount, onCleanup, createEffect } from "solid-js";
 import { useTheme } from "reynard-themes";
 import { type OKLCHColor } from "reynard-colors";
-import { Slider, Toggle } from "reynard-components-core";
+import { Slider, Toggle } from "reynard-primitives";
 
 // Golden angle constant (137.507° in radians)
 const GOLDEN_ANGLE = (137.507 * Math.PI) / 180;

@@ -5,7 +5,7 @@
  * state management, progress tracking, and batch processing capabilities.
  */
 import { createSignal, createEffect, onMount, onCleanup, Show, For } from "solid-js";
-import { Button, Card, TextField } from "reynard-components-core";
+import { Button, Card, TextField } from "reynard-primitives";
 import { Icon } from "reynard-fluent-icons";
 import { GalleryService } from "../services/GalleryService";
 

@@ -1,7 +1,12 @@
+import os
 from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
+from dotenv import load_dotenv
+
+# Load environment variables from the .env file
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '../../.env'))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -24,6 +29,11 @@ target_metadata = Base.metadata
 # ... etc.
 
 
+def get_url():
+    """Get database URL from environment or config."""
+    return os.getenv("ECS_DATABASE_URL", config.get_main_option("sqlalchemy.url"))
+
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
@@ -36,7 +46,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = get_url()
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -55,8 +65,10 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+    configuration = config.get_section(config.config_ini_section)
+    configuration["sqlalchemy.url"] = get_url()
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        configuration,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )

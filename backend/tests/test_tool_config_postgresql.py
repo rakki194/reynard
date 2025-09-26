@@ -29,7 +29,8 @@ backend_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_dir))
 
 from app.core.database import get_db_session, test_connection
-from app.models.tool_config_models import Base, Tool, ToolCategory, ToolConfiguration, ToolCategoryEnum
+from app.models.base import Base
+from app.models.mcp.tool_config import Tool, ToolCategory, ToolConfiguration, ToolCategoryEnum
 from app.services.tool_config_service import ToolConfigService
 from app.api.mcp.tool_config_endpoints import router
 from fastapi import FastAPI

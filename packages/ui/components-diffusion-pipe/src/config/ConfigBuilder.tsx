@@ -6,11 +6,11 @@
  */
 
 import { Show, createSignal, createEffect, Component } from "solid-js";
-import { Card } from "reynard-components-core/primitives";
-import { Button } from "reynard-components-core/primitives";
-import { TextField } from "reynard-components-core/primitives";
-import { Select } from "reynard-components-core/primitives";
-import { Badge } from "reynard-components-core/primitives";
+import { Card } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { TextField } from "reynard-primitives";
+import { Select } from "reynard-primitives";
+import { Badge } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ModelSelector } from "./ModelSelector";
 import { DatasetConfigurator } from "./DatasetConfigurator";

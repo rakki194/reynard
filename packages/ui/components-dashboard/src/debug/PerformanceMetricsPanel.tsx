@@ -3,7 +3,7 @@
  * Real-time performance metrics visualization and analysis
  */
 import { Chart } from "reynard-charts";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
 import { log } from "reynard-error-boundaries";
@@ -39,7 +39,15 @@ interface PerformanceMetricsPanelProps {
 }
 
 type TimeRange = "1m" | "5m" | "15m" | "30m" | "1h";
-type MetricType = "frameRate" | "memoryUsage" | "browserResponsiveness" | "selectionDuration" | "itemsPerSecond" | "domUpdateCount" | "styleApplicationCount" | "frameDropCount";
+type MetricType =
+  | "frameRate"
+  | "memoryUsage"
+  | "browserResponsiveness"
+  | "selectionDuration"
+  | "itemsPerSecond"
+  | "domUpdateCount"
+  | "styleApplicationCount"
+  | "frameDropCount";
 
 export const PerformanceMetricsPanel = (props: PerformanceMetricsPanelProps) => {
   const [metrics, setMetrics] = createSignal<PerformanceMetrics>({
@@ -102,21 +110,34 @@ export const PerformanceMetricsPanel = (props: PerformanceMetricsPanelProps) => 
       }
       // Calculate metrics
       const averageFrameRate =
-        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.frameRate, 0) / filteredHistory.length;
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.frameRate, 0) /
+        filteredHistory.length;
       const averageMemoryUsage =
-        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.memoryUsage, 0) / filteredHistory.length;
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.memoryUsage, 0) /
+        filteredHistory.length;
       const averageBrowserResponsiveness =
-        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.browserResponsiveness, 0) / filteredHistory.length;
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + entry.browserResponsiveness, 0) /
+        filteredHistory.length;
       const averageSelectionDuration =
-        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.selectionDuration || 0), 0) / filteredHistory.length;
+        filteredHistory.reduce(
+          (sum: number, entry: PerformanceHistoryEntry) => sum + (entry.selectionDuration || 0),
+          0
+        ) / filteredHistory.length;
       const averageItemsPerSecond =
-        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.itemsPerSecond || 0), 0) / filteredHistory.length;
-      const totalDomUpdates = filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.domUpdateCount || 0), 0);
+        filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.itemsPerSecond || 0), 0) /
+        filteredHistory.length;
+      const totalDomUpdates = filteredHistory.reduce(
+        (sum: number, entry: PerformanceHistoryEntry) => sum + (entry.domUpdateCount || 0),
+        0
+      );
       const totalStyleApplications = filteredHistory.reduce(
         (sum: number, entry: PerformanceHistoryEntry) => sum + (entry.styleApplicationCount || 0),
         0
       );
-      const totalFrameDrops = filteredHistory.reduce((sum: number, entry: PerformanceHistoryEntry) => sum + (entry.frameDropCount || 0), 0);
+      const totalFrameDrops = filteredHistory.reduce(
+        (sum: number, entry: PerformanceHistoryEntry) => sum + (entry.frameDropCount || 0),
+        0
+      );
       // Calculate performance score (0-100)
       const performanceScore = calculatePerformanceScore({
         averageFrameRate,
@@ -138,10 +159,15 @@ export const PerformanceMetricsPanel = (props: PerformanceMetricsPanelProps) => 
       setMetrics(newMetrics);
       setLastUpdate(() => new Date());
     } catch (error) {
-      log.error("Failed to update performance metrics", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "PerformanceMetricsPanel",
-        function: "updateMetrics"
-      });
+      log.error(
+        "Failed to update performance metrics",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "PerformanceMetricsPanel",
+          function: "updateMetrics",
+        }
+      );
     } finally {
       setIsRefreshing(false);
     }
@@ -164,7 +190,12 @@ export const PerformanceMetricsPanel = (props: PerformanceMetricsPanelProps) => 
     }
   };
   // Calculate performance score
-  const calculatePerformanceScore = (data: { averageFrameRate: number; averageBrowserResponsiveness: number; totalFrameDrops: number; dataPoints: number }): number => {
+  const calculatePerformanceScore = (data: {
+    averageFrameRate: number;
+    averageBrowserResponsiveness: number;
+    totalFrameDrops: number;
+    dataPoints: number;
+  }): number => {
     let score = 100;
     // Frame rate penalty
     if (data.averageFrameRate < 30) {
@@ -389,7 +420,9 @@ export const PerformanceMetricsPanel = (props: PerformanceMetricsPanelProps) => 
         <h4>{getMetricLabel(selectedMetric())}</h4>
         <Chart
           type="line"
-          labels={getChartData().map((entry: { timestamp: number; value: number }) => new Date(entry.timestamp).toLocaleTimeString())}
+          labels={getChartData().map((entry: { timestamp: number; value: number }) =>
+            new Date(entry.timestamp).toLocaleTimeString()
+          )}
           datasets={[
             {
               label: getMetricLabel(selectedMetric()),

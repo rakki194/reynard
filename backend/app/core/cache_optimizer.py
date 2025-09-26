@@ -118,7 +118,7 @@ class CacheSerializer:
             raise
 
 
-class IntelligentCacheManager:
+class CacheManager:
     """Intelligent cache manager with advanced optimization features."""
 
     def __init__(
@@ -567,7 +567,7 @@ class IntelligentCacheManager:
 class CacheOptimizationAnalyzer:
     """Analyze cache performance and provide optimization recommendations."""
 
-    def __init__(self, cache_manager: IntelligentCacheManager):
+    def __init__(self, cache_manager: CacheManager):
         self.cache_manager = cache_manager
 
     async def analyze_cache_performance(self) -> dict[str, Any]:
@@ -644,7 +644,7 @@ class CacheOptimizationAnalyzer:
 # Example usage
 async def main():
     """Example usage of the cache optimizer."""
-    cache_manager = IntelligentCacheManager()
+    cache_manager = CacheManager()
 
     try:
         await cache_manager.initialize()

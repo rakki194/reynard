@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import type { ZoomControlsProps } from "../types";
 
 export const ZoomControls: Component<ZoomControlsProps> = props => {

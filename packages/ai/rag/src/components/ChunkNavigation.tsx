@@ -4,7 +4,7 @@
  * Navigation controls for browsing through file chunks.
  */
 import { Show } from "solid-js";
-import { Select } from "reynard-components-core";
+import { Select } from "reynard-primitives";
 export const ChunkNavigation = (props: any) => {
   return (
     <>

@@ -3,7 +3,7 @@
  *
  * Filter and sort controls for search history.
  */
-import { Button, TextField, Select, Icon } from "reynard-components-core";
+import { Button, TextField, Select, Icon } from "reynard-primitives";
 export const SearchHistoryFilters = (props: any) => {
   return (
     <div class="history-filters">

@@ -4,8 +4,8 @@
  * Main control panel for 3D visualization settings
  */
 import { Show } from "solid-js";
-import { Button, Select, Slider, Toggle } from "reynard-components-core";
-import { Icon } from "reynard-components-core";
+import { Button, Select, Slider, Toggle } from "reynard-primitives";
+import { Icon } from "reynard-primitives";
 import { ParameterPanels } from "./ParameterPanels";
 export const VisualizationControls = (props: any) => {
   return (

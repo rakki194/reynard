@@ -13,7 +13,7 @@ interface EmbeddingDashboardSidebarProps {
   maxSamples?: number;
   isLoading?: boolean;
   onMethodChange?: (method: string) => void;
-  onParameterUpdate?: (params: any) => void;
+  onParameterUpdate?: (param: string, value: any) => void;
   onMaxSamplesChange?: (samples: number) => void;
   onPerformReduction?: () => void;
   class?: string;

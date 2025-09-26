@@ -19,6 +19,7 @@ A comprehensive, production-ready FastAPI backend for the Reynard ecosystem, fea
 
 - 🧠 **RAG System**: Retrieval-Augmented Generation with continuous indexing
 - 🔍 **Intelligent Search**: Semantic, syntax, and hybrid search with caching
+- 📚 **Document Categorization**: Automatic scientific domain classification for academic papers
 - 🎨 **ComfyUI Integration**: Image generation and processing
 - 🤖 **Ollama Integration**: Local LLM inference and model management
 - 🎵 **TTS Services**: Text-to-Speech synthesis
@@ -43,6 +44,134 @@ The backend implements a sophisticated service registry pattern with:
 - **Parallel Service Loading**: Concurrent service initialization for optimal performance
 - **Health Monitoring**: Real-time service status tracking and diagnostics
 - **Graceful Shutdown**: Proper resource cleanup with timeout handling
+
+### System Architecture
+
+```mermaid
+graph TB
+    subgraph "Reynard Backend Architecture"
+        subgraph "API Layer"
+            A[FastAPI Application]
+            B[Authentication Middleware]
+            C[Security Headers]
+            D[Rate Limiting]
+        end
+
+        subgraph "Service Layer"
+            E[RAG Service]
+            F[Document Categorization]
+            G[Search Engine]
+            H[ECS World Service]
+            I[ComfyUI Integration]
+            J[Ollama Integration]
+            K[TTS Services]
+            L[Email Services]
+        end
+
+        subgraph "Core Services"
+            M[DocumentCategorizationService]
+            N[PaperIndexingIntegration]
+            O[VectorStoreService]
+            P[EmbeddingService]
+            Q[DocumentIndexer]
+        end
+
+        subgraph "Data Layer"
+            R[(PostgreSQL Main)]
+            S[(PostgreSQL Auth)]
+            T[(PostgreSQL ECS)]
+            U[(Redis Cache)]
+            V[File System]
+        end
+
+        subgraph "External Services"
+            W[Ollama API]
+            X[ComfyUI API]
+            Y[Email Providers]
+        end
+    end
+
+    A --> E
+    A --> F
+    A --> G
+    A --> H
+    A --> I
+    A --> J
+    A --> K
+    A --> L
+
+    E --> M
+    E --> N
+    E --> O
+    E --> P
+    E --> Q
+
+    F --> M
+    F --> N
+
+    M --> R
+    N --> R
+    O --> R
+    P --> W
+    Q --> V
+
+    E --> U
+    G --> U
+
+    H --> S
+    H --> T
+
+    I --> X
+    J --> W
+    K --> W
+    L --> Y
+
+    B --> A
+    C --> A
+    D --> A
+```
+
+### Document Categorization Integration
+
+```mermaid
+graph LR
+    subgraph "RAG System Integration"
+        A[Paper Input] --> B[RAG Service]
+        B --> C[DocumentCategorizationService]
+        C --> D[Domain Analysis]
+        C --> E[arXiv Mapping]
+        D --> F[Confidence Scoring]
+        E --> F
+        F --> G[DocumentCategory]
+        G --> H[PaperIndexingIntegration]
+        H --> I[RAG Metadata]
+        I --> J[Vector Store]
+        I --> K[Search Index]
+    end
+
+    subgraph "Caching Layer"
+        L[Memory Cache]
+        M[Disk Cache]
+        N[Cache Statistics]
+    end
+
+    C --> L
+    C --> M
+    L --> N
+    M --> N
+
+    subgraph "API Endpoints"
+        O[POST /categorize]
+        P[POST /process-batch]
+        Q[GET /rag-ready]
+        R[GET /statistics]
+    end
+
+    B --> O
+    B --> P
+    B --> Q
+    B --> R
+```
 
 ### Multi-Database Architecture
 
@@ -185,6 +314,13 @@ GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES=30
 GATEKEEPER_REFRESH_TOKEN_EXPIRE_DAYS=7
 GATEKEEPER_ISSUER=reynard-backend
 GATEKEEPER_AUDIENCE=reynard-users
+
+# Document Categorization Configuration
+DOCUMENT_CATEGORIZATION_ENABLED=true
+AUTO_CATEGORIZE_PAPERS=true
+CATEGORIZATION_CACHE_ENABLED=true
+MIN_CONFIDENCE_THRESHOLD=0.3
+PAPERS_DIRECTORY=/home/kade/runeset/reynard/backend/data/papers
 ```
 
 ### Generating a Secure Secret Key
@@ -303,6 +439,249 @@ The backend includes a comprehensive RAG system with:
 - **Multi-modal Support**: Text, code, image, and caption embeddings
 - **Continuous Indexing**: Real-time codebase indexing with file watching
 
+## 📚 Document Categorization System
+
+### Strategic Document Categorization
+
+The Document Categorization System provides intelligent, automatic classification of academic papers and documents into broad scientific domains for optimal RAG organization and retrieval.
+
+#### Core Features
+
+- **Automatic Categorization**: Intelligently categorizes papers using title, abstract, and arXiv categories
+- **Scientific Domain Classification**: 20+ scientific domains including Computer Science, Mathematics, Physics, Biology, etc.
+- **Confidence Scoring**: Provides confidence scores (0.0-1.0) for categorization accuracy
+- **Metadata-Only Processing**: Uses only paper metadata, no PDF processing required
+- **Caching System**: Intelligent caching for improved performance
+- **RAG Integration**: Seamlessly integrates with existing RAG infrastructure
+
+#### System Architecture
+
+```mermaid
+graph TB
+    subgraph "Document Categorization System"
+        A[Paper Metadata] --> B[DocumentCategorizationService]
+        B --> C[Domain Keyword Analysis]
+        B --> D[arXiv Category Mapping]
+        C --> E[Confidence Scoring]
+        D --> E
+        E --> F[DocumentCategory Result]
+        F --> G[Cache Storage]
+        F --> H[RAG Integration]
+    end
+
+    subgraph "Scientific Domains"
+        I[Computer Science]
+        J[Mathematics]
+        K[Physics]
+        L[Biology]
+        M[Engineering]
+        N[Social Sciences]
+        O[Interdisciplinary]
+    end
+
+    B --> I
+    B --> J
+    B --> K
+    B --> L
+    B --> M
+    B --> N
+    B --> O
+
+    subgraph "API Endpoints"
+        P[POST /categorize]
+        Q[POST /process-batch]
+        R[GET /rag-ready]
+        S[GET /statistics]
+        T[GET /domains]
+    end
+
+    H --> P
+    H --> Q
+    H --> R
+    H --> S
+    H --> T
+```
+
+#### Data Flow Architecture
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API
+    participant RAGService
+    participant CategorizationService
+    participant PaperIndexingIntegration
+    participant Cache
+    participant Database
+
+    Client->>API: POST /api/rag/papers/categorize
+    API->>RAGService: categorize_paper(metadata)
+    RAGService->>CategorizationService: categorize_paper_from_metadata()
+
+    alt Cache Hit
+        CategorizationService->>Cache: Check cache
+        Cache-->>CategorizationService: Return cached result
+    else Cache Miss
+        CategorizationService->>CategorizationService: Analyze keywords
+        CategorizationService->>CategorizationService: Map arXiv categories
+        CategorizationService->>CategorizationService: Calculate confidence
+        CategorizationService->>Cache: Store result
+    end
+
+    CategorizationService-->>RAGService: DocumentCategory
+    RAGService-->>API: CategorizationResult
+    API-->>Client: JSON Response
+
+    Note over Client,Database: Batch Processing Flow
+    Client->>API: POST /api/rag/papers/process-batch
+    API->>RAGService: process_papers_for_rag()
+    RAGService->>PaperIndexingIntegration: batch_process_papers()
+
+    loop For each paper
+        PaperIndexingIntegration->>CategorizationService: categorize_paper_from_metadata()
+        CategorizationService-->>PaperIndexingIntegration: DocumentCategory
+        PaperIndexingIntegration->>Database: Save RAG metadata
+    end
+
+    PaperIndexingIntegration-->>RAGService: Batch results
+    RAGService-->>API: BatchProcessingResult
+    API-->>Client: JSON Response
+```
+
+#### Scientific Domains
+
+The system categorizes papers into 20+ scientific domains:
+
+**Computer Science**
+
+- `computer_science` - General computer science
+- `artificial_intelligence` - AI and machine learning
+- `machine_learning` - ML algorithms and techniques
+- `data_science` - Data analysis and processing
+- `software_engineering` - Software development
+- `algorithms` - Algorithm design and analysis
+- `theory` - Theoretical computer science
+
+**Mathematics**
+
+- `mathematics` - General mathematics
+- `statistics` - Statistical methods
+- `applied_mathematics` - Applied math
+- `pure_mathematics` - Pure mathematical theory
+
+**Physics**
+
+- `physics` - General physics
+- `quantum_physics` - Quantum mechanics
+- `condensed_matter` - Condensed matter physics
+- `particle_physics` - Particle physics
+- `astrophysics` - Astrophysics
+
+**Biology & Life Sciences**
+
+- `biology` - General biology
+- `bioinformatics` - Computational biology
+- `neuroscience` - Neuroscience
+- `genetics` - Genetics
+
+**Engineering**
+
+- `engineering` - General engineering
+- `electrical_engineering` - Electrical engineering
+- `mechanical_engineering` - Mechanical engineering
+- `civil_engineering` - Civil engineering
+
+**Social Sciences**
+
+- `social_sciences` - General social sciences
+- `psychology` - Psychology
+- `economics` - Economics
+- `political_science` - Political science
+
+**Interdisciplinary**
+
+- `interdisciplinary` - Cross-disciplinary research
+- `computational_biology` - Computational biology
+- `quantitative_finance` - Quantitative finance
+- `digital_humanities` - Digital humanities
+
+#### Configuration
+
+The system is fully configurable via environment variables:
+
+```bash
+# Document Categorization Configuration
+DOCUMENT_CATEGORIZATION_ENABLED=true
+AUTO_CATEGORIZE_PAPERS=true
+CATEGORIZATION_CACHE_ENABLED=true
+MIN_CONFIDENCE_THRESHOLD=0.3
+PAPERS_DIRECTORY=/home/kade/runeset/reynard/backend/data/papers
+```
+
+#### API Endpoints
+
+- `POST /api/rag/papers/categorize` - Categorize single paper
+- `POST /api/rag/papers/process-batch` - Batch process papers
+- `GET /api/rag/papers/rag-ready` - Get RAG-ready papers
+- `GET /api/rag/papers/statistics` - Get categorization statistics
+- `GET /api/rag/papers/domains` - Get available domains
+- `GET /api/rag/papers/paper/{paper_id}/categorization` - Get specific paper categorization
+- `GET /api/rag/papers/health` - Health check
+
+#### Usage Examples
+
+**Categorize a Single Paper**
+
+```bash
+curl -X POST "http://localhost:8000/api/rag/papers/categorize" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "paper_id": "example-001",
+    "title": "Efficient Union-Find Data Structure",
+    "abstract": "We present an improved union-find algorithm...",
+    "authors": ["John Doe"],
+    "categories": ["cs.DS", "cs.DM"]
+  }'
+```
+
+**Batch Process Papers**
+
+```bash
+curl -X POST "http://localhost:8000/api/rag/papers/process-batch" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "papers_directory": "/path/to/papers",
+    "max_papers": 100,
+    "force_reprocess": false
+  }'
+```
+
+**Get RAG-Ready Papers**
+
+```bash
+curl "http://localhost:8000/api/rag/papers/rag-ready?domain=algorithms&min_confidence=0.5"
+```
+
+#### Integration with RAG System
+
+The categorization system seamlessly integrates with the existing RAG infrastructure:
+
+1. **Automatic Categorization**: Papers are automatically categorized during RAG indexing
+2. **Enhanced Search**: Categorization data enhances search capabilities
+3. **Domain Filtering**: Users can filter search results by scientific domain
+4. **Metadata Enrichment**: Categorization data enriches paper metadata
+5. **Performance Optimization**: Caching improves system performance
+
+#### Performance Metrics
+
+The system provides comprehensive performance metrics:
+
+- **Documents Categorized**: Total number of papers processed
+- **Cache Hits/Misses**: Caching performance
+- **Domain Distribution**: Distribution across scientific domains
+- **Average Confidence**: Overall categorization confidence
+- **Processing Errors**: Error tracking and monitoring
+
 ### Continuous Indexing
 
 - **Real-time Updates**: Automatically indexes codebase changes
@@ -393,6 +772,16 @@ The ECS World service provides:
 - `GET /api/rag/search` - Search indexed documents
 - `GET /api/rag/stats` - Get RAG system statistics
 - `POST /api/rag/reindex` - Trigger manual reindexing
+
+### Document Categorization
+
+- `POST /api/rag/papers/categorize` - Categorize single paper
+- `POST /api/rag/papers/process-batch` - Batch process papers
+- `GET /api/rag/papers/rag-ready` - Get RAG-ready papers
+- `GET /api/rag/papers/statistics` - Get categorization statistics
+- `GET /api/rag/papers/domains` - Get available domains
+- `GET /api/rag/papers/paper/{paper_id}/categorization` - Get specific paper categorization
+- `GET /api/rag/papers/health` - Health check
 
 ### Search System
 

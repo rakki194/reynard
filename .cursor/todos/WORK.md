@@ -9,6 +9,31 @@ self-sufficient AI/ML platform with its own backend services.
 
 > _Current Status**: 🟡 **Phase 1 - Foundation Building_
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for package access (Package Admin, Package Developer, Package User)
+- [ ] Identify resource permissions needed (create, read, update, delete, publish, install)
+- [ ] Plan context-specific access control (package-level, namespace-level permissions)
+- [ ] Design audit trail requirements (package creation, modification, usage tracking)
+
+### **Integration Points**
+
+- [ ] Update package creation endpoints with RBAC middleware
+- [ ] Add permission checks to package management layer
+- [ ] Implement role-based package visibility
+- [ ] Add audit logging for package access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based package access control
+- [ ] Verify permission inheritance for package namespaces
+- [ ] Test context-specific permissions (public vs private packages)
+- [ ] Validate audit trail functionality for package operations
+
 - **Progress**: 0/12 packages created
 - **XP Earned**: 0/1000
 - **Achievements**: 0/5

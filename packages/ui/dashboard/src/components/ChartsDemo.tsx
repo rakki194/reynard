@@ -4,7 +4,7 @@
  */
 import { createSignal, createMemo, onMount, onCleanup } from "solid-js";
 import { Chart, RealTimeChart, useVisualizationEngine, type RealTimeDataPoint } from "reynard-charts";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export const ChartsDemo = () => {

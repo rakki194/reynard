@@ -38,7 +38,7 @@
     "prebuild": "pnpm clean:build"
   },
   "dependencies": {
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "three": "0.180.0"
   },
   "devDependencies": {

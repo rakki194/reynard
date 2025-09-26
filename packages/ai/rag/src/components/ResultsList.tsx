@@ -5,7 +5,7 @@
  * with metadata and similarity scores.
  */
 import { For } from "solid-js";
-import { Card } from "reynard-components-core";
+import { Card } from "reynard-primitives";
 export const ResultsList = (props: any) => {
   return (
     <div class="results-list">

@@ -65,7 +65,7 @@ class AgentState:
         }
 
 
-class UnifiedAgentStateManager:
+class AgentStateManager:
     """Single source of truth for all agent state operations.
 
     Integrates with the existing FastAPI ECS backend to provide
@@ -85,7 +85,7 @@ class UnifiedAgentStateManager:
         self.legacy_tracker = SuccessAdvisor8LegacyTracker(
             codebase_path, "CHANGELOG.md",
         )
-        logger.info("UnifiedAgentStateManager initialized with ECS integration")
+        logger.info("AgentStateManager initialized with ECS integration")
 
     async def get_agent_state(self, agent_id: str) -> AgentState | None:
         """Get complete agent state from ECS world.
@@ -392,6 +392,6 @@ class UnifiedAgentStateManager:
         """Close the unified agent state manager."""
         try:
             await self.ecs_service.shutdown()
-            logger.info("UnifiedAgentStateManager closed successfully")
+            logger.info("AgentStateManager closed successfully")
         except Exception as e:
-            logger.error(f"Error closing UnifiedAgentStateManager: {e}")
+            logger.error(f"Error closing AgentStateManager: {e}")

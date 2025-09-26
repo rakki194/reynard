@@ -18,15 +18,23 @@ export const ReynardContextInstance = createContext<ReynardContext | undefined>(
 
 // Theme Provider Component
 export const ReynardProvider: ParentComponent<ThemeProviderProps> = props => {
-  log.debug("ReynardProvider initialization", { defaultTheme: props.defaultTheme }, {
-    component: "ThemeProvider",
-    function: "ReynardProvider"
-  });
+  log.debug(
+    "ReynardProvider initialization",
+    { defaultTheme: props.defaultTheme },
+    {
+      component: "ThemeProvider",
+      function: "ReynardProvider",
+    }
+  );
   const initialTheme = getInitialTheme(props.defaultTheme);
-  log.debug("Initial theme determined", { initialTheme }, {
-    component: "ThemeProvider",
-    function: "ReynardProvider"
-  });
+  log.debug(
+    "Initial theme determined",
+    { initialTheme },
+    {
+      component: "ThemeProvider",
+      function: "ReynardProvider",
+    }
+  );
   const [theme, setThemeState] = createSignal<ThemeName>(initialTheme);
 
   // Create i18n module (using mock to prevent recursion)
@@ -63,10 +71,14 @@ export const ReynardProvider: ParentComponent<ThemeProviderProps> = props => {
   });
 
   // Debug logging to track context creation
-  log.debug("Context created", { context, themeContext, translationContext }, {
-    component: "ThemeProvider",
-    function: "ReynardProvider"
-  });
+  log.debug(
+    "Context created",
+    { context, themeContext, translationContext },
+    {
+      component: "ThemeProvider",
+      function: "ReynardProvider",
+    }
+  );
 
   return (
     <I18nProvider value={translationContext}>

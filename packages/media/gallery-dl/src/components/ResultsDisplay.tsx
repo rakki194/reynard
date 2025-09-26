@@ -5,7 +5,7 @@
  * about downloaded files and metadata.
  */
 import { Component, createSignal, createMemo, Show, For } from "solid-js";
-import { Card, Button, TextField, Icon } from "reynard-components-core";
+import { Card, Button, TextField, Icon } from "reynard-primitives";
 
 export interface ResultsDisplayProps {
   results: DownloadResult[];

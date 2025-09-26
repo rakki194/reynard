@@ -52,6 +52,9 @@ from app.core.health_checks import (
     health_check_comfy,
     health_check_gatekeeper,
     health_check_nlweb,
+    health_check_rag,
+    health_check_ai_service,
+    health_check_tts_service,
 )
 
 # Service initializers
@@ -72,6 +75,9 @@ from app.core.service_shutdown import (
     shutdown_comfy_service_func,
     shutdown_gatekeeper_service,
     shutdown_nlweb_service_func,
+    shutdown_rag_service,
+    shutdown_ai_service,
+    shutdown_tts_service,
 )
 
 logger = logging.getLogger(__name__)
@@ -206,8 +212,8 @@ async def lifespan(app: FastAPI):
         "rag",
         service_configs["rag"],
         init_rag_service,
-        None,  # No shutdown function yet
-        None,  # No health check yet
+        shutdown_rag_service,
+        health_check_rag,
         startup_priority=25,
     )
 
@@ -224,8 +230,8 @@ async def lifespan(app: FastAPI):
         "ai_service",
         service_configs["ai_service"],
         init_ai_service,
-        None,  # No shutdown function yet
-        None,  # No health check yet
+        shutdown_ai_service,
+        health_check_ai_service,
         startup_priority=25,
     )
 
@@ -233,8 +239,8 @@ async def lifespan(app: FastAPI):
         "tts",
         service_configs["tts"],
         init_tts_service,
-        None,  # No shutdown function yet
-        None,  # No health check yet
+        shutdown_tts_service,
+        health_check_tts_service,
         startup_priority=10,
     )
 

@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, createMemo, Show, splitProps } from "solid-js";
-import { Button, Toggle } from "reynard-components-core";
+import { Button, Toggle } from "reynard-primitives";
 import { PasswordStrengthMeter } from "./PasswordStrengthMeter";
 import type { RegisterData } from "reynard-auth-core";
 import { validateEmail, validateUsername } from "reynard-validation";

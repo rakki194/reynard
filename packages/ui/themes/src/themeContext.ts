@@ -17,25 +17,37 @@ export const createThemeContext = (
 ): ThemeContext => ({
   get theme() {
     const currentTheme = theme();
-    log.debug("Theme getter called", { currentTheme }, {
-      component: "themeContext",
-      function: "theme"
-    });
+    log.debug(
+      "Theme getter called",
+      { currentTheme },
+      {
+        component: "themeContext",
+        function: "theme",
+      }
+    );
     return currentTheme;
   },
 
   setTheme(newTheme: ThemeName) {
-    log.debug("Theme setter called", { newTheme, currentTheme: theme() }, {
-      component: "themeContext",
-      function: "setTheme"
-    });
+    log.debug(
+      "Theme setter called",
+      { newTheme, currentTheme: theme() },
+      {
+        component: "themeContext",
+        function: "setTheme",
+      }
+    );
     setThemeState(newTheme);
     applyTheme(newTheme);
     localStorage.setItem("reynard-theme", newTheme);
-    log.debug("Theme updated", { newTheme }, {
-      component: "themeContext",
-      function: "setTheme"
-    });
+    log.debug(
+      "Theme updated",
+      { newTheme },
+      {
+        component: "themeContext",
+        function: "setTheme",
+      }
+    );
   },
 
   getTagStyle(tag: string) {

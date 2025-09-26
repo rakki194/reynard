@@ -21,6 +21,10 @@
   },
   "include": ["src/**/*"],
   "exclude": [
+    "vite.config.ts",
+    "vitest.config.ts",
+    "*.config.ts",
+    "*.config.js",
     "dist",
     "node_modules",
     "**/*.test.ts",

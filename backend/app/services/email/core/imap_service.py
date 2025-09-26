@@ -239,7 +239,7 @@ class IMAPService:
                 html_body = f"<p>Thank you for your email. This is an automated reply from <strong>{agent_config.agent_name}</strong>.</p>"
 
             # Send auto-reply
-            from ..models.email_models import EmailMessage as EmailMessageModel
+            from ..models.schemas.email_schemas import EmailMessage as EmailMessageModel
 
             reply_message = EmailMessageModel(
                 to_emails=[original_email.sender],

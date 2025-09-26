@@ -9,6 +9,8 @@ best practices for development across the Reynard project, covering shell script
 testing, and project management. Each guide is based on real-world experience solving common issues, linter warnings,
 and architectural challenges encountered in production environments.
 
+> **📝 Note**: For narrative content, research findings, case studies, and experimental explorations, see the [Reynard Blog](../blog/README.md).
+
 ## Documentation Structure
 
 ### 🐚 Shell Scripting & Bash
@@ -143,6 +145,16 @@ Common logging problems and their solutions
 - Performance issues with string formatting
 - Log level configuration and debugging
 - Error handling in logging systems
+
+#### ⚡ [Python Logging: Lazy % Formatting Best Practices](./python-development/python-logging-lazy-formatting.md)
+
+Performance optimization technique for Python logging with lazy % formatting
+
+- Lazy % formatting vs eager formatting comparison
+- Performance benefits and benchmark examples
+- Format specifiers and advanced formatting techniques
+- Real-world examples and best practices
+- Linting integration and code quality improvements
 
 #### 🏗️ [Python Code Structure Issues](./python-development/python-code-structure-issues.md)
 
@@ -282,17 +294,6 @@ Comprehensive guide to performance testing and benchmarking strategies
 
 ### 🔍 Code Analysis & Monolith Detection
 
-#### 🦊 [Monolith Detection Tools](./analysis-tools/monolith-detection-tools.md)
-
-Comprehensive codebase analysis and monolith detection system for the Reynard MCP server
-
-- AST-based line counting excluding comments and docstrings
-- Smart file filtering based on .gitignore patterns
-- Complexity scoring and metrics analysis
-- Multi-language support (Python, TypeScript, JavaScript)
-- Real-time codebase health monitoring
-- Refactoring recommendations and technical debt tracking
-
 #### 📋 [Monolith Detection Quick Reference](./analysis-tools/monolith-detection-quick-reference.md)
 
 Quick reference guide for monolith detection tool usage
@@ -316,16 +317,6 @@ Comprehensive analysis of icon system architecture and optimization
 
 ### ⚡ Build Tools & Dependencies
 
-#### 🔧 [Vite 7 and SolidJS Compatibility Research](./build-tools/vite-7-solidjs-compatibility-research.md)
-
-Comprehensive research on Vite 7 and SolidJS compatibility issues
-
-- Peer dependency analysis and plugin requirements
-- Native framework support investigation
-- Plugin ecosystem status and alternatives
-- Build tool compatibility matrix
-- Future compatibility roadmap
-
 #### 📦 [Peer Dependency Management Best Practices](./build-tools/peer-dependency-management-best-practices.md)
 
 Best practices for managing peer dependency warnings and conflicts
@@ -335,16 +326,6 @@ Best practices for managing peer dependency warnings and conflicts
 - Testing and validation procedures
 - Monitoring and maintenance workflows
 - Emergency procedures and rollback strategies
-
-#### 🔄 [Vite and SolidJS Alternative Solutions](./build-tools/vite-solidjs-alternative-solutions.md)
-
-Alternative approaches and workarounds for build tool compatibility
-
-- Immediate solutions and plugin updates
-- Alternative build tools (Rollup, esbuild, Webpack)
-- Framework-specific alternatives (SolidStart, Astro)
-- Development workflow alternatives
-- Migration strategies and decision matrix
 
 #### 📈 [Dependency Update Strategy](./build-tools/dependency-update-strategy.md)
 
@@ -433,7 +414,9 @@ Executive summary of project management practices and workflows
 - Documentation and communication protocols
 - Risk management and security considerations
 
-#### 🔄 [Git Workflow Automation Guide](./project-management/git-workflow-automation-guide.md)
+### 🔄 Git Workflow & Automation
+
+#### 🔄 [Git Workflow Automation Guide](./git-workflow/git-workflow-automation-guide.md)
 
 Advanced Git workflow automation and optimization strategies
 
@@ -442,23 +425,107 @@ Advanced Git workflow automation and optimization strategies
 - Release automation and version management
 - Integration with CI/CD pipelines and quality gates
 
-#### 🚀 [v0.8.1 Release Journey](./project-management/v0.8.1-release-journey.md)
+#### 📈 [Git Workflow Improvements Summary](./git-workflow/git-workflow-improvements-summary.md)
 
-Comprehensive case study of the v0.8.1 release process and lessons learned
+Summary of comprehensive improvements made to Git workflow automation
+
+- Enhanced junk file detection and prevention strategies
+- Shell script variable scoping improvements
+- Large commit management and user confirmation
+- Error recovery and rollback procedures
+- Pre-commit validation pipeline enhancements
+
+#### 🔧 [Git Workflow Command Updates](./git-workflow/git-workflow-command-updates.md)
+
+Updates to Git workflow commands for sophisticated junk detector integration
+
+- Corrected command syntax for Reynard's analyzer
+- JSON output handling improvements
+- Project path specification enhancements
+- Robust error handling and fallback mechanisms
+
+### 🚀 Release Management
+
+#### 📋 [Release Management Overview](./release-management/release-management-overview.md)
+
+Comprehensive overview of release management practices and procedures
 
 - Release planning and execution strategies
 - Quality assurance and testing methodologies
-- Risk management and mitigation approaches
-- Post-release analysis and continuous improvement
+- Version management and semantic versioning
+- Release automation and deployment pipelines
 
-#### 📈 [Workflow Updates Summary](./project-management/workflow-updates-summary.md)
+#### 🛡️ [Release Quality Assurance Framework](./release-management/release-quality-assurance-framework.md)
 
-Summary of recent workflow improvements and optimization initiatives
+Systematic approach to ensuring release quality and reliability
 
-- Process improvements and efficiency gains
-- Tool integration and automation enhancements
-- Team collaboration and communication improvements
-- Performance metrics and success indicators
+- Quality gates and validation procedures
+- Automated testing and validation pipelines
+- Code quality metrics and thresholds
+- Performance benchmarking and monitoring
+
+#### 🏗️ [Repository Integrity Management](./release-management/repository-integrity-management.md)
+
+Comprehensive framework for maintaining repository integrity and cleanliness
+
+- Build artifact detection and cleanup
+- Junk file identification and removal
+- Repository health monitoring and validation
+- Automated integrity checks and reporting
+
+#### 🔍 [Sophisticated Junk Detector Integration](./release-management/sophisticated-junk-detector-integration.md)
+
+Integration guide for Reynard's enterprise-grade junk file detection system
+
+- Advanced detection algorithms and patterns
+- Quality scoring and metrics analysis
+- Automated fix command generation
+- CI/CD integration and automation
+
+#### 🚨 [Hotfix Management Protocol](./release-management/hotfix-management-protocol.md)
+
+Comprehensive hotfix management for critical issue resolution
+
+- Crisis identification and assessment procedures
+- Rapid development and deployment protocols
+- Testing and validation frameworks
+- Rollback and recovery procedures
+
+### 🤖 Agent Management
+
+#### 🧠 [Agent State Persistence System](./agent-management/agent-state-persistence-system.md)
+
+Comprehensive agent state management for release management operations
+
+- Agent naming system persistence and storage
+- ECS world simulation integration
+- MCP server integration and tool configurations
+- Backup and recovery procedures
+- Cross-session continuity and state restoration
+
+### 🚨 Crisis Management
+
+#### 🚨 [Crisis Management Framework](./crisis-management/crisis-management-framework.md)
+
+Comprehensive crisis management for repository integrity and release operations
+
+- Crisis detection and assessment procedures
+- Emergency response team activation
+- Crisis resolution and recovery protocols
+- Communication and stakeholder management
+- Post-crisis analysis and continuous improvement
+
+### ⚡ System Optimization
+
+#### 🦊 [Mermaid Ecosystem](./system-optimization/mermaid.md)
+
+Comprehensive overview of Mermaid-related components in the Reynard ecosystem
+
+- MCP server tools and Playwright integration
+- Standalone services and diagram generators
+- Testing and validation frameworks
+- File structure and dependencies
+- Usage examples and integration points
 
 ### 📚 Guides
 
@@ -471,16 +538,6 @@ Comprehensive guide for developing and maintaining development tools in the Reyn
 - Testing and validation strategies
 - Documentation and maintenance best practices
 - Performance optimization and scalability considerations
-
-#### 🔄 [Duplicate Task Resolution Case Study](./guides/duplicate-task-resolution-case-study.md)
-
-Detailed case study of resolving duplicate task issues in development workflows
-
-- Problem identification and root cause analysis
-- Solution design and implementation strategies
-- Testing and validation approaches
-- Lessons learned and best practices
-- Prevention strategies and monitoring
 
 ### 🖥️ System Administration
 

@@ -12,18 +12,27 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false,
+    "noEmit": true,
     "declaration": true,
     "declarationMap": true,
     "composite": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./src",
     "paths": {
       "~/*": ["./src/*"]
     }
   },
   "include": ["src"],
-  "exclude": ["dist", "examples", "**/*.test.ts", "**/*.test.tsx"]
+  "exclude": [
+    "dist",
+    "examples",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "*.config.ts",
+    "*.config.js"
+  ]
 }

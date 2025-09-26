@@ -12,7 +12,7 @@ from functools import wraps
 from typing import Any
 
 from app.core.cache_config import CacheConfig
-from app.core.cache_optimizer import IntelligentCacheManager
+from app.core.cache_optimizer import CacheManager
 
 logger = logging.getLogger(__name__)
 

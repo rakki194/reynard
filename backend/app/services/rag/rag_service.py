@@ -52,7 +52,9 @@ from app.core.debug_logging import log_rag_operation, debug_log
 
 from ..email.infrastructure.continuous_indexing import ContinuousIndexingService
 from .services.core import VectorStoreService, DocumentIndexer, SearchEngine
-from .services.core.embedding import UnifiedEmbeddingService as EmbeddingService
+from .services.core.embedding import EmbeddingService
+from .services.core.document_categorization import DocumentCategorizationService
+from .services.core.paper_indexing_integration import PaperIndexingIntegration
 from .services.monitoring.prometheus_monitoring import PrometheusMonitoringService
 from .services.security.access_control_security import AccessControlSecurityService
 from .services.evaluation.model_evaluation import ModelEvaluationService
@@ -114,6 +116,10 @@ class RAGService:
         self.vector_store_service: VectorStoreService | None = None
         self.document_indexer: DocumentIndexer | None = None
         self.search_engine: SearchEngine | None = None
+        
+        # Document categorization services
+        self.categorization_service: DocumentCategorizationService | None = None
+        self.paper_indexing_integration: PaperIndexingIntegration | None = None
 
         # File indexing service dependency
         self.file_indexing_service = get_file_indexing_service()
@@ -216,6 +222,22 @@ class RAGService:
             logger.info("Search engine populated with existing documents")
         except Exception as e:
             logger.warning(f"Failed to populate search engine: {e}")
+
+        # Initialize document categorization services
+        if self.config.get("document_categorization_enabled", True):
+            self.categorization_service = DocumentCategorizationService(self.config)
+            if not await self.categorization_service.initialize():
+                logger.warning("Failed to initialize categorization service")
+            else:
+                logger.info("✅ Document categorization service initialized")
+        
+        # Initialize paper indexing integration
+        if self.config.get("auto_categorize_papers", True):
+            self.paper_indexing_integration = PaperIndexingIntegration(self.config)
+            if not await self.paper_indexing_integration.initialize():
+                logger.warning("Failed to initialize paper indexing integration")
+            else:
+                logger.info("✅ Paper indexing integration initialized")
 
         logger.info("Core services initialized successfully")
 
@@ -715,6 +737,90 @@ class RAGService:
             logger.error(f"Failed to get optimization recommendations: {e}")
             return []
 
+    async def categorize_paper(self, metadata: dict[str, Any]) -> dict[str, Any]:
+        """Categorize a paper using the categorization service."""
+        if not self.initialized or not self.categorization_service:
+            return {"error": "Categorization service not available"}
+        
+        try:
+            category = await self.categorization_service.categorize_paper_from_metadata(metadata)
+            if category:
+                return {
+                    "success": True,
+                    "primary_domain": category.primary_domain.value,
+                    "secondary_domains": [d.value for d in category.secondary_domains],
+                    "confidence": category.confidence,
+                    "keywords": category.keywords,
+                    "domain_tags": category.domain_tags,
+                    "reasoning": category.reasoning
+                }
+            else:
+                return {"success": False, "error": "Failed to categorize paper"}
+        except Exception as e:
+            logger.error(f"Failed to categorize paper: {e}")
+            return {"success": False, "error": str(e)}
+    
+    async def process_papers_for_rag(
+        self,
+        papers_directory: str = None,
+        max_papers: int = None,
+        force_reprocess: bool = False
+    ) -> dict[str, Any]:
+        """Process papers for RAG indexing with automatic categorization."""
+        if not self.initialized or not self.paper_indexing_integration:
+            return {"error": "Paper indexing integration not available"}
+        
+        try:
+            papers_dir = Path(papers_directory) if papers_directory else None
+            return await self.paper_indexing_integration.batch_process_papers(
+                papers_directory=papers_dir,
+                max_papers=max_papers,
+                force_reprocess=force_reprocess
+            )
+        except Exception as e:
+            logger.error(f"Failed to process papers for RAG: {e}")
+            return {"error": str(e)}
+    
+    async def get_rag_ready_papers(
+        self,
+        domain_filter: str = None,
+        min_confidence: float = 0.0,
+        limit: int = None
+    ) -> list[dict[str, Any]]:
+        """Get papers ready for RAG indexing."""
+        if not self.initialized or not self.paper_indexing_integration:
+            return []
+        
+        try:
+            from .services.core.document_categorization import ScientificDomain
+            domain_enum = None
+            if domain_filter:
+                try:
+                    domain_enum = ScientificDomain(domain_filter)
+                except ValueError:
+                    logger.error(f"Invalid domain filter: {domain_filter}")
+                    return []
+            
+            return await self.paper_indexing_integration.get_rag_ready_papers(
+                domain_filter=domain_enum,
+                min_confidence=min_confidence,
+                limit=limit
+            )
+        except Exception as e:
+            logger.error(f"Failed to get RAG ready papers: {e}")
+            return []
+    
+    async def get_categorization_statistics(self) -> dict[str, Any]:
+        """Get categorization service statistics."""
+        if not self.initialized or not self.categorization_service:
+            return {"error": "Categorization service not available"}
+        
+        try:
+            return self.categorization_service.get_statistics()
+        except Exception as e:
+            logger.error(f"Failed to get categorization statistics: {e}")
+            return {"error": str(e)}
+
     async def shutdown(self) -> None:
         """Gracefully shutdown all services."""
         logger.info("Shutting down RAG service...")
@@ -748,6 +854,13 @@ class RAGService:
 
             if self.model_evaluator:
                 await self.model_evaluator.shutdown()
+            
+            # Shutdown categorization services
+            if self.paper_indexing_integration:
+                await self.paper_indexing_integration.shutdown()
+            
+            if self.categorization_service:
+                await self.categorization_service.shutdown()
 
             self.initialized = False
             logger.info("RAG service shutdown complete")

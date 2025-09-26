@@ -15,12 +15,16 @@ import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
+from dotenv import load_dotenv
 
 from alembic import context
 
 # Import the models to ensure they're registered with SQLAlchemy
 from app.models.base import Base
-from app.models.tool_config_models import Tool, ToolCategory, ToolConfigHistory, ToolConfiguration
+from app.models.mcp.tool_config import Tool, ToolCategory, ToolConfigHistory, ToolConfiguration
+
+# Load environment variables from the .env file
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '../../.env'))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

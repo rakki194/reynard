@@ -18,11 +18,11 @@ import aiohttp
 import numpy as np
 
 # Import embedding service instead of direct sentence transformers
-from app.services.rag.services.core.embedding import UnifiedEmbeddingService
+from app.services.rag.services.core.embedding import EmbeddingService
 
 # Import optimization modules - enabled by default
 try:
-    from app.core.cache_optimizer import IntelligentCacheManager
+    from app.core.cache_optimizer import CacheManager
     from app.core.optimization_config import (
         get_cache_config,
         get_http_config,
@@ -34,7 +34,7 @@ try:
 except ImportError as e:
     logger = logging.getLogger(__name__)
     logger.warning("⚠️ Optimization modules not available: %s", e)
-    IntelligentCacheManager = None
+    CacheManager = None
     OPTIMIZATION_AVAILABLE = False
 
 from .models import (
@@ -103,7 +103,7 @@ class OptimizedSearchService:
     def __init__(self):
         """Initialize the optimized search service."""
         # Embedding service for generating embeddings
-        self._embedding_service: UnifiedEmbeddingService | None = None
+        self._embedding_service: EmbeddingService | None = None
 
         # Performance metrics
         self._metrics = SearchMetrics()
@@ -148,7 +148,7 @@ class OptimizedSearchService:
 
                     if cache_config["enabled"]:
                         # Initialize Redis cache manager with optimized settings
-                        self._cache_manager = IntelligentCacheManager(
+                        self._cache_manager = CacheManager(
                             redis_url=cache_config["redis_url"],
                             max_connections=cache_config["max_connections"],
                             default_ttl=cache_config["default_ttl"],
@@ -184,7 +184,7 @@ class OptimizedSearchService:
             service_registry = get_service_registry()
             ai_service = service_registry.get_service_instance("ai_service")
             
-            self._embedding_service = UnifiedEmbeddingService(ai_service)
+            self._embedding_service = EmbeddingService(ai_service)
             # Get embedding configuration
             embedding_config = {
                 "rag_enabled": True,

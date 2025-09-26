@@ -2,8 +2,8 @@
  * Global Settings Form Component
  * Form for editing global package configuration settings
  */
-import { Button, TextField, Select } from "reynard-components-core/primitives";
-import { Toggle } from "reynard-components-core/primitives";
+import { Button, TextField, Select } from "reynard-primitives";
+import { Toggle } from "reynard-primitives";
 import { Icon } from "reynard-fluent-icons";
 export const GlobalSettingsForm = props => {
   const handleConfigChange = (key, value) => {

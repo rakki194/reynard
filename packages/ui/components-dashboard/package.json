@@ -35,7 +35,7 @@
     "prebuild": "pnpm clean:build"
   },
   "dependencies": {
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-error-boundaries": "workspace:*"
   },
   "devDependencies": {

@@ -6,9 +6,9 @@
  */
 
 import { Show, createSignal, createEffect, Component } from "solid-js";
-import { Card } from "reynard-components-core/primitives";
-import { Button } from "reynard-components-core/primitives";
-import { Badge } from "reynard-components-core/primitives";
+import { Card } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { Badge } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import type { TrainingConfig } from "./ConfigBuilder";
 

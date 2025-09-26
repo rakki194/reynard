@@ -1,23 +1,23 @@
 /**
  * 🦊 Chroma Presets Component
- * 
+ *
  * Pre-configured Chroma training presets with optimization
  * following Reynard's preset component patterns.
  */
 
-import { Show, createSignal, createEffect, Component } from 'solid-js';
-import { Card } from 'reynard-components-core/primitives';
-import { Button } from 'reynard-components-core/primitives';
-import { Badge } from 'reynard-components-core/primitives';
-import { fluentIconsPackage } from 'reynard-fluent-icons';
-import type { TrainingConfig } from '../config/ConfigBuilder';
+import { Show, createSignal, createEffect, Component } from "solid-js";
+import { Card } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { Badge } from "reynard-primitives";
+import { fluentIconsPackage } from "reynard-fluent-icons";
+import type { TrainingConfig } from "../config/ConfigBuilder";
 
 export interface ChromaPreset {
   id: string;
   name: string;
   description: string;
-  category: 'performance' | 'quality' | 'balanced' | 'experimental';
-  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  category: "performance" | "quality" | "balanced" | "experimental";
+  difficulty: "beginner" | "intermediate" | "advanced";
   estimatedTime: string;
   memoryRequirement: string;
   config: TrainingConfig;
@@ -32,24 +32,24 @@ export interface ChromaPresetsProps {
   compact?: boolean;
 }
 
-export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
-  const [selectedCategory, setSelectedCategory] = createSignal<string>('all');
-  const [selectedDifficulty, setSelectedDifficulty] = createSignal<string>('all');
-  const [searchTerm, setSearchTerm] = createSignal('');
+export const ChromaPresets: Component<ChromaPresetsProps> = props => {
+  const [selectedCategory, setSelectedCategory] = createSignal<string>("all");
+  const [selectedDifficulty, setSelectedDifficulty] = createSignal<string>("all");
+  const [searchTerm, setSearchTerm] = createSignal("");
   const [isExpanded, setIsExpanded] = createSignal(!props.compact);
 
   // Chroma presets
   const chromaPresets: ChromaPreset[] = [
     {
-      id: 'e6ai-512-fast',
-      name: 'E6AI 512 Fast',
-      description: 'Quick E6AI training optimized for speed with 512 resolution',
-      category: 'performance',
-      difficulty: 'beginner',
-      estimatedTime: '2-4 hours',
-      memoryRequirement: '8GB VRAM',
+      id: "e6ai-512-fast",
+      name: "E6AI 512 Fast",
+      description: "Quick E6AI training optimized for speed with 512 resolution",
+      category: "performance",
+      difficulty: "beginner",
+      estimatedTime: "2-4 hours",
+      memoryRequirement: "8GB VRAM",
       config: {
-        output_dir: '/home/kade/runeset/diffusion-pipe/output/e6ai_512_fast',
+        output_dir: "/home/kade/runeset/diffusion-pipe/output/e6ai_512_fast",
         epochs: 500,
         micro_batch_size_per_gpu: 4,
         pipeline_stages: 1,
@@ -57,43 +57,43 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
         gradient_clipping: 1.0,
         warmup_steps: 50,
         model: {
-          type: 'chroma',
-          diffusers_path: '/home/kade/flux_schnell_diffusers',
-          transformer_path: '/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v47.safetensors',
-          dtype: 'bfloat16',
-          transformer_dtype: 'float8',
-          flux_shift: true
+          type: "chroma",
+          diffusers_path: "/home/kade/flux_schnell_diffusers",
+          transformer_path: "/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v47.safetensors",
+          dtype: "bfloat16",
+          transformer_dtype: "float8",
+          flux_shift: true,
         },
         adapter: {
-          type: 'lora',
+          type: "lora",
           rank: 16,
-          dtype: 'bfloat16'
+          dtype: "bfloat16",
         },
         optimizer: {
-          type: 'adamw_optimi',
+          type: "adamw_optimi",
           lr: 1e-3,
           betas: [0.9, 0.99],
           weight_decay: 0.01,
-          eps: 1e-8
+          eps: 1e-8,
         },
         monitoring: {
-          enable_wandb: false
+          enable_wandb: false,
         },
-        dataset: 'train/e6ai_dataset_512.toml'
+        dataset: "train/e6ai_dataset_512.toml",
       },
-      tags: ['fast', 'e6ai', '512', 'beginner'],
-      recommended: true
+      tags: ["fast", "e6ai", "512", "beginner"],
+      recommended: true,
     },
     {
-      id: 'e6ai-512-balanced',
-      name: 'E6AI 512 Balanced',
-      description: 'Balanced E6AI training with good quality and reasonable time',
-      category: 'balanced',
-      difficulty: 'intermediate',
-      estimatedTime: '6-8 hours',
-      memoryRequirement: '12GB VRAM',
+      id: "e6ai-512-balanced",
+      name: "E6AI 512 Balanced",
+      description: "Balanced E6AI training with good quality and reasonable time",
+      category: "balanced",
+      difficulty: "intermediate",
+      estimatedTime: "6-8 hours",
+      memoryRequirement: "12GB VRAM",
       config: {
-        output_dir: '/home/kade/runeset/diffusion-pipe/output/e6ai_512_balanced',
+        output_dir: "/home/kade/runeset/diffusion-pipe/output/e6ai_512_balanced",
         epochs: 1000,
         micro_batch_size_per_gpu: 2,
         pipeline_stages: 1,
@@ -101,46 +101,46 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
         gradient_clipping: 1.0,
         warmup_steps: 100,
         model: {
-          type: 'chroma',
-          diffusers_path: '/home/kade/flux_schnell_diffusers',
-          transformer_path: '/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v47.safetensors',
-          dtype: 'bfloat16',
-          transformer_dtype: 'float8',
-          flux_shift: true
+          type: "chroma",
+          diffusers_path: "/home/kade/flux_schnell_diffusers",
+          transformer_path: "/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v47.safetensors",
+          dtype: "bfloat16",
+          transformer_dtype: "float8",
+          flux_shift: true,
         },
         adapter: {
-          type: 'lora',
+          type: "lora",
           rank: 32,
-          dtype: 'bfloat16'
+          dtype: "bfloat16",
         },
         optimizer: {
-          type: 'adamw_optimi',
+          type: "adamw_optimi",
           lr: 2.5e-4,
           betas: [0.9, 0.99],
           weight_decay: 0.01,
-          eps: 1e-8
+          eps: 1e-8,
         },
         monitoring: {
           enable_wandb: true,
-          wandb_api_key: '',
-          wandb_tracker_name: 'e6ai-lora',
-          wandb_run_name: 'e6ai-512-balanced'
+          wandb_api_key: "",
+          wandb_tracker_name: "e6ai-lora",
+          wandb_run_name: "e6ai-512-balanced",
         },
-        dataset: 'train/e6ai_dataset_512.toml'
+        dataset: "train/e6ai_dataset_512.toml",
       },
-      tags: ['balanced', 'e6ai', '512', 'intermediate'],
-      recommended: true
+      tags: ["balanced", "e6ai", "512", "intermediate"],
+      recommended: true,
     },
     {
-      id: 'e6ai-1024-quality',
-      name: 'E6AI 1024 Quality',
-      description: 'High-quality E6AI training with 1024 resolution for best results',
-      category: 'quality',
-      difficulty: 'advanced',
-      estimatedTime: '12-16 hours',
-      memoryRequirement: '16GB VRAM',
+      id: "e6ai-1024-quality",
+      name: "E6AI 1024 Quality",
+      description: "High-quality E6AI training with 1024 resolution for best results",
+      category: "quality",
+      difficulty: "advanced",
+      estimatedTime: "12-16 hours",
+      memoryRequirement: "16GB VRAM",
       config: {
-        output_dir: '/home/kade/runeset/diffusion-pipe/output/e6ai_1024_quality',
+        output_dir: "/home/kade/runeset/diffusion-pipe/output/e6ai_1024_quality",
         epochs: 1000,
         micro_batch_size_per_gpu: 1,
         pipeline_stages: 1,
@@ -148,46 +148,46 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
         gradient_clipping: 1.0,
         warmup_steps: 100,
         model: {
-          type: 'chroma',
-          diffusers_path: '/home/kade/flux_schnell_diffusers',
-          transformer_path: '/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v50.safetensors',
-          dtype: 'bfloat16',
-          transformer_dtype: 'float8',
-          flux_shift: true
+          type: "chroma",
+          diffusers_path: "/home/kade/flux_schnell_diffusers",
+          transformer_path: "/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v50.safetensors",
+          dtype: "bfloat16",
+          transformer_dtype: "float8",
+          flux_shift: true,
         },
         adapter: {
-          type: 'lora',
+          type: "lora",
           rank: 64,
-          dtype: 'bfloat16'
+          dtype: "bfloat16",
         },
         optimizer: {
-          type: 'adamw_optimi',
+          type: "adamw_optimi",
           lr: 1e-4,
           betas: [0.9, 0.99],
           weight_decay: 0.01,
-          eps: 1e-8
+          eps: 1e-8,
         },
         monitoring: {
           enable_wandb: true,
-          wandb_api_key: '',
-          wandb_tracker_name: 'e6ai-lora',
-          wandb_run_name: 'e6ai-1024-quality'
+          wandb_api_key: "",
+          wandb_tracker_name: "e6ai-lora",
+          wandb_run_name: "e6ai-1024-quality",
         },
-        dataset: 'train/e6ai_dataset_1024.toml'
+        dataset: "train/e6ai_dataset_1024.toml",
       },
-      tags: ['quality', 'e6ai', '1024', 'advanced'],
-      recommended: true
+      tags: ["quality", "e6ai", "1024", "advanced"],
+      recommended: true,
     },
     {
-      id: 'experimental-high-rank',
-      name: 'Experimental High Rank',
-      description: 'Experimental preset with very high LoRA rank for maximum quality',
-      category: 'experimental',
-      difficulty: 'advanced',
-      estimatedTime: '20-24 hours',
-      memoryRequirement: '24GB VRAM',
+      id: "experimental-high-rank",
+      name: "Experimental High Rank",
+      description: "Experimental preset with very high LoRA rank for maximum quality",
+      category: "experimental",
+      difficulty: "advanced",
+      estimatedTime: "20-24 hours",
+      memoryRequirement: "24GB VRAM",
       config: {
-        output_dir: '/home/kade/runeset/diffusion-pipe/output/experimental_high_rank',
+        output_dir: "/home/kade/runeset/diffusion-pipe/output/experimental_high_rank",
         epochs: 1500,
         micro_batch_size_per_gpu: 1,
         pipeline_stages: 1,
@@ -195,47 +195,47 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
         gradient_clipping: 0.5,
         warmup_steps: 200,
         model: {
-          type: 'chroma',
-          diffusers_path: '/home/kade/flux_schnell_diffusers',
-          transformer_path: '/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v50.safetensors',
-          dtype: 'bfloat16',
-          transformer_dtype: 'float8',
-          flux_shift: true
+          type: "chroma",
+          diffusers_path: "/home/kade/flux_schnell_diffusers",
+          transformer_path: "/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v50.safetensors",
+          dtype: "bfloat16",
+          transformer_dtype: "float8",
+          flux_shift: true,
         },
         adapter: {
-          type: 'lora',
+          type: "lora",
           rank: 128,
-          dtype: 'bfloat16'
+          dtype: "bfloat16",
         },
         optimizer: {
-          type: 'adamw_optimi',
+          type: "adamw_optimi",
           lr: 5e-5,
           betas: [0.9, 0.999],
           weight_decay: 0.005,
-          eps: 1e-8
+          eps: 1e-8,
         },
         monitoring: {
           enable_wandb: true,
-          wandb_api_key: '',
-          wandb_tracker_name: 'chroma-experimental',
-          wandb_run_name: 'high-rank-experiment'
+          wandb_api_key: "",
+          wandb_tracker_name: "chroma-experimental",
+          wandb_run_name: "high-rank-experiment",
         },
-        dataset: 'train/e6ai_dataset_1024.toml'
+        dataset: "train/e6ai_dataset_1024.toml",
       },
-      tags: ['experimental', 'high-rank', '1024', 'advanced'],
+      tags: ["experimental", "high-rank", "1024", "advanced"],
       recommended: false,
-      experimental: true
+      experimental: true,
     },
     {
-      id: 'custom-dataset-512',
-      name: 'Custom Dataset 512',
-      description: 'Template for training with custom datasets at 512 resolution',
-      category: 'balanced',
-      difficulty: 'intermediate',
-      estimatedTime: '6-10 hours',
-      memoryRequirement: '10GB VRAM',
+      id: "custom-dataset-512",
+      name: "Custom Dataset 512",
+      description: "Template for training with custom datasets at 512 resolution",
+      category: "balanced",
+      difficulty: "intermediate",
+      estimatedTime: "6-10 hours",
+      memoryRequirement: "10GB VRAM",
       config: {
-        output_dir: '/home/kade/runeset/diffusion-pipe/output/custom_dataset_512',
+        output_dir: "/home/kade/runeset/diffusion-pipe/output/custom_dataset_512",
         epochs: 1000,
         micro_batch_size_per_gpu: 2,
         pipeline_stages: 1,
@@ -243,36 +243,36 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
         gradient_clipping: 1.0,
         warmup_steps: 100,
         model: {
-          type: 'chroma',
-          diffusers_path: '/home/kade/flux_schnell_diffusers',
-          transformer_path: '/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v47.safetensors',
-          dtype: 'bfloat16',
-          transformer_dtype: 'float8',
-          flux_shift: true
+          type: "chroma",
+          diffusers_path: "/home/kade/flux_schnell_diffusers",
+          transformer_path: "/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v47.safetensors",
+          dtype: "bfloat16",
+          transformer_dtype: "float8",
+          flux_shift: true,
         },
         adapter: {
-          type: 'lora',
+          type: "lora",
           rank: 32,
-          dtype: 'bfloat16'
+          dtype: "bfloat16",
         },
         optimizer: {
-          type: 'adamw_optimi',
+          type: "adamw_optimi",
           lr: 2.5e-4,
           betas: [0.9, 0.99],
           weight_decay: 0.01,
-          eps: 1e-8
+          eps: 1e-8,
         },
         monitoring: {
           enable_wandb: true,
-          wandb_api_key: '',
-          wandb_tracker_name: 'custom-dataset',
-          wandb_run_name: 'custom-512'
+          wandb_api_key: "",
+          wandb_tracker_name: "custom-dataset",
+          wandb_run_name: "custom-512",
         },
-        dataset: 'train/custom_dataset_512.toml'
+        dataset: "train/custom_dataset_512.toml",
       },
-      tags: ['custom', 'template', '512', 'intermediate'],
-      recommended: false
-    }
+      tags: ["custom", "template", "512", "intermediate"],
+      recommended: false,
+    },
   ];
 
   // Filter presets
@@ -280,22 +280,23 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
     let filtered = chromaPresets;
 
     // Filter by category
-    if (selectedCategory() !== 'all') {
+    if (selectedCategory() !== "all") {
       filtered = filtered.filter(preset => preset.category === selectedCategory());
     }
 
     // Filter by difficulty
-    if (selectedDifficulty() !== 'all') {
+    if (selectedDifficulty() !== "all") {
       filtered = filtered.filter(preset => preset.difficulty === selectedDifficulty());
     }
 
     // Filter by search term
     if (searchTerm()) {
       const term = searchTerm().toLowerCase();
-      filtered = filtered.filter(preset => 
-        preset.name.toLowerCase().includes(term) ||
-        preset.description.toLowerCase().includes(term) ||
-        preset.tags.some(tag => tag.toLowerCase().includes(term))
+      filtered = filtered.filter(
+        preset =>
+          preset.name.toLowerCase().includes(term) ||
+          preset.description.toLowerCase().includes(term) ||
+          preset.tags.some(tag => tag.toLowerCase().includes(term))
       );
     }
 
@@ -311,68 +312,62 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
   // Get category icon
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'performance':
-        return fluentIconsPackage.getIcon('speed');
-      case 'quality':
-        return fluentIconsPackage.getIcon('star');
-      case 'balanced':
-        return fluentIconsPackage.getIcon('balance');
-      case 'experimental':
-        return fluentIconsPackage.getIcon('flask');
+      case "performance":
+        return fluentIconsPackage.getIcon("speed");
+      case "quality":
+        return fluentIconsPackage.getIcon("star");
+      case "balanced":
+        return fluentIconsPackage.getIcon("balance");
+      case "experimental":
+        return fluentIconsPackage.getIcon("flask");
       default:
-        return fluentIconsPackage.getIcon('cube');
+        return fluentIconsPackage.getIcon("cube");
     }
   };
 
   // Get category color
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'performance':
-        return 'secondary';
-      case 'quality':
-        return 'default';
-      case 'balanced':
-        return 'outline';
-      case 'experimental':
-        return 'destructive';
+      case "performance":
+        return "secondary";
+      case "quality":
+        return "default";
+      case "balanced":
+        return "outline";
+      case "experimental":
+        return "destructive";
       default:
-        return 'secondary';
+        return "secondary";
     }
   };
 
   // Get difficulty color
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'beginner':
-        return 'secondary';
-      case 'intermediate':
-        return 'outline';
-      case 'advanced':
-        return 'destructive';
+      case "beginner":
+        return "secondary";
+      case "intermediate":
+        return "outline";
+      case "advanced":
+        return "destructive";
       default:
-        return 'secondary';
+        return "secondary";
     }
   };
 
   return (
-    <Card class={`chroma-presets ${props.compact ? 'compact' : ''}`}>
+    <Card class={`chroma-presets ${props.compact ? "compact" : ""}`}>
       <div class="presets-header">
         <div class="presets-title">
           <h3>Chroma Training Presets</h3>
-          <Badge variant="secondary">
-            {filteredPresets().length} Presets
-          </Badge>
+          <Badge variant="secondary">{filteredPresets().length} Presets</Badge>
         </div>
-        
+
         <div class="presets-actions">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => setIsExpanded(!isExpanded())}
-          >
+          <Button variant="ghost" size="sm" onClick={() => setIsExpanded(!isExpanded())}>
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon(isExpanded() ? 'chevron-up' : 'chevron-down')?.outerHTML || ''}
+              innerHTML={fluentIconsPackage.getIcon(isExpanded() ? "chevron-up" : "chevron-down")?.outerHTML || ""}
             />
           </Button>
         </div>
@@ -387,15 +382,12 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
                 type="text"
                 placeholder="Search presets..."
                 value={searchTerm()}
-                onInput={(e) => setSearchTerm(e.currentTarget.value)}
+                onInput={e => setSearchTerm(e.currentTarget.value)}
                 class="search-input"
               />
             </div>
             <div class="filter-group">
-              <select
-                value={selectedCategory()}
-                onChange={(e) => setSelectedCategory(e.currentTarget.value)}
-              >
+              <select value={selectedCategory()} onChange={e => setSelectedCategory(e.currentTarget.value)}>
                 <option value="all">All Categories</option>
                 <option value="performance">Performance</option>
                 <option value="quality">Quality</option>
@@ -404,10 +396,7 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
               </select>
             </div>
             <div class="filter-group">
-              <select
-                value={selectedDifficulty()}
-                onChange={(e) => setSelectedDifficulty(e.currentTarget.value)}
-              >
+              <select value={selectedDifficulty()} onChange={e => setSelectedDifficulty(e.currentTarget.value)}>
                 <option value="all">All Levels</option>
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -419,8 +408,8 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
           {/* Presets Grid */}
           <div class="presets-grid">
             {filteredPresets().map(preset => (
-              <div 
-                class={`preset-card ${preset.recommended ? 'recommended' : ''} ${preset.experimental ? 'experimental' : ''}`}
+              <div
+                class={`preset-card ${preset.recommended ? "recommended" : ""} ${preset.experimental ? "experimental" : ""}`}
                 onClick={() => selectPreset(preset)}
               >
                 <div class="preset-header">
@@ -436,24 +425,22 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
                       <span class="category-icon">
                         <div
                           // eslint-disable-next-line solid/no-innerhtml
-                          innerHTML={getCategoryIcon(preset.category)?.outerHTML || ''}
+                          innerHTML={getCategoryIcon(preset.category)?.outerHTML || ""}
                         />
                       </span>
                       {preset.category}
                     </Badge>
                   </div>
                 </div>
-                
+
                 <div class="preset-description">
                   <p>{preset.description}</p>
                 </div>
-                
+
                 <div class="preset-details">
                   <div class="detail-item">
                     <span class="detail-label">Difficulty:</span>
-                    <Badge variant={getDifficultyColor(preset.difficulty)}>
-                      {preset.difficulty}
-                    </Badge>
+                    <Badge variant={getDifficultyColor(preset.difficulty)}>{preset.difficulty}</Badge>
                   </div>
                   <div class="detail-item">
                     <span class="detail-label">Time:</span>
@@ -464,7 +451,7 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
                     <span class="detail-value">{preset.memoryRequirement}</span>
                   </div>
                 </div>
-                
+
                 <div class="preset-config">
                   <div class="config-item">
                     <span class="config-label">Epochs:</span>
@@ -483,7 +470,7 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
                     <span class="config-value">{preset.config.optimizer.lr}</span>
                   </div>
                 </div>
-                
+
                 <div class="preset-tags">
                   {preset.tags.map(tag => (
                     <Badge variant="outline" size="sm">
@@ -491,12 +478,12 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
                     </Badge>
                   ))}
                 </div>
-                
+
                 <div class="preset-actions">
                   <Button variant="primary" size="sm">
                     <div
                       // eslint-disable-next-line solid/no-innerhtml
-                      innerHTML={fluentIconsPackage.getIcon('play')?.outerHTML || ''}
+                      innerHTML={fluentIconsPackage.getIcon("play")?.outerHTML || ""}
                     />
                     Use Preset
                   </Button>
@@ -511,7 +498,7 @@ export const ChromaPresets: Component<ChromaPresetsProps> = (props) => {
               <div class="empty-icon">
                 <div
                   // eslint-disable-next-line solid/no-innerhtml
-                  innerHTML={fluentIconsPackage.getIcon('search')?.outerHTML || ''}
+                  innerHTML={fluentIconsPackage.getIcon("search")?.outerHTML || ""}
                 />
               </div>
               <h4>No presets found</h4>

@@ -11,10 +11,6 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./primitives": {
-      "types": "./dist/primitives/index.d.ts",
-      "import": "./dist/primitives/index.js"
-    },
     "./navigation": {
       "types": "./dist/navigation/index.d.ts",
       "import": "./dist/navigation/index.js"
@@ -50,6 +46,7 @@
   "dependencies": {
     "reynard-core": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-themes": "workspace:*"
   },
   "devDependencies": {

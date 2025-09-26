@@ -12,7 +12,7 @@ from ..models import ScrapingResult, ScrapingType
 from .base_scraper import BaseScraper
 
 
-class EnhancedContentExtractor(BaseScraper):
+class ContentExtractor(BaseScraper):
     """Enhanced content extractor with multi-tier fallback strategy.
 
     Extraction strategy:

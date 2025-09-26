@@ -22,64 +22,27 @@ logger = logging.getLogger(__name__)
 
 
 class ToolConfigService:
-    """Enhanced service for managing tool configurations with auto-sync capabilities."""
+    """Deprecated JSON config service (kept for compatibility; no-op)."""
 
     def __init__(
         self, config_file_path: str = "tool_config.json", tool_registry: Any = None
     ) -> None:
-        """Initialize the enhanced tool configuration service."""
-        logger.debug("🕐 Starting ToolConfigService.__init__")
-        start_time = time.time()
-
+        logger.info("ToolConfigService is deprecated; use PostgreSQLToolConfigService instead")
         self.config_file_path = Path(config_file_path)
-        self.config_data: Dict[str, Any] = {}
+        self.config_data: Dict[str, Any] = {"version": "1.0.0", "last_updated": datetime.now().isoformat(), "tools": {}}
         self.tool_registry = tool_registry
 
-        logger.debug("🕐 Loading config in ToolConfigService...")
-        config_start = time.time()
-        self._load_config()
-        config_elapsed = time.time() - config_start
-        logger.debug(f"✅ Config loaded in ToolConfigService in {config_elapsed:.3f}s")
-
-        total_elapsed = time.time() - start_time
-        logger.debug(f"✅ ToolConfigService.__init__ completed in {total_elapsed:.3f}s")
-
     def _load_config(self) -> None:
-        """Load tool configuration from file."""
-        try:
-            if self.config_file_path.exists():
-                with open(self.config_file_path, encoding="utf-8") as f:
-                    self.config_data = json.load(f)
-                logger.info(f"Loaded tool configuration from {self.config_file_path}")
-            else:
-                # Create default configuration
-                self._create_default_config()
-                self._save_config()
-                logger.info(
-                    f"Created default tool configuration at {self.config_file_path}"
-                )
-        except Exception as e:
-            logger.error(f"Failed to load tool configuration: {e}")
-            self._create_default_config()
+        """No-op: JSON loading deprecated."""
+        return None
 
     def _create_default_config(self) -> None:
-        """Create default tool configuration."""
-        self.config_data = {
-            "version": "1.0.0",
-            "last_updated": datetime.now().isoformat(),
-            "tools": {},
-        }
+        """No-op: JSON defaults deprecated."""
+        self.config_data = {"version": "1.0.0", "last_updated": datetime.now().isoformat(), "tools": {}}
 
     def _save_config(self) -> None:
-        """Save tool configuration to file."""
-        try:
-            self.config_data["last_updated"] = datetime.now().isoformat()
-            with open(self.config_file_path, "w", encoding="utf-8") as f:
-                json.dump(self.config_data, f, indent=2, ensure_ascii=False)
-            logger.info(f"Saved tool configuration to {self.config_file_path}")
-        except Exception as e:
-            logger.error(f"Failed to save tool configuration: {e}")
-            raise
+        """No-op: JSON persistence deprecated."""
+        return None
 
     def sync_tool_with_services(self, tool_metadata: Any) -> None:
         """Sync a single tool with all configuration services."""
@@ -108,10 +71,8 @@ class ToolConfigService:
         self._save_config()
 
     def auto_sync_all_tools(self) -> None:
-        """Auto-sync all tools from the registry."""
-        if self.tool_registry:
-            for tool_metadata in self.tool_registry.list_all_tools().values():
-                self.sync_tool_with_services(tool_metadata)
+        """No-op for deprecated JSON service."""
+        return None
 
     def get_all_tools(self) -> Dict[str, Any]:
         """Get all tool configurations."""

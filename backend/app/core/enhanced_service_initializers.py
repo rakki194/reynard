@@ -9,10 +9,10 @@ import logging
 import time
 from typing import Any
 
-from .enhanced_service_registry import (
+from .service_registry import (
     ServiceDependency,
     ServiceDependencyType,
-    get_enhanced_service_registry,
+    get_service_registry,
 )
 from .service_config_manager import get_service_config_manager
 
@@ -32,7 +32,7 @@ class ServiceInitializer:
 
     def __init__(self, service_name: str):
         self.service_name = service_name
-        self.registry = get_enhanced_service_registry()
+        self.registry = get_service_registry()
         self.config_manager = get_service_config_manager()
         self.config: dict[str, Any] = {}
         self.dependencies: list[ServiceDependency] = []
@@ -533,7 +533,7 @@ SERVICE_INITIALIZERS = {
 
 async def initialize_all_services() -> bool:
     """Initialize all services using the enhanced initializers."""
-    registry = get_enhanced_service_registry()
+    registry = get_service_registry()
     config_manager = get_service_config_manager()
 
     logger.info("🚀 Starting enhanced service initialization...")
@@ -572,7 +572,7 @@ async def initialize_all_services() -> bool:
 
 async def shutdown_all_services() -> bool:
     """Shutdown all services gracefully."""
-    registry = get_enhanced_service_registry()
+    registry = get_service_registry()
 
     logger.info("🛑 Starting enhanced service shutdown...")
 

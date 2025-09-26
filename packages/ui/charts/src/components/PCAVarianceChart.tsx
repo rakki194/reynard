@@ -55,7 +55,7 @@ export const PCAVarianceChart = (props: PCAVarianceChartProps) => {
       });
     }
     return {
-      labels: components.map(c => `PC${c}`),
+      labels: components.map((c: number) => `PC${c}`),
       datasets,
     };
   });
@@ -80,7 +80,7 @@ export const PCAVarianceChart = (props: PCAVarianceChartProps) => {
         mode: "index",
         intersect: false,
         callbacks: {
-          label: context => {
+          label: (context: any) => {
             const value = context.parsed.y;
             const percentage = (value * 100).toFixed(2);
             return `${context.dataset.label}: ${percentage}% (${value.toFixed(4)})`;
@@ -111,7 +111,7 @@ export const PCAVarianceChart = (props: PCAVarianceChartProps) => {
         beginAtZero: true,
         max: 1,
         ticks: {
-          callback: value => `${(value * 100).toFixed(0)}%`,
+          callback: (value: any) => `${(value * 100).toFixed(0)}%`,
         },
       },
     },
@@ -161,7 +161,9 @@ export const PCAVarianceChart = (props: PCAVarianceChartProps) => {
         <div class="stat-item">
           <span class="stat-label">Top 5 Components:</span>
           <span class="stat-value">
-            {topComponents.map((comp, i) => `PC${comp}(${(topVariance[i] * 100).toFixed(1)}%)`).join(", ")}
+            {topComponents
+              .map((comp: number, i: number) => `PC${comp}(${(topVariance[i] * 100).toFixed(1)}%)`)
+              .join(", ")}
           </span>
         </div>
       </div>

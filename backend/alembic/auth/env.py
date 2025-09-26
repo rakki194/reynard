@@ -11,10 +11,14 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
+from dotenv import load_dotenv
 
 # Import your models here if you have custom auth models
 from app.security.pgp_key_models import AuthBase
 # SSH key models use the same AuthBase
+
+# Load environment variables from the .env file
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '../../.env'))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

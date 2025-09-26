@@ -7,8 +7,8 @@
 
 import { Component, createSignal, onMount } from "solid-js";
 import { ComplianceDashboard } from "./ComplianceDashboard";
-import { Button } from "reynard-components-core/primitives";
-import { Card } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
+import { Card } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export const ComplianceDashboardDemo: Component = () => {

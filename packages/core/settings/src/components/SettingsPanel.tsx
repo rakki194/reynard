@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, createMemo, Show, For, splitProps } from "solid-js";
-import { Button, TextField, Modal, Tabs } from "reynard-components-core";
+import { Button, TextField, Modal, Tabs } from "reynard-primitives";
 import type {
   SettingDefinition,
   SettingCategory,

@@ -1,5 +1,5 @@
 import { createSignal, onMount } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 // import { SpatialHash } from "reynard-algorithms";
 
 // Temporary placeholder for SpatialHash until algorithms package is built

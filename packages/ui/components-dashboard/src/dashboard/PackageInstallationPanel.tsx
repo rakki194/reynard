@@ -3,7 +3,7 @@
  * Package installation interface with progress tracking and dependency resolution
  */
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button, TextField, Select } from "reynard-components-core/primitives";
+import { Button, TextField, Select } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 export const PackageInstallationPanel = props => {
@@ -136,10 +136,15 @@ export const PackageInstallationPanel = props => {
       setSummary(mockSummary);
       setLastUpdate(new Date());
     } catch (error) {
-      log.error("Failed to refresh installation data", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "PackageInstallationPanel",
-        function: "refreshInstallationData"
-      });
+      log.error(
+        "Failed to refresh installation data",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "PackageInstallationPanel",
+          function: "refreshInstallationData",
+        }
+      );
     } finally {
       setIsRefreshing(false);
     }
@@ -148,7 +153,7 @@ export const PackageInstallationPanel = props => {
     // In a real implementation, this would call the backend installation endpoint
     log.info(`Installing package: ${packageName}`, undefined, {
       component: "PackageInstallationPanel",
-      function: "handleInstallPackage"
+      function: "handleInstallPackage",
     });
     // Simulate installation
     const updatedPackages = packages().map(pkg =>
@@ -180,7 +185,7 @@ export const PackageInstallationPanel = props => {
     // In a real implementation, this would call the backend cancellation endpoint
     log.info(`Cancelling installation: ${packageName}`, undefined, {
       component: "PackageInstallationPanel",
-      function: "handleCancelInstallation"
+      function: "handleCancelInstallation",
     });
     // Simulate cancellation
     const updatedPackages = packages().map(pkg =>
@@ -192,7 +197,7 @@ export const PackageInstallationPanel = props => {
     // In a real implementation, this would call the backend retry endpoint
     log.info(`Retrying installation: ${packageName}`, undefined, {
       component: "PackageInstallationPanel",
-      function: "handleRetryInstallation"
+      function: "handleRetryInstallation",
     });
     // Simulate retry
     const updatedPackages = packages().map(pkg =>

@@ -61,7 +61,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.ecs.database import SessionLocal
-from app.models.notes_todos import AIMetadata, Tag, Todo
+from app.models.content.notes import AIMetadata, Tag, Todo
 from gatekeeper.api.dependencies import require_active_user
 from gatekeeper.models.user import User
 

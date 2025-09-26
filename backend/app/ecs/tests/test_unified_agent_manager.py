@@ -15,7 +15,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 from postgres_service import PostgresECSWorldService
 
-from services.unified_agent_manager import AgentState, UnifiedAgentStateManager
+from services.unified_agent_manager import AgentState, AgentStateManager
 
 
 class TestAgentState:
@@ -75,14 +75,14 @@ class TestAgentState:
         assert isinstance(state_dict["last_activity"], str)
 
 
-class TestUnifiedAgentStateManager:
-    """Test cases for UnifiedAgentStateManager."""
+class TestAgentStateManager:
+    """Test cases for AgentStateManager."""
 
     @pytest.fixture
     def mock_ecs_service(self):
         """Create mock ECS service."""
         service = AsyncMock(spec=PostgresECSWorldService)
-        # Mock all the methods that UnifiedAgentStateManager might call
+        # Mock all the methods that AgentStateManager might call
         service.get_agent = AsyncMock()
         service.get_agent_by_name = AsyncMock()
         service.get_personality_traits = AsyncMock()
@@ -104,8 +104,8 @@ class TestUnifiedAgentStateManager:
 
     @pytest.fixture
     def agent_manager(self, mock_ecs_service):
-        """Create UnifiedAgentStateManager with mock ECS service."""
-        return UnifiedAgentStateManager(mock_ecs_service, ".")
+        """Create AgentStateManager with mock ECS service."""
+        return AgentStateManager(mock_ecs_service, ".")
 
     @pytest.mark.asyncio
     async def test_get_agent_state_success(self, agent_manager, mock_ecs_service):

@@ -19,10 +19,14 @@ export const setupThemeLifecycle = (
   i18nModule: I18nModule
 ) => {
   onMount(async () => {
-    log.debug("Theme lifecycle onMount", { currentTheme: theme() }, {
-      component: "themeLifecycle",
-      function: "setupThemeLifecycle"
-    });
+    log.debug(
+      "Theme lifecycle onMount",
+      { currentTheme: theme() },
+      {
+        component: "themeLifecycle",
+        function: "setupThemeLifecycle",
+      }
+    );
     // Apply the initial theme
     applyTheme(theme());
 
@@ -32,17 +36,25 @@ export const setupThemeLifecycle = (
 
     // Listen for system theme changes
     const cleanup = onSystemThemeChange((systemTheme: "light" | "dark") => {
-      log.debug("System theme changed", { systemTheme }, {
-        component: "themeLifecycle",
-        function: "onSystemThemeChange"
-      });
+      log.debug(
+        "System theme changed",
+        { systemTheme },
+        {
+          component: "themeLifecycle",
+          function: "onSystemThemeChange",
+        }
+      );
       // Only auto-switch if user hasn't manually set a theme
       const savedTheme = localStorage.getItem("reynard-theme");
       if (!savedTheme) {
-        log.debug("No saved theme, switching to system theme", { systemTheme }, {
-          component: "themeLifecycle",
-          function: "onSystemThemeChange"
-        });
+        log.debug(
+          "No saved theme, switching to system theme",
+          { systemTheme },
+          {
+            component: "themeLifecycle",
+            function: "onSystemThemeChange",
+          }
+        );
         setThemeState(systemTheme);
         applyTheme(systemTheme);
       }

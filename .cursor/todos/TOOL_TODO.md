@@ -9,6 +9,31 @@
 
 _snarls with predatory intelligence_ We're hunting down the complexity beast that requires 8 manual steps across 5 files to register a single MCP tool. Our prey: the current triple registration nightmare (Code + Configuration + Service). Our weapon: **THE TOOL REGISTRATION SYSTEM** - a single decorator that auto-syncs everything.
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for tool development access (Tool Developer, Tool Admin, Tool User)
+- [ ] Identify resource permissions needed (create, register, configure, deploy, audit)
+- [ ] Plan context-specific access control (tool-level, namespace-level permissions)
+- [ ] Design audit trail requirements (tool registration, deployment, usage tracking)
+
+### **Integration Points**
+
+- [ ] Update tool registration system with RBAC middleware
+- [ ] Add permission checks to tool development workflow
+- [ ] Implement role-based tool development visibility
+- [ ] Add audit logging for tool development access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based tool development access control
+- [ ] Verify permission inheritance for tool namespaces
+- [ ] Test context-specific permissions (public vs private tool development)
+- [ ] Validate audit trail functionality for tool development operations
+
 ## 🏆 Scoring System
 
 - **Core Architecture Tasks**: 15-20 points each (High complexity, foundational work)

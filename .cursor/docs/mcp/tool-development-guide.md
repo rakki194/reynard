@@ -20,7 +20,7 @@ services/mcp-server/
 │   └── secrets_definitions.py  # Tool schemas
 ├── protocol/              # MCP protocol handling
 ├── middleware/            # Authentication & middleware
-└── tool_config.json      # Tool configuration
+└── services/postgresql_tool_config_service.py  # DB-backed tool config client
 ```
 
 ### Key Components
@@ -202,19 +202,17 @@ class MCPServer:
 
 Add your tool to the configuration:
 
-```json
-// tool_config.json
+Use the FastAPI backend to manage tool configuration (no local JSON):
+
+```
+POST /api/mcp/tool-config/tools
 {
-  "tools": {
-    "your_tool_name": {
-      "name": "your_tool_name",
-      "category": "your_category",
-      "enabled": true,
-      "description": "Your tool description",
-      "dependencies": [],
-      "config": {}
-    }
-  }
+  "name": "your_tool_name",
+  "category": "your_category",
+  "enabled": true,
+  "description": "Your tool description",
+  "dependencies": [],
+  "config": {}
 }
 ```
 
@@ -567,7 +565,7 @@ class ConfigurableToolClass:
 - [ ] Error handling covers all edge cases
 - [ ] Unit tests pass
 - [ ] Integration tests pass
-- [ ] Tool is added to `tool_config.json`
+- [ ] Tool is created via POST /api/mcp/tool-config/tools
 - [ ] Tool is registered in main server
 - [ ] Documentation is updated
 

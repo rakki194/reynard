@@ -93,10 +93,13 @@ export const StatisticalChart = (props: StatisticalChartProps) => {
     }
   };
   const processHistogramData = (data: any) => {
-    if (!data.values || data.values.length === 0) {
+    if (!Array.isArray(data)) {
       return null;
     }
-    const values = data.values;
+    const values = data.map((d: StatisticalDataPoint) => d.value);
+    if (values.length === 0) {
+      return null;
+    }
     const numBins = local.numBins || Math.min(20, Math.ceil(Math.sqrt(values.length)));
     // Calculate bin edges
     const min = Math.min(...values);
@@ -197,6 +200,7 @@ export const StatisticalChart = (props: StatisticalChartProps) => {
     };
   };
   const processQualityGaugeData = (data: any) => {
+    if (!data || typeof data.overallScore !== "number") return null;
     const score = data.overallScore;
     const remaining = 100 - score;
     // Determine color based on score
@@ -235,24 +239,14 @@ export const StatisticalChart = (props: StatisticalChartProps) => {
     return "rgba(54, 162, 235, 1)"; // Default blue
   };
   const renderStatisticsOverlay = () => {
-    if (!local.showStatistics || !local.data?.values) return null;
+    if (!local.showStatistics || !local.data) return null;
     // Calculate statistics from the data
     let values: any[] = [];
-    if (Array.isArray(local.data.values)) {
-      values = local.data.values;
-    } else if (typeof local.data.values === "function") {
-      try {
-        const result = local.data.values();
-        if (Array.isArray(result)) {
-          values = result;
-        } else if (result && typeof result[Symbol.iterator] === "function") {
-          values = Array.from(result);
-        } else {
-          values = [];
-        }
-      } catch (e) {
-        values = [];
-      }
+    if (Array.isArray(local.data)) {
+      values = local.data.map(point => point.value);
+    } else if (typeof local.data === "function") {
+      // Unsupported input shape for this component; skip statistics
+      return null;
     }
     const mean = values.reduce((sum: any, val: any) => sum + val, 0) / values.length;
     const variance = values.reduce((sum: any, val: any) => sum + Math.pow(val - mean, 2), 0) / values.length;

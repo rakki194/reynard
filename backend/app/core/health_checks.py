@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from .enhanced_service_registry import get_enhanced_service_registry
+from .service_registry import get_service_registry
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +80,7 @@ class HealthCheckManager:
 
     def __init__(self, config: HealthCheckConfig | None = None):
         self.config = config or HealthCheckConfig()
-        self.registry = get_enhanced_service_registry()
+        self.registry = get_service_registry()
 
         # Health check storage
         self.health_results: dict[str, HealthCheckResult] = {}
@@ -685,6 +685,65 @@ async def health_check_tts() -> bool:
     manager = get_health_check_manager()
     result = manager.get_health_status("tts")
     return result.status == HealthStatus.HEALTHY if result else False
+
+
+async def health_check_rag() -> bool:
+    """Health check for RAG service."""
+    try:
+        from app.core.service_registry import get_service_registry
+
+        registry = get_service_registry()
+        rag_service = registry.get_service_instance("rag")
+
+        if not rag_service:
+            return False
+
+        # Use the RAG service's built-in health check
+        if hasattr(rag_service, "get_system_health"):
+            health_status = await rag_service.get_system_health()
+            return health_status.get("healthy", False)
+        
+        # Fallback to basic initialization check
+        return rag_service.is_initialized()
+
+    except Exception as e:
+        logger.error(f"❌ RAG service health check error: {e}")
+        return False
+
+
+async def health_check_ai_service() -> bool:
+    """Health check for AI service."""
+    try:
+        from app.core.ai_service_initializer import health_check_ai_service as ai_health_check
+
+        return await ai_health_check()
+
+    except Exception as e:
+        logger.error(f"❌ AI service health check error: {e}")
+        return False
+
+
+async def health_check_tts_service() -> bool:
+    """Health check for TTS service."""
+    try:
+        from app.core.service_registry import get_service_registry
+
+        registry = get_service_registry()
+        tts_service = registry.get_service_instance("tts")
+
+        if not tts_service:
+            return False
+
+        # Use the TTS service's built-in health check
+        if hasattr(tts_service, "health_check"):
+            return await tts_service.health_check()
+        
+        # Fallback to basic enabled check
+        return getattr(tts_service, "_enabled", False)
+
+    except Exception as e:
+        logger.error(f"❌ TTS service health check error: {e}")
+        return False
 
 
 # Health check automation functions

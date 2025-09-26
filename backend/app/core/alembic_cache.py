@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 from typing import Any
 
 from .cache_config import CacheConfig
-from .cache_optimizer import IntelligentCacheManager
+from .cache_optimizer import CacheManager
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ class AlembicCacheManager:
             else CacheConfig.ALEMBIC_CACHE_ENABLED
         )
         self.fallback_cache = fallback_cache or {}
-        self.cache_manager: IntelligentCacheManager | None = None
+        self.cache_manager: CacheManager | None = None
 
         # Cache configuration
         self.namespace = "alembic"
@@ -50,7 +50,7 @@ class AlembicCacheManager:
     async def _initialize_cache_manager(self):
         """Initialize the Redis cache manager."""
         try:
-            self.cache_manager = IntelligentCacheManager(
+            self.cache_manager = CacheManager(
                 redis_url=CacheConfig.get_alembic_redis_url(),
                 max_connections=CacheConfig.REDIS_MAX_CONNECTIONS,
                 default_ttl=CacheConfig.ALEMBIC_CACHE_TTL,

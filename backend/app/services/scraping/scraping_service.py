@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from .extractors import EnhancedContentExtractor, GeneralScraper
+from .extractors import ContentExtractor, GeneralScraper
 from .gallery_integration import GalleryIntegration
 from .models import (
     ScrapingApiRequest,
@@ -54,7 +54,7 @@ class ScrapingService:
         self.quality_scorer = ContentQualityScorer()
         self.pipeline_manager = ProcessingPipelineManager()
         self.enhanced_pipeline = EnhancedContentPipeline()
-        self.enhanced_extractor = EnhancedContentExtractor()
+        self.enhanced_extractor = ContentExtractor()
         self.gallery_integration: GalleryIntegration | None = None
         self.initialized = False
         self.enabled = self.configuration.get("enabled", True)

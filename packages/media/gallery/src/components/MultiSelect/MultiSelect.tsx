@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, createEffect, onCleanup, splitProps, For, Show } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import "./MultiSelect.css";
 
 export interface SelectableItem {

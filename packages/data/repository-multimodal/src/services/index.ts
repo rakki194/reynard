@@ -3,4 +3,4 @@
  */
 
 export * from "./DatasetService.js";
-export * from "./UnifiedRepository.js";
+export * from "./Repository.js";

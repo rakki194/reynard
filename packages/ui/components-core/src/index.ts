@@ -8,8 +8,8 @@
 // Import styles
 import "./styles.css";
 
-// Export primitives
-export * from "./primitives/index.js";
+// Export primitives from the dedicated primitives package
+// export * from "reynard-primitives";
 
 // Export navigation components
 export * from "./navigation/index.js";

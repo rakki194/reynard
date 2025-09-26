@@ -39,7 +39,7 @@
     "highlight.js": "11.11.1",
     "gray-matter": "4.0.3",
     "reynard-core": "workspace:*",
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-components-charts": "workspace:*",
     "reynard-components-dashboard": "workspace:*",
     "reynard-components-themes": "workspace:*",

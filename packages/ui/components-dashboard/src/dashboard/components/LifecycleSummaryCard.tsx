@@ -2,7 +2,7 @@
  * Lifecycle Summary Card Component
  * Displays summary statistics for package lifecycle management
  */
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { Icon } from "reynard-fluent-icons";
 export const LifecycleSummaryCard = props => {
   const formatMemoryUsage = bytes => {

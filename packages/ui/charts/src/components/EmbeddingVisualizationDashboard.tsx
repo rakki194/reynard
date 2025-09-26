@@ -37,7 +37,7 @@ export const EmbeddingVisualizationDashboard = (props: EmbeddingVisualizationDas
           maxSamples={dashboard.maxSamples()}
           isLoading={dashboard.isLoading()}
           onMethodChange={(method: string) => dashboard.setReductionMethod(method as any)}
-          onParameterUpdate={(params: any) => dashboard.updateReductionParams(params)}
+          onParameterUpdate={(param: string, value: any) => dashboard.updateReductionParams(param, value)}
           onMaxSamplesChange={dashboard.setMaxSamples}
           onPerformReduction={dashboard.performReduction}
         />

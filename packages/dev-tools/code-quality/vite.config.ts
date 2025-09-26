@@ -45,7 +45,7 @@ export default defineConfig({
           "reynard-core": "ReynardCore",
           "reynard-ui": "ReynardUI",
           "reynard-charts": "ReynardCharts",
-          "reynard-components-core": "ReynardComponentsCore",
+          "reynard-primitives": "ReynardPrimitives",
           "reynard-components-charts": "ReynardComponentsCharts",
           "reynard-components-dashboard": "ReynardComponentsDashboard",
           "reynard-components-themes": "ReynardComponentsThemes",

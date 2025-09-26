@@ -94,10 +94,15 @@ export function useSmartAnimation(options: UseSmartAnimationOptions = {}): UseSm
         });
       }
     } catch (error) {
-             log.error("Failed to initialize smart animation core", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "useSmartAnimation",
-        function: "initializeSmartCore",
-      });
+      log.error(
+        "Failed to initialize smart animation core",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "useSmartAnimation",
+          function: "initializeSmartCore",
+        }
+      );
     }
   };
 

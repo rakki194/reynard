@@ -4,7 +4,7 @@
  * Refactored to be modular and under 140 lines
  */
 import { Show } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { Icon } from "reynard-fluent-icons";
 import { PackageList } from "./components/PackageList";
 import { PackageSettingsForm } from "./components/PackageSettingsForm";

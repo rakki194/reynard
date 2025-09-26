@@ -21,10 +21,15 @@ export function createAdaptiveCallbacks(
         qualityManager.adaptQuality(stats.currentFPS);
         callbacks.onFrameEnd?.(frameTime, frameCount);
       } catch (error) {
-               log.error("Error in onFrameEnd callback", error instanceof Error ? error : new Error(String(error)), undefined, {
-          component: "AdaptiveCallbacks",
-          function: "onFrameEnd",
-        });
+        log.error(
+          "Error in onFrameEnd callback",
+          error instanceof Error ? error : new Error(String(error)),
+          undefined,
+          {
+            component: "AdaptiveCallbacks",
+            function: "onFrameEnd",
+          }
+        );
       }
     },
   };

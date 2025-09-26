@@ -5,7 +5,7 @@
  * with document listing and deletion capabilities.
  */
 import { For } from "solid-js";
-import { Button, Card, Icon } from "reynard-components-core";
+import { Button, Card, Icon } from "reynard-primitives";
 export function DocumentsTab(props: any) {
   return (
     <div class="documents-tab-content">

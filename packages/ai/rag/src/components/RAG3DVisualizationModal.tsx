@@ -5,7 +5,7 @@
  * and interactive point cloud exploration.
  */
 import { createEffect } from "solid-js";
-import { Modal } from "reynard-components-core";
+import { Modal } from "reynard-primitives";
 import { use3DVisualizationParams, use3DVisualizationData } from "../composables";
 import { ModalContent } from "./3DVisualization";
 export const RAG3DVisualizationModal = (props: any) => {

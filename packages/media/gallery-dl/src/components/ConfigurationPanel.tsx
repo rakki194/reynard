@@ -5,7 +5,7 @@
  * Includes extractor settings, download options, and postprocessor configuration.
  */
 import { Component, createSignal, createEffect, Show, For } from "solid-js";
-import { Card, Button, TextField, Icon } from "reynard-components-core";
+import { Card, Button, TextField, Icon } from "reynard-primitives";
 
 export interface ConfigurationPanelProps {
   onConfigChange?: (config: GalleryConfig) => void;

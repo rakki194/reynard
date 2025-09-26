@@ -20,17 +20,26 @@ export const useThemeContext = () => {
     try {
       return useTheme();
     } catch (error) {
-      log.error("useThemeContext: Theme context not available", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "useThemeContext",
-        function: "useThemeContext"
-      });
+      log.error(
+        "useThemeContext: Theme context not available",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "useThemeContext",
+          function: "useThemeContext",
+        }
+      );
       return {
         theme: "light",
         setTheme: (theme: string) => {
-          log.warn("Theme context not available, cannot set theme", { theme }, {
-            component: "useThemeContext",
-            function: "setTheme"
-          });
+          log.warn(
+            "Theme context not available, cannot set theme",
+            { theme },
+            {
+              component: "useThemeContext",
+              function: "setTheme",
+            }
+          );
         },
         getTagStyle: () => ({}),
         isDark: false,

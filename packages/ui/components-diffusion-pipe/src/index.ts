@@ -73,11 +73,7 @@ export type {
 } from "./hooks/useRealTimeUpdates";
 
 export { useTrainingWebSocket } from "./hooks/useTrainingWebSocket";
-export type {
-  UseTrainingWebSocketReturn,
-  TrainingEvent,
-  TrainingWebSocketConfig,
-} from "./hooks/useTrainingWebSocket";
+export type { UseTrainingWebSocketReturn, TrainingEvent, TrainingWebSocketConfig } from "./hooks/useTrainingWebSocket";
 
 // Types
 export * from "./types";

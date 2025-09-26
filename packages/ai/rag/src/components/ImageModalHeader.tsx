@@ -3,8 +3,8 @@
  *
  * Header with image info and control buttons
  */
-import { Button } from "reynard-components-core";
-import { Icon } from "reynard-components-core";
+import { Button } from "reynard-primitives";
+import { Icon } from "reynard-primitives";
 import { formatDimensions, formatFileSize } from "../utils/image-modal-utils";
 export const ImageModalHeader = (props: any) => {
   return (

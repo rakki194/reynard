@@ -5,7 +5,7 @@
  * under the 140-line limit.
  */
 import { Show } from "solid-js";
-import { Slider } from "reynard-components-core";
+import { Slider } from "reynard-primitives";
 // Loading State Component
 export const LoadingState = () => (
   <div class="loading-state">

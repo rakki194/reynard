@@ -5,7 +5,7 @@
  * following Reynard modular conventions.
  */
 
-import { Icon } from "reynard-components-core";
+import { Icon } from "reynard-primitives";
 import type { TabItem } from "./types";
 
 /**

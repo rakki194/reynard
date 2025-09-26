@@ -4,7 +4,7 @@
  * Validates gallery URLs and provides extractor information with real-time feedback.
  */
 import { Component, createSignal, createEffect, onCleanup, Show, For } from "solid-js";
-import { Card, Button, TextField, Icon } from "reynard-components-core";
+import { Card, Button, TextField, Icon } from "reynard-primitives";
 import { GalleryService } from "../services/GalleryService";
 
 export interface UrlValidatorProps {

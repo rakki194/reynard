@@ -6,6 +6,31 @@
 
 Transform the existing Hugo blog into a comprehensive, modular blog engine that integrates seamlessly with the Reynard ecosystem while preserving all LoRA showcase functionality and technical documentation.
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for blog access (Blog Admin, Editor, Author, Reader)
+- [ ] Identify resource permissions needed (create, read, update, delete, publish, moderate, audit)
+- [ ] Plan context-specific access control (post-level, category-level, comment-level permissions)
+- [ ] Design audit trail requirements (content changes, publishing, access attempts)
+
+### **Integration Points**
+
+- [ ] Update blog endpoints with RBAC middleware
+- [ ] Add permission checks to blog service layer
+- [ ] Implement role-based blog visibility
+- [ ] Add audit logging for blog access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based blog access control
+- [ ] Verify permission inheritance for blog operations
+- [ ] Test context-specific permissions (public vs private blog content)
+- [ ] Validate audit trail functionality for blog operations
+
 ## 🔍 **STRATEGIC ANALYSIS COMPLETE**
 
 After thorough research of both codebases, I've identified **massive reuse opportunities**:

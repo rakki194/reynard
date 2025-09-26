@@ -7,7 +7,7 @@ request/response schemas.
 import pytest
 from pydantic import ValidationError
 
-from app.models.caption import (
+from app.models.schemas.caption_schemas import (
     BatchCaptionRequest,
     BatchCaptionResponse,
     CaptionRequest,

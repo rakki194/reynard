@@ -21,7 +21,7 @@
  */
 
 import { Component, createSignal, createEffect, onMount, onCleanup, createMemo, Show, For } from "solid-js";
-import { Card, Button, Badge, Tabs, Input, Select, Checkbox, Slider } from "reynard-components-core/primitives";
+import { Card, Button, Badge, Tabs, Input, Select, Checkbox, Slider } from "reynard-primitives";
 import { ThreeJSVisualization, PointCloudVisualization, useThreeJSVisualization } from "reynard-3d";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ArchitectureMap, ArchitectureComponent, ArchitectureRelationship } from "./ArchitectureMappingTools";

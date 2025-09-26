@@ -137,9 +137,9 @@ export class GlobalAnimationIntegration {
 
       this.performanceObserver.observe({ entryTypes: ["measure", "navigation"] });
     } catch (error) {
-      log.warn("Performance monitoring not available", error, undefined, { 
-        component: "GlobalAnimationIntegration", 
-        function: "initializePerformanceMonitoring" 
+      log.warn("Performance monitoring not available", error, undefined, {
+        component: "GlobalAnimationIntegration",
+        function: "initializePerformanceMonitoring",
       });
     }
   }
@@ -288,9 +288,9 @@ export class GlobalAnimationIntegration {
       try {
         callback(event, data);
       } catch (error) {
-        log.warn("Error in observer", error, undefined, { 
-          component: "GlobalAnimationIntegration", 
-          function: "observe" 
+        log.warn("Error in observer", error, undefined, {
+          component: "GlobalAnimationIntegration",
+          function: "observe",
         });
       }
     });

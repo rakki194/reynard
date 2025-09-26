@@ -74,7 +74,7 @@ export const Embedding3DVisualization = (props: Embedding3DVisualizationProps) =
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(others.width, others.height);
       renderer.setPixelRatio(window.devicePixelRatio);
-      container().appendChild(renderer.domElement);
+      container()?.appendChild(renderer.domElement);
       // Add lighting
       const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
       scene.add(ambientLight);
@@ -113,7 +113,7 @@ export const Embedding3DVisualization = (props: Embedding3DVisualizationProps) =
     const colors = new Float32Array(transformedData.length * 3);
     const sizes = new Float32Array(transformedData.length);
     // Process data points
-    transformedData.forEach((point, index) => {
+    transformedData.forEach((point: number[], index: number) => {
       if (point.length >= 3) {
         // Position
         positions[index * 3] = point[0];
@@ -157,12 +157,12 @@ export const Embedding3DVisualization = (props: Embedding3DVisualizationProps) =
     if (!renderer || !points) return;
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
-    const onMouseMove = event => {
-      const rect = renderer.domElement.getBoundingClientRect();
+    const onMouseMove = (event: MouseEvent) => {
+      const rect = renderer!.domElement.getBoundingClientRect();
       mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObject(points);
+      raycaster.setFromCamera(mouse, camera!);
+      const intersects = raycaster.intersectObject(points!);
       if (intersects.length > 0) {
         const pointIndex = intersects[0].index;
         if (pointIndex !== undefined) {
@@ -178,12 +178,12 @@ export const Embedding3DVisualization = (props: Embedding3DVisualizationProps) =
         setHoveredPoint(null);
       }
     };
-    const onMouseClick = event => {
-      const rect = renderer.domElement.getBoundingClientRect();
+    const onMouseClick = (event: MouseEvent) => {
+      const rect = renderer!.domElement.getBoundingClientRect();
       mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObject(points);
+      raycaster.setFromCamera(mouse, camera!);
+      const intersects = raycaster.intersectObject(points!);
       if (intersects.length > 0) {
         const pointIndex = intersects[0].index;
         if (pointIndex !== undefined) {
@@ -197,12 +197,12 @@ export const Embedding3DVisualization = (props: Embedding3DVisualizationProps) =
         }
       }
     };
-    renderer.domElement.addEventListener("mousemove", onMouseMove);
-    renderer.domElement.addEventListener("click", onMouseClick);
+    renderer!.domElement.addEventListener("mousemove", onMouseMove);
+    renderer!.domElement.addEventListener("click", onMouseClick);
     // Store cleanup function
     const cleanup = () => {
-      renderer.domElement.removeEventListener("mousemove", onMouseMove);
-      renderer.domElement.removeEventListener("click", onMouseClick);
+      renderer!.domElement.removeEventListener("mousemove", onMouseMove);
+      renderer!.domElement.removeEventListener("click", onMouseClick);
     };
     return cleanup;
   };
@@ -217,7 +217,7 @@ export const Embedding3DVisualization = (props: Embedding3DVisualizationProps) =
       maxY = -Infinity;
     let minZ = Infinity,
       maxZ = -Infinity;
-    data.forEach(point => {
+    data.forEach((point: number[]) => {
       if (point.length >= 3) {
         minX = Math.min(minX, point[0]);
         maxX = Math.max(maxX, point[0]);

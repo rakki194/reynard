@@ -1,16 +1,16 @@
 /**
  * 🦊 Chroma Model Validator Component
- * 
+ *
  * Model validation interface with compatibility checks
  * following Reynard's validation component patterns.
  */
 
-import { Show, createSignal, createEffect, Component } from 'solid-js';
-import { Card } from 'reynard-components-core/primitives';
-import { Button } from 'reynard-components-core/primitives';
-import { TextField } from 'reynard-components-core/primitives';
-import { Badge } from 'reynard-components-core/primitives';
-import { fluentIconsPackage } from 'reynard-fluent-icons';
+import { Show, createSignal, createEffect, Component } from "solid-js";
+import { Card } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { TextField } from "reynard-primitives";
+import { Badge } from "reynard-primitives";
+import { fluentIconsPackage } from "reynard-fluent-icons";
 
 export interface ChromaModelInfo {
   path: string;
@@ -43,8 +43,8 @@ export interface ChromaModelValidatorProps {
   compact?: boolean;
 }
 
-export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props) => {
-  const [modelPath, setModelPath] = createSignal(props.modelPath || '');
+export const ChromaModelValidator: Component<ChromaModelValidatorProps> = props => {
+  const [modelPath, setModelPath] = createSignal(props.modelPath || "");
   const [modelInfo, setModelInfo] = createSignal<ChromaModelInfo | null>(null);
   const [validationResult, setValidationResult] = createSignal<ValidationResult | null>(null);
   const [isValidating, setIsValidating] = createSignal(false);
@@ -53,23 +53,23 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
   // Known Chroma models
   const knownModels: ChromaModelInfo[] = [
     {
-      path: '/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v47.safetensors',
-      name: 'Chroma Unlocked v47',
-      version: 'v47',
+      path: "/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v47.safetensors",
+      name: "Chroma Unlocked v47",
+      version: "v47",
       size: 2.1 * 1024 * 1024 * 1024, // 2.1 GB
-      format: 'safetensors',
-      lastModified: '2024-01-15T10:30:00Z',
-      checksum: 'sha256:abc123...'
+      format: "safetensors",
+      lastModified: "2024-01-15T10:30:00Z",
+      checksum: "sha256:abc123...",
     },
     {
-      path: '/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v50.safetensors',
-      name: 'Chroma Unlocked v50',
-      version: 'v50',
+      path: "/home/kade/runeset/wolfy/models/unet/chroma-unlocked-v50.safetensors",
+      name: "Chroma Unlocked v50",
+      version: "v50",
       size: 2.3 * 1024 * 1024 * 1024, // 2.3 GB
-      format: 'safetensors',
-      lastModified: '2024-01-20T14:45:00Z',
-      checksum: 'sha256:def456...'
-    }
+      format: "safetensors",
+      lastModified: "2024-01-20T14:45:00Z",
+      checksum: "sha256:def456...",
+    },
   ];
 
   // Validate model
@@ -77,7 +77,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
     if (!path) {
       setValidationResult({
         isValid: false,
-        errors: ['Model path is required'],
+        errors: ["Model path is required"],
         warnings: [],
         info: [],
         compatibility: {
@@ -85,24 +85,24 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
           supports_flux_shift: false,
           recommended_rank: 0,
           max_rank: 0,
-          supported_dtypes: []
-        }
+          supported_dtypes: [],
+        },
       });
       return;
     }
 
     setIsValidating(true);
-    
+
     try {
       // Mock validation - in real implementation, this would call the backend
       const knownModel = knownModels.find(model => model.path === path);
-      
+
       if (knownModel) {
         setModelInfo(knownModel);
-        
+
         // Simulate validation delay
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         const result: ValidationResult = {
           isValid: true,
           errors: [],
@@ -111,47 +111,47 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
             `Model: ${knownModel.name}`,
             `Version: ${knownModel.version}`,
             `Size: ${formatFileSize(knownModel.size)}`,
-            `Format: ${knownModel.format.toUpperCase()}`
+            `Format: ${knownModel.format.toUpperCase()}`,
           ],
           compatibility: {
             supports_lora: true,
             supports_flux_shift: true,
             recommended_rank: 32,
             max_rank: 128,
-            supported_dtypes: ['bfloat16', 'float16', 'float8']
-          }
+            supported_dtypes: ["bfloat16", "float16", "float8"],
+          },
         };
-        
+
         // Add warnings based on model version
-        if (knownModel.version === 'v47') {
-          result.warnings.push('Consider upgrading to v50 for better performance');
+        if (knownModel.version === "v47") {
+          result.warnings.push("Consider upgrading to v50 for better performance");
         }
-        
+
         setValidationResult(result);
         props.onValidationComplete?.(result);
       } else {
         // Unknown model - perform basic validation
         const result: ValidationResult = {
-          isValid: path.endsWith('.safetensors'),
-          errors: path.endsWith('.safetensors') ? [] : ['Model must be in SafeTensors format'],
-          warnings: ['Unknown model - compatibility not guaranteed'],
-          info: ['Custom model detected'],
+          isValid: path.endsWith(".safetensors"),
+          errors: path.endsWith(".safetensors") ? [] : ["Model must be in SafeTensors format"],
+          warnings: ["Unknown model - compatibility not guaranteed"],
+          info: ["Custom model detected"],
           compatibility: {
-            supports_lora: path.endsWith('.safetensors'),
-            supports_flux_shift: path.endsWith('.safetensors'),
+            supports_lora: path.endsWith(".safetensors"),
+            supports_flux_shift: path.endsWith(".safetensors"),
             recommended_rank: 16,
             max_rank: 64,
-            supported_dtypes: ['bfloat16', 'float16']
-          }
+            supported_dtypes: ["bfloat16", "float16"],
+          },
         };
-        
+
         setValidationResult(result);
         props.onValidationComplete?.(result);
       }
     } catch (error) {
       const result: ValidationResult = {
         isValid: false,
-        errors: [error instanceof Error ? error.message : 'Validation failed'],
+        errors: [error instanceof Error ? error.message : "Validation failed"],
         warnings: [],
         info: [],
         compatibility: {
@@ -159,10 +159,10 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
           supports_flux_shift: false,
           recommended_rank: 0,
           max_rank: 0,
-          supported_dtypes: []
-        }
+          supported_dtypes: [],
+        },
       };
-      
+
       setValidationResult(result);
       props.onValidationComplete?.(result);
     } finally {
@@ -200,71 +200,71 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
   // Get validation icon
   const getValidationIcon = () => {
     if (isValidating()) {
-      return fluentIconsPackage.getIcon('spinner');
+      return fluentIconsPackage.getIcon("spinner");
     }
     if (!validationResult()) {
-      return fluentIconsPackage.getIcon('question-circle');
+      return fluentIconsPackage.getIcon("question-circle");
     }
     if (validationResult()!.isValid) {
-      return fluentIconsPackage.getIcon('checkmark-circle');
+      return fluentIconsPackage.getIcon("checkmark-circle");
     }
-    return fluentIconsPackage.getIcon('dismiss-circle');
+    return fluentIconsPackage.getIcon("dismiss-circle");
   };
 
   // Get validation color
   const getValidationColor = () => {
     if (isValidating()) {
-      return 'secondary';
+      return "secondary";
     }
     if (!validationResult()) {
-      return 'outline';
+      return "outline";
     }
     if (validationResult()!.isValid) {
-      return 'secondary';
+      return "secondary";
     }
-    return 'destructive';
+    return "destructive";
   };
 
   // Get validation message
   const getValidationMessage = () => {
     if (isValidating()) {
-      return 'Validating model...';
+      return "Validating model...";
     }
     if (!validationResult()) {
-      return 'Enter model path to validate';
+      return "Enter model path to validate";
     }
     if (validationResult()!.isValid) {
-      return 'Model is valid and compatible';
+      return "Model is valid and compatible";
     }
-    return 'Model validation failed';
+    return "Model validation failed";
   };
 
   // Get error icon
-  const getErrorIcon = (type: 'error' | 'warning' | 'info') => {
+  const getErrorIcon = (type: "error" | "warning" | "info") => {
     switch (type) {
-      case 'error':
-        return fluentIconsPackage.getIcon('dismiss-circle');
-      case 'warning':
-        return fluentIconsPackage.getIcon('warning');
-      case 'info':
-        return fluentIconsPackage.getIcon('info');
+      case "error":
+        return fluentIconsPackage.getIcon("dismiss-circle");
+      case "warning":
+        return fluentIconsPackage.getIcon("warning");
+      case "info":
+        return fluentIconsPackage.getIcon("info");
     }
   };
 
   // Get error color
-  const getErrorColor = (type: 'error' | 'warning' | 'info') => {
+  const getErrorColor = (type: "error" | "warning" | "info") => {
     switch (type) {
-      case 'error':
-        return 'destructive';
-      case 'warning':
-        return 'outline';
-      case 'info':
-        return 'default';
+      case "error":
+        return "destructive";
+      case "warning":
+        return "outline";
+      case "info":
+        return "default";
     }
   };
 
   return (
-    <Card class={`chroma-model-validator ${props.compact ? 'compact' : ''}`}>
+    <Card class={`chroma-model-validator ${props.compact ? "compact" : ""}`}>
       <div class="validator-header">
         <div class="validator-title">
           <h3>Chroma Model Validator</h3>
@@ -272,22 +272,18 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
             <span class="validation-icon">
               <div
                 // eslint-disable-next-line solid/no-innerhtml
-                innerHTML={getValidationIcon()?.outerHTML || ''}
+                innerHTML={getValidationIcon()?.outerHTML || ""}
               />
             </span>
             {getValidationMessage()}
           </Badge>
         </div>
-        
+
         <div class="validator-actions">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => setIsExpanded(!isExpanded())}
-          >
+          <Button variant="ghost" size="sm" onClick={() => setIsExpanded(!isExpanded())}>
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon(isExpanded() ? 'chevron-up' : 'chevron-down')?.outerHTML || ''}
+              innerHTML={fluentIconsPackage.getIcon(isExpanded() ? "chevron-up" : "chevron-down")?.outerHTML || ""}
             />
           </Button>
         </div>
@@ -301,7 +297,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
             <TextField
               label="Chroma Model Path"
               value={modelPath()}
-              onChange={(e) => handleModelPathChange(e.currentTarget.value)}
+              onChange={e => handleModelPathChange(e.currentTarget.value)}
               placeholder="/path/to/chroma-model.safetensors"
               fullWidth
             />
@@ -312,8 +308,8 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
             <h4>Known Chroma Models</h4>
             <div class="known-models-grid">
               {knownModels.map(model => (
-                <div 
-                  class={`known-model-card ${modelPath() === model.path ? 'selected' : ''}`}
+                <div
+                  class={`known-model-card ${modelPath() === model.path ? "selected" : ""}`}
                   onClick={() => selectKnownModel(model)}
                 >
                   <div class="model-header">
@@ -379,21 +375,23 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
           <Show when={validationResult()}>
             <div class="validation-results-section">
               <h4>Validation Results</h4>
-              
+
               {/* Compatibility Information */}
               <div class="compatibility-info">
                 <h5>Compatibility</h5>
                 <div class="compatibility-grid">
                   <div class="compatibility-item">
                     <span class="label">LoRA Support:</span>
-                    <Badge variant={validationResult()!.compatibility.supports_lora ? 'secondary' : 'destructive'}>
-                      {validationResult()!.compatibility.supports_lora ? 'Yes' : 'No'}
+                    <Badge variant={validationResult()!.compatibility.supports_lora ? "secondary" : "destructive"}>
+                      {validationResult()!.compatibility.supports_lora ? "Yes" : "No"}
                     </Badge>
                   </div>
                   <div class="compatibility-item">
                     <span class="label">Flux Shift:</span>
-                    <Badge variant={validationResult()!.compatibility.supports_flux_shift ? 'secondary' : 'destructive'}>
-                      {validationResult()!.compatibility.supports_flux_shift ? 'Yes' : 'No'}
+                    <Badge
+                      variant={validationResult()!.compatibility.supports_flux_shift ? "secondary" : "destructive"}
+                    >
+                      {validationResult()!.compatibility.supports_flux_shift ? "Yes" : "No"}
                     </Badge>
                   </div>
                   <div class="compatibility-item">
@@ -405,7 +403,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
                     <Badge variant="outline">{validationResult()!.compatibility.max_rank}</Badge>
                   </div>
                 </div>
-                
+
                 <div class="supported-dtypes">
                   <span class="label">Supported Data Types:</span>
                   <div class="dtype-badges">
@@ -417,7 +415,13 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
               </div>
 
               {/* Validation Messages */}
-              <Show when={validationResult()!.errors.length > 0 || validationResult()!.warnings.length > 0 || validationResult()!.info.length > 0}>
+              <Show
+                when={
+                  validationResult()!.errors.length > 0 ||
+                  validationResult()!.warnings.length > 0 ||
+                  validationResult()!.info.length > 0
+                }
+              >
                 <div class="validation-messages">
                   <Show when={validationResult()!.errors.length > 0}>
                     <div class="message-group errors">
@@ -427,7 +431,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
                           <span class="message-icon">
                             <div
                               // eslint-disable-next-line solid/no-innerhtml
-                              innerHTML={getErrorIcon('error')?.outerHTML || ''}
+                              innerHTML={getErrorIcon("error")?.outerHTML || ""}
                             />
                           </span>
                           <span class="message-text">{error}</span>
@@ -435,7 +439,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
                       ))}
                     </div>
                   </Show>
-                  
+
                   <Show when={validationResult()!.warnings.length > 0}>
                     <div class="message-group warnings">
                       <h6>Warnings</h6>
@@ -444,7 +448,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
                           <span class="message-icon">
                             <div
                               // eslint-disable-next-line solid/no-innerhtml
-                              innerHTML={getErrorIcon('warning')?.outerHTML || ''}
+                              innerHTML={getErrorIcon("warning")?.outerHTML || ""}
                             />
                           </span>
                           <span class="message-text">{warning}</span>
@@ -452,7 +456,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
                       ))}
                     </div>
                   </Show>
-                  
+
                   <Show when={validationResult()!.info.length > 0}>
                     <div class="message-group info">
                       <h6>Information</h6>
@@ -461,7 +465,7 @@ export const ChromaModelValidator: Component<ChromaModelValidatorProps> = (props
                           <span class="message-icon">
                             <div
                               // eslint-disable-next-line solid/no-innerhtml
-                              innerHTML={getErrorIcon('info')?.outerHTML || ''}
+                              innerHTML={getErrorIcon("info")?.outerHTML || ""}
                             />
                           </span>
                           <span class="message-text">{info}</span>

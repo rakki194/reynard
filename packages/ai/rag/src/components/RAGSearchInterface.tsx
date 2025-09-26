@@ -5,8 +5,8 @@
  * Extracted from RAGSearch.tsx to follow the 140-line axiom.
  */
 import { createSignal, Show } from "solid-js";
-import { Tabs, Button, Select, TextField } from "reynard-components-core";
-import { Icon } from "reynard-components-core";
+import { Tabs, Button, Select, TextField } from "reynard-primitives";
+import { Icon } from "reynard-primitives";
 import { RAGTabPanels } from "../RAGTabPanels";
 import { createRAGTabConfig } from "../tab-config";
 import type { RAGSearchProps, RAGModality } from "../types";

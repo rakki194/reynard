@@ -3,7 +3,7 @@
  * Detailed service status panel with actions, progress, dependencies, and metrics
  */
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 import { ServiceHealthIndicator } from "./ServiceHealthIndicator";
@@ -181,7 +181,7 @@ export const ServiceStatusPanel = props => {
     // In a real implementation, this would call the backend restart endpoint
     log.info(`Restarting service: ${serviceName}`, undefined, {
       component: "ServiceStatusPanel",
-      function: "restartService"
+      function: "restartService",
     });
     // Simulate restart
     const updatedServices = { ...services() };

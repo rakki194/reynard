@@ -1,25 +1,25 @@
 /**
  * 🦊 Training Timeline Component
- * 
+ *
  * Real-time training progress timeline with milestones and events
  * following Reynard's timeline visualization patterns.
  */
 
-import { Show, createSignal, createEffect, Component, onMount, onCleanup } from 'solid-js';
-import { Card } from 'reynard-components-core/primitives';
-import { Button } from 'reynard-components-core/primitives';
-import { Badge } from 'reynard-components-core/primitives';
-import { fluentIconsPackage } from 'reynard-fluent-icons';
-import { useTrainingWebSocket } from '../hooks/useTrainingWebSocket';
+import { Show, createSignal, createEffect, Component, onMount, onCleanup } from "solid-js";
+import { Card } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { Badge } from "reynard-primitives";
+import { fluentIconsPackage } from "reynard-fluent-icons";
+import { useTrainingWebSocket } from "../hooks/useTrainingWebSocket";
 
 export interface TimelineEvent {
   id: string;
   timestamp: Date;
-  type: 'start' | 'epoch' | 'checkpoint' | 'milestone' | 'error' | 'complete';
+  type: "start" | "epoch" | "checkpoint" | "milestone" | "error" | "complete";
   title: string;
   description?: string;
   data?: any;
-  status: 'pending' | 'active' | 'completed' | 'failed';
+  status: "pending" | "active" | "completed" | "failed";
 }
 
 export interface TrainingTimelineProps {
@@ -38,12 +38,15 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
   const [selectedEvent, setSelectedEvent] = createSignal<TimelineEvent | null>(null);
 
   // WebSocket integration for real-time timeline updates
-  const websocket = props.websocketUrl && props.trainingId ? useTrainingWebSocket({
-    url: props.websocketUrl,
-    reconnectInterval: 5000,
-    maxReconnectAttempts: 5,
-    heartbeatInterval: 30000,
-  }) : null;
+  const websocket =
+    props.websocketUrl && props.trainingId
+      ? useTrainingWebSocket({
+          url: props.websocketUrl,
+          reconnectInterval: 5000,
+          maxReconnectAttempts: 5,
+          heartbeatInterval: 30000,
+        })
+      : null;
 
   // Handle WebSocket events for real-time timeline updates
   createEffect(() => {
@@ -54,48 +57,48 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
           let timelineEvent: TimelineEvent | null = null;
 
           switch (event.type) {
-            case 'progress':
+            case "progress":
               timelineEvent = {
                 id: `progress-${event.timestamp.getTime()}`,
                 timestamp: event.timestamp,
-                type: 'epoch',
-                title: `Epoch ${event.data.epoch || 'N/A'}`,
+                type: "epoch",
+                title: `Epoch ${event.data.epoch || "N/A"}`,
                 description: `Progress: ${event.data.progress || 0}%`,
                 data: event.data,
-                status: 'completed',
+                status: "completed",
               };
               break;
-            case 'status':
+            case "status":
               timelineEvent = {
                 id: `status-${event.timestamp.getTime()}`,
                 timestamp: event.timestamp,
-                type: 'milestone',
-                title: event.data.status || 'Status Update',
+                type: "milestone",
+                title: event.data.status || "Status Update",
                 description: event.data.message,
                 data: event.data,
-                status: 'completed',
+                status: "completed",
               };
               break;
-            case 'error':
+            case "error":
               timelineEvent = {
                 id: `error-${event.timestamp.getTime()}`,
                 timestamp: event.timestamp,
-                type: 'error',
-                title: 'Error Occurred',
-                description: event.data.message || 'Unknown error',
+                type: "error",
+                title: "Error Occurred",
+                description: event.data.message || "Unknown error",
                 data: event.data,
-                status: 'failed',
+                status: "failed",
               };
               break;
-            case 'complete':
+            case "complete":
               timelineEvent = {
                 id: `complete-${event.timestamp.getTime()}`,
                 timestamp: event.timestamp,
-                type: 'complete',
-                title: 'Training Complete',
-                description: 'Training has finished successfully',
+                type: "complete",
+                title: "Training Complete",
+                description: "Training has finished successfully",
                 data: event.data,
-                status: 'completed',
+                status: "completed",
               };
               break;
           }
@@ -131,56 +134,56 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
   // Get event type color
   const getEventTypeColor = (type: string) => {
     switch (type) {
-      case 'start':
-        return 'default';
-      case 'epoch':
-        return 'secondary';
-      case 'checkpoint':
-        return 'outline';
-      case 'milestone':
-        return 'default';
-      case 'error':
-        return 'destructive';
-      case 'complete':
-        return 'default';
+      case "start":
+        return "default";
+      case "epoch":
+        return "secondary";
+      case "checkpoint":
+        return "outline";
+      case "milestone":
+        return "default";
+      case "error":
+        return "destructive";
+      case "complete":
+        return "default";
       default:
-        return 'secondary';
+        return "secondary";
     }
   };
 
   // Get event type icon
   const getEventTypeIcon = (type: string) => {
     switch (type) {
-      case 'start':
-        return fluentIconsPackage.getIcon('play');
-      case 'epoch':
-        return fluentIconsPackage.getIcon('arrow-right');
-      case 'checkpoint':
-        return fluentIconsPackage.getIcon('save');
-      case 'milestone':
-        return fluentIconsPackage.getIcon('flag');
-      case 'error':
-        return fluentIconsPackage.getIcon('error');
-      case 'complete':
-        return fluentIconsPackage.getIcon('checkmark-circle');
+      case "start":
+        return fluentIconsPackage.getIcon("play");
+      case "epoch":
+        return fluentIconsPackage.getIcon("arrow-right");
+      case "checkpoint":
+        return fluentIconsPackage.getIcon("save");
+      case "milestone":
+        return fluentIconsPackage.getIcon("flag");
+      case "error":
+        return fluentIconsPackage.getIcon("error");
+      case "complete":
+        return fluentIconsPackage.getIcon("checkmark-circle");
       default:
-        return fluentIconsPackage.getIcon('info');
+        return fluentIconsPackage.getIcon("info");
     }
   };
 
   // Get status color
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending':
-        return 'secondary';
-      case 'active':
-        return 'default';
-      case 'completed':
-        return 'default';
-      case 'failed':
-        return 'destructive';
+      case "pending":
+        return "secondary";
+      case "active":
+        return "default";
+      case "completed":
+        return "default";
+      case "failed":
+        return "destructive";
       default:
-        return 'secondary';
+        return "secondary";
     }
   };
 
@@ -199,13 +202,13 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
   const getProgressPercentage = () => {
     const events = timelineEvents();
     if (events.length === 0) return 0;
-    
-    const completedEvents = events.filter(e => e.status === 'completed').length;
+
+    const completedEvents = events.filter(e => e.status === "completed").length;
     return Math.round((completedEvents / events.length) * 100);
   };
 
   return (
-    <Card class={`training-timeline ${props.compact ? 'compact' : ''}`}>
+    <Card class={`training-timeline ${props.compact ? "compact" : ""}`}>
       <div class="timeline-header">
         <div class="timeline-title">
           <h3>Training Timeline</h3>
@@ -229,9 +232,7 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
               </Badge>
             </Show>
             <Show when={props.showProgress}>
-              <Badge variant="outline">
-                {getProgressPercentage()}% Complete
-              </Badge>
+              <Badge variant="outline">{getProgressPercentage()}% Complete</Badge>
             </Show>
           </div>
         </div>
@@ -240,7 +241,7 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
           <Button variant="ghost" size="sm" onClick={() => setIsExpanded(!isExpanded())}>
             <div
               // eslint-disable-next-line solid/no-innerhtml
-              innerHTML={fluentIconsPackage.getIcon(isExpanded() ? 'chevron-up' : 'chevron-down')?.outerHTML || ''}
+              innerHTML={fluentIconsPackage.getIcon(isExpanded() ? "chevron-up" : "chevron-down")?.outerHTML || ""}
             />
           </Button>
         </div>
@@ -252,7 +253,7 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
             <div class="timeline-empty">
               <div
                 // eslint-disable-next-line solid/no-innerhtml
-                innerHTML={fluentIconsPackage.getIcon('timeline')?.outerHTML || ''}
+                innerHTML={fluentIconsPackage.getIcon("timeline")?.outerHTML || ""}
               />
               <p>No timeline events yet</p>
               <small>Events will appear here as training progresses</small>
@@ -267,7 +268,7 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
                     <div class="event-icon">
                       <div
                         // eslint-disable-next-line solid/no-innerhtml
-                        innerHTML={getEventTypeIcon(event.type)?.outerHTML || ''}
+                        innerHTML={getEventTypeIcon(event.type)?.outerHTML || ""}
                       />
                     </div>
                     <Show when={index < timelineEvents().length - 1}>
@@ -279,15 +280,11 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
                     <div class="event-header">
                       <div class="event-title">
                         <h4>{event.title}</h4>
-                        <Badge variant={getEventTypeColor(event.type)}>
-                          {event.type}
-                        </Badge>
+                        <Badge variant={getEventTypeColor(event.type)}>{event.type}</Badge>
                       </div>
                       <div class="event-meta">
                         <span class="event-time">{formatTimestamp(event.timestamp)}</span>
-                        <Badge variant={getStatusColor(event.status)}>
-                          {event.status}
-                        </Badge>
+                        <Badge variant={getStatusColor(event.status)}>{event.status}</Badge>
                       </div>
                     </div>
 
@@ -319,7 +316,7 @@ export const TrainingTimeline: Component<TrainingTimelineProps> = props => {
               <Button variant="ghost" size="sm" onClick={() => setSelectedEvent(null)}>
                 <div
                   // eslint-disable-next-line solid/no-innerhtml
-                  innerHTML={fluentIconsPackage.getIcon('dismiss')?.outerHTML || ''}
+                  innerHTML={fluentIconsPackage.getIcon("dismiss")?.outerHTML || ""}
                 />
               </Button>
             </div>

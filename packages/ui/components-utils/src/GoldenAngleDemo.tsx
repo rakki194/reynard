@@ -4,7 +4,7 @@
  */
 
 import { Component, For, createSignal, onMount } from "solid-js";
-import { Slider, Toggle } from "reynard-components-core";
+import { Slider, Toggle } from "reynard-primitives";
 
 const GOLDEN_ANGLE = (137.507 * Math.PI) / 180;
 

@@ -3,6 +3,15 @@
 _Professional data visualization components for SolidJS applications with OKLCH color integration and
 real-time capabilities._
 
+## 🏗️ Recent Fixes
+
+**September 2025**: Major TypeScript and build dependency fixes:
+
+- **✅ Fixed TypeScript Errors**: Resolved all compilation errors in chart components
+- **✅ Resolved Circular Dependencies**: Fixed build dependency issues with UI packages
+- **✅ Updated Imports**: Now uses `reynard-primitives` for basic UI components
+- **✅ Build Stability**: Package now builds successfully without errors
+
 ## Overview
 
 Reynard Charts provides a comprehensive suite of data visualization components built on Chart.js,
@@ -13,7 +22,7 @@ statistical analysis tools, and performance optimization.
 ## Installation
 
 ```bash
-npm install reynard-charts reynard-core reynard-colors chart.js solid-chartjs solid-js
+npm install reynard-charts reynard-primitives reynard-core reynard-colors chart.js solid-chartjs solid-js
 ```
 
 ## Quick Start

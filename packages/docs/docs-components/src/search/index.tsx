@@ -2,7 +2,7 @@
  * @fileoverview Search components for documentation sites
  */
 import { createSignal, createEffect, For, Show } from "solid-js";
-import { Button, TextField } from "reynard-components-core";
+import { Button, TextField } from "reynard-primitives";
 /**
  * Search input component
  */

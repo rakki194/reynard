@@ -3,7 +3,7 @@
  * Authentication service status monitoring
  */
 import { Show, For, createSignal, onMount } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 export const ServiceAuthStatus = props => {
@@ -54,7 +54,7 @@ export const ServiceAuthStatus = props => {
     } catch (error) {
       log.error("Failed to check auth services", error instanceof Error ? error : new Error(String(error)), undefined, {
         component: "ServiceAuthStatus",
-        function: "checkAuthServices"
+        function: "checkAuthServices",
       });
     } finally {
       setIsChecking(false);

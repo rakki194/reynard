@@ -121,12 +121,12 @@ Systematic approach to debugging MCP issues:
 
 ### Tools Not Appearing in Cursor
 
-**Cause**: Schema format issues or connection problems
+**Cause**: Schema format issues, connection problems, or disabled tools
 **Solution**:
 
 1. Verify `inputSchema` format (not `parameters`)
 2. Restart Cursor's MCP connection
-3. Check tool configuration in `tool_config.json`
+3. Confirm tool is enabled via `GET /api/mcp/tool-config/tools/{name}`
 
 ### Authentication Errors
 
@@ -183,7 +183,7 @@ Systematic approach to debugging MCP issues:
 
 - [Reynard MCP Server](https://github.com/your-org/reynard/tree/main/services/mcp-server)
 - [Tool Registry](https://github.com/your-org/reynard/tree/main/services/mcp-server/tools)
-- [Configuration](https://github.com/your-org/reynard/tree/main/services/mcp-server/tool_config.json)
+- Tool Configuration API: `/api/mcp/tool-config/*` (FastAPI backend)
 
 ### Community
 

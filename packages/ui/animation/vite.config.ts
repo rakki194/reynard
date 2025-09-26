@@ -24,7 +24,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ["solid-js"],
+      external: ["solid-js", "reynard-colors", "reynard-error-boundaries"],
       output: {
         globals: {
           "solid-js": "SolidJS",

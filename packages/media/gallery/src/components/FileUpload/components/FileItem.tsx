@@ -4,7 +4,7 @@
  */
 
 import { Component, Show } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import type { FileUploadItem } from "../types";
 import { formatFileSize } from "../utils/file-utils";
 

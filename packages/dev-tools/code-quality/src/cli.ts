@@ -13,6 +13,7 @@ import {
   handleSecurityCommand,
   handleWatchCommand,
   handleJunkDetectionCommand,
+  createNamingViolationCommand,
   createDocstringCommand,
   createEmojiRoleplayCommand,
 } from "./commands";
@@ -85,6 +86,9 @@ program
   .option("-c, --category <type>", "Filter by category (all, python, typescript, reynard, general)", "all")
   .option("--fix", "Generate git commands to fix detected issues")
   .action(handleJunkDetectionCommand);
+
+// Naming violation command
+program.addCommand(createNamingViolationCommand());
 
 // Docstring command
 program.addCommand(createDocstringCommand());

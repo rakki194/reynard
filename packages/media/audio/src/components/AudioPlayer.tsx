@@ -15,7 +15,7 @@
 import { createSignal, createEffect, onMount, onCleanup, Show, For } from "solid-js";
 import { AudioWaveformVisualizer } from "./AudioWaveformVisualizer";
 import "./AudioPlayer.css";
-import { Slider } from "reynard-components-core";
+import { Slider } from "reynard-primitives";
 export const AudioPlayer = props => {
   const [currentTrackIndex, setCurrentTrackIndex] = createSignal(props.initialTrack || 0);
   const [isPlaying, setIsPlaying] = createSignal(false);

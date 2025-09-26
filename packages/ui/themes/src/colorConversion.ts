@@ -121,7 +121,7 @@ export function oklchStringToCSS(oklchColor: string): string {
     // Fallback to a default color if parsing fails
     log.warn(`Invalid OKLCH color format: ${oklchColor}`, undefined, {
       component: "colorConversion",
-      function: "oklchStringToCSS"
+      function: "oklchStringToCSS",
     });
     return "oklch(40% 0.02 0)"; // Neutral gray fallback
   }
@@ -142,7 +142,7 @@ export function oklchStringToRgb(oklchColor: string): string {
     // Fallback to a default color if parsing fails
     log.warn(`Invalid OKLCH color format: ${oklchColor}`, undefined, {
       component: "colorConversion",
-      function: "oklchStringToCSS"
+      function: "oklchStringToCSS",
     });
     return "#666666";
   }
@@ -165,7 +165,7 @@ export function oklchStringToCSSWithAlpha(oklchColor: string, alpha: number = 1)
     // Fallback to a default color if parsing fails
     log.warn(`Invalid OKLCH color format: ${oklchColor}`, undefined, {
       component: "colorConversion",
-      function: "oklchStringToCSS"
+      function: "oklchStringToCSS",
     });
     return `oklch(40% 0.02 0 / ${alpha})`;
   }
@@ -187,7 +187,7 @@ export function oklchStringToHex(oklchColor: string): string {
   if (!oklch) {
     log.warn(`Invalid OKLCH color format: ${oklchColor}`, undefined, {
       component: "colorConversion",
-      function: "oklchStringToCSS"
+      function: "oklchStringToCSS",
     });
     return "#666666";
   }

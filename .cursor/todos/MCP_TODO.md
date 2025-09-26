@@ -6,6 +6,31 @@
 
 Transform the MCP server from a fragile, error-prone system into an unbreakable, idiot-proof fortress of tool management excellence!
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for MCP tool access (Tool Admin, Tool User, Tool Viewer)
+- [ ] Identify resource permissions needed (execute, configure, view, audit)
+- [ ] Plan context-specific access control (tool-level, category-level permissions)
+- [ ] Design audit trail requirements (tool execution logging, access attempts)
+
+### **Integration Points**
+
+- [ ] Update MCP tool endpoints with RBAC middleware
+- [ ] Add permission checks to tool execution layer
+- [ ] Implement role-based tool visibility
+- [ ] Add audit logging for tool access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based tool access control
+- [ ] Verify permission inheritance for tool categories
+- [ ] Test context-specific permissions (public vs private tools)
+- [ ] Validate audit trail functionality for tool execution
+
 ### 🏆 **Quest Objectives**
 
 #### **Phase 1: Schema Standardization & Validation** ⚔️

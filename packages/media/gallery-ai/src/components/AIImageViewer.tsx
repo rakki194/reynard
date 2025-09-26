@@ -5,7 +5,7 @@
  * Integrates with the annotation system to provide seamless caption workflow.
  */
 import { Show, For, createSignal, onMount } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { useAIGalleryContext } from "../composables/useGalleryAI";
 export const AIImageViewer = props => {
   const ai = useAIGalleryContext();

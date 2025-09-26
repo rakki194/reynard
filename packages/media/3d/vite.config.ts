@@ -11,7 +11,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["solid-js", "three", "three/examples/jsm/controls/OrbitControls.js"],
+      external: ["solid-js", "three", "three/examples/jsm/controls/OrbitControls.js", "reynard-primitives"],
       output: {
         globals: {
           "solid-js": "SolidJS",

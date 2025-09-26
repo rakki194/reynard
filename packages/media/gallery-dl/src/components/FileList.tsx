@@ -4,7 +4,7 @@
  * Displays downloaded files with filtering, sorting, and management capabilities.
  */
 import { Component, createSignal, createMemo, For, Show } from "solid-js";
-import { Card, Button, TextField, Icon } from "reynard-components-core";
+import { Card, Button, TextField, Icon } from "reynard-primitives";
 
 export interface FileItem {
   id: string;

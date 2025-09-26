@@ -3,8 +3,8 @@
  * Comprehensive package management dashboard with discovery, installation, and lifecycle management
  */
 import { Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Tabs } from "reynard-components-core/primitives";
-import { Button } from "reynard-components-core/primitives";
+import { Tabs } from "reynard-primitives";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 import { PackageDiscoveryPanel } from "./PackageDiscoveryPanel";
@@ -73,10 +73,15 @@ export const PackageManagementDashboard = props => {
       await Promise.all([refreshPackageData(), refreshDiscoveryData(), refreshAnalyticsData()]);
       setLastRefresh(new Date());
     } catch (error) {
-      log.error("Failed to refresh package data", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "PackageManagementDashboard",
-        function: "refreshPackageData"
-      });
+      log.error(
+        "Failed to refresh package data",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "PackageManagementDashboard",
+          function: "refreshPackageData",
+        }
+      );
     } finally {
       setIsRefreshing(false);
     }

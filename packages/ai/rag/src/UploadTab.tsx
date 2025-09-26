@@ -5,8 +5,8 @@
  * with progress tracking and file type validation.
  */
 import { Show } from "solid-js";
-import { Card } from "reynard-components-core";
-import { Icon } from "reynard-components-core";
+import { Card } from "reynard-primitives";
+import { Icon } from "reynard-primitives";
 export function UploadTab(props: any) {
   return (
     <div class="upload-tab-content">

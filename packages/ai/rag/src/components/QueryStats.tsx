@@ -4,7 +4,7 @@
  * Displays performance metrics for RAG queries
  * including query time, embedding time, and search time.
  */
-import { Icon } from "reynard-components-core";
+import { Icon } from "reynard-primitives";
 export const QueryStats = (props: any) => {
   return (
     <div class="query-stats">

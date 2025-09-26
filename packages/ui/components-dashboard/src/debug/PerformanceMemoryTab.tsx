@@ -3,7 +3,7 @@
  * Memory tracking tab for performance dashboard
  */
 import { Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { log } from "reynard-error-boundaries";
 export const PerformanceMemoryTab = props => {
   const [isMonitoring, setIsMonitoring] = createSignal(false);
@@ -91,10 +91,15 @@ export const PerformanceMemoryTab = props => {
       });
       setLastUpdate(new Date());
     } catch (error) {
-      log.error("Failed to update memory statistics", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "PerformanceMemoryTab",
-        function: "updateMemoryStats"
-      });
+      log.error(
+        "Failed to update memory statistics",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "PerformanceMemoryTab",
+          function: "updateMemoryStats",
+        }
+      );
     } finally {
       setIsRefreshing(false);
     }
@@ -121,7 +126,7 @@ export const PerformanceMemoryTab = props => {
     } else {
       log.warn("Garbage collection not available in this environment", undefined, {
         component: "PerformanceMemoryTab",
-        function: "triggerGarbageCollection"
+        function: "triggerGarbageCollection",
       });
     }
   };

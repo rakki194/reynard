@@ -4,8 +4,8 @@
  * Displays image metadata in a collapsible card
  */
 import { For, Show } from "solid-js";
-import { Card, Button } from "reynard-components-core";
-import { Icon } from "reynard-components-core";
+import { Card, Button } from "reynard-primitives";
+import { Icon } from "reynard-primitives";
 export const ImageMetadata = (props: any) => {
   return (
     <Show when={props.isVisible && props.metadata}>

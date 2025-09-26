@@ -36,7 +36,7 @@
   },
   "keywords": ["components", "utils", "helpers", "reynard"],
   "dependencies": {
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-colors": "workspace:*"
   },

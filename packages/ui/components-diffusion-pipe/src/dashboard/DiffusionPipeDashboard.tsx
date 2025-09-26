@@ -6,9 +6,9 @@
  */
 
 import { Show, createSignal, createEffect, onMount, onCleanup, Component } from "solid-js";
-import { Tabs } from "reynard-components-core/primitives";
-import { Button } from "reynard-components-core/primitives";
-import { Card } from "reynard-components-core/primitives";
+import { Tabs } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { Card } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { TrainingCard } from "../training/TrainingCard";
 import { TrainingProgress } from "../training/TrainingProgress";
@@ -323,10 +323,10 @@ export const DiffusionPipeDashboard: Component<DiffusionPipeDashboardProps> = pr
       content: (
         <div class="config-tab">
           <ConfigBuilder
-            onConfigChange={(config) => {
+            onConfigChange={config => {
               console.log("Configuration changed:", config);
             }}
-            onConfigSave={(config) => {
+            onConfigSave={config => {
               console.log("Configuration saved:", config);
             }}
           />
@@ -339,10 +339,10 @@ export const DiffusionPipeDashboard: Component<DiffusionPipeDashboardProps> = pr
       content: (
         <div class="chroma-tab">
           <ChromaTrainingWizard
-            onWizardComplete={(config) => {
+            onWizardComplete={config => {
               console.log("Chroma wizard completed:", config);
             }}
-            onConfigGenerated={(config) => {
+            onConfigGenerated={config => {
               console.log("Chroma config generated:", config);
             }}
           />

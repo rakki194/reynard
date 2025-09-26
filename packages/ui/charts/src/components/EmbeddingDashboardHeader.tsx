@@ -17,25 +17,25 @@ export const EmbeddingDashboardHeader = (props: EmbeddingDashboardHeaderProps) =
       <div class="dashboard-controls">
         <button
           class={`tab-button ${props.activeTab === "distribution" ? "active" : ""}`}
-          onClick={() => props.onTabChange("distribution")}
+          onClick={() => props.onTabChange?.("distribution")}
         >
           Distribution
         </button>
         <button
           class={`tab-button ${props.activeTab === "pca" ? "active" : ""}`}
-          onClick={() => props.onTabChange("pca")}
+          onClick={() => props.onTabChange?.("pca")}
         >
           PCA Analysis
         </button>
         <button
           class={`tab-button ${props.activeTab === "quality" ? "active" : ""}`}
-          onClick={() => props.onTabChange("quality")}
+          onClick={() => props.onTabChange?.("quality")}
         >
           Quality Metrics
         </button>
         <button
           class={`tab-button ${props.activeTab === "3d" ? "active" : ""}`}
-          onClick={() => props.onTabChange("3d")}
+          onClick={() => props.onTabChange?.("3d")}
         >
           3D Visualization
         </button>

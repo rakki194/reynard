@@ -52,7 +52,7 @@ class PerformanceTimer {
     return this.end();
   }
 }
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { createSignal } from "solid-js";
 import "./PerformanceDemo.css";
 export function PerformanceDemo(_props = {}) {

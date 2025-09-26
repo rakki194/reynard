@@ -44,20 +44,14 @@ from .exceptions import (
 )
 from .executor import ToolExecutor
 
-# Import all tools to register them
-from .git_tools import (
+# Import MCP client for git operations
+from .mcp_client import (
+    MCPGitClient,
+    git_status_tool,
+    git_commit_tool,
     git_add_tool,
     git_branches_tool,
-    git_commit_tool,
-    git_create_branch_tool,
-    git_delete_untracked_tool,
     git_history_tool,
-    git_init_tool,
-    git_lfs_update_tool,
-    git_revert_tool,
-    git_status_tool,
-    git_switch_branch_tool,
-    git_unstage_tool,
 )
 from .registry import ToolRegistry, get_tool_registry
 
@@ -113,19 +107,13 @@ __all__ = [
     "ToolValidationError",
     "ToolTimeoutError",
     "ToolResourceError",
-    # Git tools
+    # MCP Git client
+    "MCPGitClient",
     "git_status_tool",
-    "git_init_tool",
-    "git_add_tool",
-    "git_unstage_tool",
     "git_commit_tool",
+    "git_add_tool",
     "git_branches_tool",
-    "git_create_branch_tool",
-    "git_switch_branch_tool",
     "git_history_tool",
-    "git_revert_tool",
-    "git_delete_untracked_tool",
-    "git_lfs_update_tool",
     # NLWeb tools (conditionally available)
     "nlweb_ask_tool",
     "nlweb_list_sites_tool",

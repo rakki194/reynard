@@ -69,9 +69,9 @@ export function useSimplifiedStaggeredAnimation(
 
   const start = (itemCount: number): void => {
     if (isAnimating()) {
-      log.warn("Already animating, ignoring start request", undefined, { 
-        component: "useSimplifiedStaggeredAnimation", 
-        function: "start" 
+      log.warn("Already animating, ignoring start request", undefined, {
+        component: "useSimplifiedStaggeredAnimation",
+        function: "start",
       });
       return;
     }

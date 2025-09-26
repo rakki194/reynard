@@ -18,7 +18,7 @@ export default defineConfig({
           "solid-js/web": "SolidJSWeb",
           "solid-js/store": "SolidJSStore",
           "reynard-annotating-core": "ReynardAnnotatingCore",
-          "reynard-components-core": "ReynardComponentsCore",
+          "reynard-primitives": "ReynardPrimitives",
         },
       },
     },

@@ -2,7 +2,7 @@
  * @fileoverview Layout components for documentation sites
  */
 import { createSignal, Show, For } from "solid-js";
-import { Card } from "reynard-components-core";
+import { Card } from "reynard-primitives";
 import { useTheme } from "reynard-themes";
 /**
  * Main documentation layout component

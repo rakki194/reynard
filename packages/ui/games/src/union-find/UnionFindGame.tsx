@@ -39,7 +39,7 @@ class UnionFind {
     return this.find(x) === this.find(y);
   }
 }
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { createSignal, onMount } from "solid-js";
 import "./UnionFindGame.css";
 export function UnionFindGame(props: any = {}) {

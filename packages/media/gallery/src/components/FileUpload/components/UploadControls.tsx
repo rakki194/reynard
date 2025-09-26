@@ -4,7 +4,7 @@
  */
 
 import { Component, Show } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 
 export interface UploadControlsProps {
   autoUpload: boolean;

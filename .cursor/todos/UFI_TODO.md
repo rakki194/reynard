@@ -4,6 +4,8 @@
 
 ## 🎯 Mission Status: **IN PROGRESS**
 
+> **⚠️ IMPORTANT**: Access control and permission management for the unified repository should now be integrated with the **ONE WAY: Unified RBAC System** quest in `one_way.md`. This ensures consistent access control across all Reynard systems.
+
 **Current Score: 8,300 points** | **Target: 10,000 points** | **Progress: 83%**
 
 ---

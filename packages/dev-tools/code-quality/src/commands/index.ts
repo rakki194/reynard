@@ -10,5 +10,10 @@ export { handleQualityGateCommand, type QualityGateOptions } from "./quality-gat
 export { handleSecurityCommand, type SecurityOptions } from "./security-command";
 export { handleWatchCommand, type WatchOptions } from "./watch-command";
 export { handleJunkDetectionCommand, type JunkDetectionOptions } from "./junk-detection-command";
+export {
+  handleNamingViolationCommand,
+  type NamingViolationOptions,
+  createNamingViolationCommand,
+} from "./naming-violation-command";
 export { createDocstringCommand } from "./docstring-command";
 export { createEmojiRoleplayCommand } from "./emoji-roleplay-command";

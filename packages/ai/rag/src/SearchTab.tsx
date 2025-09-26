@@ -5,7 +5,7 @@
  * for RAG queries with EmbeddingGemma integration.
  */
 import { Show } from "solid-js";
-import { Card } from "reynard-components-core";
+import { Card } from "reynard-primitives";
 import { SearchForm } from "./components/SearchForm";
 import { QueryStats } from "./components/QueryStats";
 import { ResultsList } from "./components/ResultsList";

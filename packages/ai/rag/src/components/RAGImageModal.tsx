@@ -5,7 +5,7 @@
  * for RAG search results.
  */
 import { createSignal } from "solid-js";
-import { Modal } from "reynard-components-core";
+import { Modal } from "reynard-primitives";
 import { ImageDisplay } from "./ImageDisplay";
 import { ImageModalHeader } from "./ImageModalHeader";
 import { SimilarityScore } from "./SimilarityScore";

@@ -30,7 +30,7 @@ from .success_advisor_8_tracker import (
 logger = logging.getLogger(__name__)
 
 
-class UnifiedChangelogParser:
+class ChangelogParser:
     """Unified CHANGELOG parser that leverages existing implementations
     and extends them for Success-Advisor-8 legacy tracking.
     """
@@ -392,7 +392,7 @@ class SuccessAdvisor8ChangelogAnalyzer:
     """Advanced analyzer for Success-Advisor-8 changelog activities.
     """
 
-    def __init__(self, parser: UnifiedChangelogParser):
+    def __init__(self, parser: ChangelogParser):
         """Initialize the analyzer.
 
         Args:

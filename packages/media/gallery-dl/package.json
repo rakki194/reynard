@@ -47,7 +47,7 @@
     "reynard-connection": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-floating-panel": "workspace:*",
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-components-charts": "workspace:*",
     "reynard-components-dashboard": "workspace:*",
     "reynard-components-themes": "workspace:*",

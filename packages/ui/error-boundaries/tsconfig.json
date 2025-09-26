@@ -17,9 +17,6 @@
   "references": [
     {
       "path": "../../core/core"
-    },
-    {
-      "path": "../../ui/components-core"
     }
   ]
 }

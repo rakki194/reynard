@@ -1755,9 +1755,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -1767,6 +1764,9 @@ importers:
       reynard-components-utils:
         specifier: workspace:*
         version: link:../../ui/components-utils
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -1841,9 +1841,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -1874,6 +1871,9 @@ importers:
       reynard-multimodal:
         specifier: workspace:*
         version: link:../multimodal
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-video:
         specifier: workspace:*
         version: link:../../media/video
@@ -2003,9 +2003,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -2018,6 +2015,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../../ui/fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -2061,9 +2061,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -2076,6 +2073,9 @@ importers:
       reynard-core:
         specifier: workspace:*
         version: link:../../core/core
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
     devDependencies:
       typescript:
         specifier: ^5.0.0
@@ -2123,9 +2123,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -2144,6 +2141,9 @@ importers:
       reynard-image:
         specifier: workspace:*
         version: link:../../media/image
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-video:
         specifier: workspace:*
         version: link:../../media/video
@@ -2218,9 +2218,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -2236,6 +2233,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../../ui/fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-themes:
         specifier: workspace:*
         version: link:../../ui/themes
@@ -2775,9 +2775,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -2796,6 +2793,9 @@ importers:
       reynard-core:
         specifier: workspace:*
         version: link:../core
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -3205,9 +3205,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -3229,6 +3226,9 @@ importers:
       reynard-multimodal:
         specifier: workspace:*
         version: link:../../ai/multimodal
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-rag:
         specifier: workspace:*
         version: link:../../ai/rag
@@ -3287,12 +3287,12 @@ importers:
       reynard-charts:
         specifier: workspace:*
         version: link:../../ui/charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../../ui/fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-project-architecture:
         specifier: workspace:*
         version: link:../project-architecture
@@ -3370,9 +3370,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -3385,6 +3382,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../../ui/fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-ui:
         specifier: workspace:*
         version: link:../../ui/ui
@@ -3834,9 +3834,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -3852,6 +3849,9 @@ importers:
       reynard-docs-core:
         specifier: workspace:*
         version: link:../docs-core
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-themes:
         specifier: workspace:*
         version: link:../../ui/themes
@@ -3895,9 +3895,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -3910,6 +3907,9 @@ importers:
       reynard-core:
         specifier: workspace:*
         version: link:../../core/core
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -4002,9 +4002,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4026,6 +4023,9 @@ importers:
       reynard-docs-generator:
         specifier: workspace:*
         version: link:../docs-generator
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-themes:
         specifier: ^0.1.1
         version: 0.1.1(solid-js@1.9.9)
@@ -4069,9 +4069,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4084,6 +4081,9 @@ importers:
       reynard-composables:
         specifier: workspace:*
         version: link:../../core/composables
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -4127,9 +4127,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4145,6 +4142,9 @@ importers:
       reynard-file-processing:
         specifier: workspace:*
         version: link:../../data/file-processing
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-themes:
         specifier: workspace:*
         version: link:../../ui/themes
@@ -4249,9 +4249,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4270,6 +4267,9 @@ importers:
       reynard-i18n:
         specifier: workspace:*
         version: link:../../core/i18n
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -4328,9 +4328,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4346,6 +4343,9 @@ importers:
       reynard-gallery:
         specifier: workspace:*
         version: link:../gallery
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -4389,9 +4389,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4413,6 +4410,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../../ui/fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-service-manager:
         specifier: workspace:*
         version: link:../../services/service-manager
@@ -4456,9 +4456,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4474,6 +4471,9 @@ importers:
       reynard-file-processing:
         specifier: workspace:*
         version: link:../../data/file-processing
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -4569,9 +4569,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4587,6 +4584,9 @@ importers:
       reynard-file-processing:
         specifier: workspace:*
         version: link:../../data/file-processing
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -4679,9 +4679,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4703,6 +4700,9 @@ importers:
       reynard-http-client:
         specifier: workspace:*
         version: link:../../core/http-client
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-validation:
         specifier: workspace:*
         version: link:../../core/validation
@@ -4847,9 +4847,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../../ui/components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../../ui/components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../../ui/components-dashboard
@@ -4865,6 +4862,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../../ui/fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../../ui/primitives
       reynard-themes:
         specifier: workspace:*
         version: link:../../ui/themes
@@ -4936,6 +4936,9 @@ importers:
 
   packages/ui/animation:
     dependencies:
+      reynard-error-boundaries:
+        specifier: workspace:*
+        version: link:../error-boundaries
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -5068,9 +5071,9 @@ importers:
 
   packages/ui/components-charts:
     dependencies:
-      reynard-components-core:
+      reynard-primitives:
         specifier: workspace:*
-        version: link:../components-core
+        version: link:../primitives
       three:
         specifier: 0.180.0
         version: 0.180.0
@@ -5120,6 +5123,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../primitives
       reynard-themes:
         specifier: workspace:*
         version: link:../themes
@@ -5160,9 +5166,12 @@ importers:
 
   packages/ui/components-dashboard:
     dependencies:
-      reynard-components-core:
+      reynard-error-boundaries:
         specifier: workspace:*
-        version: link:../components-core
+        version: link:../error-boundaries
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../primitives
       three:
         specifier: 0.180.0
         version: 0.180.0
@@ -5206,9 +5215,6 @@ importers:
       reynard-charts:
         specifier: workspace:*
         version: link:../charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../components-core
       reynard-connection:
         specifier: workspace:*
         version: link:../../core/connection
@@ -5221,6 +5227,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../primitives
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -5258,9 +5267,9 @@ importers:
 
   packages/ui/components-themes:
     dependencies:
-      reynard-components-core:
+      reynard-primitives:
         specifier: workspace:*
-        version: link:../components-core
+        version: link:../primitives
       three:
         specifier: 0.180.0
         version: 0.180.0
@@ -5304,12 +5313,12 @@ importers:
       reynard-colors:
         specifier: workspace:*
         version: link:../colors
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../components-core
       reynard-core:
         specifier: workspace:*
         version: link:../../core/core
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../primitives
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -5356,9 +5365,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../components-dashboard
@@ -5374,6 +5380,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../fluent-icons
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../primitives
       reynard-themes:
         specifier: workspace:*
         version: link:../themes
@@ -5537,9 +5546,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../components-dashboard
@@ -5555,6 +5561,9 @@ importers:
       reynard-i18n:
         specifier: workspace:*
         version: link:../../core/i18n
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../primitives
       reynard-themes:
         specifier: workspace:*
         version: link:../themes
@@ -5639,6 +5648,42 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
 
+  packages/ui/primitives:
+    devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(solid-js@1.9.9)
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      '@vitest/coverage-v8':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      '@vitest/ui':
+        specifier: 3.2.4
+        version: 3.2.4(vitest@3.2.4)
+      happy-dom:
+        specifier: ^18.0.1
+        version: 18.0.1
+      reynard-testing:
+        specifier: workspace:*
+        version: link:../../core/testing
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(yaml@2.8.1)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(solid-js@1.9.9)(vite@7.1.7)
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)
+
   packages/ui/themes:
     dependencies:
       reynard-animation:
@@ -5650,6 +5695,9 @@ importers:
       reynard-core:
         specifier: workspace:*
         version: link:../../core/core
+      reynard-error-boundaries:
+        specifier: workspace:*
+        version: link:../error-boundaries
       solid-js:
         specifier: 1.9.9
         version: 1.9.9
@@ -5684,9 +5732,6 @@ importers:
       reynard-components-charts:
         specifier: workspace:*
         version: link:../components-charts
-      reynard-components-core:
-        specifier: workspace:*
-        version: link:../components-core
       reynard-components-dashboard:
         specifier: workspace:*
         version: link:../components-dashboard
@@ -5699,6 +5744,9 @@ importers:
       reynard-core:
         specifier: workspace:*
         version: link:../../core/core
+      reynard-primitives:
+        specifier: workspace:*
+        version: link:../primitives
     devDependencies:
       '@solidjs/testing-library':
         specifier: 0.8.10
@@ -15720,6 +15768,7 @@ packages:
 
   /tr46@0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
+    requiresBuild: true
 
   /tr46@3.0.0:
     resolution: {integrity: sha512-l7FvfAHlcmulp8kr+flpQZmVwtu7nfRV7NZujtN0OqES8EL4O4e0qqzL0DC5gAvx/ZC/9lk6rhcUwYvkBnBnYA==}
@@ -16554,6 +16603,7 @@ packages:
 
   /webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+    requiresBuild: true
 
   /webidl-conversions@7.0.0:
     resolution: {integrity: sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==}
@@ -16599,6 +16649,7 @@ packages:
 
   /whatwg-url@5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
+    requiresBuild: true
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1

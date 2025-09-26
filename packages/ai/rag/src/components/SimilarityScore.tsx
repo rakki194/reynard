@@ -3,7 +3,7 @@
  *
  * Displays the similarity score with visual indicators
  */
-import { Card, Badge } from "reynard-components-core";
+import { Card, Badge } from "reynard-primitives";
 import { getScoreColor, getScoreLabel } from "../utils/image-modal-utils";
 export const SimilarityScore = (props: any) => {
   return (

@@ -14,6 +14,35 @@ This experimental playground is where we dive deep into the most innovative conc
 
 ## Research Projects
 
+### 0. **CPython Development Environment** (`dev-env.zsh`)
+
+**Professional-grade CPython development environment with default Python override**
+
+A comprehensive zsh environment setup that makes your CPython 3.15.0a0 installation the default Python in your shell. Features automatic symlink management, complete shellcheck compliance, and seamless activation/deactivation.
+
+#### Key Features
+
+- **Default Python Override**: `python` and `python3` commands point to your dev installation
+- **Automatic Symlink Management**: Temporary symlinks with automatic cleanup
+- **Shellcheck Compliance**: All shellcheck warnings and errors resolved
+- **Professional Status Messages**: Color-coded output with comprehensive information
+- **Robust Error Handling**: Graceful fallbacks and safe deactivation
+- **Development Tools Integration**: Aliases and functions for common tasks
+
+#### Usage
+
+```bash
+# Activate the environment
+source ./dev-env.zsh
+
+# Verify it's working
+python --version  # Python 3.15.0a0
+py-info          # Detailed environment information
+
+# Deactivate when done
+py-deactivate
+```
+
 ### 1. **Python 3.15.0a0 Experimental Features** (`python315/`)
 
 **Advanced experimental features and testing for Python 3.15.0a0 development version**
@@ -202,6 +231,30 @@ source ~/venv/bin/activate
 
 # Navigate to experimental directory
 cd experimental/
+```
+
+### Python 3.15.0a0 Development Environment
+
+```bash
+# Activate the CPython development environment
+source ./dev-env.zsh
+
+# Verify the environment is working
+python --version  # Should show Python 3.15.0a0
+py-info          # Show detailed environment information
+py-check         # Verify installation status
+
+# Navigate to CPython source (if cloned)
+py-src
+
+# Create virtual environment with dev Python
+py-venv my-project
+
+# Install development tools
+py-install-dev-tools
+
+# Deactivate when done
+py-deactivate
 ```
 
 ### Python 3.15.0a0 Features

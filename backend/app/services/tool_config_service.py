@@ -20,7 +20,7 @@ from sqlalchemy.orm import Session, joinedload
 
 from app.core.database import get_db_session
 import logging
-from app.models.tool_config_models import (
+from app.models.mcp.tool_config import (
     Tool,
     ToolCategory,
     ToolCategoryEnum,

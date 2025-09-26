@@ -122,5 +122,14 @@
     { "path": "./packages/ui/ui" }
   ],
   "include": ["packages/**/*"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.test.tsx"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/vite.config.ts",
+    "**/vitest.config.ts",
+    "**/*.config.ts",
+    "**/*.config.js"
+  ]
 }

@@ -5,7 +5,7 @@
 
 import { Component, For, createEffect } from "solid-js";
 import { createTagColorGenerator, formatOKLCH } from "reynard-colors";
-import { Slider } from "reynard-components-core/primitives";
+import { Slider } from "reynard-primitives";
 
 interface CustomTagGeneratorProps {
   availableThemes: string[];

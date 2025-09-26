@@ -4,7 +4,7 @@
  * Renders algorithm-specific parameter controls for 3D visualization
  */
 import { Show } from "solid-js";
-import { Slider } from "reynard-components-core";
+import { Slider } from "reynard-primitives";
 export const ParameterPanels = (props: any) => {
   return (
     <div class="rag-3d-parameters">

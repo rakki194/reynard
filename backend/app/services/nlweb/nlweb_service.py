@@ -422,99 +422,84 @@ class NLWebService:
             return False
 
     async def _register_default_tools(self):
-        """Register default tools."""
+        """Register default tools using MCP bridge."""
         try:
-            # Git tools
-            git_status_tool = NLWebTool(
-                name="git_status",
-                description="Show the status of the git repository",
-                category="git",
-                tags=["git", "status", "repository", "version control"],
-                path="/api/git/status",
-                method="GET",
-                parameters=[],
-                examples=[
-                    "show git status",
-                    "what's the git status",
-                    "check repository status",
-                ],
-                priority=80,
-            )
-
-            git_log_tool = NLWebTool(
-                name="git_log",
-                description="Show git commit history",
-                category="git",
-                tags=["git", "log", "history", "commits"],
-                path="/api/git/log",
-                method="GET",
-                parameters=[],
-                examples=["show git log", "git history", "recent commits"],
-                priority=70,
-            )
-
-            # File tools
-            list_files_tool = NLWebTool(
-                name="list_files",
-                description="List files in a directory",
-                category="file",
-                tags=["file", "list", "directory", "folder"],
-                path="/api/files/list",
-                method="GET",
-                parameters=[],
-                examples=[
-                    "list files",
-                    "show directory contents",
-                    "what files are here",
-                ],
-                priority=90,
-            )
-
-            read_file_tool = NLWebTool(
-                name="read_file",
-                description="Read the contents of a file",
-                category="file",
-                tags=["file", "read", "content", "view"],
-                path="/api/files/read",
-                method="GET",
-                parameters=[],
-                examples=["read file", "show file contents", "view file"],
-                priority=85,
-            )
-
-            # Caption tools
-            generate_captions_tool = NLWebTool(
-                name="generate_captions",
-                description="Generate captions for images",
-                category="caption",
-                tags=["caption", "image", "describe", "generate"],
-                path="/api/caption/generate",
-                method="POST",
-                parameters=[],
-                examples=[
-                    "generate captions",
-                    "describe images",
-                    "caption these pictures",
-                ],
-                priority=75,
-            )
-
-            # Register tools
-            tools = [
-                git_status_tool,
-                git_log_tool,
-                list_files_tool,
-                read_file_tool,
-                generate_captions_tool,
-            ]
-
-            for tool in tools:
-                self.tool_registry.register_tool(tool)
-
-            logger.info(f"Registered {len(tools)} default NLWeb tools")
+            # Import MCP bridge
+            from app.services.mcp_bridge import get_mcp_bridge
+            
+            # Get MCP bridge instance
+            bridge = get_mcp_bridge()
+            
+            # Discover tools from MCP server
+            mcp_tools = await bridge.discover_tools()
+            
+            # Convert MCP tools to NLWeb tools
+            for mcp_tool in mcp_tools:
+                nlweb_tool = self._convert_mcp_to_nlweb_tool(mcp_tool)
+                if nlweb_tool:
+                    self.tool_registry.register_tool(nlweb_tool)
+            
+            logger.info(f"Registered {len(mcp_tools)} tools from MCP bridge")
 
         except Exception as e:
             logger.error(f"Error registering default tools: {e}")
+
+    def _convert_mcp_to_nlweb_tool(self, mcp_tool: dict) -> NLWebTool | None:
+        """Convert an MCP tool to an NLWeb tool.
+        
+        Args:
+            mcp_tool: MCP tool definition
+            
+        Returns:
+            NLWeb tool or None if conversion fails
+        """
+        try:
+            tool_name = mcp_tool.get("name", "")
+            if not tool_name:
+                return None
+            
+            # Extract tool information
+            description = mcp_tool.get("description", f"Execute {tool_name}")
+            category = mcp_tool.get("category", "general")
+            tags = mcp_tool.get("tags", [])
+            
+            # Create NLWeb tool that calls MCP bridge
+            nlweb_tool = NLWebTool(
+                name=tool_name,
+                description=f"{description} (via MCP bridge)",
+                category=category,
+                tags=tags + ["mcp", "bridge"],
+                path="/api/mcp-bridge/tools/call",
+                method="POST",
+                parameters=[
+                    {
+                        "name": "tool",
+                        "type": "string",
+                        "description": "Tool name",
+                        "required": True,
+                        "default": tool_name,
+                    },
+                    {
+                        "name": "arguments",
+                        "type": "object",
+                        "description": "Tool arguments",
+                        "required": True,
+                        "default": {},
+                    },
+                ],
+                examples=[
+                    f"use {tool_name}",
+                    f"execute {tool_name}",
+                    f"run {tool_name}",
+                ],
+                priority=80,
+            )
+            
+            return nlweb_tool
+            
+        except Exception as e:
+            logger.error(f"Failed to convert MCP tool {mcp_tool.get('name', 'unknown')}: {e}")
+            return None
 
     async def _initialize_router(self):
         """Initialize the router."""

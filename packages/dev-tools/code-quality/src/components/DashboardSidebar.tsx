@@ -4,7 +4,7 @@
  * Navigation sidebar for the Code Quality Dashboard
  */
 
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { Component } from "solid-js";
 
 interface SidebarProps {

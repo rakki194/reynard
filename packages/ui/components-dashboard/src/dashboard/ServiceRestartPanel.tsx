@@ -3,7 +3,7 @@
  * Service restart functionality with bulk actions and recovery options
  */
 import { For, Show, createSignal } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 export const ServiceRestartPanel = props => {
   const [selectedServices, setSelectedServices] = createSignal([]);

@@ -3,7 +3,7 @@
  *
  * Utility functions for formatting, colors, and icons in search history.
  */
-import { Icon } from "reynard-components-core";
+import { Icon } from "reynard-primitives";
 export const formatTimestamp = (timestamp: Date) => {
   const now = new Date();
   const diff = now.getTime() - timestamp.getTime();

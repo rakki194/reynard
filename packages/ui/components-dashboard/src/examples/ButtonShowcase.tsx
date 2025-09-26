@@ -3,7 +3,7 @@
  * Demonstrates all the enhanced button components and their features
  */
 import { createSignal } from "solid-js";
-import { Button, IconButton, SidebarButton } from "reynard-components-core/primitives";
+import { Button, IconButton, SidebarButton } from "reynard-primitives";
 import { BreadcrumbButton, BreadcrumbActionButton } from "reynard-components-core/navigation";
 import { Icon } from "reynard-fluent-icons";
 export const ButtonShowcase = () => {

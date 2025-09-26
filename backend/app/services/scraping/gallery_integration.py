@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import Any
 
-from app.services.gallery.gallery_service import GalleryService
+from app.services.gallery.gallery_service import ReynardGalleryService
 from app.services.scraping.models import GalleryDownloadJob, ScrapingStatus
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 class GalleryIntegration:
     """Integration layer between scraping service and gallery-dl"""
 
-    def __init__(self, gallery_service: GalleryService):
+    def __init__(self, gallery_service: ReynardGalleryService):
         self.gallery_service = gallery_service
         self.active_downloads: dict[str, GalleryDownloadJob] = {}
         self.download_history: list[GalleryDownloadJob] = []

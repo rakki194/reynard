@@ -7,7 +7,6 @@ export default defineConfig({
     lib: {
       entry: {
         index: "src/index.ts",
-        "primitives/index": "src/primitives/index.ts",
         "navigation/index": "src/navigation/index.ts",
         "layout/index": "src/layout/index.ts",
         "icons/index": "src/icons/index.ts",
@@ -16,7 +15,15 @@ export default defineConfig({
       fileName: (format, entryName) => `${entryName}.js`,
     },
     rollupOptions: {
-      external: ["solid-js", "solid-js/web", "solid-js/store", "reynard-core", "reynard-fluent-icons"],
+      external: [
+        "solid-js",
+        "solid-js/web",
+        "solid-js/store",
+        "reynard-primitives",
+        "reynard-core",
+        "reynard-fluent-icons",
+        "reynard-themes",
+      ],
     },
   },
 });

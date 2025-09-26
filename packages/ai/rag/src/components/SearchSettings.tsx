@@ -4,7 +4,7 @@
  * Handles search configuration controls including embedding model,
  * max results, similarity threshold, and reranking options.
  */
-import { Card, Select, Slider, Toggle } from "reynard-components-core";
+import { Card, Select, Slider, Toggle } from "reynard-primitives";
 const EMBEDDING_MODELS = [
   {
     value: "embeddinggemma:latest",

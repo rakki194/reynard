@@ -2,7 +2,7 @@
  * @fileoverview Code display and interactive components for documentation
  */
 import { createSignal, Show, For } from "solid-js";
-import { Button, Card } from "reynard-components-core";
+import { Button, Card } from "reynard-primitives";
 /**
  * Code block component with syntax highlighting
  */

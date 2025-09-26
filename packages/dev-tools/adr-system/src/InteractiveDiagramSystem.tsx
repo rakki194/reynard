@@ -20,7 +20,7 @@
  */
 
 import { Component, createSignal, createEffect, onMount, onCleanup, createMemo, Show, For } from "solid-js";
-import { Card, Button, Badge, Tabs, Input, Select, Checkbox } from "reynard-components-core/primitives";
+import { Card, Button, Badge, Tabs, Input, Select, Checkbox } from "reynard-primitives";
 import { Chart, useVisualizationEngine } from "reynard-charts";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ThreeJSVisualization, PointCloudVisualization } from "reynard-3d";

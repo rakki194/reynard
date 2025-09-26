@@ -292,6 +292,28 @@ application development—where different tools and services work together to re
   - [🚀 The Future of Reynard](#-the-future-of-reynard)
     - [**🦊 Join the Evolution**](#-join-the-evolution)
 
+## 🏗️ Recent Architectural Improvements
+
+**September 2025**: Major architectural refactoring to resolve circular dependencies and improve build stability:
+
+### ✅ **Dependency Resolution**
+
+- **Created `reynard-primitives`**: New dependency-free package containing fundamental UI components (Button, Card, TextField)
+- **Resolved Circular Dependencies**: Broke complex dependency chains that were preventing builds
+- **Improved Build Order**: Established clear dependency hierarchy: `core` → `error-boundaries` → `themes` → `fluent-icons` → `primitives` → `components-core` → applications
+
+### ✅ **Package Organization**
+
+- **Separation of Concerns**: Primitives (dependency-free) vs. higher-level components (with dependencies)
+- **Clean Imports**: All packages now import from `reynard-primitives` for basic UI elements
+- **Build Stability**: Eliminated build failures caused by circular imports
+
+### ✅ **TypeScript Configuration**
+
+- **Fixed Config Files**: Removed duplicate `.js` config files, standardized on `.ts` configurations
+- **Proper noEmit Settings**: Configured packages to emit declarations only when needed
+- **Excluded Config Files**: Prevented TypeScript from compiling configuration files
+
 ## 🚀 Quick Start
 
 ```bash
@@ -465,7 +487,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`charts`** - Data visualization components built on Chart.js
 - **`colors`** - Color utilities and palettes
 - **`components-charts`** - Chart-specific components
-- **`components-core`** - UI components, modals, tooltips, forms
+- **`components-core`** - Higher-level UI components, modals, tooltips, forms
 - **`components-dashboard`** - Dashboard-specific components
 - **`components-themes`** - Theme-aware components
 - **`components-utils`** - Utility components
@@ -475,6 +497,7 @@ while other packages can be added as needed. All packages are published to npm a
 - **`fluent-icons`** - Icon library and components
 - **`games`** - Game development utilities
 - **`monaco`** - Code editor integration
+- **`primitives`** - **NEW**: Fundamental UI primitives (Button, Card, TextField) - dependency-free base components
 - **`themes`** - Theming system with 8 built-in themes and i18n support
 - **`ui`** - UI utilities and layout components
 

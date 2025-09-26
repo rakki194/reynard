@@ -4,7 +4,7 @@
  * Handles the search input and button interface
  * for RAG queries.
  */
-import { Button, TextField, Icon } from "reynard-components-core";
+import { Button, TextField, Icon } from "reynard-primitives";
 export const SearchForm = (props: any) => {
   return (
     <div class="search-form">

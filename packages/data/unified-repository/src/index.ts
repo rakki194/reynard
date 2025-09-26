@@ -9,7 +9,7 @@
 export * from "./types";
 
 // Main repository service
-export { UnifiedRepository } from "./services/UnifiedRepository";
+export { Repository } from "./services/Repository";
 
 // Individual services (only export what exists)
 export { FileService } from "./services/FileService";

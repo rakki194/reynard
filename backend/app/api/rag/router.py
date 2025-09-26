@@ -11,6 +11,7 @@ from .document_indexer_endpoints import router as document_indexer_router
 from .endpoints import router as endpoints_router
 from .ingest import router as ingest_router
 from .initial_indexing_endpoints import router as initial_indexing_router
+from .paper_categorization_endpoints import router as paper_categorization_router
 from .progress_endpoints import router as progress_router
 from .semantic_search_endpoints import router as semantic_search_router
 
@@ -24,7 +25,4 @@ router.include_router(initial_indexing_router)
 router.include_router(progress_router)
 router.include_router(document_indexer_router)
 router.include_router(semantic_search_router)
-
-router.include_router(progress_router)
-router.include_router(document_indexer_router)
-router.include_router(semantic_search_router)
+router.include_router(paper_categorization_router)

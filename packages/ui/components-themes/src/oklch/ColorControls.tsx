@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Slider } from "reynard-components-core/primitives";
+import { Slider } from "reynard-primitives";
 
 interface ColorControlsProps {
   selectedHue: number;

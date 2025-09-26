@@ -5,7 +5,7 @@
  * embedding coverage, and model information.
  */
 import { Show } from "solid-js";
-import { Card } from "reynard-components-core";
+import { Card } from "reynard-primitives";
 export function SystemStats(props: any) {
   return (
     <Show when={props.stats}>

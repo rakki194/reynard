@@ -13,7 +13,7 @@ from typing import Any
 from ...config.rag_config import get_rag_config
 from ...core.logging_config import get_service_logger
 from ...services.rag import DocumentIndexer, VectorStoreService
-from ...services.rag.services.core.embedding import UnifiedEmbeddingService
+from ...services.rag.services.core.embedding import EmbeddingService
 from ...core.service_registry import get_service_registry
 from .models import RAGIngestItem
 
@@ -47,7 +47,7 @@ class RAGService:
             # Initialize embedding service using unified AI service
             service_registry = get_service_registry()
             ai_service = service_registry.get_service_instance("ai_service")
-            self._embedding_service = UnifiedEmbeddingService(ai_service, self._config)
+            self._embedding_service = EmbeddingService(ai_service, self._config)
             await self._embedding_service.initialize()
 
             # Initialize indexing service

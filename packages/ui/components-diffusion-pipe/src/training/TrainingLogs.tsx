@@ -6,13 +6,13 @@
  */
 
 import { Show, createSignal, createEffect, onMount, onCleanup, Component } from "solid-js";
-import { Card } from "reynard-components-core/primitives";
-import { Button } from "reynard-components-core/primitives";
-import { TextField } from "reynard-components-core/primitives";
-import { Select } from "reynard-components-core/primitives";
-import { Badge } from "reynard-components-core/primitives";
+import { Card } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { TextField } from "reynard-primitives";
+import { Select } from "reynard-primitives";
+import { Badge } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
-import { useTrainingWebSocket } from '../hooks/useTrainingWebSocket';
+import { useTrainingWebSocket } from "../hooks/useTrainingWebSocket";
 
 export interface LogEntry {
   timestamp: string;
@@ -52,12 +52,15 @@ export const TrainingLogs: Component<TrainingLogsProps> = props => {
   const [isExpanded, setIsExpanded] = createSignal(!props.compact);
 
   // WebSocket integration for real-time log streaming
-  const websocket = props.websocketUrl && props.trainingId ? useTrainingWebSocket({
-    url: props.websocketUrl,
-    reconnectInterval: 5000,
-    maxReconnectAttempts: 5,
-    heartbeatInterval: 30000,
-  }) : null;
+  const websocket =
+    props.websocketUrl && props.trainingId
+      ? useTrainingWebSocket({
+          url: props.websocketUrl,
+          reconnectInterval: 5000,
+          maxReconnectAttempts: 5,
+          heartbeatInterval: 30000,
+        })
+      : null;
 
   let logContainer: HTMLDivElement | undefined;
   let scrollTimeout: NodeJS.Timeout | undefined;
@@ -143,7 +146,11 @@ export const TrainingLogs: Component<TrainingLogsProps> = props => {
 
   // Get unique sources from logs
   const getUniqueSources = () => {
-    const sources = new Set(allLogs().map(log => log.source).filter(Boolean));
+    const sources = new Set(
+      allLogs()
+        .map(log => log.source)
+        .filter(Boolean)
+    );
     return Array.from(sources);
   };
 

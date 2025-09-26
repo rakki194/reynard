@@ -6,10 +6,10 @@
  */
 
 import { Component, createSignal, createEffect, onMount, onCleanup, Show, For, createMemo } from "solid-js";
-import { Card } from "reynard-components-core/primitives";
-import { Button } from "reynard-components-core/primitives";
-import { Badge } from "reynard-components-core/primitives";
-import { Tabs } from "reynard-components-core/primitives";
+import { Card } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { Badge } from "reynard-primitives";
+import { Tabs } from "reynard-primitives";
 import { Chart, RealTimeChart, useVisualizationEngine } from "reynard-charts";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { ComplianceScorer, ComplianceScore, ComplianceReport } from "./ComplianceScorer";

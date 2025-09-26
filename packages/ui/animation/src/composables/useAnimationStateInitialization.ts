@@ -46,16 +46,21 @@ export function createAnimationStateInitialization(options: UseAnimationStateIni
       setIsInitialized(true);
 
       if (enhancedConfig.enableLogging) {
-        log.info("Animation state manager initialized with global control integration", undefined, { 
-          component: "useAnimationStateInitialization", 
-          function: "initializeAnimationState" 
+        log.info("Animation state manager initialized with global control integration", undefined, {
+          component: "useAnimationStateInitialization",
+          function: "initializeAnimationState",
         });
       }
     } catch (error) {
-             log.error("Failed to initialize animation state manager", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "useAnimationStateInitialization", 
-        function: "initializeAnimationState" 
-      });
+      log.error(
+        "Failed to initialize animation state manager",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "useAnimationStateInitialization",
+          function: "initializeAnimationState",
+        }
+      );
     }
   };
 

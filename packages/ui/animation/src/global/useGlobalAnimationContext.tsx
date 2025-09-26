@@ -284,9 +284,9 @@ export function GlobalAnimationProvider(props: { children: any; options?: Global
   // Debug logging
   if (debug) {
     createMemo(() => {
-      log.debug("State updated", state(), { 
-        component: "useGlobalAnimationContext", 
-        function: "updateState" 
+      log.debug("State updated", state(), {
+        component: "useGlobalAnimationContext",
+        function: "updateState",
       });
     });
   }

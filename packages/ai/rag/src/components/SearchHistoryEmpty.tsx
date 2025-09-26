@@ -4,7 +4,7 @@
  * Empty state display when no search history is found.
  */
 import { Show } from "solid-js";
-import { Icon } from "reynard-components-core";
+import { Icon } from "reynard-primitives";
 export const SearchHistoryEmpty = (props: any) => {
   return (
     <div class="history-empty">

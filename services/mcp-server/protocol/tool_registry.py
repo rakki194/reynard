@@ -17,7 +17,6 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Callable, Dict, Optional
 
-from config.tool_config import ToolConfigManager
 from services.postgresql_tool_config_service import ToolConfigService
 
 logger = logging.getLogger(__name__)
@@ -73,7 +72,6 @@ class ToolRegistry:
 
     def __init__(
         self,
-        config_manager: ToolConfigManager = None,
         tool_config_service: ToolConfigService = None,
     ) -> None:
         logger.debug("🕐 Starting ToolRegistry.__init__")
@@ -83,13 +81,6 @@ class ToolRegistry:
         self._categories: Dict[str, set[str]] = {}
         self._auto_sync_enabled = False  # Disable auto-sync to prevent hangs
 
-        logger.debug("🕐 Initializing ToolConfigManager...")
-        config_start = time.time()
-        self._config_manager = config_manager or ToolConfigManager()
-        logger.debug(
-            f"✅ ToolConfigManager initialized in {time.time() - config_start:.3f}s"
-        )
-
         logger.debug("🕐 Initializing ToolConfigService...")
         service_start = time.time()
         self._tool_config_service = tool_config_service or ToolConfigService()
@@ -97,10 +88,6 @@ class ToolRegistry:
             f"✅ ToolConfigService initialized in {time.time() - service_start:.3f}s"
         )
 
-        logger.debug("🕐 Loading config...")
-        config_load_start = time.time()
-        self._config = self._config_manager.load_config()
-        logger.debug(f"✅ Config loaded in {time.time() - config_load_start:.3f}s")
 
         total_time = time.time() - start_time
         logger.debug(f"✅ ToolRegistry.__init__ completed in {total_time:.3f}s")
@@ -157,14 +144,8 @@ class ToolRegistry:
 
     def _auto_sync_tool(self, metadata: ToolMetadata):
         """Automatically sync tool with all systems."""
-        # Sync with ToolConfigService
+        # Sync with ToolConfigService (PostgreSQL backend)
         self._sync_with_config_service(metadata)
-
-        # Sync with ToolConfigManager
-        self._sync_with_config_manager(metadata)
-
-        # Update configuration file
-        self._update_configuration_file(metadata)
 
     def _sync_with_config_service(self, metadata: ToolMetadata):
         """Sync tool with ToolConfigService."""
@@ -180,15 +161,7 @@ class ToolRegistry:
         # Update or create tool config
         self._tool_config_service.update_tool_config(metadata.name, tool_config)
 
-    def _sync_with_config_manager(self, metadata: ToolMetadata):
-        """Sync tool with ToolConfigManager."""
-        # This would update the ToolConfigManager's default config
-        # Implementation depends on current ToolConfigManager structure
-        pass
-
-    def _update_configuration_file(self, metadata: ToolMetadata):
-        """Update the configuration file with current state."""
-        self._tool_config_service._save_config()
+    # Removed legacy JSON config manager/file update methods
 
     def discover_tools(self, module_path: str):
         """Auto-discover tools in a module."""
@@ -223,17 +196,17 @@ class ToolRegistry:
         """Check if a tool is registered."""
         return tool_name in self._tools
 
-    def is_tool_enabled(self, tool_name: str) -> bool:
+    async def is_tool_enabled(self, tool_name: str) -> bool:
         """Check if a tool is enabled."""
         if tool_name not in self._tools:
             return False
 
         metadata = self._tools[tool_name]
         # If the tool is not in the config service yet, use the metadata enabled state
-        if not self._tool_config_service.get_tool_config(tool_name):
+        if not await self._tool_config_service.get_tool_config(tool_name):
             return metadata.enabled
 
-        return metadata.enabled and self._tool_config_service.is_tool_enabled(tool_name)
+        return metadata.enabled and await self._tool_config_service.is_tool_enabled(tool_name)
 
     def get_handler(self, tool_name: str) -> ToolMetadata:
         """Get handler for a tool."""

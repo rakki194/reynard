@@ -68,10 +68,15 @@ export function usePackageLifecycle(refreshInterval?: number) {
         isRefreshing: false,
       }));
     } catch (error) {
-      log.error("Failed to refresh lifecycle data", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "usePackageLifecycle",
-        function: "refreshLifecycleData"
-      });
+      log.error(
+        "Failed to refresh lifecycle data",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "usePackageLifecycle",
+          function: "refreshLifecycleData",
+        }
+      );
       setState(prev => ({ ...prev, isRefreshing: false }));
     }
   };

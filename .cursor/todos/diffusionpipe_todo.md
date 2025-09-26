@@ -8,6 +8,31 @@ _Strategic fox deployment for maximum impact in the Reynard ecosystem_
 
 **290/495 Total Points Earned (59% Complete)**
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for AI model access (Model Admin, Model Developer, Model User, Viewer)
+- [ ] Identify resource permissions needed (create, train, deploy, configure, monitor, audit)
+- [ ] Plan context-specific access control (model-level, training-level, deployment-level permissions)
+- [ ] Design audit trail requirements (training sessions, model deployments, access attempts)
+
+### **Integration Points**
+
+- [ ] Update diffusion-pipe endpoints with RBAC middleware
+- [ ] Add permission checks to AI model service layer
+- [ ] Implement role-based model visibility
+- [ ] Add audit logging for AI model access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based AI model access control
+- [ ] Verify permission inheritance for model operations
+- [ ] Test context-specific permissions (public vs private models)
+- [ ] Validate audit trail functionality for AI model operations
+
 ### **✅ Backend Achievements (175/195 pts - 90% Complete):**
 
 - **Environment Configuration** - Full diffusion-pipe path validation and health checks

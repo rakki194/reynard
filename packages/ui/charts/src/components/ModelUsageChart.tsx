@@ -25,8 +25,8 @@ export const ModelUsageChart = (props: ModelUsageChartProps) => {
     const dataEntries = Object.entries(props.data);
     if (props.type === "doughnut" || props.type === "pie") {
       // For pie/doughnut charts, show usage count by model type
-      const modelTypeData = {};
-      dataEntries.forEach(([_, info]) => {
+      const modelTypeData: Record<string, number> = {};
+      dataEntries.forEach(([_, info]: [string, any]) => {
         const modelType = info.model_type;
         if (!modelTypeData[modelType]) {
           modelTypeData[modelType] = 0;
@@ -43,36 +43,36 @@ export const ModelUsageChart = (props: ModelUsageChartProps) => {
             label: "Usage Count",
             data: Object.values(modelTypeData),
             backgroundColor: colors,
-            borderColor: colors.map(c => c.replace("0.8", "1")),
+            borderColor: colors.map((c: string) => c.replace("0.8", "1")),
             borderWidth: 2,
           },
         ],
       };
     } else {
       // For line/bar charts, show individual model data
-      const labels = dataEntries.map(([modelId, _]) => modelId);
+      const labels = dataEntries.map(([modelId, _]: [string, any]) => modelId);
       let data;
       let label;
       switch (props.metric) {
         case "usage_count":
-          data = dataEntries.map(([_, info]) => info.usage_count);
+          data = dataEntries.map(([_, info]: [string, any]) => info.usage_count);
           label = "Usage Count";
           break;
         case "last_used":
-          data = dataEntries.map(([_, info]) => {
+          data = dataEntries.map(([_, info]: [string, any]) => {
             const hoursSince = (Date.now() - info.last_used) / (1000 * 60 * 60);
             return Math.round(hoursSince * 100) / 100;
           });
           label = "Hours Since Last Used";
           break;
         case "timeout_ratio":
-          data = dataEntries.map(([_, info]) => {
+          data = dataEntries.map(([_, info]: [string, any]) => {
             return Math.round((info.vram_unload_timeout / info.ram_unload_timeout) * 100) / 100;
           });
           label = "VRAM/RAM Timeout Ratio";
           break;
         default:
-          data = dataEntries.map(([_, info]) => info.usage_count);
+          data = dataEntries.map(([_, info]: [string, any]) => info.usage_count);
           label = "Usage Count";
       }
       const colors = props.useOKLCH
@@ -115,7 +115,7 @@ export const ModelUsageChart = (props: ModelUsageChartProps) => {
           mode: "index",
           intersect: false,
           callbacks: {
-            label: context => {
+            label: (context: any) => {
               const label = context.dataset.label || "";
               const value = context.parsed.y || context.parsed;
               if (props.metric === "last_used") {

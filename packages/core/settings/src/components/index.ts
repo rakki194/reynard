@@ -13,4 +13,4 @@ export { ComfySettings, type ComfySettingsProps } from "./ComfySettings";
 export { ModelManagementSettings, type ModelManagementSettingsProps } from "./ModelManagementSettings";
 export { ServiceManagementSettings, type ServiceManagementSettingsProps } from "./ServiceManagementSettings";
 export { AssistantSettings, type AssistantSettingsProps } from "./AssistantSettings";
-export { AdvancedConfigWatcher, type AdvancedConfigWatcherProps } from "./AdvancedConfigWatcher";
+export { ConfigWatcher, type ConfigWatcherProps } from "./ConfigWatcher";

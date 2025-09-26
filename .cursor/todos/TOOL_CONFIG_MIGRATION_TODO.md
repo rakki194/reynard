@@ -4,6 +4,31 @@
 
 Migrate MCP tool configuration from JSON file to PostgreSQL database with FastAPI backend integration.
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for tool configuration access (Tool Config Admin, Tool Config Manager, Tool Config Viewer)
+- [ ] Identify resource permissions needed (create, read, update, delete, sync, audit)
+- [ ] Plan context-specific access control (tool-level, category-level permissions)
+- [ ] Design audit trail requirements (configuration changes, sync operations, access attempts)
+
+### **Integration Points**
+
+- [ ] Update tool configuration endpoints with RBAC middleware
+- [ ] Add permission checks to tool configuration service layer
+- [ ] Implement role-based tool configuration visibility
+- [ ] Add audit logging for tool configuration access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based tool configuration access control
+- [ ] Verify permission inheritance for tool categories
+- [ ] Test context-specific permissions (public vs private tool configs)
+- [ ] Validate audit trail functionality for tool configuration operations
+
 ## 📋 Tasks
 
 ### Phase 1: Database Schema & Models

@@ -3,7 +3,7 @@
  *
  * Header section with title and clear action.
  */
-import { Button, Icon } from "reynard-components-core";
+import { Button, Icon } from "reynard-primitives";
 export const SearchHistoryHeader = (props: any) => {
   return (
     <div class="history-header">

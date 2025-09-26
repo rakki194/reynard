@@ -4,6 +4,8 @@
 
 Transform the Reynard ECS system into the ultimate TypeScript ECS powerhouse! This gamified quest involves implementing advanced performance optimizations, cutting-edge features, and developer experience enhancements to establish Reynard ECS as the definitive solution in the TypeScript ecosystem.
 
+> **⚠️ IMPORTANT**: ECS social roles and access control features should now be integrated with the **ONE WAY: Unified RBAC System** quest in `one_way.md`. See Phase 3: ECS System Integration for details.
+
 **🦊 Strategic Analysis Complete**: After thorough codebase analysis and industry research, we've identified key areas for enhancement and reusable components that can accelerate development.
 
 ## 🏆 Current Score: 0/1000 Points

@@ -28,7 +28,7 @@
     "yaml": "2.8.1",
     "commander": "14.0.1",
     "solid-js": "1.9.9",
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-charts": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
     "reynard-project-architecture": "workspace:*",

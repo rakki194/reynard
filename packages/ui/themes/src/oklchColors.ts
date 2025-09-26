@@ -19,7 +19,7 @@ export function getOKLCHColor(theme: ThemeName, colorName: string): OKLCHColor {
   if (!palette || !palette[colorName]) {
     log.warn(`Color ${colorName} not found for theme ${theme}, using fallback`, undefined, {
       component: "oklchColors",
-      function: "getOKLCHColor"
+      function: "getOKLCHColor",
     });
     return { l: 50, c: 0.1, h: 0 }; // Fallback color
   }

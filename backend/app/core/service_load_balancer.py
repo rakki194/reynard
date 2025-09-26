@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
 
-from .enhanced_service_registry import get_enhanced_service_registry
+from .service_registry import get_service_registry
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +81,7 @@ class ServiceLoadBalancer:
 
     def __init__(self, config: LoadBalancerConfig | None = None):
         self.config = config or LoadBalancerConfig()
-        self.registry = get_enhanced_service_registry()
+        self.registry = get_service_registry()
 
         # Service instances
         self.service_instances: dict[str, list[ServiceInstance]] = {}

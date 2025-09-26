@@ -5,22 +5,56 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
-## [0.20.0] - 2025-09-25
-
 ## [Unreleased]
 
 ### Added
-- Placeholder for future changes
 
 ### Changed
 
-### Fixed
+### Deprecated
 
 ### Removed
 
+### Fixed
+
+### Security
+
+## [0.22.0] - 2025-09-26
 
 ### Added
+
+- **NEW**: `reynard-primitives` package - dependency-free fundamental UI components (Button, Card, TextField)
+- **NEW**: Comprehensive architectural documentation updates reflecting dependency resolution
+- **NEW**: Missing SVG assets in `reynard-fluent-icons` package (peanut.svg, banana.svg, etc.)
+- **NEW**: Complete service lifecycle management for RAG, AI service, and TTS services with proper shutdown and health check functions (Strategic-Prime-13)
+- **FIX**: Resolved missing `app.api.mcp_bridge` module import error by creating complete MCP bridge service and API endpoints (Strategic-Prime-13)
+
+### Changed
+
+- **BREAKING**: Refactored UI component architecture to resolve circular dependencies
+- **BREAKING**: Moved fundamental UI primitives from `reynard-components-core` to new `reynard-primitives` package
+- **BREAKING**: Updated all package imports to use `reynard-primitives` for basic UI components
+- **IMPROVED**: Build dependency order: `core` → `error-boundaries` → `themes` → `fluent-icons` → `primitives` → `components-core` → applications
+- **IMPROVED**: TypeScript configuration standardization across all packages
+- **IMPROVED**: Package build stability and elimination of circular import errors
+
+### Fixed
+
+- **FIXED**: Circular dependency issues that were preventing package builds
+- **FIXED**: Duplicate `.js` configuration files (vite.config.js, vitest.config.js) across monorepo
+- **FIXED**: TypeScript compilation errors in `reynard-charts` package
+- **FIXED**: Missing SVG assets causing build failures in `reynard-fluent-icons`
+- **FIXED**: Incorrect `noEmit` settings in TypeScript configurations
+- **FIXED**: Build order issues preventing proper package compilation
+
+### Removed
+
+- **REMOVED**: Duplicate JavaScript configuration files (vite.config.js, vitest.config.js)
+- **REMOVED**: Primitives export from `reynard-components-core` package
+- **REMOVED**: Circular import dependencies between UI packages
+
+### Added
+
 - Comprehensive system enhancements and dependency updates
 - Backend service refactoring and configuration improvements
 - Enhanced error handling and logging systems
@@ -31,7 +65,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 ### Removed
-
 
 ## [0.19.0] - 2025-09-25
 
@@ -134,7 +167,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Dependency Restructuring**: Resolved auth ↔ connection package integration issues by restructuring dependencies to avoid workspace module resolution conflicts. Auth package now uses simplified fetch-based approach instead of direct HTTPClient dependency, maintaining functionality while ensuring clean builds across the ecosystem (Strategic-Prime-13)
 
-- **Circular Import Fix**: Resolved circular import between database.py and notes_todos.py by creating centralized base.py for SQLAlchemy models (Strategic-Fox-13)
+- **Model Reorganization**: Complete restructure of database models into organized directories (core/, mcp/, content/, schemas/) with comprehensive documentation and test suite (Strategic-Fox-13)
 - **Humility Detector Enhancement**: Added condescending language detection patterns including "idiot-proof", "bulletproof", and patronizing tone analysis (Cyber-Fierce-Grid)
 - **MCP Refactor**: Complete transformation of MCP server into a nice system (Strategic-Fox-13)
   - Schema validation system with comprehensive error checking

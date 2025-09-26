@@ -35,7 +35,7 @@ export default defineConfig({
           "reynard-caption": "ReynardCaption",
           "reynard-ai-shared": "ReynardAIShared",
           "reynard-core": "ReynardCore",
-          "reynard-components-core": "ReynardComponentsCore",
+          "reynard-primitives": "ReynardPrimitives",
         },
       },
     },

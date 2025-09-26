@@ -5,7 +5,7 @@
  * Provides a user-friendly interface for processing multiple images.
  */
 import { Show, For, createSignal, createEffect, onMount } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { useAIGalleryContext } from "../composables/useGalleryAI";
 export const BatchProcessingDialog = props => {
   const ai = useAIGalleryContext();

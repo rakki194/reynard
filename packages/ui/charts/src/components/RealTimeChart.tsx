@@ -88,7 +88,7 @@ export const RealTimeChart = (props: RealTimeChartProps) => {
     "enablePerformanceMonitoring",
     "streaming",
   ]);
-  const [processedData, setProcessedData] = createSignal(null);
+  const [processedData, setProcessedData] = createSignal<{ labels: string[]; datasets: any[] } | null>(null);
   const [updateTimer, setUpdateTimer] = createSignal<NodeJS.Timeout | null>(null);
   const [websocket, setWebsocket] = createSignal<WebSocket | null>(null);
   // Initialize visualization engine
@@ -106,7 +106,7 @@ export const RealTimeChart = (props: RealTimeChartProps) => {
   });
   onCleanup(() => {
     if (updateTimer()) {
-      clearInterval(updateTimer());
+      clearInterval(updateTimer()!);
     }
     const ws = websocket();
     if (ws) {
@@ -130,7 +130,7 @@ export const RealTimeChart = (props: RealTimeChartProps) => {
     // Apply time range filter
     const now = Date.now();
     const filteredData = local.timeRange
-      ? sortedData.filter(point => now - point.timestamp <= local.timeRange)
+      ? sortedData.filter(point => now - point.timestamp <= (local.timeRange || 0))
       : sortedData;
     // Limit data points for performance
     const limitedData = local.maxDataPoints ? filteredData.slice(-local.maxDataPoints) : filteredData;
@@ -164,7 +164,7 @@ export const RealTimeChart = (props: RealTimeChartProps) => {
     ];
     setProcessedData({ labels, datasets });
   };
-  const aggregateData = (data, interval) => {
+  const aggregateData = (data: any[], interval: number) => {
     if (data.length === 0) return [];
     const aggregated = new Map();
     for (const point of data) {
@@ -263,8 +263,8 @@ export const RealTimeChart = (props: RealTimeChartProps) => {
       <Show when={!local.loading && processedData()}>
         <Chart
           type={local.type}
-          labels={processedData().labels}
-          datasets={processedData().datasets}
+          labels={processedData()?.labels || []}
+          datasets={(processedData()?.datasets as any[]) || []}
           width={others.width}
           height={others.height}
           title={others.title}

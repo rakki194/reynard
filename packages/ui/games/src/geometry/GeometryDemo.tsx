@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 // import { PointOps, RectangleOps, CircleOps, PolygonOps } from "reynard-algorithms";
 
 // Temporary placeholders until algorithms package is built

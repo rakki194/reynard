@@ -13,7 +13,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false,
+    "noEmit": true,
     "declaration": true,
     "declarationMap": true,
     "composite": true,
@@ -26,5 +26,16 @@
     }
   },
   "include": ["src"],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx", "**/test-setup.ts", "dist"]
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/test-setup.ts",
+    "dist",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "*.config.ts",
+    "*.config.js"
+  ]
 }

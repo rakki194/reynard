@@ -5,7 +5,7 @@
  * with progress tracking, batch processing, and result visualization.
  */
 import { Component, createSignal, onMount, Show, For } from "solid-js";
-import { Card, Button, Icon } from "reynard-components-core";
+import { Card, Button, Icon } from "reynard-primitives";
 import { GalleryService } from "../services/GalleryService";
 
 export interface AIMetadataExtractorProps {

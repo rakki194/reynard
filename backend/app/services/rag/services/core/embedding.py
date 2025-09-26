@@ -23,7 +23,7 @@ from app.services.rag.interfaces.base import BaseService
 logger = logging.getLogger(__name__)
 
 
-class UnifiedEmbeddingService(IEmbeddingService):
+class EmbeddingService(IEmbeddingService):
     """Embedding service using the unified AI service."""
     
     def __init__(self, ai_service: AIService, config: Optional[Dict[str, Any]] = None):
@@ -207,7 +207,7 @@ class UnifiedEmbeddingService(IEmbeddingService):
         }
 
 
-class OllamaEmbeddingService(UnifiedEmbeddingService):
+class OllamaEmbeddingService(EmbeddingService):
     """Ollama-specific embedding service."""
     
     def __init__(self, ai_service: AIService):
@@ -231,6 +231,4 @@ class OllamaEmbeddingService(UnifiedEmbeddingService):
             raise
 
 
-class EmbeddingService(UnifiedEmbeddingService):
-    """Main embedding service (alias for UnifiedEmbeddingService)."""
-    pass
+# Main embedding service is now EmbeddingService (no alias needed)

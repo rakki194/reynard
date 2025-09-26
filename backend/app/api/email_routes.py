@@ -10,7 +10,7 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 
 from ..auth.user_service import get_current_active_user
-from ..models.email_models import (
+from ..models.schemas.email_schemas import (
     EmailBulkRequest,
     EmailBulkResponse,
     EmailSendRequest,

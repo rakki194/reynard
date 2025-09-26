@@ -17,13 +17,18 @@ export const useReynard = (): ReynardContext => {
   if (!context) {
     // Add more debugging information
     const error = new Error("useReynard must be used within a ReynardProvider");
-    log.error("useReynard: Context is null/undefined", error, { 
-      ReynardContextInstance,
-      stack: error.stack 
-    }, {
-      component: "themeHooks",
-      function: "useReynard"
-    });
+    log.error(
+      "useReynard: Context is null/undefined",
+      error,
+      {
+        ReynardContextInstance,
+        stack: error.stack,
+      },
+      {
+        component: "themeHooks",
+        function: "useReynard",
+      }
+    );
     throw error;
   }
   return context;

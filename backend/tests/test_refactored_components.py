@@ -10,8 +10,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from app.core.enhanced_service_registry import (
-    EnhancedServiceRegistry,
+from app.core.service_registry import (
+    ServiceRegistry,
     ServiceStatus,
 )
 
@@ -102,12 +102,12 @@ class TestServiceErrorHandler:
         assert any("retry" in suggestion.lower() for suggestion in suggestions)
 
 
-class TestEnhancedServiceRegistry:
-    """Test suite for EnhancedServiceRegistry."""
+class TestServiceRegistry:
+    """Test suite for ServiceRegistry."""
 
     @pytest.fixture
     def registry(self):
-        return EnhancedServiceRegistry()
+        return ServiceRegistry()
 
     @pytest.fixture
     def mock_startup_func(self):
@@ -415,7 +415,7 @@ class TestHealthCheckManager:
     @pytest.fixture
     def health_manager(self, mock_registry):
         with patch(
-            "app.core.health_checks.get_enhanced_service_registry",
+            "app.core.health_checks.get_service_registry",
             return_value=mock_registry,
         ):
             return HealthCheckManager()
@@ -614,7 +614,7 @@ class TestIntegrationScenarios:
     async def test_full_service_lifecycle(self):
         """Test complete service lifecycle."""
         # Initialize components
-        registry = EnhancedServiceRegistry()
+        registry = ServiceRegistry()
         config_manager = ServiceConfigManager()
         health_manager = HealthCheckManager()
 
@@ -701,7 +701,7 @@ class TestPerformanceBenchmarks:
     @pytest.mark.asyncio
     async def test_service_initialization_performance(self):
         """Benchmark service initialization performance."""
-        registry = EnhancedServiceRegistry()
+        registry = ServiceRegistry()
 
         # Register multiple services
         for i in range(10):
@@ -856,7 +856,7 @@ class TestRefactoringQualityMetrics:
     def test_dependency_management(self):
         """Test that dependencies are properly managed."""
         # Test that services can declare dependencies
-        registry = EnhancedServiceRegistry()
+        registry = ServiceRegistry()
 
         registry.register_service(
             name="dependent-service", config={}, dependencies=["base-service"],
@@ -903,8 +903,8 @@ class TestPerformanceBenchmarks:
 
     @pytest.mark.asyncio
     async def test_enhanced_service_registry_performance(self):
-        """Benchmark EnhancedServiceRegistry performance."""
-        registry = EnhancedServiceRegistry()
+        """Benchmark ServiceRegistry performance."""
+        registry = ServiceRegistry()
 
         # Mock config manager
         registry.config_manager = MagicMock(spec=ServiceConfigManager)
@@ -941,7 +941,7 @@ class TestPerformanceBenchmarks:
         ), f"Registration too slow: {registration_time:.3f}s"
         assert lookup_time < 0.3, f"Lookup too slow: {lookup_time:.3f}s"
 
-        print("📊 EnhancedServiceRegistry Performance:")
+        print("📊 ServiceRegistry Performance:")
         print(f"   Registration (50 services): {registration_time:.3f}s")
         print(f"   Lookup (1000 calls): {lookup_time:.3f}s")
 
@@ -952,7 +952,7 @@ class TestPerformanceBenchmarks:
         manager = HealthCheckManager(config=config)
 
         # Mock registry
-        manager.registry = MagicMock(spec=EnhancedServiceRegistry)
+        manager.registry = MagicMock(spec=ServiceRegistry)
         manager.registry.get_service_info.return_value = MagicMock(
             name="test_service",
             status=ServiceStatus.RUNNING,
@@ -995,7 +995,7 @@ class TestPerformanceBenchmarks:
     @pytest.mark.asyncio
     async def test_service_load_balancer_performance(self):
         """Benchmark ServiceLoadBalancer performance."""
-        registry = MagicMock(spec=EnhancedServiceRegistry)
+        registry = MagicMock(spec=ServiceRegistry)
         lb = ServiceLoadBalancer(registry)
 
         # Register multiple instances
@@ -1052,7 +1052,7 @@ class TestPerformanceBenchmarks:
         """Benchmark concurrent operations across components."""
         # Setup components
         config_manager = ServiceConfigManager()
-        registry = EnhancedServiceRegistry()
+        registry = ServiceRegistry()
         registry.config_manager = config_manager
 
         # Register services
@@ -1118,7 +1118,7 @@ class TestPerformanceBenchmarks:
 
             # Create and use components
             config_manager = ServiceConfigManager()
-            registry = EnhancedServiceRegistry()
+            registry = ServiceRegistry()
             registry.config_manager = config_manager
 
             # Register many services
@@ -1171,7 +1171,7 @@ class TestIntegrationPerformance:
         """Benchmark complete service lifecycle performance."""
         # Setup
         config_manager = ServiceConfigManager()
-        registry = EnhancedServiceRegistry()
+        registry = ServiceRegistry()
         registry.config_manager = config_manager
 
         # Register service configuration
@@ -1231,7 +1231,7 @@ class TestIntegrationPerformance:
         health_manager = HealthCheckManager(config=config)
 
         # Mock registry with multiple services
-        health_manager.registry = MagicMock(spec=EnhancedServiceRegistry)
+        health_manager.registry = MagicMock(spec=ServiceRegistry)
         health_manager.registry._services = {
             f"service_{i}": MagicMock(
                 name=f"service_{i}",

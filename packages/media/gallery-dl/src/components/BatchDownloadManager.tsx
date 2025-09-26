@@ -5,7 +5,7 @@
  * queue management, and batch operations.
  */
 import { Component, createSignal, onMount, Show, For } from "solid-js";
-import { Card, Button, TextField, Icon } from "reynard-components-core";
+import { Card, Button, TextField, Icon } from "reynard-primitives";
 import { GalleryService } from "../services/GalleryService";
 import { useGalleryWebSocket } from "../composables/useGalleryWebSocket";
 

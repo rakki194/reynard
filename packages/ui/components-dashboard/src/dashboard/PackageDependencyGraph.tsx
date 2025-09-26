@@ -3,7 +3,7 @@
  * Visual dependency graph and conflict resolution interface
  */
 import { Show, For, createSignal, onMount } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 export const PackageDependencyGraph = props => {
@@ -104,10 +104,15 @@ export const PackageDependencyGraph = props => {
       setDependencies(mockDependencies);
       setConflicts(mockConflicts);
     } catch (error) {
-      log.error("Failed to load dependency data", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "PackageDependencyGraph",
-        function: "loadDependencyData"
-      });
+      log.error(
+        "Failed to load dependency data",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "PackageDependencyGraph",
+          function: "loadDependencyData",
+        }
+      );
     }
   };
   const handleResolveConflict = async (package1, package2) => {
@@ -116,7 +121,7 @@ export const PackageDependencyGraph = props => {
       // In a real implementation, this would call the backend conflict resolution endpoint
       log.info(`Resolving conflict between ${package1} and ${package2}`, undefined, {
         component: "PackageDependencyGraph",
-        function: "handleResolveConflict"
+        function: "handleResolveConflict",
       });
       // Simulate conflict resolution
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -133,7 +138,7 @@ export const PackageDependencyGraph = props => {
     } catch (error) {
       log.error("Failed to resolve conflict", error instanceof Error ? error : new Error(String(error)), undefined, {
         component: "PackageDependencyGraph",
-        function: "handleResolveConflict"
+        function: "handleResolveConflict",
       });
     } finally {
       setIsResolving(false);
@@ -145,7 +150,7 @@ export const PackageDependencyGraph = props => {
       // In a real implementation, this would call the backend auto-resolution endpoint
       log.info("Auto-resolving all conflicts", undefined, {
         component: "PackageDependencyGraph",
-        function: "handleAutoResolveAll"
+        function: "handleAutoResolveAll",
       });
       // Simulate auto-resolution
       await new Promise(resolve => setTimeout(resolve, 3000));
@@ -156,10 +161,15 @@ export const PackageDependencyGraph = props => {
       // Clear all conflicts
       setConflicts([]);
     } catch (error) {
-      log.error("Failed to auto-resolve conflicts", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "PackageDependencyGraph",
-        function: "handleAutoResolveAll"
-      });
+      log.error(
+        "Failed to auto-resolve conflicts",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "PackageDependencyGraph",
+          function: "handleAutoResolveAll",
+        }
+      );
     } finally {
       setIsResolving(false);
     }

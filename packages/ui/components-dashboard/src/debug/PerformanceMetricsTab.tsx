@@ -3,7 +3,7 @@
  * Metrics tab for performance dashboard
  */
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { log } from "reynard-error-boundaries";
 export const PerformanceMetricsTab = props => {
   const [selectedMetric, setSelectedMetric] = createSignal("frameRate");

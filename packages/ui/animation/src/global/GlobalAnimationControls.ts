@@ -271,9 +271,9 @@ export class GlobalAnimationControlSystem {
         try {
           listener(data);
         } catch (error) {
-          log.warn(`Error in event listener for ${event}`, error, undefined, { 
-            component: "GlobalAnimationControls", 
-            function: "addEventListener" 
+          log.warn(`Error in event listener for ${event}`, error, undefined, {
+            component: "GlobalAnimationControls",
+            function: "addEventListener",
           });
         }
       });

@@ -1,6 +1,6 @@
 /**
  * 🦊 Training WebSocket Composable
- * 
+ *
  * Provides real-time communication with the diffusion-pipe training backend
  * for progress updates, metrics, logs, and status changes.
  * Following the reynard-connection patterns from useGalleryWebSocket.

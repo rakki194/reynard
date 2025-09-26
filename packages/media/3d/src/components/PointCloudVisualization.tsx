@@ -4,7 +4,7 @@ import { ThreeJSVisualization } from "./ThreeJSVisualization";
 import { usePointCloud } from "../composables/usePointCloud";
 import { useThreeJSAnimations } from "../composables/useThreeJSAnimations";
 import "./PointCloudVisualization.css";
-import { Toggle } from "reynard-components-core";
+import { Toggle } from "reynard-primitives";
 
 export const PointCloudVisualization: Component<PointCloudVisualizationProps> = props => {
   const animations = useThreeJSAnimations();

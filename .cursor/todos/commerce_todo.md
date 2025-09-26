@@ -6,6 +6,31 @@ _claws flex with systematic precision_
 
 ## 🎯 **STRATEGIC COMMERCE STACK FOR REYNARD ECOSYSTEM**
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for commerce access (Commerce Admin, Store Manager, Customer, Vendor)
+- [ ] Identify resource permissions needed (create, read, update, delete, purchase, manage, audit)
+- [ ] Plan context-specific access control (store-level, product-level, order-level permissions)
+- [ ] Design audit trail requirements (purchases, inventory changes, access attempts)
+
+### **Integration Points**
+
+- [ ] Update commerce endpoints with RBAC middleware
+- [ ] Add permission checks to commerce service layer
+- [ ] Implement role-based commerce visibility
+- [ ] Add audit logging for commerce access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based commerce access control
+- [ ] Verify permission inheritance for commerce operations
+- [ ] Test context-specific permissions (public vs private commerce)
+- [ ] Validate audit trail functionality for commerce operations
+
 ### **Current Infrastructure Assessment**
 
 **✅ Existing Strengths:**

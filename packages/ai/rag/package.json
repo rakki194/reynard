@@ -32,7 +32,7 @@
     "reynard-api-client": "workspace:*",
     "reynard-core": "workspace:*",
     "reynard-fluent-icons": "workspace:*",
-    "reynard-components-core": "workspace:*",
+    "reynard-primitives": "workspace:*",
     "reynard-components-charts": "workspace:*",
     "reynard-components-dashboard": "workspace:*",
     "reynard-components-themes": "workspace:*",

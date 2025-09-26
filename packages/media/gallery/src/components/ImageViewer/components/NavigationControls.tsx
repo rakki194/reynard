@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import type { NavigationControlsProps } from "../types";
 
 export const NavigationControls: Component<NavigationControlsProps> = props => {

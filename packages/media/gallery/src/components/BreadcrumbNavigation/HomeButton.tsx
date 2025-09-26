@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 
 export interface HomeButtonProps {
   onHomeClick: () => void;

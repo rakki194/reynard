@@ -10,6 +10,31 @@
 **Current Progress**: 800/2,700 points (29.6%)
 **Quest Status**: 🥈 Silver Level - Architecture Sage
 
+## 🔐 RBAC Integration
+
+> **⚠️ IMPORTANT**: This TODO now integrates with the **ONE WAY: Unified RBAC System** quest in `one_way.md`.
+
+### **RBAC Requirements**
+
+- [ ] Define required roles for microservice access (Service Admin, Service Developer, Service User)
+- [ ] Identify resource permissions needed (create, deploy, configure, monitor, audit)
+- [ ] Plan context-specific access control (service-level, environment-level permissions)
+- [ ] Design audit trail requirements (service deployment, configuration changes, access attempts)
+
+### **Integration Points**
+
+- [ ] Update microservice endpoints with RBAC middleware
+- [ ] Add permission checks to service management layer
+- [ ] Implement role-based service visibility
+- [ ] Add audit logging for service access attempts
+
+### **Testing Requirements**
+
+- [ ] Test role-based microservice access control
+- [ ] Verify permission inheritance for service environments
+- [ ] Test context-specific permissions (dev vs prod services)
+- [ ] Validate audit trail functionality for service operations
+
 ### 🎉 **Recent Progress Update**
 
 **Completed Services:**

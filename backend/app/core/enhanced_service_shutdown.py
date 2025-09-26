@@ -10,7 +10,7 @@ import logging
 import time
 from typing import Any
 
-from .enhanced_service_registry import get_enhanced_service_registry
+from .service_registry import get_service_registry
 from .service_config_manager import get_service_config_manager
 
 logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ class ServiceShutdownManager:
     """
 
     def __init__(self, shutdown_timeout: float = 30.0, grace_period: float = 5.0):
-        self.registry = get_enhanced_service_registry()
+        self.registry = get_service_registry()
         self.config_manager = get_service_config_manager()
         self.shutdown_timeout = shutdown_timeout
         self.grace_period = grace_period
@@ -376,7 +376,7 @@ async def shutdown_nlweb_service_func() -> None:
 async def shutdown_rag_service() -> None:
     """Enhanced shutdown for RAG service."""
     try:
-        registry = get_enhanced_service_registry()
+        registry = get_service_registry()
         rag_service = registry.get_service_instance("rag")
 
         if rag_service:
@@ -393,7 +393,7 @@ async def shutdown_rag_service() -> None:
 async def shutdown_search_service() -> None:
     """Enhanced shutdown for Search service."""
     try:
-        registry = get_enhanced_service_registry()
+        registry = get_service_registry()
         search_service = registry.get_service_instance("search")
 
         if search_service:

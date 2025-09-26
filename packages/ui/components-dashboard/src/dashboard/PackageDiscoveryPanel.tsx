@@ -3,7 +3,7 @@
  * Package discovery and registration interface with conflict resolution
  */
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button, TextField, Select } from "reynard-components-core/primitives";
+import { Button, TextField, Select } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 export const PackageDiscoveryPanel = props => {
@@ -139,10 +139,15 @@ export const PackageDiscoveryPanel = props => {
       setSummary(mockSummary);
       setLastUpdate(new Date());
     } catch (error) {
-      log.error("Failed to refresh package data", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "PackageDiscoveryPanel",
-        function: "refreshPackageData"
-      });
+      log.error(
+        "Failed to refresh package data",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "PackageDiscoveryPanel",
+          function: "refreshPackageData",
+        }
+      );
     } finally {
       setIsRefreshing(false);
     }
@@ -156,7 +161,7 @@ export const PackageDiscoveryPanel = props => {
     } catch (error) {
       log.error("Failed to discover packages", error instanceof Error ? error : new Error(String(error)), undefined, {
         component: "PackageDiscoveryPanel",
-        function: "handleDiscoverPackages"
+        function: "handleDiscoverPackages",
       });
     } finally {
       setIsDiscovering(false);
@@ -166,7 +171,7 @@ export const PackageDiscoveryPanel = props => {
     // In a real implementation, this would call the backend registration endpoint
     log.info(`Registering package: ${packageName}`, undefined, {
       component: "PackageDiscoveryPanel",
-      function: "handleRegisterPackage"
+      function: "handleRegisterPackage",
     });
     // Simulate registration
     const updatedPackages = packages().map(pkg => (pkg.name === packageName ? { ...pkg, status: "registered" } : pkg));
@@ -176,7 +181,7 @@ export const PackageDiscoveryPanel = props => {
     // In a real implementation, this would call the conflict resolution endpoint
     log.info(`Resolving conflict for package: ${packageName}`, undefined, {
       component: "PackageDiscoveryPanel",
-      function: "handleResolveConflict"
+      function: "handleResolveConflict",
     });
     // Simulate conflict resolution
     const updatedPackages = packages().map(pkg =>

@@ -15,7 +15,7 @@ backend_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_dir))
 
 from app.core.database import get_db_session, test_connection
-from app.models.tool_config_models import Tool, ToolCategory, ToolCategoryEnum, ToolConfiguration
+from app.models.mcp.tool_config import Tool, ToolCategory, ToolCategoryEnum, ToolConfiguration
 from app.services.tool_config_service import ToolConfigService
 
 def create_default_categories(db):

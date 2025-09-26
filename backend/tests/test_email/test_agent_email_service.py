@@ -6,7 +6,7 @@ import tempfile
 
 import pytest
 
-from app.models.agent_email_models import (
+from app.models.schemas.agent_schemas import (
     AgentEmailConfig,
     AgentEmailTemplate,
 )

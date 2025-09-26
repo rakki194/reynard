@@ -30,7 +30,8 @@ export const PACKAGES: PackageConfig[] = [
     path: "packages/ui/components-core",
     docPath: "packages/ui/components-core/README.md",
     setup: `
-      import { Button, Card, TextField, Modal, Tabs } from 'reynard-components-core';
+      import { Button, Card, TextField } from 'reynard-primitives';
+      import { Modal, Tabs } from 'reynard-components-core';
       import { ReynardProvider } from 'reynard-themes';
       import 'reynard-themes/themes.css';
     `,

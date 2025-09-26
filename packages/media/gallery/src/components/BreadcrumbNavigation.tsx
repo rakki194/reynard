@@ -4,7 +4,7 @@
  */
 
 import { Component, For, Show, createMemo } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import type { BreadcrumbItem } from "../types";
 
 export interface BreadcrumbNavigationProps {

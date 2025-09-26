@@ -324,28 +324,18 @@ The MCP server follows a modular architecture with:
 
 ### Tool Configuration
 
-The server uses `tool_config.json` for tool definitions and configurations:
+The server now uses a PostgreSQL-backed configuration via the FastAPI backend. All tool definitions, enablement, and metadata are stored and managed through the backend service, not a local JSON file.
 
-```json
-{
-  "tools": {
-    "agent_management": {
-      "enabled": true,
-      "config": {
-        "default_spirit": "fox",
-        "default_style": "foundation"
-      }
-    },
-    "linting": {
-      "enabled": true,
-      "config": {
-        "auto_fix": true,
-        "strict_mode": false
-      }
-    }
-  }
-}
-```
+- Backend endpoints (examples):
+  - `GET /api/mcp/tool-config/tools`
+  - `GET /api/mcp/tool-config/tools/{name}`
+  - `POST /api/mcp/tool-config/tools` (create)
+  - `PUT /api/mcp/tool-config/tools/{name}` (update)
+  - `POST /api/mcp/tool-config/tools/{name}/enable` / `disable` / `toggle`
+  - `GET /api/mcp/tool-config/categories`
+  - `GET /api/mcp/tool-config/statistics`
+
+The MCP server consumes these endpoints through `services/postgresql_tool_config_service.py` and no longer reads or writes `tool_config.json`.
 
 ### Environment Configuration
 

@@ -6,7 +6,7 @@
  */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Show, For, createSignal } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { useAIGalleryContext } from "../composables/useGalleryAI";
 import { AIContextMenu } from "./AIContextMenu";
 import { BatchProcessingDialog } from "./BatchProcessingDialog";

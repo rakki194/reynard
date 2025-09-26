@@ -3,7 +3,7 @@
  * Performance alerts tab for performance dashboard
  */
 import { For, Show, createEffect, createSignal, onCleanup, onMount } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { log } from "reynard-error-boundaries";
 export const PerformanceAlertsTab = props => {
   const [selectedSeverity, setSelectedSeverity] = createSignal("all");
@@ -62,7 +62,7 @@ export const PerformanceAlertsTab = props => {
     } catch (error) {
       log.error("Failed to update alerts", error instanceof Error ? error : new Error(String(error)), undefined, {
         component: "PerformanceAlertsTab",
-        function: "updateAlerts"
+        function: "updateAlerts",
       });
     } finally {
       setIsRefreshing(false);

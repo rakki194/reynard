@@ -12,10 +12,10 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from .enhanced_service_registry import (
+from .service_registry import (
     ServiceDependency,
     ServiceDependencyType,
-    get_enhanced_service_registry,
+    get_service_registry,
 )
 from .service_config_manager import get_service_config_manager
 
@@ -34,7 +34,7 @@ class ServiceDiscovery:
     """
 
     def __init__(self, service_directories: list[str] | None = None):
-        self.registry = get_enhanced_service_registry()
+        self.registry = get_service_registry()
         self.config_manager = get_service_config_manager()
 
         # Service discovery configuration

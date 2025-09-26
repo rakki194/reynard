@@ -4,8 +4,8 @@
  * Handles image loading, error states, and zoom controls
  */
 import { createSignal, Show } from "solid-js";
-import { Button } from "reynard-components-core";
-import { Icon } from "reynard-components-core";
+import { Button } from "reynard-primitives";
+import { Icon } from "reynard-primitives";
 export const ImageDisplay = (props: any) => {
   const [imageError, setImageError] = createSignal(false);
   const [imageLoading, setImageLoading] = createSignal(true);

@@ -4,7 +4,7 @@ Base classes and implementations for content extraction from various sources.
 """
 
 from .base_scraper import BaseScraper
-from .enhanced_extractor import EnhancedContentExtractor
+from .enhanced_extractor import ContentExtractor
 from .general_scraper import GeneralScraper
 from .github_scraper import GitHubScraper
 from .hackernews_scraper import HackerNewsScraper
@@ -21,7 +21,7 @@ from .wikipedia_scraper import WikipediaScraper
 
 __all__ = [
     "BaseScraper",
-    "EnhancedContentExtractor",
+    "ContentExtractor",
     "GeneralScraper",
     "GitHubScraper",
     "HackerNewsScraper",

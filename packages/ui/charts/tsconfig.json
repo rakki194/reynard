@@ -12,7 +12,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false,
+    "noEmit": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "declaration": true,
@@ -21,6 +21,14 @@
     "rootDir": "src",
     "composite": true
   },
-  "include": ["src"],
-  "exclude": ["dist", "node_modules", "src/__tests__"]
+  "include": ["src", "src/shims/**/*.d.ts"],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "src/__tests__",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "*.config.ts",
+    "*.config.js"
+  ]
 }

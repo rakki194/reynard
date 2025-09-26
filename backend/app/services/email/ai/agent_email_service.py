@@ -12,7 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from ....models.agent_email_models import (
+from ....models.schemas.agent_schemas import (
     AgentEmailConfig,
     AgentEmailInteraction,
     AgentEmailMessage,

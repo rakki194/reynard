@@ -3,8 +3,8 @@
  * Comprehensive service management dashboard with real-time monitoring and control
  */
 import { Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Tabs } from "reynard-components-core/primitives";
-import { Button } from "reynard-components-core/primitives";
+import { Tabs } from "reynard-primitives";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 import { ServiceStatusPanel } from "./ServiceStatusPanel";
@@ -70,10 +70,15 @@ export const ServiceManagementDashboard = props => {
       await Promise.all([refreshServiceData(), refreshFeatureData(), refreshAuthData()]);
       setLastRefresh(new Date());
     } catch (error) {
-      log.error("Failed to refresh service data", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "ServiceManagementDashboard",
-        function: "refreshServiceData"
-      });
+      log.error(
+        "Failed to refresh service data",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "ServiceManagementDashboard",
+          function: "refreshServiceData",
+        }
+      );
     } finally {
       setIsRefreshing(false);
     }

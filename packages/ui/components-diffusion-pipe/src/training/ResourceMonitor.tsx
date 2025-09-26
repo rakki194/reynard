@@ -6,12 +6,12 @@
  */
 
 import { Show, createSignal, createEffect, Component, onMount, onCleanup } from "solid-js";
-import { Card } from "reynard-components-core/primitives";
-import { Button } from "reynard-components-core/primitives";
-import { Badge } from "reynard-components-core/primitives";
+import { Card } from "reynard-primitives";
+import { Button } from "reynard-primitives";
+import { Badge } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { RealTimeChart } from "reynard-charts";
-import { useTrainingWebSocket } from '../hooks/useTrainingWebSocket';
+import { useTrainingWebSocket } from "../hooks/useTrainingWebSocket";
 
 export interface ResourceData {
   gpu: {
@@ -60,40 +60,49 @@ export const ResourceMonitor: Component<ResourceMonitorProps> = props => {
   const [alerts, setAlerts] = createSignal<ResourceAlert[]>([]);
   const [isExpanded, setIsExpanded] = createSignal(!props.compact);
   const [isRefreshing, setIsRefreshing] = createSignal(false);
-  const [resourceData, setResourceData] = createSignal<ResourceData>(props.data || {
-    gpu: {
-      utilization: 0,
-      memory_used: 0,
-      memory_total: 0,
-      temperature: 0,
-      power_usage: 0,
-    },
-    cpu: {
-      utilization: 0,
-      memory_used: 0,
-      memory_total: 0,
-      temperature: 0,
-      cores: 0,
-    },
-    system: {
-      disk_usage: 0,
-      network_usage: 0,
-      load_average: [0, 0, 0],
-    },
-  });
-  
+  const [resourceData, setResourceData] = createSignal<ResourceData>(
+    props.data || {
+      gpu: {
+        utilization: 0,
+        memory_used: 0,
+        memory_total: 0,
+        temperature: 0,
+        power_usage: 0,
+      },
+      cpu: {
+        utilization: 0,
+        memory_used: 0,
+        memory_total: 0,
+        temperature: 0,
+        cores: 0,
+      },
+      system: {
+        disk_usage: 0,
+        network_usage: 0,
+        load_average: [0, 0, 0],
+      },
+    }
+  );
+
   // Real-time chart data
-  const [gpuUtilizationData, setGpuUtilizationData] = createSignal<Array<{timestamp: number, value: number, label: string}>>([]);
-  const [gpuMemoryData, setGpuMemoryData] = createSignal<Array<{timestamp: number, value: number, label: string}>>([]);
-  const [cpuUsageData, setCpuUsageData] = createSignal<Array<{timestamp: number, value: number, label: string}>>([]);
+  const [gpuUtilizationData, setGpuUtilizationData] = createSignal<
+    Array<{ timestamp: number; value: number; label: string }>
+  >([]);
+  const [gpuMemoryData, setGpuMemoryData] = createSignal<Array<{ timestamp: number; value: number; label: string }>>(
+    []
+  );
+  const [cpuUsageData, setCpuUsageData] = createSignal<Array<{ timestamp: number; value: number; label: string }>>([]);
 
   // WebSocket integration for real-time resource monitoring
-  const websocket = props.websocketUrl && props.trainingId ? useTrainingWebSocket({
-    url: props.websocketUrl,
-    reconnectInterval: 5000,
-    maxReconnectAttempts: 5,
-    heartbeatInterval: 30000,
-  }) : null;
+  const websocket =
+    props.websocketUrl && props.trainingId
+      ? useTrainingWebSocket({
+          url: props.websocketUrl,
+          reconnectInterval: 5000,
+          maxReconnectAttempts: 5,
+          heartbeatInterval: 30000,
+        })
+      : null;
 
   // Handle WebSocket events for real-time resource monitoring
   createEffect(() => {
@@ -103,7 +112,7 @@ export const ResourceMonitor: Component<ResourceMonitorProps> = props => {
         if (event.type === "metrics" && event.trainingId === props.trainingId) {
           const metrics = event.data;
           const timestamp = event.timestamp.getTime();
-          
+
           // Update resource data
           setResourceData(prev => ({
             ...prev,
@@ -129,23 +138,32 @@ export const ResourceMonitor: Component<ResourceMonitorProps> = props => {
           }));
 
           // Update chart data
-          setGpuUtilizationData(prev => [...prev.slice(-99), {
-            timestamp,
-            value: metrics.gpu_utilization || 0,
-            label: "GPU Utilization"
-          }]);
-          
-          setGpuMemoryData(prev => [...prev.slice(-99), {
-            timestamp,
-            value: metrics.gpu_memory_used || 0,
-            label: "GPU Memory"
-          }]);
-          
-          setCpuUsageData(prev => [...prev.slice(-99), {
-            timestamp,
-            value: metrics.cpu_usage || 0,
-            label: "CPU Usage"
-          }]);
+          setGpuUtilizationData(prev => [
+            ...prev.slice(-99),
+            {
+              timestamp,
+              value: metrics.gpu_utilization || 0,
+              label: "GPU Utilization",
+            },
+          ]);
+
+          setGpuMemoryData(prev => [
+            ...prev.slice(-99),
+            {
+              timestamp,
+              value: metrics.gpu_memory_used || 0,
+              label: "GPU Memory",
+            },
+          ]);
+
+          setCpuUsageData(prev => [
+            ...prev.slice(-99),
+            {
+              timestamp,
+              value: metrics.cpu_usage || 0,
+              label: "CPU Usage",
+            },
+          ]);
         }
       });
     }
@@ -542,7 +560,9 @@ export const ResourceMonitor: Component<ResourceMonitorProps> = props => {
                 <div class="metric-item">
                   <span class="metric-label">Load Average</span>
                   <span class="metric-value">
-                    {resourceData().system.load_average!.map((l: number) => l.toFixed(2)).join(", ")}
+                    {resourceData()
+                      .system.load_average!.map((l: number) => l.toFixed(2))
+                      .join(", ")}
                   </span>
                 </div>
               </Show>
@@ -563,7 +583,7 @@ export const ResourceMonitor: Component<ResourceMonitorProps> = props => {
                 height={200}
                 title="GPU Utilization Over Time"
                 yAxisLabel="Utilization (%)"
-                valueFormatter={(value) => `${value.toFixed(1)}%`}
+                valueFormatter={value => `${value.toFixed(1)}%`}
               />
             </div>
 
@@ -577,7 +597,7 @@ export const ResourceMonitor: Component<ResourceMonitorProps> = props => {
                 height={200}
                 title="GPU Memory Usage Over Time"
                 yAxisLabel="Memory (GB)"
-                valueFormatter={(value) => `${(value / (1024 * 1024 * 1024)).toFixed(2)} GB`}
+                valueFormatter={value => `${(value / (1024 * 1024 * 1024)).toFixed(2)} GB`}
               />
             </div>
 
@@ -591,7 +611,7 @@ export const ResourceMonitor: Component<ResourceMonitorProps> = props => {
                 height={200}
                 title="CPU Usage Over Time"
                 yAxisLabel="Usage (%)"
-                valueFormatter={(value) => `${value.toFixed(1)}%`}
+                valueFormatter={value => `${value.toFixed(1)}%`}
               />
             </div>
           </div>

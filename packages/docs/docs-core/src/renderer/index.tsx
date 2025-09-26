@@ -2,7 +2,7 @@
  * @fileoverview Documentation renderer components for Reynard
  */
 import { createSignal, createEffect, For, Show } from "solid-js";
-import { Button, Card } from "reynard-components-core";
+import { Button, Card } from "reynard-primitives";
 /**
  * Main documentation renderer component
  */

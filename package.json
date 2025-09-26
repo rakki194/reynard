@@ -1,6 +1,6 @@
 {
   "name": "reynard",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "private": false,
   "type": "module",
   "description": "Reynard - A cunning SolidJS framework and UI library",

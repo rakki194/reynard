@@ -3,7 +3,7 @@
  * Comprehensive memory usage tracking and leak detection
  */
 import { For, Show, createSignal, createEffect, onMount, onCleanup } from "solid-js";
-import { Button } from "reynard-components-core/primitives";
+import { Button } from "reynard-primitives";
 import { fluentIconsPackage } from "reynard-fluent-icons";
 import { log } from "reynard-error-boundaries";
 import { Chart } from "reynard-charts";
@@ -125,10 +125,15 @@ export const MemoryTrackingPanel = props => {
       performLeakDetection(newStats, memoryUsages);
       setLastUpdate(new Date());
     } catch (error) {
-      log.error("Failed to update memory statistics", error instanceof Error ? error : new Error(String(error)), undefined, {
-        component: "MemoryTrackingPanel",
-        function: "updateMemoryStats"
-      });
+      log.error(
+        "Failed to update memory statistics",
+        error instanceof Error ? error : new Error(String(error)),
+        undefined,
+        {
+          component: "MemoryTrackingPanel",
+          function: "updateMemoryStats",
+        }
+      );
     } finally {
       setIsRefreshing(false);
     }
@@ -216,7 +221,7 @@ export const MemoryTrackingPanel = props => {
     } else {
       log.warn("Garbage collection not available in this environment", undefined, {
         component: "MemoryTrackingPanel",
-        function: "triggerGarbageCollection"
+        function: "triggerGarbageCollection",
       });
     }
   };

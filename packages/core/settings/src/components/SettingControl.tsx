@@ -4,7 +4,7 @@
  */
 
 import { Component, createMemo, Show, For, splitProps } from "solid-js";
-import { Button, TextField, Select, Slider } from "reynard-components-core";
+import { Button, TextField, Select, Slider } from "reynard-primitives";
 import { Toggle } from "./Toggle";
 import type { SettingDefinition } from "../types";
 

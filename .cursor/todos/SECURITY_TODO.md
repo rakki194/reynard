@@ -3,7 +3,9 @@
 **Created**: 2025-09-21
 **Agent**: Water-Prime-25 (Security-focused Frog Specialist)
 **Priority**: CRITICAL
-**Status**: PLANNING PHASE
+**Status**: SUPERSEDED BY UNIFIED RBAC SYSTEM
+
+> **⚠️ IMPORTANT**: This TODO has been superseded by the **ONE WAY: Unified RBAC System** quest in `one_way.md`. All security implementation should now follow the unified RBAC approach instead of this fragmented plan.
 
 ## 📋 Executive Summary
 

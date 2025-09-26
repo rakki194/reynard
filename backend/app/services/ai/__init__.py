@@ -47,8 +47,8 @@ from .providers.ollama_provider import OllamaConfig, OllamaProvider
 from .providers.sglang_provider import SGLangConfig, SGLangProvider, SGLangWorkflow
 from .providers.vllm_provider import VLLMConfig, VLLMProvider
 
-# Import service access functions
-from app.core.ai_service_initializer import get_ai_service
+# Import service access functions - moved to avoid circular import
+# from app.core.ai_service_initializer import get_ai_service
 
 __all__ = [
     # Core interfaces
@@ -84,5 +84,4 @@ __all__ = [
     "get_config_manager",
     
     # Service access functions
-    "get_ai_service",
 ]
