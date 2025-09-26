@@ -10,7 +10,10 @@ class CaptionError(Exception):
     """Base exception for caption generation errors."""
 
     def __init__(
-        self, message: str, error_type: str = "unknown", retryable: bool = False,
+        self,
+        message: str,
+        error_type: str = "unknown",
+        retryable: bool = False,
     ):
         super().__init__(message)
         self.error_type = error_type

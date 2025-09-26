@@ -7,9 +7,15 @@ Tests the integration between Phoenix experiments and PostgreSQL ECS system.
 import asyncio
 import logging
 import sys
+from pathlib import Path
 
 # Add the backend to the path for ECS service access
-sys.path.append("/home/kade/runeset/reynard/backend")
+# Get project root and add backend to path
+current_file = Path(__file__)
+project_root = (
+    current_file.parent.parent.parent
+)  # experimental/phoenix -> experimental -> project root
+sys.path.append(str(project_root / "backend"))
 
 from experiments.config import ExperimentConfig, ExperimentType
 from src.integration.postgres_data_loader import get_postgres_data_loader
@@ -65,7 +71,8 @@ async def test_postgres_integration():
         print("\n3. Testing agent comparison...")
         if len(phoenix_agents) >= 2:
             comparison = await data_loader.compare_agents(
-                phoenix_agents[0].get("agent_id"), phoenix_agents[1].get("agent_id"),
+                phoenix_agents[0].get("agent_id"),
+                phoenix_agents[1].get("agent_id"),
             )
 
             if comparison:
@@ -86,7 +93,8 @@ async def test_postgres_integration():
         # Test 4: Test experiment configuration
         print("\n4. Testing experiment configuration...")
         config = ExperimentConfig(
-            experiment_type=ExperimentType.PHOENIX_EVOLUTIONARY, use_postgresql=True,
+            experiment_type=ExperimentType.PHOENIX_EVOLUTIONARY,
+            use_postgresql=True,
         )
 
         print("✅ Experiment configuration created!")

@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, onMount, onCleanup } from "solid-js";
-import { Card, Button, Select } from "reynard-components";
+import { Card, Button, Select } from "reynard-primitives";
 import { AdvancedPatternGenerator } from "../utils/phyllotactic/AdvancedPatternGenerator";
 import { createAnimationCore } from "../utils/animation/AnimationCore";
 // import type { AnimationConfig } from "../utils/animation/AnimationTypes";

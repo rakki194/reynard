@@ -24,16 +24,16 @@ secure_ai_router = APIRouter(prefix="/ai", tags=["secure-ai"])
 
 def create_secure_ai_router(ai_service: Any) -> APIRouter:
     """Create a secure AI router with the provided AI service.
-    
+
     Args:
         ai_service: The AI service instance to use
-        
+
     Returns:
         APIRouter: Configured secure AI router
     """
     # Create a new router instance
     router = APIRouter(prefix="/ai", tags=["secure-ai"])
-    
+
     @router.post("/chat")
     async def secure_ai_chat(
         request: SecureChatRequest,
@@ -64,7 +64,7 @@ def create_secure_ai_router(ai_service: Any) -> APIRouter:
             if not request.message or len(request.message.strip()) == 0:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="Message cannot be empty"
+                    detail="Message cannot be empty",
                 )
 
             # Process the request through the AI service
@@ -72,13 +72,13 @@ def create_secure_ai_router(ai_service: Any) -> APIRouter:
                 response = await ai_service.process_chat(
                     message=request.message,
                     user_id=current_user.get('user_id'),
-                    context=request.context
+                    context=request.context,
                 )
             else:
                 # Fallback response if AI service is not available
                 response = {
                     "message": "AI service is currently unavailable. Please try again later.",
-                    "status": "error"
+                    "status": "error",
                 }
 
             logger.info("Secure AI chat request processed successfully")
@@ -90,7 +90,7 @@ def create_secure_ai_router(ai_service: Any) -> APIRouter:
             logger.error(f"Error processing secure AI chat request: {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Internal server error processing AI chat request"
+                detail="Internal server error processing AI chat request",
             )
 
     @router.get("/health")
@@ -112,20 +112,16 @@ def create_secure_ai_router(ai_service: Any) -> APIRouter:
                 return {
                     "status": "healthy" if health_status else "unhealthy",
                     "service": "ai",
-                    "timestamp": "2025-01-01T00:00:00Z"  # Placeholder timestamp
+                    "timestamp": "2025-01-01T00:00:00Z",  # Placeholder timestamp
                 }
             else:
                 return {
                     "status": "unhealthy",
                     "service": "ai",
-                    "error": "AI service not available"
+                    "error": "AI service not available",
                 }
         except Exception as e:
             logger.error(f"Error checking AI service health: {e}")
-            return {
-                "status": "unhealthy",
-                "service": "ai",
-                "error": str(e)
-            }
+            return {"status": "unhealthy", "service": "ai", "error": str(e)}
 
     return router

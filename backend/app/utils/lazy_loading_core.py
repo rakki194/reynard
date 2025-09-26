@@ -25,8 +25,7 @@ T = TypeVar("T")
 
 
 class LazyPackageExport:
-    """Lazy loading proxy for package exports with validation and performance monitoring.
-    """
+    """Lazy loading proxy for package exports with validation and performance monitoring."""
 
     def __init__(
         self,

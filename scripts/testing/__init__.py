@@ -1,2 +1,1 @@
-"""Testing and CI scripts for Reynard.
-"""
+"""Testing and CI scripts for Reynard."""

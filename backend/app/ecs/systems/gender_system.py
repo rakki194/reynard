@@ -94,7 +94,9 @@ class GenderSystem(System):
                 self._simulate_identity_change(entity, gender_comp)
 
     def _simulate_identity_change(
-        self, entity: "Entity", gender_comp: GenderComponent,
+        self,
+        entity: "Entity",
+        gender_comp: GenderComponent,
     ) -> None:
         """Simulate a potential gender identity change."""
         current_identity = gender_comp.profile.primary_identity
@@ -129,7 +131,9 @@ class GenderSystem(System):
         )
 
     def _update_pronouns_for_identity(
-        self, gender_comp: GenderComponent, identity: GenderIdentity,
+        self,
+        gender_comp: GenderComponent,
+        identity: GenderIdentity,
     ) -> None:
         """Update pronouns based on gender identity."""
         # This is a simplified mapping - in reality, pronouns are personal choice
@@ -137,18 +141,30 @@ class GenderSystem(System):
             GenderIdentity.MALE: PronounSet("he", "him", "his", "himself"),
             GenderIdentity.FEMALE: PronounSet("she", "her", "hers", "herself"),
             GenderIdentity.NON_BINARY: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.GENDERFLUID: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.AGENDER: PronounSet("they", "them", "theirs", "themselves"),
             GenderIdentity.DEMIGENDER: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.BIGENDER: PronounSet("they", "them", "theirs", "themselves"),
             GenderIdentity.QUESTIONING: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.OTHER: PronounSet("they", "them", "theirs", "themselves"),
         }
@@ -236,7 +252,8 @@ class GenderSystem(System):
 
         # Check social support
         support_level = self._calculate_support_level(
-            entity, None,
+            entity,
+            None,
         )  # Simplified for now
         if support_level < 0.5:
             return False
@@ -248,7 +265,9 @@ class GenderSystem(System):
         return random.random() < come_out_chance
 
     def _process_coming_out(
-        self, entity: "Entity", gender_comp: GenderComponent,
+        self,
+        entity: "Entity",
+        gender_comp: GenderComponent,
     ) -> None:
         """Process a coming out event."""
         # Update coming out status
@@ -282,7 +301,9 @@ class GenderSystem(System):
         logger.debug("Updating relationships after coming out for %s", entity.id)
 
     def _process_gender_interactions(
-        self, entity: "Entity", gender_comp: GenderComponent,
+        self,
+        entity: "Entity",
+        gender_comp: GenderComponent,
     ) -> None:
         """Process gender-based interactions."""
         # Find nearby agents for gender-based interactions
@@ -296,7 +317,10 @@ class GenderSystem(System):
             # Check if gender-based interaction should occur
             if self._should_have_gender_interaction(gender_comp, nearby_gender_comp):
                 self._process_gender_interaction(
-                    entity, nearby_entity, gender_comp, nearby_gender_comp,
+                    entity,
+                    nearby_entity,
+                    gender_comp,
+                    nearby_gender_comp,
                 )
 
     def _find_nearby_agents(self, entity: "Entity") -> list["Entity"]:
@@ -307,7 +331,9 @@ class GenderSystem(System):
         return [e for e in all_entities if e.id != entity.id]
 
     def _should_have_gender_interaction(
-        self, gender_comp1: GenderComponent, gender_comp2: GenderComponent,
+        self,
+        gender_comp1: GenderComponent,
+        gender_comp2: GenderComponent,
     ) -> bool:
         """Check if two agents should have a gender-based interaction."""
         # Very low probability for gender-based interactions
@@ -439,7 +465,9 @@ class GenderSystem(System):
         }
 
     def update_agent_gender_identity(
-        self, agent_id: str, new_identity: GenderIdentity,
+        self,
+        agent_id: str,
+        new_identity: GenderIdentity,
     ) -> bool:
         """Update an agent's gender identity."""
         entity = self.world.get_entity(agent_id)
@@ -458,13 +486,17 @@ class GenderSystem(System):
 
         # Log the change
         logger.info(
-            "Manual gender identity change: %s -> %s", agent_id, new_identity.value,
+            "Manual gender identity change: %s -> %s",
+            agent_id,
+            new_identity.value,
         )
 
         return True
 
     def update_agent_gender_expression(
-        self, agent_id: str, new_expression: GenderExpression,
+        self,
+        agent_id: str,
+        new_expression: GenderExpression,
     ) -> bool:
         """Update an agent's gender expression."""
         entity = self.world.get_entity(agent_id)
@@ -480,7 +512,9 @@ class GenderSystem(System):
 
         # Log the change
         logger.info(
-            "Gender expression change: %s -> %s", agent_id, new_expression.value,
+            "Gender expression change: %s -> %s",
+            agent_id,
+            new_expression.value,
         )
 
         return True
@@ -520,7 +554,10 @@ class GenderSystem(System):
         return False
 
     def update_coming_out_status(
-        self, agent_id: str, other_agent_id: str, knows: bool,
+        self,
+        agent_id: str,
+        other_agent_id: str,
+        knows: bool,
     ) -> bool:
         """Update who knows about an agent's gender identity."""
         entity = self.world.get_entity(agent_id)

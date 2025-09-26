@@ -174,7 +174,9 @@ class TestJWTTokenVerification:
 
         try:
             malformed_token = jwt.encode(
-                malformed_payload, SECRET_KEY, algorithm=ALGORITHM,
+                malformed_payload,
+                SECRET_KEY,
+                algorithm=ALGORITHM,
             )
             result = verify_token(malformed_token, "access")
             assert result is None

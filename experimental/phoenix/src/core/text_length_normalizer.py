@@ -51,7 +51,9 @@ class TextLengthNormalizer:
         self.logger.info("📏 Text length normalizer initialized")
 
     def normalize_text_length(
-        self, text: str, strategy: str = "adaptive",
+        self,
+        text: str,
+        strategy: str = "adaptive",
     ) -> dict[str, Any]:
         """Normalize text length using specified strategy.
 
@@ -145,7 +147,9 @@ class TextLengthNormalizer:
 
         # Keep most important words
         important_words = sorted(
-            word_importance.items(), key=lambda x: x[1], reverse=True,
+            word_importance.items(),
+            key=lambda x: x[1],
+            reverse=True,
         )
         words_to_keep = [word for word, _ in important_words[:target_length]]
 
@@ -159,7 +163,8 @@ class TextLengthNormalizer:
             "normalization_factor": len(truncated_text.split()) / current_length,
             "strategy_used": "truncation",
             "quality_preserved": self._assess_quality_preservation(
-                text, truncated_text,
+                text,
+                truncated_text,
             ),
         }
 
@@ -448,7 +453,9 @@ class TextLengthNormalizer:
         return importance_scores
 
     def _reconstruct_text_from_words(
-        self, important_words: list[str], original_text: str,
+        self,
+        important_words: list[str],
+        original_text: str,
     ) -> str:
         """Reconstruct text from important words while maintaining structure."""
         # Simple reconstruction - in practice, this could be more sophisticated
@@ -469,7 +476,9 @@ class TextLengthNormalizer:
         return corrected_ratio
 
     def _assess_quality_preservation(
-        self, original_text: str, normalized_text: str,
+        self,
+        original_text: str,
+        normalized_text: str,
     ) -> bool:
         """Assess whether quality was preserved during normalization."""
         # Simple quality assessment - in practice, this could be more sophisticated
@@ -501,7 +510,9 @@ class TextLengthNormalizer:
         return max(0.5, min(2.0, bias_factor))  # Clamp between 0.5 and 2.0
 
     def normalize_metrics_by_length(
-        self, metrics: dict[str, float], text: str,
+        self,
+        metrics: dict[str, float],
+        text: str,
     ) -> dict[str, float]:
         """Normalize metrics by text length to remove length bias."""
         length_bias_factor = self.calculate_length_bias_factor(text)

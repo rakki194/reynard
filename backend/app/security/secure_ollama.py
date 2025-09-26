@@ -351,7 +351,9 @@ class SecureOllamaService:
 
             # Remove email addresses
             text = re.sub(
-                r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text,
+                r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+                "[EMAIL]",
+                text,
             )
 
             # Remove tokens and keys

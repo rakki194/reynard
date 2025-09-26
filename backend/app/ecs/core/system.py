@@ -44,7 +44,8 @@ class System(ABC):
         raise NotImplementedError("Subclasses must implement update method")
 
     def get_entities_with_components(
-        self, *component_types: type[Component],
+        self,
+        *component_types: type[Component],
     ) -> list[Entity]:
         """Get entities that have all specified components.
 

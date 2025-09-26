@@ -114,7 +114,9 @@ async def main():
     # Change password
     print("\n7. Changing user password...")
     success = await auth_manager.change_password(
-        "john_doe", "SecurePassword123!", "NewSecurePassword789!",
+        "john_doe",
+        "SecurePassword123!",
+        "NewSecurePassword789!",
     )
 
     if success:
@@ -126,7 +128,8 @@ async def main():
 
         # Try to authenticate with new password
         new_tokens = await auth_manager.authenticate(
-            "john_doe", "NewSecurePassword789!",
+            "john_doe",
+            "NewSecurePassword789!",
         )
         print(f"✅ New password works: {new_tokens is not None}")
     else:

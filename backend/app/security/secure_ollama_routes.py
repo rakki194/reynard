@@ -252,7 +252,8 @@ def create_secure_ollama_router(ollama_service) -> APIRouter:
 
             # Process the request
             response = await service.process_chat_request(
-                validated_request, current_user,
+                validated_request,
+                current_user,
             )
 
             return response

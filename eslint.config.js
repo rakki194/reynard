@@ -3,6 +3,7 @@ import typescript from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import solid from "eslint-plugin-solid/configs/typescript";
+import { i18nPlugin } from "./packages/core/testing/dist/utils/i18n-eslint-plugin.js";
 
 export default [
   // Base configuration for all files
@@ -166,6 +167,35 @@ export default [
       "jsx-a11y/aria-unsupported-elements": "error",
       "jsx-a11y/role-has-required-aria-props": "error",
       "jsx-a11y/role-supports-aria-props": "error",
+    },
+  },
+
+  // i18n Plugin configuration
+  {
+    files: ["**/*.{ts,tsx,js,jsx}"],
+    plugins: {
+      "@reynard/i18n": i18nPlugin,
+    },
+    rules: {
+      "@reynard/i18n/no-hardcoded-strings": [
+        "error",
+        {
+          ignorePatterns: [
+            "^[a-z]+[A-Z][a-z]*$", // camelCase
+            "^[A-Z_]+$", // CONSTANTS
+            "^[0-9]+$", // numbers
+            "^[a-z]{1,2}$", // short strings
+            "^(id|class|type|name|value|key|index|count|size|width|height|color|url|path|file|dir|src|alt|title|role|aria|data|test|spec|mock|stub|fixture)$", // technical terms
+          ],
+          minLength: 3,
+        },
+      ],
+      "@reynard/i18n/no-untranslated-keys": [
+        "warn",
+        {
+          translationFiles: ["src/lang/**/*.ts", "packages/*/src/lang/**/*.ts"],
+        },
+      ],
     },
   },
 

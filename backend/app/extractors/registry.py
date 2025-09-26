@@ -56,7 +56,8 @@ class ReynardExtractorRegistry:
 
         for extractor_info in default_extractors:
             self.register_reynard_extractor(
-                extractor_info["name"], extractor_info["extractor_class"],
+                extractor_info["name"],
+                extractor_info["extractor_class"],
             )
 
     def register_reynard_extractor(self, name: str, extractor_class: type):

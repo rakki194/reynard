@@ -15,8 +15,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestIntrospectionCoverage(FenrirTestBase):
-    """*otter curiosity* Test suite that uses introspection to call all methods
-    """
+    """*otter curiosity* Test suite that uses introspection to call all methods"""
 
     async def test_introspection_coverage(self):
         """Test using introspection to call all methods"""

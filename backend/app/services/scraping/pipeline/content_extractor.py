@@ -46,7 +46,9 @@ class ContentExtractor:
             return False
 
     async def extract_content(
-        self, source: str, config: dict[str, Any] | None = None,
+        self,
+        source: str,
+        config: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Extract content from a source.
 

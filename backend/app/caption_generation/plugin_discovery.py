@@ -53,7 +53,8 @@ def discover_plugins() -> dict[str, CaptionerPlugin]:
 
         except Exception as e:
             logger.warning(
-                f"Error loading plugin from {plugin_path}: {e}", exc_info=True,
+                f"Error loading plugin from {plugin_path}: {e}",
+                exc_info=True,
             )
             continue
 

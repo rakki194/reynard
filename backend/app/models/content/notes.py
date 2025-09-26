@@ -80,7 +80,8 @@ class Notebook(Base):
     is_public = Column(Boolean, nullable=False, default=False)
     is_archived = Column(Boolean, nullable=False, default=False)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -98,7 +99,9 @@ class Notebook(Base):
     # Relationships
     agent = relationship("Agent", back_populates="notebooks")
     notes = relationship(
-        "Note", back_populates="notebook", cascade="all, delete-orphan",
+        "Note",
+        back_populates="notebook",
+        cascade="all, delete-orphan",
     )
 
     def to_dict(self) -> dict[str, Any]:
@@ -129,12 +132,15 @@ class Note(Base):
     title = Column(String(255), nullable=False)
     content = Column(Text, nullable=False, default="")
     content_type = Column(
-        String(20), nullable=False, default="markdown",
+        String(20),
+        nullable=False,
+        default="markdown",
     )  # markdown, rich-text, code
     is_favorite = Column(Boolean, nullable=False, default=False)
     is_archived = Column(Boolean, nullable=False, default=False)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -159,17 +165,23 @@ class Note(Base):
     agent = relationship("Agent", back_populates="notes")
     tags = relationship("Tag", secondary="note_tags", back_populates="notes")
     attachments = relationship(
-        "NoteAttachment", back_populates="note", cascade="all, delete-orphan",
+        "NoteAttachment",
+        back_populates="note",
+        cascade="all, delete-orphan",
     )
     collaborations = relationship(
-        "NoteCollaboration", back_populates="note", cascade="all, delete-orphan",
+        "NoteCollaboration",
+        back_populates="note",
+        cascade="all, delete-orphan",
     )
     versions = relationship(
-        "NoteVersion", back_populates="note", cascade="all, delete-orphan",
+        "NoteVersion",
+        back_populates="note",
+        cascade="all, delete-orphan",
     )
     ai_metadata = relationship(
-        "AIMetadata", 
-        back_populates="note", 
+        "AIMetadata",
+        back_populates="note",
         cascade="all, delete-orphan",
         foreign_keys="AIMetadata.entity_id",
         primaryjoin="and_(AIMetadata.entity_type == 'note', AIMetadata.entity_id == Note.id)",
@@ -210,12 +222,15 @@ class Todo(Base):
     description = Column(Text, nullable=True)
     completed = Column(Boolean, nullable=False, default=False)
     priority = Column(
-        String(10), nullable=False, default="medium",
+        String(10),
+        nullable=False,
+        default="medium",
     )  # low, medium, high, urgent
     due_date = Column(DateTime(timezone=True), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -234,8 +249,8 @@ class Todo(Base):
     agent = relationship("Agent", back_populates="todos")
     tags = relationship("Tag", secondary="todo_tags", back_populates="todos")
     ai_metadata = relationship(
-        "AIMetadata", 
-        back_populates="todo", 
+        "AIMetadata",
+        back_populates="todo",
         cascade="all, delete-orphan",
         foreign_keys="AIMetadata.entity_id",
         primaryjoin="and_(AIMetadata.entity_type == 'todo', AIMetadata.entity_id == Todo.id)",
@@ -285,7 +300,8 @@ class Tag(Base):
     name = Column(String(100), nullable=False)
     color = Column(String(7), nullable=False, default="#6b7280")  # Hex color
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     # Foreign key to Agent (user)
@@ -330,7 +346,8 @@ class NoteAttachment(Base):
     file_size = Column(Integer, nullable=False)
     mime_type = Column(String(100), nullable=False)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     # Foreign key to Note
@@ -366,10 +383,13 @@ class NoteCollaboration(Base):
 
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
     permission = Column(
-        String(20), nullable=False, default="read",
+        String(20),
+        nullable=False,
+        default="read",
     )  # read, write, admin
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     # Foreign keys
@@ -419,7 +439,8 @@ class NoteVersion(Base):
     version_number = Column(Integer, nullable=False)
     change_summary = Column(String(500), nullable=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     # Foreign keys
@@ -469,7 +490,8 @@ class AIMetadata(Base):
     confidence_score = Column(Float, nullable=True)
     model_used = Column(String(100), nullable=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     # Foreign key to Agent (user)

@@ -5,8 +5,6 @@
  * Scans all Reynard packages for i18n issues
  */
 
-import { readFileSync, readdirSync, statSync } from "fs";
-import { join, extname } from "path";
 import { runI18nTests, generateI18nReport, type I18nTestConfig } from "./i18n-testing.js";
 
 // Configuration
@@ -27,10 +25,10 @@ const DEFAULT_CONFIG: I18nTestConfig = {
 };
 
 // File extensions to check
-const CHECKED_EXTENSIONS = [".tsx", ".jsx", ".ts", ".js"];
+// const CHECKED_EXTENSIONS = [".tsx", ".jsx", ".ts", ".js"];
 
 // Directories to ignore
-const IGNORE_DIRS = ["node_modules", ".git", "dist", "build", "coverage", "__tests__", "test"];
+// const IGNORE_DIRS = ["node_modules", ".git", "dist", "build", "coverage", "__tests__", "test"];
 
 /**
  * Main function
@@ -135,49 +133,49 @@ Examples:
 /**
  * Find all files to check
  */
-function findFilesToCheck(packages: string[]): string[] {
-  const files: string[] = [];
-
-  for (const packagePattern of packages) {
-    const packagePath = packagePattern.replace("*", "");
-    if (statSync(packagePath).isDirectory()) {
-      files.push(...findFilesInDirectory(packagePath));
-    }
-  }
-
-  return files;
-}
+// function _findFilesToCheck(packages: string[]): string[] {
+//   const files: string[] = [];
+//
+//   for (const packagePattern of packages) {
+//     const packagePath = packagePattern.replace("*", "");
+//     if (statSync(packagePath).isDirectory()) {
+//       files.push(...findFilesInDirectory(packagePath));
+//     }
+//   }
+//
+//   return files;
+// }
 
 /**
  * Recursively find files in directory
  */
-function findFilesInDirectory(dir: string): string[] {
-  const files: string[] = [];
-
-  try {
-    const entries = readdirSync(dir);
-
-    for (const entry of entries) {
-      const fullPath = join(dir, entry);
-      const stat = statSync(fullPath);
-
-      if (stat.isDirectory()) {
-        if (!IGNORE_DIRS.includes(entry)) {
-          files.push(...findFilesInDirectory(fullPath));
-        }
-      } else if (stat.isFile()) {
-        const ext = extname(fullPath);
-        if (CHECKED_EXTENSIONS.includes(ext)) {
-          files.push(fullPath);
-        }
-      }
-    }
-  } catch (error) {
-    console.warn(`Warning: Could not read directory ${dir}:`, error);
-  }
-
-  return files;
-}
+// function findFilesInDirectory(dir: string): string[] {
+//   const files: string[] = [];
+//
+//   try {
+//     const entries = readdirSync(dir);
+//
+//     for (const entry of entries) {
+//       const fullPath = join(dir, entry);
+//       const stat = statSync(fullPath);
+//
+//       if (stat.isDirectory()) {
+//         if (!IGNORE_DIRS.includes(entry)) {
+//           files.push(...findFilesInDirectory(fullPath));
+//         }
+//       } else if (stat.isFile()) {
+//         const ext = extname(fullPath);
+//         if (CHECKED_EXTENSIONS.includes(ext)) {
+//           files.push(fullPath);
+//         }
+//       }
+//     }
+//   } catch (error) {
+//     console.warn(`Warning: Could not read directory ${dir}:`, error);
+//   }
+//
+//   return files;
+// }
 
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {

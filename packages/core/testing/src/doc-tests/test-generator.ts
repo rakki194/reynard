@@ -27,7 +27,7 @@ function extractComponentName(code: string): string {
  * Create a test-safe version of code by wrapping it in proper test structure
  */
 export function createTestableCode(example: CodeExample, packageName: string): string {
-  const { code, isComponent, isTypeScript } = example;
+  const { code, isComponent } = example;
 
   // Skip non-executable examples
   if (code.includes("// ...") || code.includes("/* ... */")) {

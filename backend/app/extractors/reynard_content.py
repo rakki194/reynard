@@ -40,7 +40,8 @@ class ReynardContentExtractor(Extractor):
                 Message.Directory,
                 {
                     "title": content_data.get(
-                        "title", f"Reynard Content {self.content_id}",
+                        "title",
+                        f"Reynard Content {self.content_id}",
                     ),
                     "author": content_data.get("author", "Unknown"),
                     "category": content_data.get("category", "content"),

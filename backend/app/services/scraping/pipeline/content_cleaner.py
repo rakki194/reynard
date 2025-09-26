@@ -47,7 +47,9 @@ class ContentCleaner:
             return False
 
     async def clean_content(
-        self, content: str, config: dict[str, Any] | None = None,
+        self,
+        content: str,
+        config: dict[str, Any] | None = None,
     ) -> str:
         """Clean content by removing unwanted elements.
 

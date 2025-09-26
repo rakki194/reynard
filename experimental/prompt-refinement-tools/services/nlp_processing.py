@@ -70,7 +70,8 @@ class NLPProcessingService:
         # Configuration
         self.model_name = self.config.get("model_name", "en_core_web_sm")
         self.sentiment_model = self.config.get(
-            "sentiment_model", "distilbert-base-uncased-finetuned-sst-2-english",
+            "sentiment_model",
+            "distilbert-base-uncased-finetuned-sst-2-english",
         )
 
         # Initialize components
@@ -310,7 +311,9 @@ class NLPProcessingService:
         try:
             # Check for missing details
             if not re.search(
-                r"\b(how|what|why|when|where|which|who)\b", text, re.IGNORECASE,
+                r"\b(how|what|why|when|where|which|who)\b",
+                text,
+                re.IGNORECASE,
             ):
                 gaps.append("Missing specific question words")
 
@@ -429,7 +432,9 @@ class NLPProcessingService:
 
             # Check for ambiguous comparisons
             if re.search(
-                r"\b(better|worse|more|less|most|least)\b", text, re.IGNORECASE,
+                r"\b(better|worse|more|less|most|least)\b",
+                text,
+                re.IGNORECASE,
             ):
                 ambiguities.append("Ambiguous comparisons without context")
 
@@ -458,7 +463,10 @@ class NLPProcessingService:
         result = text
         for vague, specific in replacements.items():
             result = re.sub(
-                r"\b" + vague + r"\b", specific, result, flags=re.IGNORECASE,
+                r"\b" + vague + r"\b",
+                specific,
+                result,
+                flags=re.IGNORECASE,
             )
 
         return result
@@ -528,7 +536,9 @@ class NLPProcessingService:
         return text + concept_text
 
     async def integrate_terminology(
-        self, text: str, terminology: dict[str, Any],
+        self,
+        text: str,
+        terminology: dict[str, Any],
     ) -> str:
         """Integrate project-specific terminology."""
         # This would integrate terminology from the codebase analysis

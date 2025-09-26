@@ -40,7 +40,7 @@ import { GLOBAL_EXCLUDE_PATTERNS, GLOBAL_INCLUDE_PATTERNS } from "./config/patte
  */
 export const REYNARD_ARCHITECTURE: ProjectArchitecture = {
   name: "Reynard",
-  rootPath: "/home/kade/runeset/reynard",
+  rootPath: process.cwd(), // Use current working directory instead of hardcoded path
 
   directories: [
     // Root directories

@@ -17,7 +17,7 @@ from .base import BaseService
 
 class AccessLevel(Enum):
     """Access levels for security."""
-    
+
     PUBLIC = "public"
     INTERNAL = "internal"
     CONFIDENTIAL = "confidential"
@@ -26,7 +26,7 @@ class AccessLevel(Enum):
 
 class OperationType(Enum):
     """Types of operations for access control."""
-    
+
     READ = "read"
     WRITE = "write"
     DELETE = "delete"
@@ -38,7 +38,7 @@ class OperationType(Enum):
 @dataclass
 class SecurityPolicy:
     """Security policy configuration."""
-    
+
     policy_id: str
     name: str
     description: str
@@ -55,7 +55,7 @@ class SecurityPolicy:
 @dataclass
 class AuditLog:
     """Audit log entry."""
-    
+
     log_id: str
     user_id: str
     operation: OperationType
@@ -128,14 +128,18 @@ class SecurityProvider(ABC):
 
     @abstractmethod
     async def encrypt(
-        self, data: str, access_level: AccessLevel,
+        self,
+        data: str,
+        access_level: AccessLevel,
     ) -> str:
         """Encrypt data."""
         pass
 
     @abstractmethod
     async def decrypt(
-        self, encrypted_data: str, access_level: AccessLevel,
+        self,
+        encrypted_data: str,
+        access_level: AccessLevel,
     ) -> str:
         """Decrypt data."""
         pass

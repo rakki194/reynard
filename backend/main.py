@@ -49,7 +49,9 @@ if os.getenv("TRANSFORMERS_ENABLED", "false").lower() == "true":
     warnings.filterwarnings("ignore", category=UserWarning, module="transformers")
 
 if os.getenv("EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED", "false").lower() == "true":
-    warnings.filterwarnings("ignore", category=UserWarning, module="sentence_transformers")
+    warnings.filterwarnings(
+        "ignore", category=UserWarning, module="sentence_transformers"
+    )
 
 # TensorFlow warnings (if used)
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"

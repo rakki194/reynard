@@ -20,8 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 class RequestLoggingMiddleware(BaseHTTPMiddleware):
-    """Middleware for logging HTTP requests and responses.
-    """
+    """Middleware for logging HTTP requests and responses."""
 
     def __init__(self, app: ASGIApp, service_name: str = "reynard"):
         super().__init__(app)
@@ -92,7 +91,11 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         self.service_logger.info("Request received", extra=log_data)
 
     def _log_response(
-        self, request: Request, response: Response, request_id: str, process_time: float,
+        self,
+        request: Request,
+        response: Response,
+        request_id: str,
+        process_time: float,
     ) -> None:
         """Log response details."""
         log_data = {
@@ -108,17 +111,23 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         # Log at appropriate level based on status code
         if response.status_code >= 500:
             self.service_logger.error(
-                "Request completed with server error", extra=log_data,
+                "Request completed with server error",
+                extra=log_data,
             )
         elif response.status_code >= 400:
             self.service_logger.warning(
-                "Request completed with client error", extra=log_data,
+                "Request completed with client error",
+                extra=log_data,
             )
         else:
             self.service_logger.info("Request completed successfully", extra=log_data)
 
     def _log_error(
-        self, request: Request, error: Exception, request_id: str, process_time: float,
+        self,
+        request: Request,
+        error: Exception,
+        request_id: str,
+        process_time: float,
     ) -> None:
         """Log error details."""
         log_data = {
@@ -131,13 +140,14 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         }
 
         self.service_logger.error(
-            "Request failed with exception", extra=log_data, exc_info=True,
+            "Request failed with exception",
+            extra=log_data,
+            exc_info=True,
         )
 
 
 class PerformanceLoggingMiddleware(BaseHTTPMiddleware):
-    """Middleware for performance monitoring and logging.
-    """
+    """Middleware for performance monitoring and logging."""
 
     def __init__(self, app: ASGIApp, service_name: str = "reynard"):
         super().__init__(app)
@@ -224,8 +234,7 @@ class PerformanceLoggingMiddleware(BaseHTTPMiddleware):
 
 
 class SecurityLoggingMiddleware(BaseHTTPMiddleware):
-    """Middleware for security event logging.
-    """
+    """Middleware for security event logging."""
 
     def __init__(self, app: ASGIApp, service_name: str = "reynard"):
         super().__init__(app)
@@ -337,7 +346,9 @@ class SecurityLoggingMiddleware(BaseHTTPMiddleware):
         }
 
         self.service_logger.error(
-            "Security exception occurred", extra=log_data, exc_info=True,
+            "Security exception occurred",
+            extra=log_data,
+            exc_info=True,
         )
 
 

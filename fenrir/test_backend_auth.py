@@ -13,9 +13,10 @@ Version: 1.0.0
 """
 
 import json
-import requests
 import sys
-from typing import Dict, Any
+from typing import Any, Dict
+
+import requests
 
 
 class BackendAuthTester:
@@ -28,12 +29,7 @@ class BackendAuthTester:
 
     def log(self, message: str, status: str = "INFO") -> None:
         """Log a message with status."""
-        status_icons = {
-            "INFO": "ℹ️",
-            "OK": "✅",
-            "FAIL": "❌",
-            "WARN": "⚠️"
-        }
+        status_icons = {"INFO": "ℹ️", "OK": "✅", "FAIL": "❌", "WARN": "⚠️"}
         icon = status_icons.get(status, "ℹ️")
         print(f"{icon} {message}")
 
@@ -46,7 +42,9 @@ class BackendAuthTester:
                 self.log(f"Backend is running: {data.get('message', 'Unknown')}", "OK")
                 return True
             else:
-                self.log(f"Backend responded with status {response.status_code}", "FAIL")
+                self.log(
+                    f"Backend responded with status {response.status_code}", "FAIL"
+                )
                 return False
         except Exception as e:
             self.log(f"Backend is not accessible: {e}", "FAIL")
@@ -55,11 +53,15 @@ class BackendAuthTester:
     def test_mcp_bootstrap_health(self) -> bool:
         """Test MCP bootstrap health endpoint."""
         try:
-            response = requests.get(f"{self.backend_url}/api/mcp/bootstrap/health", timeout=5)
+            response = requests.get(
+                f"{self.backend_url}/api/mcp/bootstrap/health", timeout=5
+            )
             if response.status_code == 200:
                 data = response.json()
                 self.log(f"MCP bootstrap health: {data.get('status', 'Unknown')}", "OK")
-                self.log(f"Available clients: {data.get('clients_available', 0)}", "INFO")
+                self.log(
+                    f"Available clients: {data.get('clients_available', 0)}", "INFO"
+                )
                 return True
             else:
                 self.log(f"MCP bootstrap health failed: {response.status_code}", "FAIL")
@@ -75,20 +77,23 @@ class BackendAuthTester:
                 "client_id": "invalid-client",
                 "client_secret": "invalid-secret",
                 "client_type": "agent",
-                "permissions": ["mcp:read"]
+                "permissions": ["mcp:read"],
             }
 
             response = requests.post(
                 f"{self.backend_url}/api/mcp/bootstrap/authenticate",
                 json=invalid_data,
-                timeout=5
+                timeout=5,
             )
 
             if response.status_code == 401:
                 self.log("MCP bootstrap correctly rejects invalid credentials", "OK")
                 return True
             else:
-                self.log(f"MCP bootstrap accepts invalid credentials: {response.status_code}", "FAIL")
+                self.log(
+                    f"MCP bootstrap accepts invalid credentials: {response.status_code}",
+                    "FAIL",
+                )
                 return False
         except Exception as e:
             self.log(f"MCP bootstrap authentication error: {e}", "FAIL")
@@ -106,14 +111,17 @@ class BackendAuthTester:
             response = requests.post(
                 f"{self.backend_url}/api/mcp/bootstrap/authenticate",
                 json=malformed_data,
-                timeout=5
+                timeout=5,
             )
 
             if response.status_code in [400, 422]:  # Bad Request or Validation Error
                 self.log("MCP bootstrap correctly rejects malformed data", "OK")
                 return True
             else:
-                self.log(f"MCP bootstrap accepts malformed data: {response.status_code}", "FAIL")
+                self.log(
+                    f"MCP bootstrap accepts malformed data: {response.status_code}",
+                    "FAIL",
+                )
                 return False
         except Exception as e:
             self.log(f"MCP bootstrap malformed data error: {e}", "FAIL")
@@ -122,7 +130,9 @@ class BackendAuthTester:
     def test_mcp_tools_health(self) -> bool:
         """Test MCP tools health endpoint."""
         try:
-            response = requests.get(f"{self.backend_url}/api/mcp/tools/health", timeout=5)
+            response = requests.get(
+                f"{self.backend_url}/api/mcp/tools/health", timeout=5
+            )
             if response.status_code == 200:
                 data = response.json()
                 self.log(f"MCP tools health: {data.get('status', 'Unknown')}", "OK")
@@ -131,7 +141,9 @@ class BackendAuthTester:
                 # This might be expected if MCP server is not running
                 data = response.json() if response.content else {}
                 if "MCP server is not running" in str(data):
-                    self.log("MCP tools health correctly reports server not running", "OK")
+                    self.log(
+                        "MCP tools health correctly reports server not running", "OK"
+                    )
                     return True
                 else:
                     self.log(f"MCP tools health failed: {response.status_code}", "WARN")
@@ -147,7 +159,10 @@ class BackendAuthTester:
             if response.status_code == 200:
                 data = response.json()
                 self.log(f"MCP clients endpoint accessible", "OK")
-                self.log(f"Number of clients: {len(data) if isinstance(data, list) else 'Unknown'}", "INFO")
+                self.log(
+                    f"Number of clients: {len(data) if isinstance(data, list) else 'Unknown'}",
+                    "INFO",
+                )
                 return True
             else:
                 self.log(f"MCP clients endpoint failed: {response.status_code}", "WARN")
@@ -180,7 +195,7 @@ class BackendAuthTester:
             security_headers = [
                 'x-content-type-options',
                 'x-frame-options',
-                'x-xss-protection'
+                'x-xss-protection',
             ]
 
             missing_headers = []
@@ -206,8 +221,14 @@ class BackendAuthTester:
         tests = [
             ("Backend Connectivity", self.test_backend_connectivity),
             ("MCP Bootstrap Health", self.test_mcp_bootstrap_health),
-            ("MCP Bootstrap Auth (Invalid)", self.test_mcp_bootstrap_authentication_invalid),
-            ("MCP Bootstrap Auth (Malformed)", self.test_mcp_bootstrap_authentication_malformed),
+            (
+                "MCP Bootstrap Auth (Invalid)",
+                self.test_mcp_bootstrap_authentication_invalid,
+            ),
+            (
+                "MCP Bootstrap Auth (Malformed)",
+                self.test_mcp_bootstrap_authentication_malformed,
+            ),
             ("MCP Tools Health", self.test_mcp_tools_health),
             ("MCP Clients Endpoint", self.test_mcp_clients_endpoint),
             ("MCP Stats Endpoint", self.test_mcp_stats_endpoint),
@@ -241,14 +262,17 @@ class BackendAuthTester:
         if passed == total:
             self.log("🎉 All backend authentication tests passed!", "OK")
         else:
-            self.log("⚠️  Some backend authentication tests failed. Review the results above.", "WARN")
+            self.log(
+                "⚠️  Some backend authentication tests failed. Review the results above.",
+                "WARN",
+            )
 
         return {
             "total_tests": total,
             "passed_tests": passed,
             "failed_tests": total - passed,
             "success_rate": (passed / total) * 100,
-            "results": results
+            "results": results,
         }
 
 

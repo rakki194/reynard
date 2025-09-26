@@ -1,5 +1,4 @@
 import { vi } from "vitest";
-import { useI18n } from "reynard-i18n";
 
 /**
  * Utility functions for creating and managing mocks in tests
@@ -226,8 +225,10 @@ export function createMockDataTransfer(files: File[] = [], t?: (key: string) => 
 /**
  * Create a mock IntersectionObserver
  */
-export function createMockIntersectionObserver(entries: IntersectionObserverEntry[] = []): typeof IntersectionObserver {
-  const MockIntersectionObserver = vi.fn().mockImplementation(callback => {
+export function createMockIntersectionObserver(
+  _entries: IntersectionObserverEntry[] = []
+): typeof IntersectionObserver {
+  const MockIntersectionObserver = vi.fn().mockImplementation(_callback => {
     return {
       observe: vi.fn(),
       unobserve: vi.fn(),

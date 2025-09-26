@@ -1,5 +1,4 @@
-"""Enhanced Humility Detector - Analyzers Module
-"""
+"""Enhanced Humility Detector - Analyzers Module"""
 
 from .epistemic_analyzer import EpistemicHumilityAnalyzer
 from .hexaco_analyzer import HexacoAnalyzer

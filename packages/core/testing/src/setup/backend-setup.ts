@@ -9,11 +9,10 @@ import { setupCoreTest } from "./core-setup.js";
  * Mock backend server for testing
  */
 class MockBackendServer {
-  private port: number;
   private isRunning: boolean = false;
 
-  constructor(port: number) {
-    this.port = port;
+  constructor(_port: number) {
+    // Port is stored but not used in this mock implementation
   }
 
   async start(): Promise<void> {

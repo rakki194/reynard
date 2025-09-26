@@ -24,7 +24,9 @@ class WikipediaQualityScorer(ContentQualityScorer):
         super().__init__()
 
     async def assess_quality(
-        self, content: str, metadata: dict[str, Any] | None = None,
+        self,
+        content: str,
+        metadata: dict[str, Any] | None = None,
     ) -> ContentQuality:
         """Assess the quality of Wikipedia content.
 
@@ -57,7 +59,9 @@ class WikipediaQualityScorer(ContentQualityScorer):
             return await super().assess_quality(content, metadata)
 
     async def _calculate_wikipedia_score(
-        self, content: str, metadata: dict[str, Any] | None = None,
+        self,
+        content: str,
+        metadata: dict[str, Any] | None = None,
     ) -> float:
         """Calculate Wikipedia-specific quality score.
 

@@ -7,7 +7,7 @@ Centralized database configuration and connection management for the Reynard bac
 Provides SQLAlchemy engine, session management, and base model class.
 
 Author: Reynard Development Team
-Version: 1.0.0
+Version: 2.0.0
 """
 
 import logging
@@ -17,6 +17,11 @@ from typing import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+from app.core.database_logger import (
+    setup_connection_pool_logging,
+    setup_sqlalchemy_logging,
+)
+from app.core.database_manager import get_database_manager
 from app.models.base import Base
 
 logger = logging.getLogger(__name__)
@@ -26,15 +31,21 @@ DATABASE_URL = os.getenv("MCP_DATABASE_URL")
 if not DATABASE_URL:
     raise ValueError("MCP_DATABASE_URL environment variable is required")
 
-# SQLAlchemy setup
+# SQLAlchemy setup with enhanced configuration
 engine = create_engine(
     DATABASE_URL,
     echo=os.getenv("DEBUG_SQL_QUERIES", "false").lower() == "true",
-    pool_size=int(os.getenv("DATABASE_POOL_SIZE", "5")),
-    max_overflow=int(os.getenv("DATABASE_MAX_OVERFLOW", "10")),
+    pool_size=int(os.getenv("DATABASE_POOL_SIZE", "20")),
+    max_overflow=int(os.getenv("DATABASE_MAX_OVERFLOW", "30")),
     pool_timeout=int(os.getenv("DATABASE_POOL_TIMEOUT", "30")),
     pool_recycle=int(os.getenv("DATABASE_POOL_RECYCLE", "3600")),
+    pool_pre_ping=True,  # Verify connections before use
+    future=True,
 )
+
+# Setup enhanced logging
+setup_sqlalchemy_logging(engine, "main")
+setup_connection_pool_logging(engine, "main")
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -78,6 +89,7 @@ def test_connection() -> bool:
     try:
         with engine.connect() as connection:
             from sqlalchemy import text
+
             connection.execute(text("SELECT 1"))
         logger.info("Database connection test successful")
         return True

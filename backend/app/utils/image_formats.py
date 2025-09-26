@@ -53,24 +53,36 @@ class ImageFormatSupport:
             # Update JXL support
             if _global_image_service.is_jxl_supported():
                 cls.SUPPORTED_FORMATS[".jxl"] = ImageFormat(
-                    ".jxl", "image/jxl", True, True,
+                    ".jxl",
+                    "image/jxl",
+                    True,
+                    True,
                 )
                 logger.info("JXL format support enabled")
             else:
                 cls.SUPPORTED_FORMATS[".jxl"] = ImageFormat(
-                    ".jxl", "image/jxl", False, True,
+                    ".jxl",
+                    "image/jxl",
+                    False,
+                    True,
                 )
                 logger.debug("JXL format support not available")
 
             # Update AVIF support
             if _global_image_service.is_avif_supported():
                 cls.SUPPORTED_FORMATS[".avif"] = ImageFormat(
-                    ".avif", "image/avif", True, True,
+                    ".avif",
+                    "image/avif",
+                    True,
+                    True,
                 )
                 logger.info("AVIF format support enabled")
             else:
                 cls.SUPPORTED_FORMATS[".avif"] = ImageFormat(
-                    ".avif", "image/avif", False, True,
+                    ".avif",
+                    "image/avif",
+                    False,
+                    True,
                 )
                 logger.debug("AVIF format support not available")
 

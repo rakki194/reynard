@@ -168,7 +168,8 @@ class OptimizedSearchService:
 
                 except Exception as e:
                     logger.warning(
-                        "⚠️ Failed to initialize optimization components: %s", e,
+                        "⚠️ Failed to initialize optimization components: %s",
+                        e,
                     )
                     if cache_config.get("fallback_to_legacy", True):
                         logger.info("Continuing with legacy caching")
@@ -181,9 +182,10 @@ class OptimizedSearchService:
 
             # Initialize embedding service with AI service
             from app.core.service_registry import get_service_registry
+
             service_registry = get_service_registry()
             ai_service = service_registry.get_service_instance("ai_service")
-            
+
             self._embedding_service = EmbeddingService(ai_service)
             # Get embedding configuration
             embedding_config = {
@@ -267,7 +269,10 @@ class OptimizedSearchService:
         return None
 
     async def _cache_result(
-        self, cache_key: str, result: SearchResponse, ttl: int = 3600,
+        self,
+        cache_key: str,
+        result: SearchResponse,
+        ttl: int = 3600,
     ):
         """Cache search result."""
         if OPTIMIZATION_AVAILABLE and hasattr(self, "_cache_manager"):
@@ -285,7 +290,8 @@ class OptimizedSearchService:
         try:
             if self._http_session:
                 async with self._http_session.get(
-                    "http://localhost:8001/health", timeout=5,
+                    "http://localhost:8001/health",
+                    timeout=5,
                 ) as response:
                     if response.status == 200:
                         logger.info("✅ RAG backend connection successful")
@@ -327,7 +333,10 @@ class OptimizedSearchService:
             return {"success": False, "error": f"RAG service not available: {e}"}
 
     def _format_rag_response(
-        self, rag_result: dict[str, Any], query: str, start_time: float,
+        self,
+        rag_result: dict[str, Any],
+        query: str,
+        start_time: float,
     ) -> SearchResponse:
         """Format RAG response as SearchResponse."""
         try:
@@ -366,7 +375,9 @@ class OptimizedSearchService:
             )
 
     async def _local_semantic_search(
-        self, request: SemanticSearchRequest, start_time: float,
+        self,
+        request: SemanticSearchRequest,
+        start_time: float,
     ) -> SearchResponse:
         """Perform local semantic search using embedding service."""
         try:
@@ -383,7 +394,8 @@ class OptimizedSearchService:
 
             # Get relevant files
             files = await self._get_relevant_files(
-                request.file_types, request.directories,
+                request.file_types,
+                request.directories,
             )
             if not files:
                 return SearchResponse(
@@ -617,7 +629,9 @@ class OptimizedSearchService:
             rag_result = await self._search_via_rag(request)
             if rag_result.get("success"):
                 result = self._format_rag_response(
-                    rag_result, request.query, start_time,
+                    rag_result,
+                    request.query,
+                    start_time,
                 )
                 # Only cache successful results, not errors
                 if result.success:
@@ -731,7 +745,8 @@ class OptimizedSearchService:
 
             # Get relevant files
             files = await self._get_relevant_files(
-                request.file_types, request.directories,
+                request.file_types,
+                request.directories,
             )
             if not files:
                 return SearchResponse(
@@ -765,7 +780,8 @@ class OptimizedSearchService:
                 cmd,
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent.parent.parent.parent, check=False,
+                cwd=Path(__file__).parent.parent.parent.parent.parent,
+                check=False,
             )
 
             # Parse results
@@ -826,7 +842,9 @@ class OptimizedSearchService:
             )
 
     def _combine_search_results(
-        self, semantic_response: SearchResponse, syntax_response: SearchResponse,
+        self,
+        semantic_response: SearchResponse,
+        syntax_response: SearchResponse,
     ) -> SearchResponse:
         """Combine semantic and syntax search results."""
         try:
@@ -880,7 +898,8 @@ class OptimizedSearchService:
 
             # Calculate combined search time
             combined_time = max(
-                semantic_response.search_time, syntax_response.search_time,
+                semantic_response.search_time,
+                syntax_response.search_time,
             )
 
             return SearchResponse(
@@ -949,7 +968,9 @@ class OptimizedSearchService:
 
             # Wait for both to complete
             semantic_response, syntax_response = await asyncio.gather(
-                semantic_task, syntax_task, return_exceptions=True,
+                semantic_task,
+                syntax_task,
+                return_exceptions=True,
             )
 
             # Handle exceptions from parallel tasks
@@ -977,7 +998,8 @@ class OptimizedSearchService:
 
             # Combine results
             search_response = self._combine_search_results(
-                semantic_response, syntax_response,
+                semantic_response,
+                syntax_response,
             )
 
             # Cache the result with configured TTL
@@ -1010,7 +1032,8 @@ class OptimizedSearchService:
         try:
             # Get relevant files
             files = await self._get_relevant_files(
-                request.file_types, request.directories,
+                request.file_types,
+                request.directories,
             )
 
             # Check if embedding service is available
@@ -1193,7 +1216,9 @@ class OptimizedSearchService:
             }
 
     async def get_query_suggestions(
-        self, query: str, limit: int = 5,
+        self,
+        query: str,
+        limit: int = 5,
     ) -> SuggestionsResponse:
         """Get query suggestions based on the input query."""
         try:

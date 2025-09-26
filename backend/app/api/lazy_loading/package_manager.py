@@ -21,7 +21,9 @@ class PackageManager:
     """Manages lazy loading package operations."""
 
     def create_lazy_export(
-        self, package_name: str, validation_level: str,
+        self,
+        package_name: str,
+        validation_level: str,
     ) -> dict[str, Any]:
         """Create a new lazy export for a package."""
         try:
@@ -30,7 +32,8 @@ class PackageManager:
 
             # Create the lazy export
             lazy_export = create_lazy_export(
-                package_name, validation_level=validation_level_enum,
+                package_name,
+                validation_level=validation_level_enum,
             )
 
             # Get metadata

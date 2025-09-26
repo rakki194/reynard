@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Simple test script for the humility detector.
-"""
+"""Simple test script for the humility detector."""
 
 import sys
 from pathlib import Path
@@ -109,7 +108,8 @@ def test_command_line_interface():
             [sys.executable, "humility-detector.py", "--help"],
             capture_output=True,
             text=True,
-            cwd=current_dir, check=False,
+            cwd=current_dir,
+            check=False,
         )
 
         if result.returncode == 0:
@@ -128,7 +128,8 @@ def test_command_line_interface():
                 [sys.executable, "humility-detector.py", str(test_file)],
                 capture_output=True,
                 text=True,
-                cwd=current_dir, check=False,
+                cwd=current_dir,
+                check=False,
             )
 
             if result.returncode == 1:  # Should find issues

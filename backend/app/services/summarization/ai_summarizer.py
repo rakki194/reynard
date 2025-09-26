@@ -77,8 +77,9 @@ class AISummarizer(BaseSummarizer):
             if not self.ai_service:
                 # Get AI service from global registry
                 from ..ai import get_ai_service
+
                 self.ai_service = get_ai_service()
-            
+
             if not self.ai_service:
                 logger.error("AI service not available")
                 return False
@@ -93,7 +94,9 @@ class AISummarizer(BaseSummarizer):
             return False
 
     async def summarize(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> SummarizationResult:
         """Summarize text using AI service.
 
@@ -111,7 +114,7 @@ class AISummarizer(BaseSummarizer):
         """
         if not self._is_available:
             await self.initialize()
-        
+
         if not self._initialized or not self.ai_service:
             raise RuntimeError("AISummarizer is not available")
 
@@ -155,7 +158,8 @@ class AISummarizer(BaseSummarizer):
 
             # Calculate quality score
             result.quality_score = await self._calculate_quality_score(
-                text, summary_text,
+                text,
+                summary_text,
             )
 
             return result
@@ -165,7 +169,9 @@ class AISummarizer(BaseSummarizer):
             raise
 
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Stream summarization progress and results.
 
@@ -179,7 +185,7 @@ class AISummarizer(BaseSummarizer):
         """
         if not self._is_available:
             await self.initialize()
-        
+
         if not self._initialized or not self.ai_service:
             yield {
                 "event": "error",
@@ -281,7 +287,9 @@ class AISummarizer(BaseSummarizer):
         return chat_result.message.content.strip()
 
     async def _generate_summary_stream(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Generate summary with streaming support.
 
@@ -318,7 +326,7 @@ class AISummarizer(BaseSummarizer):
                 "timestamp": time.time(),
                 "metadata": {},
             }
-        
+
         # Signal completion
         yield {
             "type": "complete",
@@ -509,8 +517,7 @@ async def initialize_ai_summarizer() -> bool:
 
 
 async def shutdown_ai_summarizer() -> None:
-    """Shutdown the AI summarizer.
-    """
+    """Shutdown the AI summarizer."""
     try:
         global _ai_summarizer
         if _ai_summarizer is not None:
@@ -535,14 +542,17 @@ async def health_check_ai_summarizer() -> bool:
         # Check if the service is initialized and AI service is available
         if not _ai_summarizer._initialized:
             return False
-        
+
         if not _ai_summarizer.ai_service:
             return False
-        
+
         # Check AI service health
         health_status = _ai_summarizer.ai_service.get_health_status()
-        return health_status["service_initialized"] and health_status["healthy_providers"] > 0
-        
+        return (
+            health_status["service_initialized"]
+            and health_status["healthy_providers"] > 0
+        )
+
     except Exception as e:
         logger.error(f"❌ AI summarizer health check error: {e}")
         return False

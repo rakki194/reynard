@@ -363,7 +363,9 @@ class ToolRegistry:
         # Check permissions
         if not context.has_permission(tool.required_permission):
             raise ToolPermissionError(
-                tool_name, tool.required_permission, context.user_role,
+                tool_name,
+                tool.required_permission,
+                context.user_role,
             )
 
         # Prepare parameters
@@ -379,7 +381,10 @@ class ToolRegistry:
 
         # Use enhanced validator for comprehensive validation
         validation_result = self._get_validator().validate_tool_parameters(
-            tool_name, original_params, tool.parameters, validation_context,
+            tool_name,
+            original_params,
+            tool.parameters,
+            validation_context,
         )
 
         if not validation_result.valid:
@@ -529,7 +534,10 @@ class ToolRegistry:
 
         # Use enhanced validator
         validation_result = self._get_validator().validate_tool_parameters(
-            tool_name, parameters, tool.parameters, context,
+            tool_name,
+            parameters,
+            tool.parameters,
+            context,
         )
 
         return {
@@ -652,7 +660,10 @@ class ToolRegistry:
         return redacted
 
     def _log_admin_tool_execution(
-        self, tool_name: str, context: ToolExecutionContext, params: dict[str, Any],
+        self,
+        tool_name: str,
+        context: ToolExecutionContext,
+        params: dict[str, Any],
     ) -> None:
         """Log admin-level tool executions for audit purposes.
 

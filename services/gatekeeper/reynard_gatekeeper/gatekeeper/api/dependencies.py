@@ -326,8 +326,7 @@ def get_current_active_user_sse() -> Callable[[User], User]:
     async def _get_current_active_user_sse(
         current_user: User = Depends(get_current_user_sse),
     ) -> User:
-        """Active-user variant for SSE routes.
-        """
+        """Active-user variant for SSE routes."""
         if current_user.role == UserRole.GUEST:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
@@ -352,7 +351,8 @@ async def validate_token(token: str, required_role: UserRole | None = None) -> b
     try:
         auth_manager = get_auth_manager()
         return await auth_manager.validate_token(
-            token, required_role.value if required_role else None,
+            token,
+            required_role.value if required_role else None,
         )
     except Exception:
         return False

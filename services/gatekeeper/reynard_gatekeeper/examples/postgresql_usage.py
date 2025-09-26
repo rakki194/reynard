@@ -28,7 +28,8 @@ async def main():
 
     # Configure database connection
     database_url = os.getenv(
-        "DATABASE_URL", "postgresql://yipyap:yipyap@localhost:5432/yipyap",
+        "DATABASE_URL",
+        "postgresql://yipyap:yipyap@localhost:5432/yipyap",
     )
 
     print(f"📊 Using database: {database_url}")
@@ -36,7 +37,8 @@ async def main():
     # Initialize PostgreSQL backend
     print("\n🔧 Initializing PostgreSQL backend...")
     backend = PostgreSQLBackend(
-        database_url=database_url, echo=True,  # Enable SQL logging for demonstration
+        database_url=database_url,
+        echo=True,  # Enable SQL logging for demonstration
     )
 
     # Configure token settings
@@ -97,7 +99,8 @@ async def main():
         from gatekeeper.models.user import UserUpdate
 
         user_update = UserUpdate(
-            email="updated@example.com", metadata={"preferences": {"theme": "dark"}},
+            email="updated@example.com",
+            metadata={"preferences": {"theme": "dark"}},
         )
         updated_user = await auth_manager.update_user("postgres_user", user_update)
         print(f"✅ User updated: {updated_user.email}")

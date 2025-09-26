@@ -56,5 +56,5 @@ export default defineConfig({
     timeout: 10 * 1000,
   },
 
-  outputDir: "../results/dom-assertions-results/",
+  outputDir: resultsPaths.artifactsDir,
 });

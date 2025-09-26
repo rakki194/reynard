@@ -4,7 +4,7 @@
  */
 
 import { Component, onMount } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-primitives";
 import { SpellCaster } from "./spell-effects/SpellCaster";
 import { PhyllotacticGameControls } from "./PhyllotacticGameControls";
 import { PhyllotacticCanvas } from "./PhyllotacticCanvas";

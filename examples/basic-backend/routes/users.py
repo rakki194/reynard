@@ -133,7 +133,8 @@ async def get_user(
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
         )
 
     user_response = UserResponse(
@@ -161,12 +162,14 @@ async def create_user(
     # Check if username already exists
     query = "SELECT id FROM users WHERE username = ?"
     existing_users = await db_service.execute_query(
-        query, {"username": user_data.username},
+        query,
+        {"username": user_data.username},
     )
 
     if existing_users:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username already exists",
         )
 
     # Check if email already exists
@@ -175,7 +178,8 @@ async def create_user(
 
     if existing_users:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email already exists",
         )
 
     # Create user
@@ -225,7 +229,8 @@ async def update_user(
 
     if not users_data:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
         )
 
     existing_user = users_data[0]
@@ -243,12 +248,14 @@ async def update_user(
         # Check if email already exists for another user
         query = "SELECT id FROM users WHERE email = ? AND id != ?"
         existing_users = await db_service.execute_query(
-            query, {"email": user_data.email, "id": user_id},
+            query,
+            {"email": user_data.email, "id": user_id},
         )
 
         if existing_users:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Email already exists",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already exists",
             )
 
         update_fields.append("email = ?")
@@ -260,7 +267,8 @@ async def update_user(
 
     if not update_fields:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="No fields to update",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No fields to update",
         )
 
     # In a real app, you'd execute the update query
@@ -300,7 +308,8 @@ async def delete_user(
 
     if not users_data:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
         )
 
     # Check if user is deleting their own account or is admin

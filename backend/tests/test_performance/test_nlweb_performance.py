@@ -114,7 +114,9 @@ class TestNLWebPerformance:
 
     @pytest.mark.asyncio
     async def test_ask_endpoint_streaming_performance(
-        self, async_client: AsyncClient, access_token,
+        self,
+        async_client: AsyncClient,
+        access_token,
     ):
         """Test ask endpoint streaming performance."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -225,7 +227,8 @@ class TestNLWebPerformance:
 
             start_time = time.time()
             response = client.get(
-                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"},
+                "/api/nlweb/stats",
+                headers={"Authorization": f"Bearer {access_token}"},
             )
             end_time = time.time()
 

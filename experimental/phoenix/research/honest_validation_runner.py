@@ -25,7 +25,8 @@ from scipy import stats
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -134,7 +135,9 @@ class HonestValidationRunner:
         """
 
     def _analyze_output_quality(
-        self, output: str, output_type: str,
+        self,
+        output: str,
+        output_type: str,
     ) -> dict[str, float]:
         """Analyze the quality of agent output."""
         # Basic text analysis
@@ -317,7 +320,8 @@ class HonestValidationRunner:
             if re.search(rf"\b{re.escape(term)}\b", output, re.IGNORECASE)
         )
         traits["knowledge_fidelity"] = min(
-            technical_mentions / len(technical_terms), 1.0,
+            technical_mentions / len(technical_terms),
+            1.0,
         )
 
         return traits
@@ -572,7 +576,10 @@ class HonestValidationRunner:
         return analysis_results
 
     def _calculate_power(
-        self, effect_size: float, sample_size: int, alpha: float,
+        self,
+        effect_size: float,
+        sample_size: int,
+        alpha: float,
     ) -> float:
         """Calculate statistical power."""
         if effect_size >= self.config.min_effect_size and sample_size >= 30:
@@ -582,7 +589,8 @@ class HonestValidationRunner:
         return 0.4  # Low power
 
     def _generate_recommendations(
-        self, statistical_analysis: dict[str, Any],
+        self,
+        statistical_analysis: dict[str, Any],
     ) -> list[str]:
         """Generate recommendations based on statistical analysis."""
         recommendations = []

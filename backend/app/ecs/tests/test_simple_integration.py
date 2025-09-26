@@ -1,5 +1,4 @@
-"""Simple integration test to verify basic functionality without file system operations.
-"""
+"""Simple integration test to verify basic functionality without file system operations."""
 
 import sys
 from datetime import datetime

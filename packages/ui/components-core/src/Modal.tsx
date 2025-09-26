@@ -1,9 +1,21 @@
 /**
  * Modal Component
- * A flexible modal dialog component with backdrop and animations
+ * A flexible modal dialog component with backdrop and animations.
+ *
+ * The Modal component properly composes the Button primitive for its close button,
+ * ensuring consistency with the design system and maintaining the primitives library contract.
+ *
+ * @example
+ * ```tsx
+ * <Modal open={isOpen()} onClose={() => setIsOpen(false)} title="Example Modal">
+ *   <p>Modal content goes here</p>
+ * </Modal>
+ * ```
  */
-import { splitProps, mergeProps, createEffect, Show, Component } from "solid-js";
+import { splitProps, mergeProps, createEffect, Show, Component, JSX } from "solid-js";
 import { Portal } from "solid-js/web";
+import { Button } from "reynard-primitives";
+import { Icon } from "./icons/Icon";
 
 export interface ModalProps {
   /** Whether the modal is open */
@@ -21,7 +33,7 @@ export interface ModalProps {
   /** Modal title */
   title?: string;
   /** Modal content */
-  children?: any;
+  children?: JSX.Element;
   /** Additional CSS classes */
   class?: string;
 }
@@ -31,6 +43,68 @@ const defaultProps: Partial<ModalProps> = {
   showCloseButton: true,
   closeOnBackdrop: true,
   closeOnEscape: true,
+};
+
+// Hook for handling escape key events
+const useEscapeKey = (
+  open: () => boolean,
+  closeOnEscape: () => boolean | undefined,
+  onClose: () => (() => void) | undefined
+) => {
+  createEffect(() => {
+    if (!open() || !closeOnEscape()) return;
+
+    // Only run on client side
+    if (typeof document === "undefined") return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose()?.();
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  });
+};
+
+// Hook for preventing body scroll when modal is open
+const useBodyScrollLock = (open: () => boolean) => {
+  createEffect(() => {
+    // Only run on client side
+    if (typeof document === "undefined") return;
+
+    if (open()) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  });
+};
+
+// Modal header component
+const ModalHeader: Component<{ title?: string; showCloseButton?: boolean; onClose?: () => void }> = props => {
+  return (
+    <Show when={props.title || props.showCloseButton}>
+      <div class="reynard-modal__header">
+        {props.title && <h2 class="reynard-modal__title">{props.title}</h2>}
+        <Show when={props.showCloseButton}>
+          <Button
+            variant="ghost"
+            size="sm"
+            iconOnly
+            onClick={() => props.onClose?.()}
+            aria-label="Close modal"
+            class="reynard-modal__close"
+          >
+            <Icon name="dismiss" size="sm" />
+          </Button>
+        </Show>
+      </div>
+    </Show>
+  );
 };
 
 export const Modal: Component<ModalProps> = props => {
@@ -47,29 +121,21 @@ export const Modal: Component<ModalProps> = props => {
     "class",
   ]);
 
-  // Handle escape key
-  createEffect(() => {
-    if (!local.open || !local.closeOnEscape) return;
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        local.onClose?.();
-      }
-    };
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  });
+  // Use custom hooks for side effects
+  useEscapeKey(
+    () => local.open,
+    () => local.closeOnEscape,
+    () => local.onClose
+  );
+  useBodyScrollLock(() => local.open);
 
-  // Prevent body scroll when modal is open
-  createEffect(() => {
-    if (local.open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  });
+  // Create computed values
+  const modalClasses = () => {
+    const sizeValue = local.size || "md";
+    const classes = ["reynard-modal__content", `reynard-modal__content--${sizeValue}`];
+    if (local.class) classes.push(local.class);
+    return classes.join(" ");
+  };
 
   const handleBackdropClick = (e: MouseEvent) => {
     if (local.closeOnBackdrop && e.target === e.currentTarget) {
@@ -77,37 +143,13 @@ export const Modal: Component<ModalProps> = props => {
     }
   };
 
-  const getModalClasses = () => {
-    const classes = ["reynard-modal__content", `reynard-modal__content--${local.size}`];
-    if (local.class) classes.push(local.class);
-    return classes.join(" ");
-  };
-
   return (
     <Show when={local.open}>
       <Portal>
         <div class="reynard-modal">
           <div class="reynard-modal__backdrop" onClick={handleBackdropClick}>
-            <div class={getModalClasses()}>
-              {(local.title || local.showCloseButton) && (
-                <div class="reynard-modal__header">
-                  {local.title && <h2 class="reynard-modal__title">{local.title}</h2>}
-
-                  {local.showCloseButton && (
-                    <button
-                      type="button"
-                      class="reynard-modal__close"
-                      onClick={() => local.onClose?.()}
-                      aria-label="Close modal"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path d="M8 6.585l3.593-3.592a1 1 0 011.414 1.414L9.415 8l3.592 3.593a1 1 0 01-1.414 1.414L8 9.415l-3.593 3.592a1 1 0 01-1.414-1.414L6.585 8 2.993 4.407a1 1 0 011.414-1.414L8 6.585z" />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-              )}
-
+            <div class={modalClasses()}>
+              <ModalHeader title={local.title} showCloseButton={local.showCloseButton} onClose={local.onClose} />
               <div class="reynard-modal__body">{local.children}</div>
             </div>
           </div>

@@ -13,10 +13,12 @@ class LazyExportRequest(BaseModel):
     """Request model for creating a lazy export."""
 
     package_name: str = Field(
-        ..., description="Name of the package to create lazy export for",
+        ...,
+        description="Name of the package to create lazy export for",
     )
     validation_level: str = Field(
-        default="basic", description="Validation level for the export",
+        default="basic",
+        description="Validation level for the export",
     )
 
 

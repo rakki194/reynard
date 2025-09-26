@@ -109,7 +109,10 @@ class TestSuccessAdvisor8Integration:
 
     @pytest.mark.asyncio
     async def test_complete_success_advisor_8_workflow(
-        self, agent_manager, legacy_service, mock_ecs_service,
+        self,
+        agent_manager,
+        legacy_service,
+        mock_ecs_service,
     ):
         """Test complete Success-Advisor-8 workflow from state management to legacy tracking."""
         # Step 1: Get Success-Advisor-8 agent state
@@ -133,7 +136,8 @@ class TestSuccessAdvisor8Integration:
 
         # Step 3: Get Success-Advisor-8 activities from CHANGELOG
         with patch.object(
-            legacy_service.changelog_parser, "parse_success_advisor_8_activities",
+            legacy_service.changelog_parser,
+            "parse_success_advisor_8_activities",
         ) as mock_activities:
             mock_activity = MagicMock()
             mock_activity.activity_id = "sa8-1"
@@ -159,15 +163,18 @@ class TestSuccessAdvisor8Integration:
         # Step 5: Generate comprehensive legacy report
         with (
             patch.object(
-                legacy_service, "get_success_advisor_8_activities",
+                legacy_service,
+                "get_success_advisor_8_activities",
             ) as mock_activities,
             patch.object(legacy_service, "get_codebase_movements") as mock_movements,
             patch.object(legacy_service, "_get_ecs_agent_data") as mock_ecs_data,
             patch.object(
-                legacy_service.changelog_parser, "analyze_activity_trends",
+                legacy_service.changelog_parser,
+                "analyze_activity_trends",
             ) as mock_analysis,
             patch.object(
-                legacy_service.changelog_parser, "generate_activity_summary",
+                legacy_service.changelog_parser,
+                "generate_activity_summary",
             ) as mock_summary,
         ):
 
@@ -188,7 +195,8 @@ class TestSuccessAdvisor8Integration:
 
         # Step 6: Get activity trends
         with patch.object(
-            legacy_service.changelog_parser, "analyze_activity_trends",
+            legacy_service.changelog_parser,
+            "analyze_activity_trends",
         ) as mock_trends:
             mock_trends.return_value = {
                 "activity_types": {"feature": 1, "fix": 2},
@@ -259,7 +267,8 @@ class TestSuccessAdvisor8Integration:
 
         # Update agent state
         update_result = await agent_manager.update_agent_state(
-            "success-advisor-8", updated_state,
+            "success-advisor-8",
+            updated_state,
         )
         assert update_result is True
 
@@ -273,7 +282,9 @@ class TestSuccessAdvisor8Integration:
 
     @pytest.mark.asyncio
     async def test_legacy_tracking_activity_workflow(
-        self, legacy_service, mock_ecs_service,
+        self,
+        legacy_service,
+        mock_ecs_service,
     ):
         """Test legacy tracking activity workflow."""
         # Track multiple activities
@@ -294,7 +305,8 @@ class TestSuccessAdvisor8Integration:
 
         for activity_data in activities:
             result = await legacy_service.track_success_advisor_8_activity(
-                activity_data["activity"], activity_data["context"],
+                activity_data["activity"],
+                activity_data["context"],
             )
             assert result is True
 
@@ -329,7 +341,9 @@ class TestSuccessAdvisor8Integration:
 
         # Test legacy report with errors
         with patch.object(
-            legacy_service, "get_success_advisor_8_activities", new_callable=AsyncMock,
+            legacy_service,
+            "get_success_advisor_8_activities",
+            new_callable=AsyncMock,
         ) as mock_activities:
             mock_activities.side_effect = Exception("Test error")
 
@@ -338,7 +352,9 @@ class TestSuccessAdvisor8Integration:
 
         # Test export with errors
         with patch.object(
-            legacy_service, "generate_legacy_report", new_callable=AsyncMock,
+            legacy_service,
+            "generate_legacy_report",
+            new_callable=AsyncMock,
         ) as mock_report:
             mock_report.side_effect = Exception("Export error")
 
@@ -362,14 +378,17 @@ class TestSuccessAdvisor8Integration:
         with (
             patch.object(legacy_service, "get_codebase_movements") as mock_movements,
             patch.object(
-                legacy_service, "get_success_advisor_8_activities",
+                legacy_service,
+                "get_success_advisor_8_activities",
             ) as mock_activities,
             patch.object(legacy_service, "_get_ecs_agent_data") as mock_ecs_data,
             patch.object(
-                legacy_service.changelog_parser, "analyze_activity_trends",
+                legacy_service.changelog_parser,
+                "analyze_activity_trends",
             ) as mock_analysis,
             patch.object(
-                legacy_service.changelog_parser, "generate_activity_summary",
+                legacy_service.changelog_parser,
+                "generate_activity_summary",
             ) as mock_summary,
         ):
 
@@ -389,7 +408,9 @@ class TestSuccessAdvisor8Integration:
         # Test activity tracking performance
         start_time = time.time()
         await agent_manager.track_agent_activity(
-            "success-advisor-8", "Performance test activity", {"test": "performance"},
+            "success-advisor-8",
+            "Performance test activity",
+            {"test": "performance"},
         )
         tracking_time = time.time() - start_time
 

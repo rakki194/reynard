@@ -16,8 +16,8 @@ import sys
 import tempfile
 import uuid
 from pathlib import Path
-from typing import Dict, List, Any
-from unittest.mock import patch, MagicMock
+from typing import Any, Dict, List
+from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
@@ -28,12 +28,18 @@ from sqlalchemy.orm import sessionmaker
 backend_dir = Path(__file__).parent.parent
 sys.path.insert(0, str(backend_dir))
 
+from fastapi import FastAPI
+
+from app.api.mcp.tool_config_endpoints import router
 from app.core.database import get_db_session, test_connection
 from app.models.base import Base
-from app.models.mcp.tool_config import Tool, ToolCategory, ToolConfiguration, ToolCategoryEnum
+from app.models.mcp.tool_config import (
+    Tool,
+    ToolCategory,
+    ToolCategoryEnum,
+    ToolConfiguration,
+)
 from app.services.tool_config_service import ToolConfigService
-from app.api.mcp.tool_config_endpoints import router
-from fastapi import FastAPI
 
 # Test database URL (use in-memory SQLite for testing)
 TEST_DATABASE_URL = "sqlite:///:memory:"
@@ -41,7 +47,7 @@ TEST_DATABASE_URL = "sqlite:///:memory:"
 
 class TestPostgreSQLToolConfig:
     """Test suite for PostgreSQL tool configuration system."""
-    
+
     engine = None
     SessionLocal = None
     app = None
@@ -51,7 +57,9 @@ class TestPostgreSQLToolConfig:
         """Set up test database and FastAPI app once for all tests."""
         # Use in-memory SQLite for testing
         cls.engine = create_engine(TEST_DATABASE_URL)
-        cls.SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=cls.engine)
+        cls.SessionLocal = sessionmaker(
+            autocommit=False, autoflush=False, bind=cls.engine
+        )
         Base.metadata.create_all(bind=cls.engine)
 
         # Initialize FastAPI app for testing
@@ -64,23 +72,23 @@ class TestPostgreSQLToolConfig:
         Base.metadata.drop_all(bind=cls.engine)
         if os.path.exists("./test_tool_config.db"):
             os.remove("./test_tool_config.db")
-    
+
     def setup_method(self):
         """Set up for each test method."""
         # Create a fresh session for each test
         self.db = self.SessionLocal()
         self.service = ToolConfigService(db_session=self.db)
-        
+
         # Clear all data before each test
         self.db.query(Tool).delete()
         self.db.query(ToolCategory).delete()
         self.db.query(ToolConfiguration).delete()
         self.db.commit()
-    
+
     def teardown_method(self):
         """Clean up after each test method."""
         self.db.close()
-    
+
     def test_database_models(self):
         """Test database models creation and relationships."""
         # Test ToolCategory model
@@ -91,7 +99,7 @@ class TestPostgreSQLToolConfig:
             icon="🤖",
             color="#FF6B6B",
             sort_order=1,
-            is_active=True
+            is_active=True,
         )
         self.db.add(category)
         self.db.commit()
@@ -112,7 +120,7 @@ class TestPostgreSQLToolConfig:
             is_system_tool=False,
             execution_type="sync",
             timeout_seconds=60,
-            max_concurrent=5
+            max_concurrent=5,
         )
         self.db.add(tool)
         self.db.commit()
@@ -131,7 +139,7 @@ class TestPostgreSQLToolConfig:
             default_timeout=30,
             max_concurrent_tools=10,
             cache_ttl_seconds=300,
-            settings={"log_level": "INFO"}
+            settings={"log_level": "INFO"},
         )
         self.db.add(global_config)
         self.db.commit()
@@ -151,7 +159,7 @@ class TestPostgreSQLToolConfig:
             icon="🤖",
             color="#FF6B6B",
             sort_order=1,
-            is_active=True
+            is_active=True,
         )
         self.db.add(category)
         self.db.commit()
@@ -168,7 +176,7 @@ class TestPostgreSQLToolConfig:
             is_system_tool=True,
             execution_type="async",
             timeout_seconds=120,
-            max_concurrent=2
+            max_concurrent=2,
         )
         self.db.add(tool)
         self.db.commit()
@@ -196,7 +204,7 @@ class TestPostgreSQLToolConfig:
             icon="🤖",
             color="#FF6B6B",
             sort_order=1,
-            is_active=True
+            is_active=True,
         )
         self.db.add(category)
         self.db.commit()
@@ -214,7 +222,7 @@ class TestPostgreSQLToolConfig:
             "is_system_tool": False,
             "execution_type": "sync",
             "timeout_seconds": 30,
-            "max_concurrent": 1
+            "max_concurrent": 1,
         }
         created_tool = self.service.create_tool(tool_data)
         assert created_tool is not None
@@ -242,11 +250,11 @@ class TestPostgreSQLToolConfig:
         # Test get all categories
         categories = self.service.get_tool_categories()
         assert isinstance(categories, list)
-        
+
         # Test get tools by category
         tools = self.service.get_tools_by_category("AGENT")
         assert isinstance(tools, list)
-        
+
         # Create a category manually in the database
         category = ToolCategory(
             name=ToolCategoryEnum.AGENT,
@@ -255,7 +263,7 @@ class TestPostgreSQLToolConfig:
             icon="🤖",
             color="#FF6B6B",
             sort_order=1,
-            is_active=True
+            is_active=True,
         )
         self.db.add(category)
         self.db.commit()
@@ -269,22 +277,41 @@ class TestPostgreSQLToolConfig:
     def test_tool_config_service_statistics(self):
         """Test tool statistics generation."""
         # Create test data
-        category_agent = ToolCategory(name=ToolCategoryEnum.AGENT, display_name="Agent Tools")
-        category_utility = ToolCategory(name=ToolCategoryEnum.UTILITY, display_name="Utility Tools")
+        category_agent = ToolCategory(
+            name=ToolCategoryEnum.AGENT, display_name="Agent Tools"
+        )
+        category_utility = ToolCategory(
+            name=ToolCategoryEnum.UTILITY, display_name="Utility Tools"
+        )
         self.db.add_all([category_agent, category_utility])
         self.db.commit()
         self.db.refresh(category_agent)
         self.db.refresh(category_utility)
 
-        self.service.create_tool({
-            "name": "tool_a", "category": ToolCategoryEnum.AGENT, "enabled": True, "description": "desc"
-        })
-        self.service.create_tool({
-            "name": "tool_b", "category": ToolCategoryEnum.AGENT, "enabled": False, "description": "desc"
-        })
-        self.service.create_tool({
-            "name": "tool_c", "category": ToolCategoryEnum.UTILITY, "enabled": True, "description": "desc"
-        })
+        self.service.create_tool(
+            {
+                "name": "tool_a",
+                "category": ToolCategoryEnum.AGENT,
+                "enabled": True,
+                "description": "desc",
+            }
+        )
+        self.service.create_tool(
+            {
+                "name": "tool_b",
+                "category": ToolCategoryEnum.AGENT,
+                "enabled": False,
+                "description": "desc",
+            }
+        )
+        self.service.create_tool(
+            {
+                "name": "tool_c",
+                "category": ToolCategoryEnum.UTILITY,
+                "enabled": True,
+                "description": "desc",
+            }
+        )
 
         stats = self.service.get_tool_statistics()
         assert stats["total_tools"] == 3
@@ -305,7 +332,7 @@ class TestPostgreSQLToolConfig:
             icon="⚡",
             color="#000000",
             is_active=True,
-            sort_order=1
+            sort_order=1,
         )
         self.db.add(category)
         self.db.commit()
@@ -313,6 +340,7 @@ class TestPostgreSQLToolConfig:
 
         # Create a tool with unique name
         import uuid
+
         unique_tool_name = f"api_test_tool_{uuid.uuid4().hex[:8]}"
         tool_data = {
             "name": unique_tool_name,
@@ -325,7 +353,7 @@ class TestPostgreSQLToolConfig:
             "is_system_tool": False,
             "execution_type": "sync",
             "timeout_seconds": 30,
-            "max_concurrent": 1
+            "max_concurrent": 1,
         }
         response = client.post("/api/mcp/tool-config/tools", json=tool_data)
         assert response.status_code == 200
@@ -343,7 +371,9 @@ class TestPostgreSQLToolConfig:
         assert response.json()["name"] == unique_tool_name
 
         # Update tool
-        response = client.put(f"/api/mcp/tool-config/tools/{unique_tool_name}", json={"enabled": False})
+        response = client.put(
+            f"/api/mcp/tool-config/tools/{unique_tool_name}", json={"enabled": False}
+        )
         assert response.status_code == 200
         assert response.json()["enabled"] is False
 
@@ -361,25 +391,45 @@ class TestPostgreSQLToolConfig:
             mock_response = MagicMock()
             mock_response.status_code = 200
             mock_response.json.return_value = [
-                {"name": "mock_tool_1", "category": "AGENT", "enabled": True, "description": "Mock tool 1"},
-                {"name": "mock_tool_2", "category": "UTILITY", "enabled": False, "description": "Mock tool 2"}
+                {
+                    "name": "mock_tool_1",
+                    "category": "AGENT",
+                    "enabled": True,
+                    "description": "Mock tool 1",
+                },
+                {
+                    "name": "mock_tool_2",
+                    "category": "UTILITY",
+                    "enabled": False,
+                    "description": "Mock tool 2",
+                },
             ]
             mock_response.raise_for_status.return_value = None
-            mock_async_client.return_value.__aenter__.return_value.get.return_value = mock_response
+            mock_async_client.return_value.__aenter__.return_value.get.return_value = (
+                mock_response
+            )
 
             async def test_async():
                 # Import the service from the correct path
                 import sys
                 from pathlib import Path
-                mcp_server_dir = Path(__file__).parent.parent.parent / "services" / "mcp-server"
+
+                mcp_server_dir = (
+                    Path(__file__).parent.parent.parent / "services" / "mcp-server"
+                )
                 sys.path.insert(0, str(mcp_server_dir))
-                
-                from services.postgresql_tool_config_service import PostgreSQLToolConfigService
-                service = PostgreSQLToolConfigService(backend_url="http://localhost:8000")
+
+                from services.postgresql_tool_config_service import (
+                    PostgreSQLToolConfigService,
+                )
+
+                service = PostgreSQLToolConfigService(
+                    backend_url="http://localhost:8000"
+                )
                 tools = await service.get_all_tools()
                 assert len(tools) == 2
                 assert tools[0]["name"] == "mock_tool_1"
-            
+
             asyncio.run(test_async())
 
 

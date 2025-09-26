@@ -556,7 +556,10 @@ class ReynardAPIToolIntegration:
                         "service": "caption_generation",
                         "action": "Generate SEO-friendly caption",
                         "parameters": {
-                            "caption_options": {"style": "seo", "include_objects": True},
+                            "caption_options": {
+                                "style": "seo",
+                                "include_objects": True,
+                            },
                         },
                     },
                 ],
@@ -673,7 +676,8 @@ class ReynardAPIToolIntegration:
         )
 
     async def _mock_reynard_suggestions(
-        self, request: NLWebSuggestionRequest,
+        self,
+        request: NLWebSuggestionRequest,
     ) -> list[dict[str, Any]]:
         """Mock Reynard-specific tool suggestions for demo purposes."""
         suggestions = []

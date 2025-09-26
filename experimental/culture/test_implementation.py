@@ -15,6 +15,8 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
+from integration.ecs_agents import CulturalAgentComponent
+from integration.mcp_tools import CulturalMCPTools
 from patterns import (
     AcademicCulturalPattern,
     CosplayCulturalPattern,
@@ -30,9 +32,6 @@ from patterns import (
     SteampunkCulturalPattern,
 )
 from safety.safety_framework import SafetyFramework
-
-from integration.ecs_agents import CulturalAgentComponent
-from integration.mcp_tools import CulturalMCPTools
 
 
 def test_furry_pattern():
@@ -153,7 +152,9 @@ def test_mcp_tools():
 
     # Test scenario generation
     scenarios_result = mcp_tools.generate_cultural_scenarios(
-        cultural_context="kink", count=2, safety_level="moderate",
+        cultural_context="kink",
+        count=2,
+        safety_level="moderate",
     )
 
     print(f"  Scenario Generation Success: {scenarios_result.get('success', False)}")
@@ -189,7 +190,9 @@ def test_ecs_agents():
 
         # Simulate interaction
         interaction = agent.interact_with_agent(
-            partner_id="test-partner", scenario=scenario, response=response,
+            partner_id="test-partner",
+            scenario=scenario,
+            response=response,
         )
         print(f"  Interaction Success: {interaction.success_score:.2f}")
         print(f"  Learning Outcome: {interaction.learning_outcome}")

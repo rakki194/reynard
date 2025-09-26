@@ -98,7 +98,9 @@ class CodeAnalysisService:
             return False
 
     async def analyze_codebase_relevance(
-        self, query: str, research_findings: dict[str, Any],
+        self,
+        query: str,
+        research_findings: dict[str, Any],
     ) -> dict[str, Any]:
         """Analyze codebase relevance for a query.
 
@@ -121,12 +123,14 @@ class CodeAnalysisService:
 
             # Identify architectural context needs
             architectural_context = self._identify_architectural_context(
-                query, code_concepts,
+                query,
+                code_concepts,
             )
 
             # Assess dependency awareness
             dependency_awareness = self._assess_dependency_awareness(
-                query, code_concepts,
+                query,
+                code_concepts,
             )
 
             # Evaluate coding standard alignment
@@ -197,7 +201,9 @@ class CodeAnalysisService:
         return concepts
 
     def _identify_terminology_gaps(
-        self, query: str, research_findings: dict[str, Any],
+        self,
+        query: str,
+        research_findings: dict[str, Any],
     ) -> list[str]:
         """Identify terminology gaps in the query."""
         gaps = []
@@ -253,7 +259,9 @@ class CodeAnalysisService:
         return "low"
 
     def _identify_architectural_context(
-        self, query: str, code_concepts: list[str],
+        self,
+        query: str,
+        code_concepts: list[str],
     ) -> str:
         """Identify architectural context needs."""
         query_lower = query.lower()
@@ -367,7 +375,9 @@ class CodeAnalysisService:
 
             # Calculate complexity score
             complexity_score = self._calculate_complexity_score(
-                content, functions, classes,
+                content,
+                functions,
+                classes,
             )
 
             # Identify patterns

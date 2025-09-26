@@ -14,38 +14,55 @@ class RAGQueryRequest(BaseModel):
 
     q: str = Field(..., description="Search query", min_length=1, max_length=1000)
     modality: str | None = Field(
-        None, description="Search modality (docs, code, captions, images)",
+        None,
+        description="Search modality (docs, code, captions, images)",
     )
     top_k: int | None = Field(
-        20, description="Number of results to return", ge=1, le=100,
+        20,
+        description="Number of results to return",
+        ge=1,
+        le=100,
     )
     similarity_threshold: float | None = Field(
-        0.0, description="Minimum similarity score", ge=0.0, le=1.0,
+        0.0,
+        description="Minimum similarity score",
+        ge=0.0,
+        le=1.0,
     )
     enable_reranking: bool | None = Field(False, description="Enable result reranking")
 
     # Enhanced semantic search fields
     enable_semantic_enhancement: bool | None = Field(
-        True, description="Enable semantic query enhancement",
+        True,
+        description="Enable semantic query enhancement",
     )
     intent_detection: bool | None = Field(
-        True, description="Enable query intent detection",
+        True,
+        description="Enable query intent detection",
     )
     context_aware_search: bool | None = Field(
-        False, description="Enable context-aware search optimization",
+        False,
+        description="Enable context-aware search optimization",
     )
     session_id: str | None = Field(None, description="Session identifier for context")
     user_id: str | None = Field(None, description="User identifier for personalization")
 
     # Advanced search parameters
     query_expansion: bool | None = Field(
-        True, description="Enable automatic query expansion",
+        True,
+        description="Enable automatic query expansion",
     )
     semantic_boost: float | None = Field(
-        1.0, description="Semantic relevance boost factor", ge=0.1, le=2.0,
+        1.0,
+        description="Semantic relevance boost factor",
+        ge=0.1,
+        le=2.0,
     )
     temporal_weight: float | None = Field(
-        0.1, description="Temporal relevance weight", ge=0.0, le=1.0,
+        0.1,
+        description="Temporal relevance weight",
+        ge=0.0,
+        le=1.0,
     )
 
     @field_validator("q")
@@ -106,21 +123,32 @@ class RAGQueryHit(BaseModel):
 
     # Enhanced semantic search fields
     enhanced_score: float | None = Field(
-        None, description="Enhanced semantic score", ge=0.0, le=1.0,
+        None,
+        description="Enhanced semantic score",
+        ge=0.0,
+        le=1.0,
     )
     relevance_factors: dict[str, float] | None = Field(
-        None, description="Relevance factor breakdown",
+        None,
+        description="Relevance factor breakdown",
     )
     semantic_tags: list[str] | None = Field(None, description="Semantic content tags")
     context_matches: list[str] | None = Field(
-        None, description="Context match indicators",
+        None,
+        description="Context match indicators",
     )
     rerank_reason: str | None = Field(None, description="Reason for reranking")
     intent_alignment: float | None = Field(
-        None, description="Intent alignment score", ge=0.0, le=1.0,
+        None,
+        description="Intent alignment score",
+        ge=0.0,
+        le=1.0,
     )
     content_quality: float | None = Field(
-        None, description="Content quality score", ge=0.0, le=1.0,
+        None,
+        description="Content quality score",
+        ge=0.0,
+        le=1.0,
     )
 
     # File navigation information
@@ -150,13 +178,19 @@ class RAGQueryResponse(BaseModel):
     hits: list[RAGQueryHit] = Field(..., description="Search results")
     total: int = Field(..., description="Total number of results", ge=0)
     query_time: float | None = Field(
-        None, description="Query processing time in seconds", ge=0.0,
+        None,
+        description="Query processing time in seconds",
+        ge=0.0,
     )
     embedding_time: float | None = Field(
-        None, description="Embedding generation time in seconds", ge=0.0,
+        None,
+        description="Embedding generation time in seconds",
+        ge=0.0,
     )
     search_time: float | None = Field(
-        None, description="Vector search time in seconds", ge=0.0,
+        None,
+        description="Vector search time in seconds",
+        ge=0.0,
     )
     metadata: dict[str, Any] | None = Field(None, description="Additional metadata")
 
@@ -164,33 +198,45 @@ class RAGQueryResponse(BaseModel):
     query_id: str | None = Field(None, description="Unique query identifier")
     enhanced_query: str | None = Field(None, description="Enhanced/expanded query text")
     detected_intent: dict[str, Any] | None = Field(
-        None, description="Detected query intent",
+        None,
+        description="Detected query intent",
     )
     semantic_enhancement_applied: bool | None = Field(
-        None, description="Whether semantic enhancement was applied",
+        None,
+        description="Whether semantic enhancement was applied",
     )
     reranking_applied: bool | None = Field(
-        None, description="Whether reranking was applied",
+        None,
+        description="Whether reranking was applied",
     )
 
     # Performance analytics
     total_time: float | None = Field(None, description="Total processing time", ge=0.0)
     cache_hit: bool | None = Field(
-        None, description="Whether result was served from cache",
+        None,
+        description="Whether result was served from cache",
     )
     optimization_applied: dict[str, Any] | None = Field(
-        None, description="Applied optimizations",
+        None,
+        description="Applied optimizations",
     )
 
     # Search effectiveness metrics
     avg_result_score: float | None = Field(
-        None, description="Average result score", ge=0.0, le=1.0,
+        None,
+        description="Average result score",
+        ge=0.0,
+        le=1.0,
     )
     result_quality_distribution: dict[str, int] | None = Field(
-        None, description="Quality score distribution",
+        None,
+        description="Quality score distribution",
     )
     semantic_coverage: float | None = Field(
-        None, description="Semantic coverage score", ge=0.0, le=1.0,
+        None,
+        description="Semantic coverage score",
+        ge=0.0,
+        le=1.0,
     )
 
 
@@ -208,7 +254,8 @@ class RAGIngestRequest(BaseModel):
     model: str | None = Field(None, description="Embedding model to use")
     batch_size: int | None = Field(16, description="Batch size for processing")
     force_reindex: bool | None = Field(
-        False, description="Force reindexing of existing documents",
+        False,
+        description="Force reindexing of existing documents",
     )
 
 
@@ -219,7 +266,8 @@ class RAGIngestResponse(BaseModel):
     total: int = Field(..., description="Total number of documents")
     failures: int = Field(0, description="Number of failed documents")
     processing_time: float | None = Field(
-        None, description="Total processing time in seconds",
+        None,
+        description="Total processing time in seconds",
     )
     message: str | None = Field(None, description="Status message")
 
@@ -243,12 +291,14 @@ class RAGStatsResponse(BaseModel):
     total_documents: int = Field(0, description="Total number of documents")
     total_chunks: int = Field(0, description="Total number of chunks")
     chunks_with_embeddings: int = Field(
-        0, description="Number of chunks with embeddings",
+        0,
+        description="Number of chunks with embeddings",
     )
     embedding_coverage: float = Field(0.0, description="Embedding coverage percentage")
     default_model: str = Field("", description="Default embedding model")
     vector_db_enabled: bool = Field(
-        False, description="Whether vector database is enabled",
+        False,
+        description="Whether vector database is enabled",
     )
     cache_size: int = Field(0, description="Cache size in bytes")
 
@@ -260,7 +310,8 @@ class RAGIndexingStatusResponse(BaseModel):
     in_flight: int = Field(0, description="Number of items being processed")
     processing_rate: float = Field(0.0, description="Items processed per second")
     estimated_completion: str | None = Field(
-        None, description="Estimated completion time",
+        None,
+        description="Estimated completion time",
     )
 
 
@@ -271,10 +322,14 @@ class QueryIntentRequest(BaseModel):
     """Request model for query intent detection."""
 
     query: str = Field(
-        ..., description="Query to analyze", min_length=1, max_length=1000,
+        ...,
+        description="Query to analyze",
+        min_length=1,
+        max_length=1000,
     )
     context: dict[str, Any] | None = Field(
-        None, description="Additional context for intent detection",
+        None,
+        description="Additional context for intent detection",
     )
 
 
@@ -292,7 +347,10 @@ class SemanticEnhancementRequest(BaseModel):
     """Request model for semantic query enhancement."""
 
     query: str = Field(
-        ..., description="Query to enhance", min_length=1, max_length=1000,
+        ...,
+        description="Query to enhance",
+        min_length=1,
+        max_length=1000,
     )
     intent_type: str | None = Field(None, description="Known intent type")
     enable_expansion: bool | None = Field(True, description="Enable query expansion")
@@ -306,10 +364,12 @@ class SemanticEnhancementResponse(BaseModel):
     original_query: str = Field(..., description="Original query")
     enhanced_query: str = Field(..., description="Enhanced query")
     enhancement_applied: bool = Field(
-        ..., description="Whether enhancement was applied",
+        ...,
+        description="Whether enhancement was applied",
     )
     enhancement_details: dict[str, Any] | None = Field(
-        None, description="Enhancement details",
+        None,
+        description="Enhancement details",
     )
 
 
@@ -362,7 +422,10 @@ class PerformanceStatsRequest(BaseModel):
     """Request model for performance statistics."""
 
     time_window_hours: int | None = Field(
-        24, description="Time window in hours", ge=1, le=168,
+        24,
+        description="Time window in hours",
+        ge=1,
+        le=168,
     )
 
 
@@ -378,10 +441,12 @@ class PerformanceStatsResponse(BaseModel):
     avg_top_score: float = Field(..., description="Average top score")
     avg_avg_score: float = Field(..., description="Average average score")
     p95_processing_time: float = Field(
-        ..., description="95th percentile processing time",
+        ...,
+        description="95th percentile processing time",
     )
     p99_processing_time: float = Field(
-        ..., description="99th percentile processing time",
+        ...,
+        description="99th percentile processing time",
     )
     success_rate: float = Field(..., description="Success rate", ge=0.0, le=1.0)
     error_rate: float = Field(..., description="Error rate", ge=0.0, le=1.0)
@@ -392,7 +457,10 @@ class UsageInsightsRequest(BaseModel):
     """Request model for usage insights."""
 
     time_window_hours: int | None = Field(
-        24, description="Time window in hours", ge=1, le=168,
+        24,
+        description="Time window in hours",
+        ge=1,
+        le=168,
     )
 
 
@@ -400,20 +468,25 @@ class UsageInsightsResponse(BaseModel):
     """Response model for usage insights."""
 
     popular_queries: list[tuple[str, int]] = Field(
-        ..., description="Popular queries with counts",
+        ...,
+        description="Popular queries with counts",
     )
     query_trends: dict[str, list[tuple[float, int]]] = Field(
-        ..., description="Query trends over time",
+        ...,
+        description="Query trends over time",
     )
     peak_usage_hours: list[int] = Field(..., description="Peak usage hours")
     user_behavior_patterns: dict[str, Any] = Field(
-        ..., description="User behavior patterns",
+        ...,
+        description="User behavior patterns",
     )
     search_effectiveness: dict[str, float] = Field(
-        ..., description="Search effectiveness metrics",
+        ...,
+        description="Search effectiveness metrics",
     )
     optimization_opportunities: list[str] = Field(
-        ..., description="Optimization opportunities",
+        ...,
+        description="Optimization opportunities",
     )
     time_window_hours: int = Field(..., description="Time window used")
 
@@ -422,10 +495,12 @@ class AnalyticsReportRequest(BaseModel):
     """Request model for analytics report generation."""
 
     time_period: str | None = Field(
-        "24h", description="Time period (e.g., 24h, 7d, 30d)",
+        "24h",
+        description="Time period (e.g., 24h, 7d, 30d)",
     )
     include_recommendations: bool | None = Field(
-        True, description="Include optimization recommendations",
+        True,
+        description="Include optimization recommendations",
     )
 
 
@@ -436,7 +511,8 @@ class AnalyticsReportResponse(BaseModel):
     generated_at: float = Field(..., description="Report generation timestamp")
     time_period: str = Field(..., description="Time period analyzed")
     performance_stats: PerformanceStatsResponse = Field(
-        ..., description="Performance statistics",
+        ...,
+        description="Performance statistics",
     )
     usage_insights: UsageInsightsResponse = Field(..., description="Usage insights")
     recommendations: list[str] = Field(..., description="Optimization recommendations")
@@ -458,7 +534,10 @@ class AnalyticsExportRequest(BaseModel):
 
     format: str | None = Field("json", description="Export format (json, csv)")
     time_window_hours: int | None = Field(
-        24, description="Time window in hours", ge=1, le=168,
+        24,
+        description="Time window in hours",
+        ge=1,
+        le=168,
     )
 
 

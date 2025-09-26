@@ -7,9 +7,13 @@
     "declarationMap": true,
     "sourceMap": true,
     "composite": true,
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    "types": ["node"],
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*"],
   "exclude": [

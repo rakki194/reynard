@@ -46,7 +46,8 @@ class ReproductionComponent(Component):
         """
         if self.reproduction_cooldown > 0.0:
             self.reproduction_cooldown = max(
-                0.0, self.reproduction_cooldown - delta_time,
+                0.0,
+                self.reproduction_cooldown - delta_time,
             )
 
     def add_offspring(self) -> None:

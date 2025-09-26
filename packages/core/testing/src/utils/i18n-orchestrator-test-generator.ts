@@ -25,7 +25,7 @@ export async function createPackageI18nTestFiles(): Promise<void> {
 
     // Create test file if it doesn't exist
     if (!existsSync(testFilePath)) {
-      const _testContent = generatePackageTestFile(pkg);
+      generatePackageTestFile(pkg);
       console.log(`📝 Creating i18n test file: ${testFilePath}`);
       // Note: In a real implementation, you'd use fs.writeFileSync
     }

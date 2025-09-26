@@ -29,7 +29,8 @@ def _load_json_data(filename: str):
         file_path = _get_data_file_path(filename)
         if not file_path.exists():
             raise HTTPException(
-                status_code=404, detail=f"Data file {filename} not found",
+                status_code=404,
+                detail=f"Data file {filename} not found",
             )
 
         with file_path.open(encoding="utf-8") as f:
@@ -37,7 +38,8 @@ def _load_json_data(filename: str):
     except json.JSONDecodeError as e:
         logger.exception("Error parsing JSON from %s", filename)
         raise HTTPException(
-            status_code=500, detail=f"Invalid JSON in {filename}",
+            status_code=500,
+            detail=f"Invalid JSON in {filename}",
         ) from e
     except Exception as e:
         logger.exception("Error loading data from %s", filename)
@@ -57,7 +59,8 @@ async def get_personality_traits() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting personality traits")
         raise HTTPException(
-            status_code=500, detail="Failed to get personality traits",
+            status_code=500,
+            detail="Failed to get personality traits",
         ) from e
 
 
@@ -96,7 +99,8 @@ async def get_physical_traits() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting physical traits")
         raise HTTPException(
-            status_code=500, detail="Failed to get physical traits",
+            status_code=500,
+            detail="Failed to get physical traits",
         ) from e
 
 
@@ -117,7 +121,8 @@ async def get_spirit_physical_traits(spirit: str) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting physical traits for spirit %s", spirit)
         raise HTTPException(
-            status_code=500, detail=f"Failed to get physical traits for spirit {spirit}",
+            status_code=500,
+            detail=f"Failed to get physical traits for spirit {spirit}",
         ) from e
 
 
@@ -134,7 +139,8 @@ async def get_ability_traits() -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting ability traits")
         raise HTTPException(
-            status_code=500, detail="Failed to get ability traits",
+            status_code=500,
+            detail="Failed to get ability traits",
         ) from e
 
 
@@ -155,7 +161,8 @@ async def get_spirit_ability_traits(spirit: str) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting ability traits for spirit %s", spirit)
         raise HTTPException(
-            status_code=500, detail=f"Failed to get ability traits for spirit {spirit}",
+            status_code=500,
+            detail=f"Failed to get ability traits for spirit {spirit}",
         ) from e
 
 
@@ -192,7 +199,8 @@ async def get_spirit_trait_profile(spirit: str) -> dict[str, Any]:
             "spirit": spirit,
             "configuration": spirit_config,
             "personality_traits": personality_data["spirit_base_traits"].get(
-                spirit, {},
+                spirit,
+                {},
             ),
             "physical_traits": physical_data["spirit_base_physical"].get(spirit, {}),
             "ability_traits": ability_data["spirit_base_abilities"].get(spirit, {}),
@@ -207,5 +215,6 @@ async def get_spirit_trait_profile(spirit: str) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Error getting trait profile for spirit %s", spirit)
         raise HTTPException(
-            status_code=500, detail=f"Failed to get trait profile for spirit {spirit}",
+            status_code=500,
+            detail=f"Failed to get trait profile for spirit {spirit}",
         ) from e

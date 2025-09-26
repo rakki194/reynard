@@ -22,7 +22,8 @@ from app.gatekeeper_config import get_auth_manager
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -52,11 +53,19 @@ async def create_admin_user():
         # Import from the Gatekeeper library
         import sys
 
-        sys.path.append("/home/kade/runeset/reynard/services/gatekeeper")
+        # Get project root and add gatekeeper to path
+        current_file = Path(__file__)
+        project_root = (
+            current_file.parent.parent.parent
+        )  # scripts -> backend -> project root
+        sys.path.append(str(project_root / "services" / "gatekeeper"))
         from gatekeeper.models.user import UserCreate, UserRole
 
         user_data = UserCreate(
-            username=username, email=email, password=password, role=UserRole.ADMIN,
+            username=username,
+            email=email,
+            password=password,
+            role=UserRole.ADMIN,
         )
 
         # Create the user
@@ -85,7 +94,8 @@ async def create_admin_user():
 
                     update_data = UserUpdate(role=UserRole.ADMIN)
                     updated_user = await auth_manager.update_user(
-                        existing_user.id, update_data,
+                        existing_user.id,
+                        update_data,
                     )
                     logger.info("✅ Existing user role updated to admin")
                     return {
@@ -114,7 +124,8 @@ async def test_authentication(credentials):
         from gatekeeper.models.user import UserLogin
 
         login_data = UserLogin(
-            username=credentials["username"], password=credentials["password"],
+            username=credentials["username"],
+            password=credentials["password"],
         )
 
         if credentials["password"] == "EXISTING_USER_PASSWORD_NOT_KNOWN":
@@ -125,7 +136,8 @@ async def test_authentication(credentials):
 
         # Attempt login
         tokens = await auth_manager.authenticate(
-            login_data.username, login_data.password,
+            login_data.username,
+            login_data.password,
         )
         logger.info("✅ Authentication successful")
         logger.info(f"Access token: {tokens.access_token[:20]}...")
@@ -229,7 +241,12 @@ async def main():
         return 1
 
     # Save credentials
-    credentials_file = Path("/home/kade/runeset/reynard/.cursor/rules/private.mdc")
+    # Get project root for credentials file
+    current_file = Path(__file__)
+    project_root = (
+        current_file.parent.parent.parent
+    )  # scripts -> backend -> project root
+    credentials_file = project_root / ".cursor" / "rules" / "private.mdc"
     if not save_credentials(credentials, credentials_file):
         logger.error("💥 Failed to save credentials")
         return 1

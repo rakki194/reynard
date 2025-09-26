@@ -63,7 +63,9 @@ class DatabaseService:
         print(f"[INFO] Database connection released: {connection_id}")
 
     async def execute_query(
-        self, query: str, params: dict[str, Any] | None = None,
+        self,
+        query: str,
+        params: dict[str, Any] | None = None,
     ) -> list[dict[str, Any]]:
         """Execute a database query"""
         if not self.is_initialized:

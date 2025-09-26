@@ -43,7 +43,8 @@ def test_complex_annotations():
     print("-" * 40)
 
     def process_data(
-        items: list[dict[str, Any]], filter_func: callable | None = None,
+        items: list[dict[str, Any]],
+        filter_func: callable | None = None,
     ) -> dict[str, list[Any]]:
         """Function with complex annotations"""
         if filter_func:

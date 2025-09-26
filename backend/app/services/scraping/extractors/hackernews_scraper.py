@@ -1,5 +1,4 @@
-"""Specialized HackerNews scraper for handling HackerNews content and API integration.
-"""
+"""Specialized HackerNews scraper for handling HackerNews content and API integration."""
 
 import logging
 from typing import Any
@@ -104,7 +103,9 @@ class HackerNewsScraper(BaseScraper):
             return None
 
     def _create_result_from_api_content(
-        self, url: str, content: dict[str, Any],
+        self,
+        url: str,
+        content: dict[str, Any],
     ) -> ScrapingResult:
         """Create ScrapingResult from API content."""
         # Determine content text
@@ -185,7 +186,8 @@ class HackerNewsScraper(BaseScraper):
 
             # Extract comments count
             comments_element = soup.find(
-                "a", href=lambda x: x and "item?id=" in x and "comments" in x,
+                "a",
+                href=lambda x: x and "item?id=" in x and "comments" in x,
             )
             comments_count = 0
             if comments_element:
@@ -216,7 +218,9 @@ class HackerNewsScraper(BaseScraper):
                 },
                 quality={
                     "score": self._calculate_web_quality_score(
-                        score, comments_count, story_text,
+                        score,
+                        comments_count,
+                        story_text,
                     ),
                     "factors": {
                         "content_length": len(story_text or title),
@@ -272,7 +276,10 @@ class HackerNewsScraper(BaseScraper):
         return min(score, 1.0)
 
     def _calculate_web_quality_score(
-        self, score: int, comments: int, content: str,
+        self,
+        score: int,
+        comments: int,
+        content: str,
     ) -> float:
         """Calculate quality score for web scraped content."""
         quality_score = 0.0
@@ -398,7 +405,8 @@ class HackerNewsScraper(BaseScraper):
                                                 "by": story_data.get("by", ""),
                                                 "time": story_data.get("time", 0),
                                                 "descendants": story_data.get(
-                                                    "descendants", 0,
+                                                    "descendants",
+                                                    0,
                                                 ),
                                             },
                                         )
@@ -483,7 +491,8 @@ class HackerNewsScraper(BaseScraper):
                                                 {
                                                     "id": comment_data.get("id"),
                                                     "text": comment_data.get(
-                                                        "text", "",
+                                                        "text",
+                                                        "",
                                                     ),
                                                     "by": comment_data.get("by", ""),
                                                     "time": comment_data.get("time", 0),
@@ -491,7 +500,8 @@ class HackerNewsScraper(BaseScraper):
                                                         "parent",
                                                     ),
                                                     "kids": comment_data.get(
-                                                        "kids", [],
+                                                        "kids",
+                                                        [],
                                                     ),
                                                 },
                                             )

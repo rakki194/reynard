@@ -174,12 +174,14 @@ class ECSDataMigrator:
                         active=True,
                         created_at=datetime.fromisoformat(
                             data.get(
-                                "created_at", datetime.now(UTC).isoformat(),
+                                "created_at",
+                                datetime.now(UTC).isoformat(),
                             ),
                         ),
                         last_activity=datetime.fromisoformat(
                             data.get(
-                                "last_updated", datetime.now(UTC).isoformat(),
+                                "last_updated",
+                                datetime.now(UTC).isoformat(),
                             ),
                         ),
                     )
@@ -268,8 +270,16 @@ class ECSDataMigrator:
                 results[f"agent_names_{Path(file_path).name}"] = count
 
         # Find and migrate PHOENIX agent data
+        from app.core.project_root import get_experimental_dir
+
         phoenix_files = [
-            "/home/kade/runeset/reynard/experimental/phoenix/data/agent_state/new_agent_candidate.json",
+            str(
+                get_experimental_dir()
+                / "phoenix"
+                / "data"
+                / "agent_state"
+                / "new_agent_candidate.json"
+            ),
         ]
 
         for file_path in phoenix_files:

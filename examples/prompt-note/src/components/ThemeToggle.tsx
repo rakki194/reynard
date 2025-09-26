@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Button } from "reynard-components-core";
+import { Button } from "reynard-primitives";
 import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 
 export const ThemeToggle: Component = () => {

@@ -10,11 +10,6 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from app.core.service_registry import (
-    ServiceRegistry,
-    ServiceStatus,
-)
-
 # Core component imports
 from app.core.error_handler import ServiceErrorHandler
 from app.core.health_check_automation import (
@@ -41,6 +36,10 @@ from app.core.service_load_balancer import (
     ServiceInstance,
     ServiceLoadBalancer,
 )
+from app.core.service_registry import (
+    ServiceRegistry,
+    ServiceStatus,
+)
 
 # Security component imports
 from app.security.security_middleware import SecurityErrorHandler
@@ -58,7 +57,9 @@ class TestServiceErrorHandler:
         """Test handling of service errors."""
         error = ValueError("Test error")
         result = await error_handler.handle_service_error(
-            operation="test_operation", error=error, status_code=400,
+            operation="test_operation",
+            error=error,
+            status_code=400,
         )
 
         assert result["error"] == "Test error"
@@ -81,7 +82,9 @@ class TestServiceErrorHandler:
     async def test_error_metrics_collection(self, error_handler):
         """Test error metrics collection."""
         await error_handler.handle_service_error(
-            operation="test_operation", error=ValueError("Test error"), status_code=400,
+            operation="test_operation",
+            error=ValueError("Test error"),
+            status_code=400,
         )
 
         metrics = error_handler.get_error_metrics()
@@ -131,7 +134,11 @@ class TestServiceRegistry:
         return health_check
 
     def test_service_registration(
-        self, registry, mock_startup_func, mock_shutdown_func, mock_health_check_func,
+        self,
+        registry,
+        mock_startup_func,
+        mock_shutdown_func,
+        mock_health_check_func,
     ):
         """Test service registration."""
         registry.register_service(
@@ -152,7 +159,10 @@ class TestServiceRegistry:
 
     @pytest.mark.asyncio
     async def test_service_initialization(
-        self, registry, mock_startup_func, mock_shutdown_func,
+        self,
+        registry,
+        mock_startup_func,
+        mock_shutdown_func,
     ):
         """Test service initialization."""
         registry.register_service(
@@ -171,7 +181,10 @@ class TestServiceRegistry:
 
     @pytest.mark.asyncio
     async def test_service_shutdown(
-        self, registry, mock_startup_func, mock_shutdown_func,
+        self,
+        registry,
+        mock_startup_func,
+        mock_shutdown_func,
     ):
         """Test service shutdown."""
         registry.register_service(
@@ -189,7 +202,10 @@ class TestServiceRegistry:
 
     @pytest.mark.asyncio
     async def test_dependency_resolution(
-        self, registry, mock_startup_func, mock_shutdown_func,
+        self,
+        registry,
+        mock_startup_func,
+        mock_shutdown_func,
     ):
         """Test service dependency resolution."""
         # Register services with dependencies
@@ -218,7 +234,10 @@ class TestServiceRegistry:
         assert db_service.startup_time < api_service.startup_time
 
     def test_service_info_retrieval(
-        self, registry, mock_startup_func, mock_shutdown_func,
+        self,
+        registry,
+        mock_startup_func,
+        mock_shutdown_func,
     ):
         """Test service information retrieval."""
         registry.register_service(
@@ -255,7 +274,9 @@ class TestServiceConfigManager:
         )
 
         config_manager.register_service_config(
-            "test-service", default_config=default_config, schema=schema,
+            "test-service",
+            default_config=default_config,
+            schema=schema,
         )
 
         config = config_manager.get_config("test-service")
@@ -271,7 +292,9 @@ class TestServiceConfigManager:
         )
 
         config_manager.register_service_config(
-            "test-service", default_config={"timeout": 30}, schema=schema,
+            "test-service",
+            default_config={"timeout": 30},
+            schema=schema,
         )
 
         # Test valid configuration
@@ -288,7 +311,8 @@ class TestServiceConfigManager:
         import os
 
         config_manager.register_service_config(
-            "test-service", default_config={"timeout": 30, "enabled": True},
+            "test-service",
+            default_config={"timeout": 30, "enabled": True},
         )
 
         # Set environment variable
@@ -306,7 +330,8 @@ class TestServiceConfigManager:
     def test_config_update(self, config_manager):
         """Test configuration updates."""
         config_manager.register_service_config(
-            "test-service", default_config={"timeout": 30},
+            "test-service",
+            default_config={"timeout": 30},
         )
 
         updated_config = config_manager.update_config("test-service", {"timeout": 60})
@@ -335,10 +360,14 @@ class TestServiceLoadBalancer:
     def test_instance_registration(self, load_balancer):
         """Test service instance registration."""
         load_balancer.register_instance(
-            "test-service", "http://instance1:8000", weight=2,
+            "test-service",
+            "http://instance1:8000",
+            weight=2,
         )
         load_balancer.register_instance(
-            "test-service", "http://instance2:8000", weight=1,
+            "test-service",
+            "http://instance2:8000",
+            weight=1,
         )
 
         instances = load_balancer._service_instances["test-service"]
@@ -377,7 +406,8 @@ class TestServiceLoadBalancer:
 
         # Should prefer healthy instance
         selected = await load_balancer.get_next_instance(
-            "test-service", strategy=LoadBalancingStrategy.HEALTH_BASED,
+            "test-service",
+            strategy=LoadBalancingStrategy.HEALTH_BASED,
         )
         assert selected.health_status == HealthStatus.HEALTHY
 
@@ -557,7 +587,9 @@ class TestSecurityComponents:
     @pytest.fixture
     def rate_limiter(self):
         return AdaptiveRateLimiter(
-            default_rate=100, burst_rate=200, adaptive_enabled=True,
+            default_rate=100,
+            burst_rate=200,
+            adaptive_enabled=True,
         )
 
     @pytest.mark.asyncio
@@ -620,7 +652,8 @@ class TestIntegrationScenarios:
 
         # Register service configuration
         config_manager.register_service_config(
-            "test-service", default_config={"timeout": 30, "retries": 3},
+            "test-service",
+            default_config={"timeout": 30, "retries": 3},
         )
 
         # Register service
@@ -711,7 +744,9 @@ class TestPerformanceBenchmarks:
                 return {"service_id": i, "config": config}
 
             registry.register_service(
-                name=f"service-{i}", config={"id": i}, startup_func=startup_func,
+                name=f"service-{i}",
+                config={"id": i},
+                startup_func=startup_func,
             )
 
         # Measure initialization time
@@ -765,7 +800,8 @@ class TestPerformanceBenchmarks:
         # Register many services
         for i in range(1000):
             config_manager.register_service_config(
-                f"service-{i}", default_config={"id": i, "timeout": 30},
+                f"service-{i}",
+                default_config={"id": i, "timeout": 30},
             )
 
         # Measure config retrieval time
@@ -859,7 +895,9 @@ class TestRefactoringQualityMetrics:
         registry = ServiceRegistry()
 
         registry.register_service(
-            name="dependent-service", config={}, dependencies=["base-service"],
+            name="dependent-service",
+            config={},
+            dependencies=["base-service"],
         )
 
         service_info = registry.get_service_info("dependent-service")

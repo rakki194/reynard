@@ -256,7 +256,8 @@ class PandaTestHelpers:
 
     @staticmethod
     def assert_panda_spirit(
-        test_result: bool, message: str = "Panda spirit not detected",
+        test_result: bool,
+        message: str = "Panda spirit not detected",
     ):
         """Assert with panda spirit."""
         assert test_result, f"🐼 {message}"

@@ -95,7 +95,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_create_account_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful account creation."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -120,7 +122,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_create_account_duplicate_email(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test account creation with duplicate email address."""
         # Create first account
@@ -128,13 +132,16 @@ class TestMultiAccountService:
 
         # Try to create second account with same email
         with pytest.raises(
-            ValueError, match="Account with email address already exists",
+            ValueError,
+            match="Account with email address already exists",
         ):
             await multi_account_service.create_account(**sample_account_data)
 
     @pytest.mark.asyncio
     async def test_create_account_max_limit_exceeded(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test account creation when max limit is exceeded."""
         # Create max number of accounts
@@ -152,7 +159,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_create_account_primary_set(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test account creation with primary flag set."""
         account_data = sample_account_data.copy()
@@ -182,7 +191,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_list_accounts_active_only(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test listing only active accounts."""
         # Create active account
@@ -204,7 +215,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_get_account_summary_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful account summary retrieval."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -238,7 +251,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_get_system_overview(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test system overview retrieval."""
         # Create test accounts
@@ -277,7 +292,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_update_account_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful account update."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -295,7 +312,8 @@ class TestMultiAccountService:
         }
 
         updated_account = await multi_account_service.update_account(
-            account.account_id, **update_data,
+            account.account_id,
+            **update_data,
         )
 
         assert updated_account.display_name == "Updated Display Name"
@@ -309,12 +327,15 @@ class TestMultiAccountService:
         """Test account update for non-existent account."""
         with pytest.raises(ValueError, match="Account not found"):
             await multi_account_service.update_account(
-                "nonexistent_account_id", display_name="New Name",
+                "nonexistent_account_id",
+                display_name="New Name",
             )
 
     @pytest.mark.asyncio
     async def test_delete_account_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful account deletion."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -331,7 +352,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_activate_account_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful account activation."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -350,7 +373,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_deactivate_account_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful account deactivation."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -369,7 +394,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_set_primary_account_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful primary account setting."""
         # Create two accounts
@@ -398,7 +425,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_get_primary_account_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful primary account retrieval."""
         # Create account and set as primary
@@ -411,7 +440,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_get_primary_account_none_set(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test primary account retrieval when none is set."""
         # Create account but don't set as primary
@@ -422,7 +453,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_track_usage_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful usage tracking."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -453,12 +486,15 @@ class TestMultiAccountService:
 
         with pytest.raises(ValueError, match="Account not found"):
             await multi_account_service.track_usage(
-                "nonexistent_account_id", usage_data,
+                "nonexistent_account_id",
+                usage_data,
             )
 
     @pytest.mark.asyncio
     async def test_get_usage_stats_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful usage stats retrieval."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -492,7 +528,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_check_rate_limits_within_limits(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test rate limit checking within limits."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -507,7 +545,9 @@ class TestMultiAccountService:
 
         # Check within limits
         result = await multi_account_service.check_rate_limits(
-            account.account_id, "emails_per_hour", 50,
+            account.account_id,
+            "emails_per_hour",
+            50,
         )
         assert result["allowed"] is True
         assert result["remaining"] == 50
@@ -515,7 +555,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_check_rate_limits_exceeded(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test rate limit checking when limits are exceeded."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -530,7 +572,9 @@ class TestMultiAccountService:
 
         # Check exceeding limits
         result = await multi_account_service.check_rate_limits(
-            account.account_id, "emails_per_hour", 150,
+            account.account_id,
+            "emails_per_hour",
+            150,
         )
         assert result["allowed"] is False
         assert result["remaining"] == 0
@@ -538,7 +582,9 @@ class TestMultiAccountService:
 
     @pytest.mark.asyncio
     async def test_set_rate_limits_success(
-        self, multi_account_service, sample_account_data,
+        self,
+        multi_account_service,
+        sample_account_data,
     ):
         """Test successful rate limits setting."""
         account = await multi_account_service.create_account(**sample_account_data)
@@ -551,7 +597,8 @@ class TestMultiAccountService:
         }
 
         result = await multi_account_service.set_rate_limits(
-            account.account_id, rate_limits,
+            account.account_id,
+            rate_limits,
         )
         assert result is True
 
@@ -566,7 +613,8 @@ class TestMultiAccountService:
 
         with pytest.raises(ValueError, match="Account not found"):
             await multi_account_service.set_rate_limits(
-                "nonexistent_account_id", rate_limits,
+                "nonexistent_account_id",
+                rate_limits,
             )
 
     def test_save_and_load_accounts(self, multi_account_service, sample_account_data):
@@ -593,7 +641,8 @@ class TestMultiAccountService:
 
         # Create new service instance to test loading
         new_service = MultiAccountService(
-            config=multi_account_service.config, data_dir=multi_account_service.data_dir,
+            config=multi_account_service.config,
+            data_dir=multi_account_service.data_dir,
         )
 
         # Verify account was loaded
@@ -624,7 +673,8 @@ class TestMultiAccountService:
 
         # Create new service instance to test loading
         new_service = MultiAccountService(
-            config=multi_account_service.config, data_dir=multi_account_service.data_dir,
+            config=multi_account_service.config,
+            data_dir=multi_account_service.data_dir,
         )
 
         # Verify usage stats were loaded
@@ -641,7 +691,9 @@ class TestMultiAccountService:
         """Test error handling in various methods."""
         # Test with invalid data
         with patch.object(
-            multi_account_service, "_save_accounts", side_effect=Exception("Save error"),
+            multi_account_service,
+            "_save_accounts",
+            side_effect=Exception("Save error"),
         ):
             # Should not raise exception
             multi_account_service._save_accounts()
@@ -655,7 +707,9 @@ class TestMultiAccountService:
             multi_account_service._save_usage_stats()
 
         with patch.object(
-            multi_account_service, "_load_accounts", side_effect=Exception("Load error"),
+            multi_account_service,
+            "_load_accounts",
+            side_effect=Exception("Load error"),
         ):
             # Should handle gracefully
             multi_account_service._load_accounts()

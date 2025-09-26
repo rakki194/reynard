@@ -67,7 +67,8 @@ class ModelManager:
 
         # Use PyTorch 2.8.0's built-in attention implementation
         attention_impl = self.config.get("rtx4090_optimizations", {}).get(
-            "attention_implementation", "sdpa",
+            "attention_implementation",
+            "sdpa",
         )
 
         # Load model with modern optimizations
@@ -82,7 +83,8 @@ class ModelManager:
 
         # Apply BetterTransformer optimization if enabled
         if self.config.get("rtx4090_optimizations", {}).get(
-            "use_bettertransformer", False,
+            "use_bettertransformer",
+            False,
         ):
             model = self._apply_bettertransformer(model)
 

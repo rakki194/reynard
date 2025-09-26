@@ -84,7 +84,8 @@ class TestEmbeddingVisualizationService:
                 mock_get_reducer.return_value = mock_reducer
 
                 result = await service.perform_reduction(
-                    method="pca", parameters={"n_components": 2},
+                    method="pca",
+                    parameters={"n_components": 2},
                 )
 
                 assert isinstance(result, EmbeddingReductionResult)
@@ -100,7 +101,8 @@ class TestEmbeddingVisualizationService:
         """Test reduction with invalid method."""
         with patch.object(service, "_load_embeddings", return_value=sample_embeddings):
             result = await service.perform_reduction(
-                method="invalid_method", parameters={},
+                method="invalid_method",
+                parameters={},
             )
 
             assert isinstance(result, EmbeddingReductionResult)
@@ -113,7 +115,8 @@ class TestEmbeddingVisualizationService:
         """Test reduction with no embeddings."""
         with patch.object(service, "_load_embeddings", return_value=np.array([])):
             result = await service.perform_reduction(
-                method="pca", parameters={"n_components": 2},
+                method="pca",
+                parameters={"n_components": 2},
             )
 
             assert isinstance(result, EmbeddingReductionResult)
@@ -277,13 +280,25 @@ class TestEmbeddingVisualizationService:
     def test_cache_key_generation(self, service):
         """Test cache key generation."""
         key1 = service._generate_cache_key(
-            "pca", {"category": "text"}, {"n_components": 2}, 1000, 42,
+            "pca",
+            {"category": "text"},
+            {"n_components": 2},
+            1000,
+            42,
         )
         key2 = service._generate_cache_key(
-            "pca", {"category": "text"}, {"n_components": 2}, 1000, 42,
+            "pca",
+            {"category": "text"},
+            {"n_components": 2},
+            1000,
+            42,
         )
         key3 = service._generate_cache_key(
-            "tsne", {"category": "text"}, {"n_components": 2}, 1000, 42,
+            "tsne",
+            {"category": "text"},
+            {"n_components": 2},
+            1000,
+            42,
         )
 
         # Same parameters should generate same key
@@ -304,7 +319,8 @@ class TestEmbeddingVisualizationService:
                 mock_get_reducer.return_value = mock_reducer
 
                 result = await service.perform_reduction(
-                    method="pca", parameters={"n_components": 2},
+                    method="pca",
+                    parameters={"n_components": 2},
                 )
 
                 assert isinstance(result, EmbeddingReductionResult)

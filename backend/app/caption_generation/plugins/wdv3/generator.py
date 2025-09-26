@@ -171,7 +171,8 @@ class WDv3Generator(CaptionGeneratorBase):
 
             # Load model and labels in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._load_model_and_labels,
+                None,
+                self._load_model_and_labels,
             )
 
             self._is_loaded = True
@@ -210,7 +211,10 @@ class WDv3Generator(CaptionGeneratorBase):
 
             # Generate tags using self-contained implementation
             tags = await asyncio.get_event_loop().run_in_executor(
-                None, self._generate_tags, str(image_path), config,
+                None,
+                self._generate_tags,
+                str(image_path),
+                config,
             )
 
             return tags
@@ -294,7 +298,9 @@ class WDv3Generator(CaptionGeneratorBase):
         # Create model architecture based on type
         if self._architecture == "vit":
             model = timm.create_model(
-                "vit_base_patch16_224", pretrained=False, num_classes=len(self._labels),
+                "vit_base_patch16_224",
+                pretrained=False,
+                num_classes=len(self._labels),
             )
         elif self._architecture == "swinv2":
             model = timm.create_model(
@@ -304,7 +310,9 @@ class WDv3Generator(CaptionGeneratorBase):
             )
         elif self._architecture == "convnext":
             model = timm.create_model(
-                "convnext_base", pretrained=False, num_classes=len(self._labels),
+                "convnext_base",
+                pretrained=False,
+                num_classes=len(self._labels),
             )
         else:
             raise ValueError(f"Unsupported architecture: {self._architecture}")

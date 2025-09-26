@@ -38,36 +38,76 @@ class Config:
 
         # Diffusion-Pipe configuration
         self.DIFFUSION_PIPE_PATH = self._validate_diffusion_pipe_path()
-        self.DIFFUSION_PIPE_ENABLED = os.getenv("DIFFUSION_PIPE_ENABLED", "true").lower() == "true"
-        self.DIFFUSION_PIPE_DEBUG = os.getenv("DIFFUSION_PIPE_DEBUG", "false").lower() == "true"
-        self.DIFFUSION_PIPE_TIMEOUT = float(os.getenv("DIFFUSION_PIPE_TIMEOUT", "300.0"))
-        self.DIFFUSION_PIPE_MAX_CONCURRENT_TRAININGS = int(os.getenv("DIFFUSION_PIPE_MAX_CONCURRENT_TRAININGS", "2"))
-        
+        self.DIFFUSION_PIPE_ENABLED = (
+            os.getenv("DIFFUSION_PIPE_ENABLED", "true").lower() == "true"
+        )
+        self.DIFFUSION_PIPE_DEBUG = (
+            os.getenv("DIFFUSION_PIPE_DEBUG", "false").lower() == "true"
+        )
+        self.DIFFUSION_PIPE_TIMEOUT = float(
+            os.getenv("DIFFUSION_PIPE_TIMEOUT", "300.0")
+        )
+        self.DIFFUSION_PIPE_MAX_CONCURRENT_TRAININGS = int(
+            os.getenv("DIFFUSION_PIPE_MAX_CONCURRENT_TRAININGS", "2")
+        )
+
         # Training configuration defaults
-        self.DIFFUSION_PIPE_DEFAULT_OUTPUT_DIR = os.getenv("DIFFUSION_PIPE_DEFAULT_OUTPUT_DIR", "/home/kade/runeset/diffusion-pipe/output")
-        self.DIFFUSION_PIPE_DEFAULT_DATASET_DIR = os.getenv("DIFFUSION_PIPE_DEFAULT_DATASET_DIR", "/home/kade/datasets")
-        self.DIFFUSION_PIPE_DEFAULT_MODEL_DIR = os.getenv("DIFFUSION_PIPE_DEFAULT_MODEL_DIR", "/home/kade/runeset/wolfy/models")
-        
+        self.DIFFUSION_PIPE_DEFAULT_OUTPUT_DIR = os.getenv(
+            "DIFFUSION_PIPE_DEFAULT_OUTPUT_DIR",
+            "/home/kade/runeset/diffusion-pipe/output",
+        )
+        self.DIFFUSION_PIPE_DEFAULT_DATASET_DIR = os.getenv(
+            "DIFFUSION_PIPE_DEFAULT_DATASET_DIR", "/home/kade/datasets"
+        )
+        self.DIFFUSION_PIPE_DEFAULT_MODEL_DIR = os.getenv(
+            "DIFFUSION_PIPE_DEFAULT_MODEL_DIR", "/home/kade/runeset/wolfy/models"
+        )
+
         # GPU and resource management
-        self.DIFFUSION_PIPE_GPU_MEMORY_THRESHOLD = float(os.getenv("DIFFUSION_PIPE_GPU_MEMORY_THRESHOLD", "0.8"))
-        self.DIFFUSION_PIPE_MAX_GPU_MEMORY_GB = int(os.getenv("DIFFUSION_PIPE_MAX_GPU_MEMORY_GB", "24"))
-        self.DIFFUSION_PIPE_ENABLE_GPU_MONITORING = os.getenv("DIFFUSION_PIPE_ENABLE_GPU_MONITORING", "true").lower() == "true"
-        
+        self.DIFFUSION_PIPE_GPU_MEMORY_THRESHOLD = float(
+            os.getenv("DIFFUSION_PIPE_GPU_MEMORY_THRESHOLD", "0.8")
+        )
+        self.DIFFUSION_PIPE_MAX_GPU_MEMORY_GB = int(
+            os.getenv("DIFFUSION_PIPE_MAX_GPU_MEMORY_GB", "24")
+        )
+        self.DIFFUSION_PIPE_ENABLE_GPU_MONITORING = (
+            os.getenv("DIFFUSION_PIPE_ENABLE_GPU_MONITORING", "true").lower() == "true"
+        )
+
         # Training process management
-        self.DIFFUSION_PIPE_PROCESS_TIMEOUT = int(os.getenv("DIFFUSION_PIPE_PROCESS_TIMEOUT", "3600"))
-        self.DIFFUSION_PIPE_ENABLE_CHECKPOINTING = os.getenv("DIFFUSION_PIPE_ENABLE_CHECKPOINTING", "true").lower() == "true"
-        self.DIFFUSION_PIPE_CHECKPOINT_INTERVAL = int(os.getenv("DIFFUSION_PIPE_CHECKPOINT_INTERVAL", "100"))
-        
+        self.DIFFUSION_PIPE_PROCESS_TIMEOUT = int(
+            os.getenv("DIFFUSION_PIPE_PROCESS_TIMEOUT", "3600")
+        )
+        self.DIFFUSION_PIPE_ENABLE_CHECKPOINTING = (
+            os.getenv("DIFFUSION_PIPE_ENABLE_CHECKPOINTING", "true").lower() == "true"
+        )
+        self.DIFFUSION_PIPE_CHECKPOINT_INTERVAL = int(
+            os.getenv("DIFFUSION_PIPE_CHECKPOINT_INTERVAL", "100")
+        )
+
         # Monitoring and logging
-        self.DIFFUSION_PIPE_ENABLE_WANDB = os.getenv("DIFFUSION_PIPE_ENABLE_WANDB", "true").lower() == "true"
-        self.DIFFUSION_PIPE_WANDB_API_KEY = os.getenv("DIFFUSION_PIPE_WANDB_API_KEY", "")
+        self.DIFFUSION_PIPE_ENABLE_WANDB = (
+            os.getenv("DIFFUSION_PIPE_ENABLE_WANDB", "true").lower() == "true"
+        )
+        self.DIFFUSION_PIPE_WANDB_API_KEY = os.getenv(
+            "DIFFUSION_PIPE_WANDB_API_KEY", ""
+        )
         self.DIFFUSION_PIPE_LOG_LEVEL = os.getenv("DIFFUSION_PIPE_LOG_LEVEL", "INFO")
-        self.DIFFUSION_PIPE_ENABLE_METRICS = os.getenv("DIFFUSION_PIPE_ENABLE_METRICS", "true").lower() == "true"
-        
+        self.DIFFUSION_PIPE_ENABLE_METRICS = (
+            os.getenv("DIFFUSION_PIPE_ENABLE_METRICS", "true").lower() == "true"
+        )
+
         # Security and validation
-        self.DIFFUSION_PIPE_ENABLE_SECURITY_SCANNING = os.getenv("DIFFUSION_PIPE_ENABLE_SECURITY_SCANNING", "true").lower() == "true"
-        self.DIFFUSION_PIPE_VALIDATE_PATHS = os.getenv("DIFFUSION_PIPE_VALIDATE_PATHS", "true").lower() == "true"
-        self.DIFFUSION_PIPE_SANITIZE_INPUTS = os.getenv("DIFFUSION_PIPE_SANITIZE_INPUTS", "true").lower() == "true"
+        self.DIFFUSION_PIPE_ENABLE_SECURITY_SCANNING = (
+            os.getenv("DIFFUSION_PIPE_ENABLE_SECURITY_SCANNING", "true").lower()
+            == "true"
+        )
+        self.DIFFUSION_PIPE_VALIDATE_PATHS = (
+            os.getenv("DIFFUSION_PIPE_VALIDATE_PATHS", "true").lower() == "true"
+        )
+        self.DIFFUSION_PIPE_SANITIZE_INPUTS = (
+            os.getenv("DIFFUSION_PIPE_SANITIZE_INPUTS", "true").lower() == "true"
+        )
 
     def _get_cors_origins(self) -> list[str]:
         """Get CORS allowed origins."""
@@ -95,22 +135,22 @@ class Config:
         """Validate and return the diffusion-pipe installation path."""
         path = os.getenv("DIFFUSION_PIPE_PATH", "/home/kade/runeset/diffusion-pipe")
         path_obj = Path(path)
-        
+
         # Check if path exists
         if not path_obj.exists():
             raise ValueError(f"Diffusion-Pipe path does not exist: {path}")
-        
+
         # Check if it's a directory
         if not path_obj.is_dir():
             raise ValueError(f"Diffusion-Pipe path is not a directory: {path}")
-        
+
         # Check for required files/directories
         required_items = ["train.py", "requirements.txt"]
         for item in required_items:
             item_path = path_obj / item
             if not item_path.exists():
                 raise ValueError(f"Required diffusion-pipe file not found: {item_path}")
-        
+
         return str(path_obj.absolute())
 
 

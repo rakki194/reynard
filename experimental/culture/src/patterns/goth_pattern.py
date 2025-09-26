@@ -102,7 +102,9 @@ class GothCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel,
+        self,
+        count: int,
+        safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate goth-specific scenarios"""
         scenarios = []
@@ -156,7 +158,9 @@ class GothCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for goth cultural appropriateness"""
         metrics = {}
@@ -213,7 +217,9 @@ class GothCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_aesthetic_appreciation(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate appreciation of gothic aesthetics"""
         score = 0.0
@@ -243,7 +249,9 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_literary_knowledge(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate knowledge of gothic literature and themes"""
         score = 0.0
@@ -273,7 +281,9 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_music_culture(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate understanding of gothic music culture"""
         score = 0.0
@@ -303,7 +313,9 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_individuality(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate respect for individual expression"""
         score = 0.0
@@ -333,7 +345,9 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_community_respect(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate community respect and inclusivity"""
         score = 0.0
@@ -363,7 +377,9 @@ class GothCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str,
+        self,
+        metrics: dict[str, float],
+        response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

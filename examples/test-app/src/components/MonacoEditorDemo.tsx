@@ -195,7 +195,7 @@ async fn fetch_user_data(id: u32) -> Result<User, Box<dyn std::error::Error>> {
 package main
 
 import (
-import { Slider } from "reynard-components";
+import { Slider } from "reynard-primitives";
     "context"
     "encoding/json"
     "fmt"

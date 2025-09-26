@@ -4,12 +4,18 @@ This module provides user management functionality using the Gatekeeper library.
 """
 
 from datetime import datetime
+from typing import Any
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from .jwt_utils import create_access_token, create_refresh_token, verify_token_sync
-from .password_utils import verify_password
+from app.gatekeeper_config import get_auth_manager
+from app.services.auth.agent_user_mapping import agent_user_mapping_service
+from gatekeeper.models.token import TokenResponse
+from gatekeeper.models.user import User
+from gatekeeper.models.user import UserCreate as GatekeeperUserCreate
+from gatekeeper.models.user import UserRole
+
 from .user_models import (
     AuthResponse,
     RefreshResponse,
@@ -18,13 +24,9 @@ from .user_models import (
     UserResponse,
 )
 
-# In-memory storage for testing (simplified version)
-users_db: dict[str, dict] = {}
-refresh_tokens_db: dict[str, str] = {}
 
-
-def create_user(user_data: UserCreate) -> UserResponse:
-    """Create a new user.
+async def create_user(user_data: UserCreate) -> UserResponse:
+    """Create a new user using Gatekeeper.
 
     Args:
         user_data: User creation data
@@ -36,225 +38,222 @@ def create_user(user_data: UserCreate) -> UserResponse:
         HTTPException: If user already exists or validation fails
 
     """
-    # Check if username already exists
-    if user_data.username in users_db:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username already registered",
+    try:
+        auth_manager = await get_auth_manager()
+
+        # Convert to Gatekeeper UserCreate
+        gatekeeper_user = GatekeeperUserCreate(
+            username=user_data.username,
+            password=user_data.password,
+            email=user_data.email,
+            role=UserRole.REGULAR,  # Default role
         )
 
-    # Check if email already exists
-    for user in users_db.values():
-        if user.get("email") == user_data.email:
+        # Create user in Gatekeeper
+        created_user = await auth_manager.create_user(gatekeeper_user)
+
+        return UserResponse(
+            username=created_user.username,
+            email=created_user.email,
+            full_name=user_data.full_name,  # Gatekeeper doesn't have full_name, keep from input
+            is_active=created_user.is_active,
+            created_at=(
+                created_user.created_at.isoformat()
+                if created_user.created_at
+                else datetime.now().isoformat()
+            ),
+        )
+
+    except Exception as e:
+        if "already exists" in str(e).lower():
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Email already registered",
+                detail="Username or email already registered",
             )
-
-    # Hash password
-    from .password_utils import get_password_hash
-
-    hashed_password = get_password_hash(user_data.password)
-
-    # Create user
-    user_dict = {
-        "username": user_data.username,
-        "email": user_data.email,
-        "full_name": user_data.full_name,
-        "hashed_password": hashed_password,
-        "is_active": True,
-        "created_at": datetime.now().isoformat(),
-    }
-
-    users_db[user_data.username] = user_dict
-
-    return UserResponse(
-        username=user_data.username,
-        email=user_data.email,
-        full_name=user_data.full_name,
-        is_active=True,
-        created_at=user_dict["created_at"],
-    )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create user: {str(e)}",
+        )
 
 
-def authenticate_user(login_data: UserLogin) -> AuthResponse:
-    """Authenticate a user.
+async def authenticate_user(login_data: UserLogin) -> AuthResponse:
+    """Authenticate a user using Gatekeeper.
 
     Args:
         login_data: User login data
 
     Returns:
-        Dict[str, str]: Token response
+        AuthResponse: Token response
 
     Raises:
         HTTPException: If authentication fails
 
     """
-    # Get user from database
-    user = users_db.get(login_data.username)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+    try:
+        auth_manager = await get_auth_manager()
+
+        # Authenticate with Gatekeeper
+        token_response = await auth_manager.authenticate(
+            username=login_data.username,
+            password=login_data.password,
         )
 
-    # Check if user is active
-    if not user.get("is_active", True):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user",
+        if not token_response:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Incorrect username or password",
+            )
+
+        return AuthResponse(
+            access_token=token_response.access_token,
+            refresh_token=token_response.refresh_token,
+            token_type="bearer",
         )
 
-    # Verify password
-    if not verify_password(login_data.password, user["hashed_password"]):
+    except HTTPException:
+        raise
+    except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Authentication failed: {str(e)}",
         )
 
-    # Create tokens
-    token_data = {"sub": user["username"], "username": user["username"]}
-    access_token = create_access_token(token_data)
-    refresh_token = create_refresh_token(token_data)
 
-    # Store refresh token
-    refresh_tokens_db[user["username"]] = refresh_token
-
-    return AuthResponse(
-        access_token=access_token, refresh_token=refresh_token, token_type="bearer",
-    )
-
-
-def refresh_user_token(refresh_token: str) -> RefreshResponse:
-    """Refresh user tokens.
+async def refresh_user_token(refresh_token: str) -> RefreshResponse:
+    """Refresh user tokens using Gatekeeper.
 
     Args:
         refresh_token: The refresh token
 
     Returns:
-        Dict[str, str]: New token response
+        RefreshResponse: New token response
 
     Raises:
         HTTPException: If refresh fails
 
     """
-    # Verify refresh token
-    payload = verify_token_sync(refresh_token, "refresh")
-    if not payload:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
+    try:
+        auth_manager = await get_auth_manager()
+
+        # Refresh tokens with Gatekeeper
+        token_response = await auth_manager.refresh_tokens(refresh_token)
+
+        if not token_response:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid refresh token",
+            )
+
+        return RefreshResponse(
+            access_token=token_response.access_token,
+            refresh_token=token_response.refresh_token,
+            token_type="bearer",
         )
 
-    username = payload.get("sub")
-    if not username or username not in users_db:
+    except HTTPException:
+        raise
+    except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Token refresh failed: {str(e)}",
         )
 
-    # Check if stored refresh token matches
-    if refresh_tokens_db.get(username) != refresh_token:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
-        )
 
-    # Create new tokens
-    token_data = {"sub": username, "username": username}
-    new_access_token = create_access_token(token_data)
-    new_refresh_token = create_refresh_token(token_data)
-
-    # Update stored refresh token
-    refresh_tokens_db[username] = new_refresh_token
-
-    return RefreshResponse(
-        access_token=new_access_token,
-        refresh_token=new_refresh_token,
-        token_type="bearer",
-    )
-
-
-def logout_user(refresh_token: str) -> dict[str, str]:
-    """Logout a user.
+async def logout_user(refresh_token: str) -> dict[str, str]:
+    """Logout a user using Gatekeeper.
 
     Args:
         refresh_token: The refresh token to revoke
 
     Returns:
-        Dict[str, str]: Logout response
+        dict[str, str]: Logout response
 
     Raises:
         HTTPException: If logout fails
 
     """
-    # Verify refresh token
-    payload = verify_token_sync(refresh_token, "refresh")
-    if not payload:
+    try:
+        auth_manager = await get_auth_manager()
+
+        # Logout with Gatekeeper
+        success = await auth_manager.logout(refresh_token)
+
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid refresh token",
+            )
+
+        return {"message": "Successfully logged out"}
+
+    except HTTPException:
+        raise
+    except Exception as e:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Logout failed: {str(e)}",
         )
-
-    username = payload.get("sub")
-    if not username or username not in users_db:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found",
-        )
-
-    # Remove refresh token
-    refresh_tokens_db.pop(username, None)
-
-    return {"message": "Successfully logged out"}
 
 
 security = HTTPBearer()
 
 
-def get_current_user(
+async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
-) -> dict[str, str]:
-    """Get current user from token.
+) -> dict[str, Any]:
+    """Get current user from token using Gatekeeper.
 
     Args:
         credentials: HTTP authorization credentials
 
     Returns:
-        Dict[str, str]: User data
+        dict[str, Any]: User data
 
     Raises:
         HTTPException: If token is invalid
 
     """
-    token = credentials.credentials
-    payload = verify_token_sync(token, "access")
+    try:
+        auth_manager = await get_auth_manager()
+        token = credentials.credentials
 
-    if not payload:
+        # Get user from Gatekeeper
+        user = await auth_manager.get_current_user(token)
+
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials",
+            )
+
+        return {
+            "username": user.username,
+            "email": user.email,
+            "role": user.role.value,
+            "is_active": user.is_active,
+            "user_id": user.id,
+            "permissions": user.permissions or [],
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
         )
 
-    username = payload.get("sub")
-    if not username or username not in users_db:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found",
-        )
 
-    user = users_db[username]
-    return {
-        "username": user["username"],
-        "email": user["email"],
-        "full_name": user["full_name"],
-        "is_active": user["is_active"],
-    }
-
-
-def get_current_active_user(
-    current_user: dict[str, str] = Depends(get_current_user),
-) -> dict[str, str]:
+async def get_current_active_user(
+    current_user: dict[str, Any] = Depends(get_current_user),
+) -> dict[str, Any]:
     """Get current active user.
 
     Args:
         current_user: Current user data
 
     Returns:
-        Dict[str, str]: Active user data
+        dict[str, Any]: Active user data
 
     Raises:
         HTTPException: If user is inactive
@@ -262,7 +261,50 @@ def get_current_active_user(
     """
     if not current_user.get("is_active", True):
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Inactive user",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Inactive user",
         )
 
     return current_user
+
+
+async def get_current_agent(
+    current_user: dict[str, Any] = Depends(get_current_user),
+) -> dict[str, Any]:
+    """Get the current user as an Agent model representation.
+
+    This function provides a bridge between the Gatekeeper User model
+    and the backend Agent model for backward compatibility.
+
+    Args:
+        current_user: Current user data from Gatekeeper
+
+    Returns:
+        dict[str, Any]: Agent representation of the user
+    """
+    try:
+        # Create an Agent-like representation from the User data
+        agent_data = {
+            "id": current_user.get("user_id"),
+            "agent_id": current_user.get("username"),
+            "name": current_user.get("username"),
+            "email": current_user.get("email"),
+            "spirit": "user",  # Default spirit
+            "active": current_user.get("is_active", True),
+            "role": current_user.get("role", "regular"),
+            "permissions": current_user.get("permissions", []),
+        }
+
+        return agent_data
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get agent data: {str(e)}",
+        )
+
+
+# Compatibility exports for backward compatibility
+# These are now empty since we use Gatekeeper instead of in-memory storage
+users_db: dict[str, dict] = {}
+refresh_tokens_db: dict[str, str] = {}

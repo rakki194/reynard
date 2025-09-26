@@ -12,9 +12,9 @@ from typing import Any
 
 from ...config.rag_config import get_rag_config
 from ...core.logging_config import get_service_logger
+from ...core.service_registry import get_service_registry
 from ...services.rag import DocumentIndexer, VectorStoreService
 from ...services.rag.services.core.embedding import EmbeddingService
-from ...core.service_registry import get_service_registry
 from .models import RAGIngestItem
 
 logger = get_service_logger("rag")
@@ -67,6 +67,7 @@ class RAGService:
         top_k: int = 20,
         similarity_threshold: float = 0.0,
         enable_reranking: bool = False,
+        user_id: str = "system",
     ) -> dict[str, Any]:
         """Perform semantic search query."""
         if not self._initialized:
@@ -97,14 +98,16 @@ class RAGService:
             # Generate query embedding
             embedding_start = time.time()
             query_embedding = await self._embedding_service.embed_text(
-                query, model=self._config.get("rag_text_model", "mxbai-embed-large"),
+                query,
+                model=self._config.get("rag_text_model", "mxbai-embed-large"),
             )
             embedding_time = time.time() - embedding_start
 
             # Perform vector search
             search_start = time.time()
             results = await self._vector_db_service.similar_document_chunks(
-                query_embedding, top_k,
+                query_embedding,
+                top_k,
             )
             search_time = time.time() - search_start
 
@@ -136,7 +139,8 @@ class RAGService:
                     "modality": modality or "docs",
                     "reranked": enable_reranking,
                     "embedding_model": self._config.get(
-                        "rag_text_model", "mxbai-embed-large",
+                        "rag_text_model",
+                        "mxbai-embed-large",
                     ),
                 },
             }
@@ -230,7 +234,9 @@ class RAGService:
 
             # Use indexing service for streaming ingestion
             async for event in self._indexing_service.ingest_documents(
-                items_dict, model, batch_size,
+                items_dict,
+                model,
+                batch_size,
             ):
                 yield f'{{"type": "{event["type"]}", "processed": {event.get("processed", 0)}, "total": {event.get("total", 0)}, "failures": {event.get("failures", 0)}, "message": "{event.get("message", "")}"}}'
 
@@ -287,7 +293,8 @@ class RAGService:
                 "chunks_with_embeddings": vector_stats.get("chunks_with_embeddings", 0),
                 "embedding_coverage": vector_stats.get("embedding_coverage", 0.0),
                 "default_model": self._config.get(
-                    "rag_text_model", "embeddinggemma:latest",
+                    "rag_text_model",
+                    "embeddinggemma:latest",
                 ),
                 "vector_db_enabled": vector_stats.get("migrations_ok", False),
                 "cache_size": embedding_stats.get("cache_size", 0),
@@ -295,7 +302,8 @@ class RAGService:
                 "embedding_errors": embedding_stats.get("errors", 0),
                 "indexing_queue_size": indexing_stats.get("queue_size", 0),
                 "indexing_processed": indexing_stats.get("metrics", {}).get(
-                    "processed", 0,
+                    "processed",
+                    0,
                 ),
                 "indexing_failed": indexing_stats.get("metrics", {}).get("failed", 0),
             }
@@ -381,9 +389,7 @@ class RAGServiceManager:
         try:
             service = self.get_service()
             await service.initialize()
-        except (
-            Exception
-        ) as e:
+        except Exception as e:
             logger.exception(
                 "Failed to initialize RAG service",
                 extra={

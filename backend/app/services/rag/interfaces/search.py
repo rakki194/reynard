@@ -16,7 +16,7 @@ from .base import BaseService
 
 class SearchType(Enum):
     """Types of search operations."""
-    
+
     SEMANTIC = "semantic"
     KEYWORD = "keyword"
     HYBRID = "hybrid"
@@ -25,7 +25,7 @@ class SearchType(Enum):
 @dataclass
 class SearchResult:
     """Result of a search operation."""
-    
+
     content: str
     score: float
     metadata: Dict[str, Any]
@@ -49,7 +49,10 @@ class ISearchEngine(BaseService, ABC):
 
     @abstractmethod
     async def keyword_search(
-        self, query: str, limit: int = 10, use_bm25: bool = True,
+        self,
+        query: str,
+        limit: int = 10,
+        use_bm25: bool = True,
     ) -> List[Dict[str, Any]]:
         """Perform keyword-based search."""
         pass
@@ -89,7 +92,9 @@ class ISearchEngine(BaseService, ABC):
 
     @abstractmethod
     async def benchmark_search_performance(
-        self, test_queries: List[str], iterations: int = 5,
+        self,
+        test_queries: List[str],
+        iterations: int = 5,
     ) -> Dict[str, Any]:
         """Benchmark search performance across different methods."""
         pass
@@ -111,7 +116,8 @@ class SearchProvider(ABC):
 
     @abstractmethod
     async def index_documents(
-        self, documents: List[Dict[str, Any]],
+        self,
+        documents: List[Dict[str, Any]],
     ) -> bool:
         """Index documents for search."""
         pass

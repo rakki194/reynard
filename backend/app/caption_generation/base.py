@@ -16,7 +16,6 @@ class CaptionGeneratorBase(CaptionGenerator, CaptionGeneratorMixin):
     """Base class combining the abstract interface with the mixin functionality."""
 
 
-
 # Re-export for backward compatibility
 __all__ = [
     "CaptionGenerator",

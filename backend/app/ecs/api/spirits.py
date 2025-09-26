@@ -191,7 +191,8 @@ async def create_interaction(request: dict[str, Any]) -> dict[str, Any]:
 
         if not agent1_id or not agent2_id:
             raise HTTPException(
-                status_code=400, detail="agent1_id and agent2_id are required",
+                status_code=400,
+                detail="agent1_id and agent2_id are required",
             )
 
         # Get the ECS service
@@ -210,5 +211,6 @@ async def create_interaction(request: dict[str, Any]) -> dict[str, Any]:
     except Exception as e:
         logger.exception("Failed to create interaction")
         raise HTTPException(
-            status_code=500, detail=f"Failed to create interaction: {e!s}",
+            status_code=500,
+            detail=f"Failed to create interaction: {e!s}",
         ) from e

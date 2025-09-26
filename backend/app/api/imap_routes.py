@@ -50,13 +50,15 @@ async def get_imap_status(
     except Exception as e:
         logger.error(f"Failed to get IMAP status: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get IMAP status: {e!s}",
+            status_code=500,
+            detail=f"Failed to get IMAP status: {e!s}",
         )
 
 
 @router.get("/emails/unread", operation_id="imap_emails_unread")
 async def get_unread_emails(
-    limit: int = 10, current_user: dict = Depends(get_current_active_user),
+    limit: int = 10,
+    current_user: dict = Depends(get_current_active_user),
 ) -> list[dict[str, Any]]:
     """Get unread emails.
 
@@ -91,7 +93,8 @@ async def get_unread_emails(
     except Exception as e:
         logger.error(f"Failed to get unread emails: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get unread emails: {e!s}",
+            status_code=500,
+            detail=f"Failed to get unread emails: {e!s}",
         )
 
 
@@ -135,7 +138,8 @@ async def get_recent_emails(
     except Exception as e:
         logger.error(f"Failed to get recent emails: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get recent emails: {e!s}",
+            status_code=500,
+            detail=f"Failed to get recent emails: {e!s}",
         )
 
 
@@ -179,7 +183,8 @@ async def get_agent_emails(
     except Exception as e:
         logger.error(f"Failed to get agent emails: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get agent emails: {e!s}",
+            status_code=500,
+            detail=f"Failed to get agent emails: {e!s}",
         )
 
 
@@ -200,13 +205,15 @@ async def get_emails_summary(
     except Exception as e:
         logger.error(f"Failed to get email summary: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get email summary: {e!s}",
+            status_code=500,
+            detail=f"Failed to get email summary: {e!s}",
         )
 
 
 @router.post("/emails/{message_id}/mark-read", operation_id="imap_emails_mark_read")
 async def mark_email_as_read(
-    message_id: str, current_user: dict = Depends(get_current_active_user),
+    message_id: str,
+    current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:
     """Mark an email as read.
 
@@ -223,19 +230,24 @@ async def mark_email_as_read(
         if success:
             return {"success": True, "message": "Email marked as read"}
         raise HTTPException(
-            status_code=404, detail="Email not found or could not be marked as read",
+            status_code=404,
+            detail="Email not found or could not be marked as read",
         )
 
     except Exception as e:
         logger.error(f"Failed to mark email as read: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to mark email as read: {e!s}",
+            status_code=500,
+            detail=f"Failed to mark email as read: {e!s}",
         )
 
 
-@router.post("/emails/{message_id}/mark-processed", operation_id="imap_emails_mark_processed")
+@router.post(
+    "/emails/{message_id}/mark-processed", operation_id="imap_emails_mark_processed"
+)
 async def mark_email_as_processed(
-    message_id: str, current_user: dict = Depends(get_current_active_user),
+    message_id: str,
+    current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:
     """Mark an email as processed.
 
@@ -259,7 +271,8 @@ async def mark_email_as_processed(
     except Exception as e:
         logger.error(f"Failed to mark email as processed: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to mark email as processed: {e!s}",
+            status_code=500,
+            detail=f"Failed to mark email as processed: {e!s}",
         )
 
 
@@ -287,13 +300,15 @@ async def start_email_monitoring(
                 "message": f"Email monitoring started with {interval}s interval",
             }
         raise HTTPException(
-            status_code=500, detail="Background tasks not available",
+            status_code=500,
+            detail="Background tasks not available",
         )
 
     except Exception as e:
         logger.error(f"Failed to start email monitoring: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to start email monitoring: {e!s}",
+            status_code=500,
+            detail=f"Failed to start email monitoring: {e!s}",
         )
 
 

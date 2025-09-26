@@ -27,7 +27,8 @@ async def test_phoenix_framework():
 
     # Setup logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     # Initialize PHOENIX configuration
@@ -125,7 +126,9 @@ async def test_phoenix_framework():
         # Show top performers
         print("🏆 Top Performers:")
         sorted_population = sorted(
-            final_state.population, key=lambda a: a.get_fitness_score(), reverse=True,
+            final_state.population,
+            key=lambda a: a.get_fitness_score(),
+            reverse=True,
         )
         for i, agent in enumerate(sorted_population[:5]):
             print(

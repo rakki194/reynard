@@ -548,7 +548,8 @@ class PatternAnalyzer:
                         original_text = match.group()
                         word = original_text.lower()
                         replacement = self.replacements.get(
-                            word, "consider alternative",
+                            word,
+                            "consider alternative",
                         )
 
                         # Calculate context (surrounding words)
@@ -574,7 +575,8 @@ class PatternAnalyzer:
                                 "word_position": match.start(),
                                 "line_length": len(line),
                                 "surrounding_words": self._extract_surrounding_words(
-                                    line, match,
+                                    line,
+                                    match,
                                 ),
                             },
                         )

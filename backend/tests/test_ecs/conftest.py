@@ -1,5 +1,4 @@
-"""Pytest configuration for ECS tests.
-"""
+"""Pytest configuration for ECS tests."""
 
 import os
 import sys

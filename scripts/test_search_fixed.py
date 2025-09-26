@@ -28,7 +28,6 @@ class TimeoutError(Exception):
     """Custom timeout error."""
 
 
-
 def timeout_handler(signum, frame):
     """Handle timeout signal."""
     raise TimeoutError("Test timed out")
@@ -71,7 +70,8 @@ async def test_search_service():
         # Test 3: Query suggestions with timeout
         print("\n3. Testing query suggestions...")
         suggestions = await test_with_timeout(
-            service.get_query_suggestions("authentication", max_suggestions=3), 10,
+            service.get_query_suggestions("authentication", max_suggestions=3),
+            10,
         )
         if suggestions:
             print(f"   Suggestions success: {suggestions.get('success', False)}")
@@ -81,7 +81,8 @@ async def test_search_service():
         # Test 4: Smart search with timeout
         print("\n4. Testing smart search...")
         search_result = await test_with_timeout(
-            service.smart_search("authentication", max_results=5), 15,
+            service.smart_search("authentication", max_results=5),
+            15,
         )
         if search_result:
             print(f"   Smart search success: {search_result.get('success', False)}")

@@ -6,10 +6,9 @@ from datetime import datetime
 
 from database import DatabaseService
 from fastapi import APIRouter, Depends, HTTPException, status
+from models import Note, Notebook, User
 from pydantic import BaseModel
 from sqlalchemy import func, select
-
-from models import Note, Notebook, User
 
 router = APIRouter()
 
@@ -71,7 +70,8 @@ async def get_current_user(db: DatabaseService = Depends(get_database_service)) 
     user = result.scalar_one_or_none()
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
         )
     return user
 
@@ -160,7 +160,8 @@ async def get_notebook(
 
     if not notebook_with_count:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Notebook not found",
         )
 
     notebook, page_count = notebook_with_count
@@ -187,14 +188,16 @@ async def update_notebook(
     """Update a notebook"""
     result = await db.execute(
         select(Notebook).where(
-            Notebook.id == notebook_id, Notebook.user_id == current_user.id,
+            Notebook.id == notebook_id,
+            Notebook.user_id == current_user.id,
         ),
     )
     notebook = result.scalar_one_or_none()
 
     if not notebook:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Notebook not found",
         )
 
     # Update fields if provided
@@ -239,14 +242,16 @@ async def delete_notebook(
     """Delete a notebook and all its notes"""
     result = await db.execute(
         select(Notebook).where(
-            Notebook.id == notebook_id, Notebook.user_id == current_user.id,
+            Notebook.id == notebook_id,
+            Notebook.user_id == current_user.id,
         ),
     )
     notebook = result.scalar_one_or_none()
 
     if not notebook:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Notebook not found",
         )
 
     # Delete all notes in the notebook first
@@ -269,14 +274,16 @@ async def get_notebook_notes(
     # Verify notebook ownership
     notebook_result = await db.execute(
         select(Notebook).where(
-            Notebook.id == notebook_id, Notebook.user_id == current_user.id,
+            Notebook.id == notebook_id,
+            Notebook.user_id == current_user.id,
         ),
     )
     notebook = notebook_result.scalar_one_or_none()
 
     if not notebook:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Notebook not found",
         )
 
     # Get notes

@@ -12,7 +12,8 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
 try:
-    from playwright.async_api import Browser, Page, async_playwright, BrowserContext
+    from playwright.async_api import Browser, BrowserContext, Page, async_playwright
+
     PLAYWRIGHT_AVAILABLE = True
 except ImportError:
     PLAYWRIGHT_AVAILABLE = False
@@ -34,7 +35,7 @@ class BrowserAutomationService:
             logger.warning(
                 "Playwright not available. Install with: pip install playwright"
             )
-        
+
         # Browser pool management
         self._browser_pool: List[Browser] = []
         self._max_pool_size = 5
@@ -82,7 +83,7 @@ class BrowserAutomationService:
                 "--disable-features=VizDisplayCompositor",
                 "--disable-blink-features=AutomationControlled",
                 "--disable-extensions",
-            ]
+            ],
         )
 
         # Create context with options
@@ -159,9 +160,7 @@ class BrowserAutomationService:
 
                 # Create output path if not provided
                 if output_path is None:
-                    temp_file = tempfile.NamedTemporaryFile(
-                        suffix=".png", delete=False
-                    )
+                    temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
                     output_path = temp_file.name
                     temp_file.close()
 
@@ -173,9 +172,7 @@ class BrowserAutomationService:
                     element = await page.query_selector(selector)
                     if element:
                         await element.screenshot(
-                            path=output_path,
-                            type="png",
-                            quality=quality
+                            path=output_path, type="png", quality=quality
                         )
                     else:
                         await context.close()
@@ -190,7 +187,7 @@ class BrowserAutomationService:
                         path=output_path,
                         type="png",
                         quality=quality,
-                        full_page=full_page
+                        full_page=full_page,
                     )
 
                 await context.close()
@@ -283,7 +280,8 @@ class BrowserAutomationService:
 
                 # Extract links if requested
                 if extract_links:
-                    links = await page.evaluate("""
+                    links = await page.evaluate(
+                        """
                         () => {
                             const links = Array.from(document.querySelectorAll('a[href]'));
                             return links.map(link => ({
@@ -292,12 +290,14 @@ class BrowserAutomationService:
                                 title: link.title || ''
                             }));
                         }
-                    """)
+                    """
+                    )
                     content_data["links"] = links
 
                 # Extract images if requested
                 if extract_images:
-                    images = await page.evaluate("""
+                    images = await page.evaluate(
+                        """
                         () => {
                             const images = Array.from(document.querySelectorAll('img[src]'));
                             return images.map(img => ({
@@ -308,7 +308,8 @@ class BrowserAutomationService:
                                 height: img.height
                             }));
                         }
-                    """)
+                    """
+                    )
                     content_data["images"] = images
 
                 await context.close()
@@ -372,9 +373,7 @@ class BrowserAutomationService:
 
                 # Create output path if not provided
                 if output_path is None:
-                    temp_file = tempfile.NamedTemporaryFile(
-                        suffix=".pdf", delete=False
-                    )
+                    temp_file = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
                     output_path = temp_file.name
                     temp_file.close()
 
@@ -385,9 +384,14 @@ class BrowserAutomationService:
                 default_pdf_options = {
                     "format": "A4",
                     "print_background": True,
-                    "margin": {"top": "1cm", "right": "1cm", "bottom": "1cm", "left": "1cm"},
+                    "margin": {
+                        "top": "1cm",
+                        "right": "1cm",
+                        "bottom": "1cm",
+                        "left": "1cm",
+                    },
                 }
-                
+
                 if pdf_options:
                     default_pdf_options.update(pdf_options)
 
@@ -506,7 +510,7 @@ class BrowserAutomationService:
                 await page.goto(url, wait_until="networkidle", timeout=wait_timeout)
 
                 results = {}
-                
+
                 # Execute interactions
                 for i, interaction in enumerate(interactions):
                     action = interaction.get("action")
@@ -573,8 +577,16 @@ class BrowserAutomationService:
         """Synchronous wrapper for screenshot capture."""
         return self._run_async_operation(
             self.take_screenshot(
-                url, output_path, viewport_size, full_page, quality,
-                selector, wait_for, wait_timeout, user_agent, proxy
+                url,
+                output_path,
+                viewport_size,
+                full_page,
+                quality,
+                selector,
+                wait_for,
+                wait_timeout,
+                user_agent,
+                proxy,
             )
         )
 
@@ -593,8 +605,15 @@ class BrowserAutomationService:
         """Synchronous wrapper for webpage scraping."""
         return self._run_async_operation(
             self.scrape_webpage(
-                url, selector, viewport_size, wait_for, wait_timeout,
-                user_agent, proxy, extract_links, extract_images
+                url,
+                selector,
+                viewport_size,
+                wait_for,
+                wait_timeout,
+                user_agent,
+                proxy,
+                extract_links,
+                extract_images,
             )
         )
 
@@ -612,8 +631,14 @@ class BrowserAutomationService:
         """Synchronous wrapper for PDF generation."""
         return self._run_async_operation(
             self.generate_pdf(
-                url, output_path, viewport_size, wait_for, wait_timeout,
-                pdf_options, user_agent, proxy
+                url,
+                output_path,
+                viewport_size,
+                wait_for,
+                wait_timeout,
+                pdf_options,
+                user_agent,
+                proxy,
             )
         )
 
@@ -630,8 +655,7 @@ class BrowserAutomationService:
         """Synchronous wrapper for JavaScript execution."""
         return self._run_async_operation(
             self.execute_javascript(
-                url, script, viewport_size, wait_for, wait_timeout,
-                user_agent, proxy
+                url, script, viewport_size, wait_for, wait_timeout, user_agent, proxy
             )
         )
 
@@ -647,8 +671,7 @@ class BrowserAutomationService:
         """Synchronous wrapper for page interactions."""
         return self._run_async_operation(
             self.interact_with_page(
-                url, interactions, viewport_size, wait_timeout,
-                user_agent, proxy
+                url, interactions, viewport_size, wait_timeout, user_agent, proxy
             )
         )
 
@@ -668,6 +691,6 @@ class BrowserAutomationService:
                 "scraping",
                 "pdf_generation",
                 "javascript_execution",
-                "page_interaction"
+                "page_interaction",
             ],
         }

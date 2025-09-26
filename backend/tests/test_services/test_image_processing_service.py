@@ -305,7 +305,8 @@ class TestErrorHandling:
         service = ImageProcessingService()
 
         with patch(
-            "importlib.import_module", side_effect=ImportError("Module not found"),
+            "importlib.import_module",
+            side_effect=ImportError("Module not found"),
         ):
             await service.initialize()
 
@@ -333,7 +334,9 @@ class TestErrorHandling:
 
         # Initialize both services concurrently
         results = await asyncio.gather(
-            service1.initialize(), service2.initialize(), return_exceptions=True,
+            service1.initialize(),
+            service2.initialize(),
+            return_exceptions=True,
         )
 
         # Both should succeed

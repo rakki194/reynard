@@ -44,7 +44,9 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
-            "component_type", "component_name", name="uq_component_type_name",
+            "component_type",
+            "component_name",
+            name="uq_component_type_name",
         ),
     )
     op.create_index(
@@ -108,10 +110,16 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(
-        op.f("ix_naming_spirits_enabled"), "naming_spirits", ["enabled"], unique=False,
+        op.f("ix_naming_spirits_enabled"),
+        "naming_spirits",
+        ["enabled"],
+        unique=False,
     )
     op.create_index(
-        op.f("ix_naming_spirits_name"), "naming_spirits", ["name"], unique=True,
+        op.f("ix_naming_spirits_name"),
+        "naming_spirits",
+        ["name"],
+        unique=True,
     )
     # ### end Alembic commands ###
 
@@ -125,7 +133,8 @@ def downgrade() -> None:
     op.drop_index(op.f("ix_naming_config_config_key"), table_name="naming_config")
     op.drop_table("naming_config")
     op.drop_index(
-        op.f("ix_naming_components_component_type"), table_name="naming_components",
+        op.f("ix_naming_components_component_type"),
+        table_name="naming_components",
     )
     op.drop_table("naming_components")
     # ### end Alembic commands ###

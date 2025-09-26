@@ -69,7 +69,9 @@ class PerformanceAnalyzer:
         bottlenecks.extend(async_bottlenecks)
 
         return sorted(
-            bottlenecks, key=lambda x: self._severity_score(x.severity), reverse=True,
+            bottlenecks,
+            key=lambda x: self._severity_score(x.severity),
+            reverse=True,
         )
 
     def _analyze_endpoint_bottlenecks(self) -> list[BottleneckAnalysis]:
@@ -371,7 +373,8 @@ class PerformanceAnalyzer:
         return bottlenecks
 
     def analyze_performance_trends(
-        self, time_period_hours: int = 24,
+        self,
+        time_period_hours: int = 24,
     ) -> list[PerformanceTrend]:
         """Analyze performance trends over time."""
         trends = []
@@ -539,12 +542,15 @@ class PerformanceAnalyzer:
                 set(priority_recommendations),
             ),  # Remove duplicates
             "optimization_score": self._calculate_optimization_score(
-                bottlenecks, trends,
+                bottlenecks,
+                trends,
             ),
         }
 
     def _calculate_optimization_score(
-        self, bottlenecks: list[BottleneckAnalysis], trends: list[PerformanceTrend],
+        self,
+        bottlenecks: list[BottleneckAnalysis],
+        trends: list[PerformanceTrend],
     ) -> dict[str, Any]:
         """Calculate overall optimization score."""
         if not bottlenecks:

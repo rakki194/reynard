@@ -4,22 +4,22 @@ This module contains all Pydantic models used for API request/response validatio
 separate from SQLAlchemy database models.
 """
 
+from .agent_schemas import (
+    AgentEmailBulkRequest,
+    AgentEmailConfig,
+    AgentEmailMessage,
+    AgentEmailSendRequest,
+    AgentEmailStats,
+    AgentEmailTemplate,
+    AgentEmailTriggerRequest,
+    EventType,
+)
+from .caption_schemas import CaptionRequest, CaptionResponse
 from .email_schemas import (
     EmailAttachmentModel,
     EmailBulkRequest,
     EmailBulkResponse,
     EmailSendResponse,
-)
-from .caption_schemas import CaptionRequest, CaptionResponse
-from .agent_schemas import (
-    EventType,
-    AgentEmailConfig,
-    AgentEmailStats,
-    AgentEmailTemplate,
-    AgentEmailSendRequest,
-    AgentEmailMessage,
-    AgentEmailBulkRequest,
-    AgentEmailTriggerRequest,
 )
 
 __all__ = [
@@ -28,7 +28,7 @@ __all__ = [
     "EmailBulkResponse",
     "EmailSendResponse",
     "CaptionRequest",
-    "CaptionResponse", 
+    "CaptionResponse",
     "EventType",
     "AgentEmailConfig",
     "AgentEmailStats",

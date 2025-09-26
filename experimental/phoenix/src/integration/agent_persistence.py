@@ -370,7 +370,8 @@ class AgentStatePersistence:
             return False
 
     async def backup_agent_states(
-        self, backup_dir: str = "backups/agent_states",
+        self,
+        backup_dir: str = "backups/agent_states",
     ) -> bool:
         """Create backup of all agent states.
 

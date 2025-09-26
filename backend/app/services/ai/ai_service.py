@@ -42,7 +42,7 @@ logger = logging.getLogger(__name__)
 
 class AIServiceConfig:
     """Configuration for the AI service."""
-    
+
     def __init__(
         self,
         default_provider: Optional[ProviderType] = None,
@@ -64,10 +64,10 @@ class AIServiceConfig:
 
 class AIService:
     """AI service managing multiple model providers."""
-    
+
     def __init__(self, config: AIServiceConfig):
         """Initialize the AI service.
-        
+
         Args:
             config: AI service configuration
         """
@@ -83,34 +83,32 @@ class AIService:
             "average_latency_ms": 0.0,
             "fallback_usage": 0,
         }
-    
+
     async def initialize(self) -> bool:
         """Initialize the AI service and all providers."""
         try:
             logger.info("Initializing AI service...")
-            
+
             # Initialize providers based on configuration
             await self._initialize_providers()
-            
+
             # Start health monitoring
             if self.config.health_check_interval > 0:
-                self._health_check_task = asyncio.create_task(
-                    self._health_check_loop()
-                )
-            
+                self._health_check_task = asyncio.create_task(self._health_check_loop())
+
             self._initialized = True
             logger.info("AI service initialized successfully")
             return True
-            
+
         except Exception as e:
             logger.error(f"Failed to initialize AI service: {e}")
             return False
-    
+
     async def shutdown(self) -> None:
         """Shutdown the AI service and all providers."""
         try:
             logger.info("Shutting down AI service...")
-            
+
             # Stop health monitoring
             if self._health_check_task:
                 self._health_check_task.cancel()
@@ -118,48 +116,50 @@ class AIService:
                     await self._health_check_task
                 except asyncio.CancelledError:
                     pass
-            
+
             # Shutdown all providers
             await self.registry.shutdown_all()
-            
+
             self._initialized = False
             logger.info("AI service shutdown complete")
-            
+
         except Exception as e:
             logger.error(f"Error during AI service shutdown: {e}")
-    
+
     async def _initialize_providers(self) -> None:
         """Initialize all configured providers."""
-        from .providers.ollama_provider import OllamaConfig, OllamaProvider
-        from .providers.vllm_provider import VLLMConfig, VLLMProvider
-        from .providers.sglang_provider import SGLangConfig, SGLangProvider
         from .providers.llamacpp_provider import LLaMACppConfig, LLaMACppProvider
-        
+        from .providers.ollama_provider import OllamaConfig, OllamaProvider
+        from .providers.sglang_provider import SGLangConfig, SGLangProvider
+        from .providers.vllm_provider import VLLMConfig, VLLMProvider
+
         provider_classes = {
             ProviderType.OLLAMA: (OllamaProvider, OllamaConfig),
             ProviderType.VLLM: (VLLMProvider, VLLMConfig),
             ProviderType.SGLANG: (SGLangProvider, SGLangConfig),
             ProviderType.LLAMACPP: (LLaMACppProvider, LLaMACppConfig),
         }
-        
+
         for provider_type, (provider_class, config_class) in provider_classes.items():
             if provider_type in self.config.provider_configs:
                 try:
                     # Create provider configuration
-                    provider_config = config_class(**self.config.provider_configs[provider_type])
-                    
+                    provider_config = config_class(
+                        **self.config.provider_configs[provider_type]
+                    )
+
                     # Create and initialize provider
                     provider = provider_class(provider_config)
-                    
+
                     if await provider.initialize():
                         self.registry.register_provider(provider)
                         logger.info(f"Initialized {provider_type} provider")
                     else:
                         logger.warning(f"Failed to initialize {provider_type} provider")
-                        
+
                 except Exception as e:
                     logger.error(f"Error initializing {provider_type} provider: {e}")
-    
+
     async def _health_check_loop(self) -> None:
         """Background health check loop for all providers."""
         while True:
@@ -170,17 +170,17 @@ class AIService:
                 break
             except Exception as e:
                 logger.error(f"Error in health check loop: {e}")
-    
+
     async def _perform_health_checks(self) -> None:
         """Perform health checks on all providers."""
         health_results = await self.registry.health_check_all()
-        
+
         for provider_type, is_healthy in health_results.items():
             provider = self.registry.get_provider(provider_type)
             if provider:
                 provider._health_status = "healthy" if is_healthy else "unhealthy"
                 provider._last_health_check = time.time()
-    
+
     def _select_provider(
         self,
         capability: Optional[ModelCapability] = None,
@@ -188,20 +188,20 @@ class AIService:
         preferred_provider: Optional[ProviderType] = None,
     ) -> Optional[ModelProvider]:
         """Select the best provider for a request.
-        
+
         Args:
             capability: Required capability
             model: Specific model requirement
             preferred_provider: Preferred provider type
-            
+
         Returns:
             Selected provider or None if no suitable provider found
         """
         available_providers = self.registry.get_all_providers()
-        
+
         if not available_providers:
             return None
-        
+
         # Filter providers by capability
         if capability:
             available_providers = {
@@ -209,7 +209,7 @@ class AIService:
                 for ptype, provider in available_providers.items()
                 if provider.supports_capability(capability)
             }
-        
+
         # Filter providers by model support
         if model:
             available_providers = {
@@ -217,34 +217,34 @@ class AIService:
                 for ptype, provider in available_providers.items()
                 if provider.is_model_supported(model)
             }
-        
+
         if not available_providers:
             return None
-        
+
         # Select provider based on preference and health
         if preferred_provider and preferred_provider in available_providers:
             provider = available_providers[preferred_provider]
             if provider._health_status == "healthy":
                 return provider
-        
+
         # Select healthy provider with best performance
         healthy_providers = {
             ptype: provider
             for ptype, provider in available_providers.items()
             if provider._health_status == "healthy"
         }
-        
+
         if healthy_providers:
             # Select provider with lowest average latency
             best_provider = min(
                 healthy_providers.values(),
-                key=lambda p: p._metrics.get("average_latency_ms", float('inf'))
+                key=lambda p: p._metrics.get("average_latency_ms", float('inf')),
             )
             return best_provider
-        
+
         # Fallback to any available provider
         return next(iter(available_providers.values()))
-    
+
     async def generate_completion(
         self,
         prompt: str,
@@ -252,43 +252,46 @@ class AIService:
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         provider: Optional[ProviderType] = None,
-        **kwargs
+        **kwargs,
     ) -> GenerationResult:
         """Generate text completion using the best available provider."""
         if not self._initialized:
             raise RuntimeError("AI service not initialized")
-        
+
         # Select provider
         selected_provider = self._select_provider(
             capability=ModelCapability.COMPLETION,
             model=model,
             preferred_provider=provider,
         )
-        
+
         if not selected_provider:
             raise RuntimeError("No suitable provider available for completion")
-        
+
         # Execute with retry logic
         for attempt in range(self.config.max_retries):
             try:
                 result = await selected_provider.generate_completion(
                     prompt, model, max_tokens, temperature, **kwargs
                 )
-                
+
                 # Update metrics
                 self._metrics["total_requests"] += 1
                 self._metrics["successful_requests"] += 1
                 self._metrics["provider_requests"][selected_provider.provider_type] = (
-                    self._metrics["provider_requests"].get(selected_provider.provider_type, 0) + 1
+                    self._metrics["provider_requests"].get(
+                        selected_provider.provider_type, 0
+                    )
+                    + 1
                 )
-                
+
                 return result
-                
+
             except Exception as e:
                 if attempt < self.config.max_retries - 1:
                     logger.warning(f"Completion attempt {attempt + 1} failed: {e}")
                     await asyncio.sleep(self.config.retry_delay)
-                    
+
                     # Try fallback provider
                     if self.config.enable_fallback:
                         fallback_provider = self._select_provider(
@@ -302,8 +305,10 @@ class AIService:
                 else:
                     self._metrics["total_requests"] += 1
                     self._metrics["failed_requests"] += 1
-                    raise RuntimeError(f"Completion failed after {self.config.max_retries} attempts: {e}")
-    
+                    raise RuntimeError(
+                        f"Completion failed after {self.config.max_retries} attempts: {e}"
+                    )
+
     async def generate_chat_completion(
         self,
         messages: List[ChatMessage],
@@ -312,43 +317,46 @@ class AIService:
         temperature: Optional[float] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
         provider: Optional[ProviderType] = None,
-        **kwargs
+        **kwargs,
     ) -> ChatResult:
         """Generate chat completion using the best available provider."""
         if not self._initialized:
             raise RuntimeError("AI service not initialized")
-        
+
         # Select provider
         selected_provider = self._select_provider(
             capability=ModelCapability.CHAT,
             model=model,
             preferred_provider=provider,
         )
-        
+
         if not selected_provider:
             raise RuntimeError("No suitable provider available for chat completion")
-        
+
         # Execute with retry logic
         for attempt in range(self.config.max_retries):
             try:
                 result = await selected_provider.generate_chat_completion(
                     messages, model, max_tokens, temperature, tools, **kwargs
                 )
-                
+
                 # Update metrics
                 self._metrics["total_requests"] += 1
                 self._metrics["successful_requests"] += 1
                 self._metrics["provider_requests"][selected_provider.provider_type] = (
-                    self._metrics["provider_requests"].get(selected_provider.provider_type, 0) + 1
+                    self._metrics["provider_requests"].get(
+                        selected_provider.provider_type, 0
+                    )
+                    + 1
                 )
-                
+
                 return result
-                
+
             except Exception as e:
                 if attempt < self.config.max_retries - 1:
                     logger.warning(f"Chat completion attempt {attempt + 1} failed: {e}")
                     await asyncio.sleep(self.config.retry_delay)
-                    
+
                     # Try fallback provider
                     if self.config.enable_fallback:
                         fallback_provider = self._select_provider(
@@ -362,8 +370,10 @@ class AIService:
                 else:
                     self._metrics["total_requests"] += 1
                     self._metrics["failed_requests"] += 1
-                    raise RuntimeError(f"Chat completion failed after {self.config.max_retries} attempts: {e}")
-    
+                    raise RuntimeError(
+                        f"Chat completion failed after {self.config.max_retries} attempts: {e}"
+                    )
+
     async def stream_completion(
         self,
         prompt: str,
@@ -371,33 +381,35 @@ class AIService:
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         provider: Optional[ProviderType] = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncGenerator[str, None]:
         """Stream text completion using the best available provider."""
         if not self._initialized:
             raise RuntimeError("AI service not initialized")
-        
+
         # Select provider
         selected_provider = self._select_provider(
             capability=ModelCapability.STREAMING,
             model=model,
             preferred_provider=provider,
         )
-        
+
         if not selected_provider:
-            raise RuntimeError("No suitable provider available for streaming completion")
-        
+            raise RuntimeError(
+                "No suitable provider available for streaming completion"
+            )
+
         try:
             async for chunk in selected_provider.stream_completion(
                 prompt, model, max_tokens, temperature, **kwargs
             ):
                 yield chunk
-                
+
         except Exception as e:
             self._metrics["total_requests"] += 1
             self._metrics["failed_requests"] += 1
             raise RuntimeError(f"Streaming completion failed: {e}")
-    
+
     async def stream_chat_completion(
         self,
         messages: List[ChatMessage],
@@ -406,73 +418,80 @@ class AIService:
         temperature: Optional[float] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
         provider: Optional[ProviderType] = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncGenerator[ChatMessage, None]:
         """Stream chat completion using the best available provider."""
         if not self._initialized:
             raise RuntimeError("AI service not initialized")
-        
+
         # Select provider
         selected_provider = self._select_provider(
             capability=ModelCapability.STREAMING,
             model=model,
             preferred_provider=provider,
         )
-        
+
         if not selected_provider:
-            raise RuntimeError("No suitable provider available for streaming chat completion")
-        
+            raise RuntimeError(
+                "No suitable provider available for streaming chat completion"
+            )
+
         try:
             async for message in selected_provider.stream_chat_completion(
                 messages, model, max_tokens, temperature, tools, **kwargs
             ):
                 yield message
-                
+
         except Exception as e:
             self._metrics["total_requests"] += 1
             self._metrics["failed_requests"] += 1
             raise RuntimeError(f"Streaming chat completion failed: {e}")
-    
+
     async def get_available_models(self) -> List[ModelInfo]:
         """Get all available models from all providers."""
         if not self._initialized:
             raise RuntimeError("AI service not initialized")
-        
+
         all_models = []
         for provider in self.registry.get_all_providers().values():
             try:
                 models = await provider.get_available_models()
                 all_models.extend(models)
             except Exception as e:
-                logger.warning(f"Failed to get models from {provider.provider_type}: {e}")
-        
+                logger.warning(
+                    f"Failed to get models from {provider.provider_type}: {e}"
+                )
+
         return all_models
-    
+
     def get_metrics(self) -> Dict[str, Any]:
         """Get comprehensive service metrics."""
         provider_metrics = {}
         for provider_type, provider in self.registry.get_all_providers().items():
             provider_metrics[provider_type] = provider.get_metrics()
-        
+
         return {
             "service_metrics": self._metrics,
             "provider_metrics": provider_metrics,
             "available_providers": self.registry.get_available_providers(),
             "default_provider": self.config.default_provider,
         }
-    
+
     def get_health_status(self) -> Dict[str, Any]:
         """Get health status of all providers."""
         health_status = {}
         for provider_type, provider in self.registry.get_all_providers().items():
             health_status[provider_type] = provider.get_health_status()
-        
+
         return {
             "service_initialized": self._initialized,
             "provider_health": health_status,
             "total_providers": len(self.registry.get_all_providers()),
-            "healthy_providers": len([
-                p for p in self.registry.get_all_providers().values()
-                if p._health_status == "healthy"
-            ]),
+            "healthy_providers": len(
+                [
+                    p
+                    for p in self.registry.get_all_providers().values()
+                    if p._health_status == "healthy"
+                ]
+            ),
         }

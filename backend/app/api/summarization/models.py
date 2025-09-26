@@ -1,5 +1,4 @@
-"""Pydantic models for summarization API endpoints.
-"""
+"""Pydantic models for summarization API endpoints."""
 
 from typing import Any
 
@@ -10,7 +9,10 @@ class SummarizationRequest(BaseModel):
     """Request model for text summarization."""
 
     text: str = Field(
-        ..., description="Text to summarize", min_length=50, max_length=100000,
+        ...,
+        description="Text to summarize",
+        min_length=50,
+        max_length=100000,
     )
     content_type: str = Field(
         default="general",
@@ -23,22 +25,34 @@ class SummarizationRequest(BaseModel):
         pattern="^(brief|executive|detailed|comprehensive|bullet|tts_optimized)$",
     )
     max_length: int | None = Field(
-        default=None, description="Maximum length of summary in words", ge=10, le=5000,
+        default=None,
+        description="Maximum length of summary in words",
+        ge=10,
+        le=5000,
     )
     include_outline: bool = Field(
-        default=False, description="Whether to include structured outline",
+        default=False,
+        description="Whether to include structured outline",
     )
     include_highlights: bool = Field(
-        default=False, description="Whether to include important highlights",
+        default=False,
+        description="Whether to include important highlights",
     )
     model: str | None = Field(
-        default=None, description="Specific model to use for summarization",
+        default=None,
+        description="Specific model to use for summarization",
     )
     temperature: float = Field(
-        default=0.3, description="Temperature for text generation", ge=0.0, le=2.0,
+        default=0.3,
+        description="Temperature for text generation",
+        ge=0.0,
+        le=2.0,
     )
     top_p: float = Field(
-        default=0.9, description="Top-p for text generation", ge=0.0, le=1.0,
+        default=0.9,
+        description="Top-p for text generation",
+        ge=0.0,
+        le=1.0,
     )
 
     @field_validator("text")
@@ -56,14 +70,17 @@ class SummarizationResponse(BaseModel):
 
     success: bool = Field(..., description="Whether summarization was successful")
     result: dict[str, Any] | None = Field(
-        default=None, description="Summarization result if successful",
+        default=None,
+        description="Summarization result if successful",
     )
     error: str | None = Field(
-        default=None, description="Error message if summarization failed",
+        default=None,
+        description="Error message if summarization failed",
     )
     processing_time: float = Field(..., description="Processing time in seconds")
     model_used: str | None = Field(
-        default=None, description="Model used for summarization",
+        default=None,
+        description="Model used for summarization",
     )
 
 
@@ -71,10 +88,14 @@ class BatchSummarizationRequest(BaseModel):
     """Request model for batch summarization."""
 
     requests: list[dict[str, Any]] = Field(
-        ..., description="List of summarization requests", min_length=1, max_length=50,
+        ...,
+        description="List of summarization requests",
+        min_length=1,
+        max_length=50,
     )
     enable_streaming: bool = Field(
-        default=False, description="Whether to stream progress updates",
+        default=False,
+        description="Whether to stream progress updates",
     )
 
     @field_validator("requests")
@@ -92,7 +113,10 @@ class ContentTypeDetectionRequest(BaseModel):
     """Request model for content type detection."""
 
     text: str = Field(
-        ..., description="Text to analyze", min_length=10, max_length=10000,
+        ...,
+        description="Text to analyze",
+        min_length=10,
+        max_length=10000,
     )
 
     @field_validator("text")
@@ -108,7 +132,10 @@ class ContentTypeDetectionResponse(BaseModel):
 
     content_type: str = Field(..., description="Detected content type")
     confidence: float = Field(
-        default=0.0, description="Confidence score for detection", ge=0.0, le=1.0,
+        default=0.0,
+        description="Confidence score for detection",
+        ge=0.0,
+        le=1.0,
     )
 
 
@@ -116,7 +143,8 @@ class SummarizationConfigRequest(BaseModel):
     """Request model for summarization configuration."""
 
     default_model: str | None = Field(
-        default=None, description="Default model for summarization",
+        default=None,
+        description="Default model for summarization",
     )
     default_content_type: str | None = Field(
         default=None,
@@ -135,7 +163,8 @@ class SummarizationConfigRequest(BaseModel):
         le=200000,
     )
     enable_caching: bool | None = Field(
-        default=None, description="Whether to enable result caching",
+        default=None,
+        description="Whether to enable result caching",
     )
 
 
@@ -160,7 +189,8 @@ class SummarizationStatsResponse(BaseModel):
     total_processing_time: float = Field(..., description="Total processing time")
     available_summarizers: list[str] = Field(..., description="Available summarizers")
     supported_content_types: dict[str, list[str]] = Field(
-        ..., description="Supported content types and their summarizers",
+        ...,
+        description="Supported content types and their summarizers",
     )
 
 

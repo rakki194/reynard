@@ -106,7 +106,10 @@ class IgnoreFileParser:
         return ignored
 
     def _match_pattern(
-        self, path_str: str, path_parts: list[str], pattern: str,
+        self,
+        path_str: str,
+        path_parts: list[str],
+        pattern: str,
     ) -> bool:
         """Check if a path matches a specific pattern."""
         # Handle directory patterns (ending with /)

@@ -4,7 +4,7 @@
  */
 
 import { Component, Show, For } from "solid-js";
-import { Button, Card } from "reynard-components-core";
+import { Button, Card } from "reynard-primitives";
 // import { TagBubble, CaptionInput } from "reynard-caption";
 // import { CaptionType } from "reynard-annotating-core";
 // Define ImageItem interface locally

@@ -209,7 +209,9 @@ class SpecializationAccuracyAnalyzer:
         }
 
     def analyze_specialization_accuracy(
-        self, agent_output: str, agent_state: AgentState,
+        self,
+        agent_output: str,
+        agent_state: AgentState,
     ) -> dict[str, Any]:
         """Analyze specialization accuracy for an agent.
 
@@ -240,12 +242,14 @@ class SpecializationAccuracyAnalyzer:
 
         # Analyze behavioral consistency
         behavioral_consistency = self._analyze_behavioral_consistency(
-            agent_output, spirit_spec,
+            agent_output,
+            spirit_spec,
         )
 
         # Analyze knowledge application
         knowledge_application = self._analyze_knowledge_application(
-            agent_output, spirit_spec,
+            agent_output,
+            spirit_spec,
         )
 
         # Calculate overall specialization accuracy
@@ -267,13 +271,16 @@ class SpecializationAccuracyAnalyzer:
             "knowledge_application": knowledge_application,
             "primary_specializations": spirit_spec["primary_specializations"],
             "specialization_scores": self._calculate_specialization_scores(
-                agent_output, spirit_spec,
+                agent_output,
+                spirit_spec,
             ),
             "behavioral_indicators": self._extract_behavioral_indicators(
-                agent_output, spirit_spec,
+                agent_output,
+                spirit_spec,
             ),
             "knowledge_domain_coverage": self._analyze_knowledge_domain_coverage(
-                agent_output, spirit_spec,
+                agent_output,
+                spirit_spec,
             ),
         }
 
@@ -313,14 +320,18 @@ class SpecializationAccuracyAnalyzer:
         )
 
     def _analyze_behavioral_consistency(
-        self, text: str, spirit_spec: dict[str, Any],
+        self,
+        text: str,
+        spirit_spec: dict[str, Any],
     ) -> float:
         """Analyze consistency with expected behavioral patterns."""
         behavioral_patterns = spirit_spec["behavioral_indicators"]
         return self._analyze_pattern_matches(text, behavioral_patterns)
 
     def _analyze_knowledge_application(
-        self, text: str, spirit_spec: dict[str, Any],
+        self,
+        text: str,
+        spirit_spec: dict[str, Any],
     ) -> float:
         """Analyze application of knowledge in relevant domains."""
         knowledge_domains = spirit_spec["knowledge_domains"]
@@ -346,7 +357,9 @@ class SpecializationAccuracyAnalyzer:
         return matches / total_patterns if total_patterns > 0 else 0.0
 
     def _calculate_specialization_scores(
-        self, text: str, spirit_spec: dict[str, Any],
+        self,
+        text: str,
+        spirit_spec: dict[str, Any],
     ) -> dict[str, float]:
         """Calculate individual specialization scores."""
         specialization_scores = {}
@@ -360,7 +373,9 @@ class SpecializationAccuracyAnalyzer:
         return specialization_scores
 
     def _extract_behavioral_indicators(
-        self, text: str, spirit_spec: dict[str, Any],
+        self,
+        text: str,
+        spirit_spec: dict[str, Any],
     ) -> list[str]:
         """Extract specific behavioral indicators from text."""
         indicators = []
@@ -373,7 +388,9 @@ class SpecializationAccuracyAnalyzer:
         return indicators[:5]  # Limit to 5 total indicators
 
     def _analyze_knowledge_domain_coverage(
-        self, text: str, spirit_spec: dict[str, Any],
+        self,
+        text: str,
+        spirit_spec: dict[str, Any],
     ) -> dict[str, float]:
         """Analyze coverage of knowledge domains."""
         domain_coverage = {}
@@ -388,7 +405,8 @@ class SpecializationAccuracyAnalyzer:
         return domain_coverage
 
     def calculate_cross_specialization_transfer(
-        self, specialization_results: list[dict[str, Any]],
+        self,
+        specialization_results: list[dict[str, Any]],
     ) -> dict[str, float]:
         """Calculate potential for cross-specialization knowledge transfer."""
         if len(specialization_results) < 2:
@@ -436,7 +454,8 @@ class SpecializationAccuracyAnalyzer:
         return False
 
     def validate_specialization_consistency(
-        self, specialization_results: list[dict[str, Any]],
+        self,
+        specialization_results: list[dict[str, Any]],
     ) -> float:
         """Validate consistency of specialization results across agents."""
         if len(specialization_results) < 2:

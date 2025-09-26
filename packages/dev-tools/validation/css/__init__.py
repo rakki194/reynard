@@ -1,2 +1,1 @@
-"""CSS validation utilities.
-"""
+"""CSS validation utilities."""

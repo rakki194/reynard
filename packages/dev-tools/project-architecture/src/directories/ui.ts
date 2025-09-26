@@ -16,13 +16,25 @@ import { UI_METADATA } from "../config/metadata.js";
  */
 export const UI_PACKAGES: DirectoryDefinition[] = [
   createUIPackage(
+    "packages/ui/primitives",
+    "packages/ui/primitives",
+    "Dependency-free UI primitive components - provides fundamental UI building blocks including Button, Card, TextField, and other basic primitives with zero dependencies",
+    {
+      importance: "critical",
+      relationships: buildRelationships(COMMON_RELATIONSHIPS.CORE_DEPENDENCY),
+      metadata: UI_METADATA,
+    }
+  ),
+
+  createUIPackage(
     "packages/ui/components-core",
     "packages/ui/components-core",
-    "Core UI primitives, navigation, and layout components - provides fundamental UI building blocks including buttons, inputs, navigation, and layout systems",
+    "Core UI components, navigation, and layout components - provides higher-level UI components including modals, tooltips, and complex layouts that depend on primitives",
     {
       importance: "critical",
       relationships: buildRelationships(
         COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
+        COMMON_RELATIONSHIPS.PRIMITIVES_DEPENDENCY,
         COMMON_RELATIONSHIPS.FLUENT_ICONS_DEPENDENCY,
         { directory: "packages/ui/components-charts", type: "dependency", description: "Used by chart components" }
       ),
@@ -235,6 +247,20 @@ export const UI_PACKAGES: DirectoryDefinition[] = [
         type: "dependency",
         description: "Used by UI components",
       }),
+      metadata: UI_METADATA,
+    }
+  ),
+
+  createUIPackage(
+    "packages/ui/components-diffusion-pipe",
+    "packages/ui/components-diffusion-pipe",
+    "Diffusion pipeline UI components - provides UI components for diffusion model training, configuration, monitoring, and management",
+    {
+      relationships: buildRelationships(
+        COMMON_RELATIONSHIPS.CORE_DEPENDENCY,
+        COMMON_RELATIONSHIPS.PRIMITIVES_DEPENDENCY,
+        COMMON_RELATIONSHIPS.UI_COMPONENTS_DEPENDENCY
+      ),
       metadata: UI_METADATA,
     }
   ),

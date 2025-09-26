@@ -24,7 +24,8 @@ from evaluator import ModelEvaluator
 
 # Setup logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 console = Console()
@@ -60,7 +61,10 @@ def main():
     parser = argparse.ArgumentParser(description="VULCAN Model Evaluation")
 
     parser.add_argument(
-        "--model_path", type=str, required=True, help="Path to trained model",
+        "--model_path",
+        type=str,
+        required=True,
+        help="Path to trained model",
     )
 
     parser.add_argument("--eval_data", type=str, help="Path to evaluation data file")
@@ -73,7 +77,9 @@ def main():
     )
 
     parser.add_argument(
-        "--output_file", type=str, help="Output file for evaluation results",
+        "--output_file",
+        type=str,
+        help="Output file for evaluation results",
     )
 
     parser.add_argument(
@@ -176,7 +182,9 @@ def main():
                 ),
             )
 
-            for i, (prompt, response) in enumerate(zip(sample_prompts, responses, strict=False)):
+            for i, (prompt, response) in enumerate(
+                zip(sample_prompts, responses, strict=False)
+            ):
                 console.print(f"\n📝 Prompt {i+1}: {prompt}")
                 console.print(f"🤖 Response: {response}")
                 console.print("-" * 50)

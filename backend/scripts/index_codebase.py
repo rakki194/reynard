@@ -18,13 +18,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.config import get_config
-from app.services.rag.services.core.embedding import OllamaEmbeddingService
 from app.services.rag.services.core.document_processor import ASTDocumentProcessor
+from app.services.rag.services.core.embedding import OllamaEmbeddingService
 from app.services.rag.services.core.vector_store import PostgreSQLVectorStore
 
 # Set up logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,9 @@ async def main():
     """Main indexing function."""
     parser = argparse.ArgumentParser(description="Index Reynard codebase for RAG")
     parser.add_argument(
-        "--scan-only", action="store_true", help="Only scan, don't index",
+        "--scan-only",
+        action="store_true",
+        help="Only scan, don't index",
     )
     parser.add_argument("--force", action="store_true", help="Force re-indexing")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
@@ -92,6 +95,7 @@ async def main():
 
         # Codebase Scanner
         from app.services.rag.services.core.codebase_scanner import CodebaseScanner
+
         codebase_scanner = CodebaseScanner(rag_config)
 
         logger.info("✅ All services initialized successfully")
@@ -122,7 +126,7 @@ async def main():
             async for item in codebase_scanner.scan_and_index(
                 document_processor=document_processor,
                 vector_store=vector_store,
-                embedding_service=embedding_service
+                embedding_service=embedding_service,
             ):
                 if item["type"] == "progress":
                     indexed_count = item.get("indexed", 0)
@@ -155,7 +159,8 @@ async def main():
         for i, text in enumerate(test_texts):
             try:
                 embedding = await embedding_service.embed_text(
-                    text, "sentence-transformers/all-MiniLM-L6-v2",
+                    text,
+                    "sentence-transformers/all-MiniLM-L6-v2",
                 )
                 logger.info(f"Generated embedding {i+1}: {len(embedding)} dimensions")
             except Exception as e:

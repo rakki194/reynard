@@ -28,10 +28,10 @@ from typing import Any, Optional
 from uuid import uuid4
 
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import ed25519, rsa, ec
+from cryptography.hazmat.primitives.asymmetric import ec, ed25519, rsa
 from cryptography.hazmat.primitives.serialization import load_ssh_public_key
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 from .ssh_key_models import (
     AuthSessionLocal,
@@ -126,9 +126,13 @@ class SSHKeyService:
             private_pem = private_key.private_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PrivateFormat.OpenSSH,
-                encryption_algorithm=serialization.BestAvailableEncryption(
-                    passphrase.encode() if passphrase else b""
-                ) if passphrase else serialization.NoEncryption(),
+                encryption_algorithm=(
+                    serialization.BestAvailableEncryption(
+                        passphrase.encode() if passphrase else b""
+                    )
+                    if passphrase
+                    else serialization.NoEncryption()
+                ),
             )
 
             # Get public key
@@ -171,17 +175,17 @@ class SSHKeyService:
         try:
             # Parse the public key
             public_key = load_ssh_public_key(public_key_str.encode())
-            
+
             # Get the key bytes
             key_bytes = public_key.public_bytes(
                 encoding=serialization.Encoding.OpenSSH,
                 format=serialization.PublicFormat.OpenSSH,
             )
-            
+
             # Generate SHA-256 fingerprint
             fingerprint = hashlib.sha256(key_bytes).hexdigest()
             return f"SHA256:{fingerprint[:40]}"  # Truncate to 40 chars for total length of 47
-            
+
         except Exception as e:
             logger.error(f"Failed to generate fingerprint: {e}")
             # Fallback to simple hash
@@ -200,7 +204,7 @@ class SSHKeyService:
         try:
             # Parse the public key
             public_key = load_ssh_public_key(public_key_str.encode())
-            
+
             # Get key type
             if isinstance(public_key, rsa.RSAPublicKey):
                 key_type = "rsa"
@@ -299,7 +303,9 @@ class SSHKeyService:
                 name=name,
                 public_key_openssh=key_data["public_key_openssh"],
                 private_key_openssh=key_data["private_key_openssh"],
-                passphrase_hash=self._hash_passphrase(passphrase) if passphrase else None,
+                passphrase_hash=(
+                    self._hash_passphrase(passphrase) if passphrase else None
+                ),
                 status=SSHKeyStatus.ACTIVE,
                 usage=SSHKeyUsage(usage),
                 is_primary=is_primary,
@@ -308,8 +314,12 @@ class SSHKeyService:
                 trust_level=0,
                 is_revoked=False,
                 allowed_hosts=json.dumps(allowed_hosts) if allowed_hosts else None,
-                allowed_commands=json.dumps(allowed_commands) if allowed_commands else None,
-                source_restrictions=json.dumps(source_restrictions) if source_restrictions else None,
+                allowed_commands=(
+                    json.dumps(allowed_commands) if allowed_commands else None
+                ),
+                source_restrictions=(
+                    json.dumps(source_restrictions) if source_restrictions else None
+                ),
                 force_command=force_command,
             )
 
@@ -338,7 +348,7 @@ class SSHKeyService:
             session.rollback()
             error_msg = f"Key already exists: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -353,13 +363,13 @@ class SSHKeyService:
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise ValueError(error_msg)
         except Exception as e:
             session.rollback()
             error_msg = f"Failed to generate SSH key: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -374,7 +384,7 @@ class SSHKeyService:
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -423,7 +433,9 @@ class SSHKeyService:
                 name=name,
                 public_key_openssh=key_data["public_key_openssh"],
                 private_key_openssh=private_key_str,
-                passphrase_hash=self._hash_passphrase(passphrase) if passphrase else None,
+                passphrase_hash=(
+                    self._hash_passphrase(passphrase) if passphrase else None
+                ),
                 status=SSHKeyStatus.ACTIVE,
                 usage=SSHKeyUsage(usage),
                 is_primary=is_primary,
@@ -456,7 +468,7 @@ class SSHKeyService:
             session.rollback()
             error_msg = f"Failed to import SSH key: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -471,7 +483,7 @@ class SSHKeyService:
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -568,7 +580,9 @@ class SSHKeyService:
                 request_id=request_id,
             )
 
-            logger.info(f"Regenerated SSH key {old_key_id} -> {new_key_data['key_id']} for user {user_id}")
+            logger.info(
+                f"Regenerated SSH key {old_key_id} -> {new_key_data['key_id']} for user {user_id}"
+            )
 
             return new_key_data
 
@@ -576,7 +590,7 @@ class SSHKeyService:
             session.rollback()
             error_msg = f"Failed to regenerate SSH key: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -592,7 +606,7 @@ class SSHKeyService:
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -610,7 +624,7 @@ class SSHKeyService:
         session = self.session_factory()
         try:
             query = session.query(SSHKey).filter(SSHKey.user_id == user_id)
-            
+
             if not include_revoked:
                 query = query.filter(SSHKey.status != SSHKeyStatus.REVOKED)
 
@@ -637,7 +651,7 @@ class SSHKeyService:
         except Exception as e:
             error_msg = f"Failed to get user SSH keys: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -653,7 +667,7 @@ class SSHKeyService:
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -716,7 +730,7 @@ class SSHKeyService:
             session.rollback()
             error_msg = f"Failed to revoke SSH key: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -732,7 +746,7 @@ class SSHKeyService:
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -772,9 +786,11 @@ class SSHKeyService:
             session.commit()
 
             result = key.to_dict()
-            
+
             # Remove private key if not requested or not authorized
-            if not include_private or (user_id and key.user_id != user_id and not admin_user_id):
+            if not include_private or (
+                user_id and key.user_id != user_id and not admin_user_id
+            ):
                 result.pop("private_key_openssh", None)
 
             # Log the access
@@ -797,7 +813,7 @@ class SSHKeyService:
         except Exception as e:
             error_msg = f"Failed to get SSH key by fingerprint: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -812,7 +828,7 @@ class SSHKeyService:
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()

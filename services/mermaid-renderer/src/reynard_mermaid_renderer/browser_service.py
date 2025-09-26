@@ -13,6 +13,7 @@ from typing import Any, Optional
 
 try:
     from playwright.async_api import Browser, Page, async_playwright
+
     PLAYWRIGHT_AVAILABLE = True
 except ImportError:
     PLAYWRIGHT_AVAILABLE = False
@@ -71,14 +72,14 @@ class MermaidBrowserService:
                 "--disable-gpu",
                 "--disable-web-security",
                 "--disable-features=VizDisplayCompositor",
-            ]
+            ],
         )
         page = await browser.new_page()
 
         # Set viewport for optimal Mermaid rendering
         if viewport_size is None:
             viewport_size = {"width": 1920, "height": 1080}
-        
+
         await page.set_viewport_size(viewport_size)
 
         # Set user agent if specified
@@ -117,11 +118,11 @@ class MermaidBrowserService:
             try:
                 # Set content and wait for Mermaid to render
                 await page.set_content(html_content)
-                
+
                 # Wait for Mermaid rendering to complete
                 await page.wait_for_function(
                     f"document.body.getAttribute('{wait_condition}') === 'true'",
-                    timeout=timeout
+                    timeout=timeout,
                 )
 
                 # Check for Mermaid errors
@@ -143,7 +144,7 @@ class MermaidBrowserService:
 
                 # Get the full SVG with attributes
                 svg_outer_html = await svg_element.evaluate("el => el.outerHTML")
-                
+
                 await browser.close()
                 return True, svg_outer_html, ""
 
@@ -190,11 +191,11 @@ class MermaidBrowserService:
             try:
                 # Set content and wait for Mermaid to render
                 await page.set_content(html_content)
-                
+
                 # Wait for Mermaid rendering to complete
                 await page.wait_for_function(
                     f"document.body.getAttribute('{wait_condition}') === 'true'",
-                    timeout=timeout
+                    timeout=timeout,
                 )
 
                 # Check for Mermaid errors
@@ -205,9 +206,7 @@ class MermaidBrowserService:
 
                 # Create output path if not provided
                 if output_path is None:
-                    temp_file = tempfile.NamedTemporaryFile(
-                        suffix=".png", delete=False
-                    )
+                    temp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
                     output_path = temp_file.name
                     temp_file.close()
 
@@ -218,17 +217,12 @@ class MermaidBrowserService:
                 svg_element = await page.query_selector("svg")
                 if svg_element:
                     await svg_element.screenshot(
-                        path=output_path,
-                        type="png",
-                        quality=quality
+                        path=output_path, type="png", quality=quality
                     )
                 else:
                     # Fallback to full page screenshot
                     await page.screenshot(
-                        path=output_path,
-                        type="png",
-                        quality=quality,
-                        full_page=True
+                        path=output_path, type="png", quality=quality, full_page=True
                     )
 
                 await browser.close()
@@ -277,11 +271,11 @@ class MermaidBrowserService:
             try:
                 # Set content and wait for Mermaid to render
                 await page.set_content(html_content)
-                
+
                 # Wait for Mermaid rendering to complete
                 await page.wait_for_function(
                     f"document.body.getAttribute('{wait_condition}') === 'true'",
-                    timeout=timeout
+                    timeout=timeout,
                 )
 
                 # Check for Mermaid errors
@@ -292,9 +286,7 @@ class MermaidBrowserService:
 
                 # Create output path if not provided
                 if output_path is None:
-                    temp_file = tempfile.NamedTemporaryFile(
-                        suffix=".pdf", delete=False
-                    )
+                    temp_file = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
                     output_path = temp_file.name
                     temp_file.close()
 
@@ -305,9 +297,14 @@ class MermaidBrowserService:
                 default_pdf_options = {
                     "format": "A4",
                     "print_background": True,
-                    "margin": {"top": "1cm", "right": "1cm", "bottom": "1cm", "left": "1cm"},
+                    "margin": {
+                        "top": "1cm",
+                        "right": "1cm",
+                        "bottom": "1cm",
+                        "left": "1cm",
+                    },
                 }
-                
+
                 if pdf_options:
                     default_pdf_options.update(pdf_options)
 
@@ -348,7 +345,12 @@ class MermaidBrowserService:
         """Synchronous wrapper for PNG rendering."""
         return self._run_async_operation(
             self.render_mermaid_to_png(
-                html_content, output_path, viewport_size, quality, wait_condition, timeout
+                html_content,
+                output_path,
+                viewport_size,
+                quality,
+                wait_condition,
+                timeout,
             )
         )
 
@@ -364,6 +366,11 @@ class MermaidBrowserService:
         """Synchronous wrapper for PDF rendering."""
         return self._run_async_operation(
             self.render_mermaid_to_pdf(
-                html_content, output_path, viewport_size, wait_condition, timeout, pdf_options
+                html_content,
+                output_path,
+                viewport_size,
+                wait_condition,
+                timeout,
+                pdf_options,
             )
         )

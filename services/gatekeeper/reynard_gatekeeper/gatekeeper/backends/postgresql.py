@@ -13,14 +13,16 @@ from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
+    ForeignKey,
     Integer,
     String,
+    Text,
     create_engine,
     text,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-from sqlalchemy.orm import Session, declarative_base, sessionmaker
+from sqlalchemy.orm import Session, declarative_base, relationship, sessionmaker
 
 from ..models.user import User, UserCreate, UserPublic, UserRole, UserUpdate
 from .base import BackendError, UserAlreadyExistsError, UserBackend, UserNotFoundError
@@ -55,6 +57,147 @@ class UserModel(Base):
     )
     user_metadata = Column(JSON, default=dict)
 
+    # RBAC fields
+    rbac_enabled = Column(Boolean, default=False, nullable=False, index=True)
+    default_role = Column(String(50), nullable=True, index=True)
+    last_rbac_sync = Column(DateTime, nullable=True)
+
+    # RBAC relationships
+    user_roles = relationship(
+        "UserRoleModel", back_populates="user", cascade="all, delete-orphan"
+    )
+
+
+class RoleModel(Base):
+    """SQLAlchemy model for roles table."""
+
+    __tablename__ = "roles"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(100), unique=True, nullable=False, index=True)
+    description = Column(Text, nullable=True)
+    level = Column(Integer, default=0, nullable=False, index=True)
+    parent_role_id = Column(UUID(as_uuid=True), ForeignKey("roles.id"), nullable=True)
+    is_system_role = Column(Boolean, default=False, nullable=False, index=True)
+    is_active = Column(Boolean, default=True, nullable=False, index=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(UTC),
+        onupdate=lambda: datetime.now(UTC),
+    )
+    role_metadata = Column(JSON, default=dict)
+
+    # Relationships
+    parent_role = relationship(
+        "RoleModel", remote_side=[id], back_populates="child_roles"
+    )
+    child_roles = relationship("RoleModel", back_populates="parent_role")
+    role_permissions = relationship(
+        "RolePermissionModel", back_populates="role", cascade="all, delete-orphan"
+    )
+    user_roles = relationship(
+        "UserRoleModel", back_populates="role", cascade="all, delete-orphan"
+    )
+
+
+class PermissionModel(Base):
+    """SQLAlchemy model for permissions table."""
+
+    __tablename__ = "permissions"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String(100), unique=True, nullable=False, index=True)
+    resource_type = Column(String(50), nullable=False, index=True)
+    operation = Column(String(50), nullable=False, index=True)
+    scope = Column(String(50), default="own", nullable=False, index=True)
+    conditions = Column(JSON, default=dict)
+    is_active = Column(Boolean, default=True, nullable=False, index=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(UTC),
+        onupdate=lambda: datetime.now(UTC),
+    )
+    permission_metadata = Column(JSON, default=dict)
+
+    # Relationships
+    role_permissions = relationship(
+        "RolePermissionModel", back_populates="permission", cascade="all, delete-orphan"
+    )
+
+
+class RolePermissionModel(Base):
+    """SQLAlchemy model for role-permission relationships."""
+
+    __tablename__ = "role_permissions"
+
+    role_id = Column(UUID(as_uuid=True), ForeignKey("roles.id"), primary_key=True)
+    permission_id = Column(
+        UUID(as_uuid=True), ForeignKey("permissions.id"), primary_key=True
+    )
+    granted_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    granted_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
+    is_active = Column(Boolean, default=True, nullable=False, index=True)
+    conditions = Column(JSON, default=dict)
+    expires_at = Column(DateTime, nullable=True, index=True)
+
+    # Relationships
+    role = relationship("RoleModel", back_populates="role_permissions")
+    permission = relationship("PermissionModel", back_populates="role_permissions")
+    granted_by_user = relationship("UserModel", foreign_keys=[granted_by])
+
+
+class UserRoleModel(Base):
+    """SQLAlchemy model for user-role assignments."""
+
+    __tablename__ = "user_roles"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(
+        UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True
+    )
+    role_id = Column(
+        UUID(as_uuid=True), ForeignKey("roles.id"), nullable=False, index=True
+    )
+    context_type = Column(String(50), nullable=True, index=True)
+    context_id = Column(String(255), nullable=True, index=True)
+    assigned_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    assigned_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
+    expires_at = Column(DateTime, nullable=True, index=True)
+    is_active = Column(Boolean, default=True, nullable=False, index=True)
+    conditions = Column(JSON, default=dict)
+    user_role_metadata = Column(JSON, default=dict)
+
+    # Relationships
+    user = relationship(
+        "UserModel", foreign_keys=[user_id], back_populates="user_roles"
+    )
+    role = relationship("RoleModel", back_populates="user_roles")
+    assigned_by_user = relationship("UserModel", foreign_keys=[assigned_by])
+
+
+class ResourceAccessControlModel(Base):
+    """SQLAlchemy model for resource-specific access control."""
+
+    __tablename__ = "resource_access_control"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    resource_type = Column(String(50), nullable=False, index=True)
+    resource_id = Column(String(255), nullable=False, index=True)
+    subject_type = Column(String(50), default="user", nullable=False, index=True)
+    subject_id = Column(String(255), nullable=False, index=True)
+    permission_level = Column(String(50), nullable=False, index=True)
+    granted_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    granted_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
+    expires_at = Column(DateTime, nullable=True, index=True)
+    is_active = Column(Boolean, default=True, nullable=False, index=True)
+    conditions = Column(JSON, default=dict)
+    resource_metadata = Column(JSON, default=dict)
+
+    # Relationships
+    granted_by_user = relationship("UserModel", foreign_keys=[granted_by])
+
 
 class PostgreSQLBackend(UserBackend):
     """PostgreSQL backend implementation for user storage.
@@ -73,7 +216,9 @@ class PostgreSQLBackend(UserBackend):
         self.database_url = database_url
         self.engine = create_engine(database_url, echo=echo)
         self.SessionLocal = sessionmaker(
-            autocommit=False, autoflush=False, bind=self.engine,
+            autocommit=False,
+            autoflush=False,
+            bind=self.engine,
         )
         self._initialized = False
 
@@ -123,6 +268,8 @@ class PostgreSQLBackend(UserBackend):
                     password_hash=user.password,  # This should be hashed by the auth manager
                     role=user.role,
                     email=user.email,
+                    rbac_enabled=getattr(user, 'rbac_enabled', False),
+                    default_role=getattr(user, 'default_role', None),
                     created_at=datetime.now(UTC),
                     updated_at=datetime.now(UTC),
                 )
@@ -144,6 +291,9 @@ class PostgreSQLBackend(UserBackend):
                     created_at=db_user.created_at,  # type: ignore[arg-type]
                     updated_at=db_user.updated_at,  # type: ignore[arg-type]
                     metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
+                    rbac_enabled=db_user.rbac_enabled,  # type: ignore[arg-type]
+                    default_role=db_user.default_role,  # type: ignore[arg-type]
+                    last_rbac_sync=db_user.last_rbac_sync,  # type: ignore[arg-type]
                 )
 
             except IntegrityError as e:
@@ -186,6 +336,9 @@ class PostgreSQLBackend(UserBackend):
                     created_at=db_user.created_at,  # type: ignore[arg-type]
                     updated_at=db_user.updated_at,  # type: ignore[arg-type]
                     metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
+                    rbac_enabled=db_user.rbac_enabled,  # type: ignore[arg-type]
+                    default_role=db_user.default_role,  # type: ignore[arg-type]
+                    last_rbac_sync=db_user.last_rbac_sync,  # type: ignore[arg-type]
                 )
 
             except SQLAlchemyError as e:
@@ -216,6 +369,9 @@ class PostgreSQLBackend(UserBackend):
                     created_at=db_user.created_at,  # type: ignore[arg-type]
                     updated_at=db_user.updated_at,  # type: ignore[arg-type]
                     metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
+                    rbac_enabled=db_user.rbac_enabled,  # type: ignore[arg-type]
+                    default_role=db_user.default_role,  # type: ignore[arg-type]
+                    last_rbac_sync=db_user.last_rbac_sync,  # type: ignore[arg-type]
                 )
 
             except SQLAlchemyError as e:
@@ -246,6 +402,9 @@ class PostgreSQLBackend(UserBackend):
                     created_at=db_user.created_at,  # type: ignore[arg-type]
                     updated_at=db_user.updated_at,  # type: ignore[arg-type]
                     metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
+                    rbac_enabled=db_user.rbac_enabled,  # type: ignore[arg-type]
+                    default_role=db_user.default_role,  # type: ignore[arg-type]
+                    last_rbac_sync=db_user.last_rbac_sync,  # type: ignore[arg-type]
                 )
 
             except SQLAlchemyError as e:
@@ -312,6 +471,12 @@ class PostgreSQLBackend(UserBackend):
                 if user_update.metadata is not None:
                     db_user.user_metadata = user_update.metadata  # type: ignore[assignment]
 
+                if user_update.rbac_enabled is not None:
+                    db_user.rbac_enabled = user_update.rbac_enabled  # type: ignore[assignment]
+
+                if user_update.default_role is not None:
+                    db_user.default_role = user_update.default_role  # type: ignore[assignment]
+
                 db_user.updated_at = datetime.now(UTC)  # type: ignore[assignment]
 
                 session.commit()
@@ -329,6 +494,9 @@ class PostgreSQLBackend(UserBackend):
                     created_at=db_user.created_at,  # type: ignore[arg-type]
                     updated_at=db_user.updated_at,  # type: ignore[arg-type]
                     metadata=db_user.user_metadata or {},  # type: ignore[arg-type]
+                    rbac_enabled=db_user.rbac_enabled,  # type: ignore[arg-type]
+                    default_role=db_user.default_role,  # type: ignore[arg-type]
+                    last_rbac_sync=db_user.last_rbac_sync,  # type: ignore[arg-type]
                 )
 
             except SQLAlchemyError as e:
@@ -447,7 +615,9 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None,
+        self,
+        username: str,
+        profile_picture_url: str | None,
     ) -> bool:
         """Update a user's profile picture URL."""
         self._initialize_database()
@@ -473,7 +643,9 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_metadata(
-        self, username: str, metadata: dict[str, Any],
+        self,
+        username: str,
+        metadata: dict[str, Any],
     ) -> bool:
         """Update a user's metadata."""
         self._initialize_database()
@@ -499,7 +671,10 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100,
+        self,
+        query: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Search for users by username or email."""
         self._initialize_database()
@@ -540,7 +715,10 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100,
+        self,
+        role: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Get users by role."""
         self._initialize_database()
@@ -626,7 +804,9 @@ class PostgreSQLBackend(UserBackend):
                 raise BackendError(f"Database error: {e}")
 
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any],
+        self,
+        username: str,
+        settings: dict[str, Any],
     ) -> bool:
         """Update user settings."""
         self._initialize_database()
@@ -754,3 +934,425 @@ class PostgreSQLBackend(UserBackend):
         except Exception as e:
             logger.error(f"PostgreSQL health check failed: {e}")
             return False
+
+    # RBAC Methods
+
+    async def create_role(self, role_data: dict[str, Any]) -> dict[str, Any]:
+        """Create a new role."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                db_role = RoleModel(
+                    name=role_data["name"],
+                    description=role_data.get("description"),
+                    level=role_data.get("level", 0),
+                    parent_role_id=role_data.get("parent_role_id"),
+                    is_system_role=role_data.get("is_system_role", False),
+                    role_metadata=role_data.get("metadata", {}),
+                )
+
+                session.add(db_role)
+                session.commit()
+                session.refresh(db_role)
+
+                return {
+                    "id": str(db_role.id),
+                    "name": db_role.name,
+                    "description": db_role.description,
+                    "level": db_role.level,
+                    "parent_role_id": (
+                        str(db_role.parent_role_id) if db_role.parent_role_id else None
+                    ),
+                    "is_system_role": db_role.is_system_role,
+                    "is_active": db_role.is_active,
+                    "created_at": db_role.created_at,
+                    "updated_at": db_role.updated_at,
+                    "metadata": db_role.role_metadata or {},
+                }
+
+            except IntegrityError as e:
+                session.rollback()
+                if "name" in str(e).lower():
+                    raise BackendError(
+                        f"Role name '{role_data['name']}' already exists"
+                    )
+                raise BackendError(f"Database integrity error: {e}")
+            except SQLAlchemyError as e:
+                session.rollback()
+                raise BackendError(f"Database error: {e}")
+
+    async def get_role_by_name(self, name: str) -> dict[str, Any] | None:
+        """Get a role by name."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                db_role = (
+                    session.query(RoleModel).filter(RoleModel.name == name).first()
+                )
+
+                if not db_role:
+                    return None
+
+                return {
+                    "id": str(db_role.id),
+                    "name": db_role.name,
+                    "description": db_role.description,
+                    "level": db_role.level,
+                    "parent_role_id": (
+                        str(db_role.parent_role_id) if db_role.parent_role_id else None
+                    ),
+                    "is_system_role": db_role.is_system_role,
+                    "is_active": db_role.is_active,
+                    "created_at": db_role.created_at,
+                    "updated_at": db_role.updated_at,
+                    "metadata": db_role.role_metadata or {},
+                }
+
+            except SQLAlchemyError as e:
+                raise BackendError(f"Database error: {e}")
+
+    async def get_role_by_id(self, role_id: str) -> dict[str, Any] | None:
+        """Get a role by ID."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                db_role = (
+                    session.query(RoleModel).filter(RoleModel.id == role_id).first()
+                )
+
+                if not db_role:
+                    return None
+
+                return {
+                    "id": str(db_role.id),
+                    "name": db_role.name,
+                    "description": db_role.description,
+                    "level": db_role.level,
+                    "parent_role_id": (
+                        str(db_role.parent_role_id) if db_role.parent_role_id else None
+                    ),
+                    "is_system_role": db_role.is_system_role,
+                    "is_active": db_role.is_active,
+                    "created_at": db_role.created_at,
+                    "updated_at": db_role.updated_at,
+                    "metadata": db_role.role_metadata or {},
+                }
+
+            except SQLAlchemyError as e:
+                raise BackendError(f"Database error: {e}")
+
+    async def create_permission(
+        self, permission_data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a new permission."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                db_permission = PermissionModel(
+                    name=permission_data["name"],
+                    resource_type=permission_data["resource_type"],
+                    operation=permission_data["operation"],
+                    scope=permission_data.get("scope", "own"),
+                    conditions=permission_data.get("conditions", {}),
+                    permission_metadata=permission_data.get("metadata", {}),
+                )
+
+                session.add(db_permission)
+                session.commit()
+                session.refresh(db_permission)
+
+                return {
+                    "id": str(db_permission.id),
+                    "name": db_permission.name,
+                    "resource_type": db_permission.resource_type,
+                    "operation": db_permission.operation,
+                    "scope": db_permission.scope,
+                    "conditions": db_permission.conditions or {},
+                    "is_active": db_permission.is_active,
+                    "created_at": db_permission.created_at,
+                    "updated_at": db_permission.updated_at,
+                    "metadata": db_permission.permission_metadata or {},
+                }
+
+            except IntegrityError as e:
+                session.rollback()
+                if "name" in str(e).lower():
+                    raise BackendError(
+                        f"Permission name '{permission_data['name']}' already exists"
+                    )
+                raise BackendError(f"Database integrity error: {e}")
+            except SQLAlchemyError as e:
+                session.rollback()
+                raise BackendError(f"Database error: {e}")
+
+    async def get_permission_by_id(self, permission_id: str) -> dict[str, Any] | None:
+        """Get a permission by ID."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                db_permission = (
+                    session.query(PermissionModel)
+                    .filter(PermissionModel.id == permission_id)
+                    .first()
+                )
+
+                if not db_permission:
+                    return None
+
+                return {
+                    "id": str(db_permission.id),
+                    "name": db_permission.name,
+                    "resource_type": db_permission.resource_type,
+                    "operation": db_permission.operation,
+                    "scope": db_permission.scope,
+                    "conditions": db_permission.conditions or {},
+                    "is_active": db_permission.is_active,
+                    "created_at": db_permission.created_at,
+                    "updated_at": db_permission.updated_at,
+                    "metadata": db_permission.permission_metadata or {},
+                }
+
+            except SQLAlchemyError as e:
+                raise BackendError(f"Database error: {e}")
+
+    async def get_permissions_for_role(self, role_id: str) -> list[dict[str, Any]]:
+        """Get all permissions for a role."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                # Get role-permission relationships
+                role_permissions = (
+                    session.query(RolePermissionModel, PermissionModel)
+                    .join(
+                        PermissionModel,
+                        RolePermissionModel.permission_id == PermissionModel.id,
+                    )
+                    .filter(
+                        RolePermissionModel.role_id == role_id,
+                        RolePermissionModel.is_active == True,
+                        PermissionModel.is_active == True,
+                    )
+                    .all()
+                )
+
+                return [
+                    {
+                        "id": str(permission.id),
+                        "name": permission.name,
+                        "resource_type": permission.resource_type,
+                        "operation": permission.operation,
+                        "scope": permission.scope,
+                        "conditions": permission.conditions or {},
+                        "is_active": permission.is_active,
+                        "created_at": permission.created_at,
+                        "updated_at": permission.updated_at,
+                        "metadata": permission.permission_metadata or {},
+                        "granted_at": role_permission.granted_at,
+                        "granted_by": (
+                            str(role_permission.granted_by)
+                            if role_permission.granted_by
+                            else None
+                        ),
+                        "expires_at": role_permission.expires_at,
+                        "role_conditions": role_permission.conditions or {},
+                    }
+                    for role_permission, permission in role_permissions
+                ]
+
+            except SQLAlchemyError as e:
+                raise BackendError(f"Database error: {e}")
+
+    async def assign_role_to_user(
+        self, user_id: str, role_id: str, context: dict[str, Any] | None = None
+    ) -> bool:
+        """Assign a role to a user."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                # Check if assignment already exists
+                existing = (
+                    session.query(UserRoleModel)
+                    .filter(
+                        UserRoleModel.user_id == user_id,
+                        UserRoleModel.role_id == role_id,
+                        (
+                            UserRoleModel.context_type == context.get("type")
+                            if context
+                            else None
+                        ),
+                        (
+                            UserRoleModel.context_id == context.get("id")
+                            if context
+                            else None
+                        ),
+                    )
+                    .first()
+                )
+
+                if existing:
+                    # Reactivate if inactive
+                    if not existing.is_active:
+                        existing.is_active = True
+                        existing.assigned_at = datetime.now(UTC)
+                        session.commit()
+                    return True
+
+                # Create new assignment
+                db_user_role = UserRoleModel(
+                    user_id=user_id,
+                    role_id=role_id,
+                    context_type=context.get("type") if context else None,
+                    context_id=context.get("id") if context else None,
+                    expires_at=context.get("expires_at") if context else None,
+                    conditions=context.get("conditions", {}) if context else {},
+                    user_role_metadata=context.get("metadata", {}) if context else {},
+                )
+
+                session.add(db_user_role)
+                session.commit()
+                return True
+
+            except SQLAlchemyError as e:
+                session.rollback()
+                raise BackendError(f"Database error: {e}")
+
+    async def remove_role_from_user(
+        self, user_id: str, role_id: str, context: dict[str, Any] | None = None
+    ) -> bool:
+        """Remove a role from a user."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                query = session.query(UserRoleModel).filter(
+                    UserRoleModel.user_id == user_id,
+                    UserRoleModel.role_id == role_id,
+                )
+
+                if context:
+                    query = query.filter(
+                        UserRoleModel.context_type == context.get("type"),
+                        UserRoleModel.context_id == context.get("id"),
+                    )
+
+                db_user_role = query.first()
+
+                if not db_user_role:
+                    return False
+
+                # Soft delete by setting is_active to False
+                db_user_role.is_active = False
+                session.commit()
+                return True
+
+            except SQLAlchemyError as e:
+                session.rollback()
+                raise BackendError(f"Database error: {e}")
+
+    async def get_user_roles(
+        self, user_id: str, context: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
+        """Get all roles for a user."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                query = (
+                    session.query(UserRoleModel, RoleModel)
+                    .join(RoleModel, UserRoleModel.role_id == RoleModel.id)
+                    .filter(
+                        UserRoleModel.user_id == user_id,
+                        UserRoleModel.is_active == True,
+                    )
+                )
+
+                if context:
+                    query = query.filter(
+                        UserRoleModel.context_type == context.get("type"),
+                        UserRoleModel.context_id == context.get("id"),
+                    )
+
+                results = query.all()
+
+                return [
+                    {
+                        "id": str(user_role.id),
+                        "role_id": str(user_role.role_id),
+                        "role_name": role.name,
+                        "role_level": role.level,
+                        "context_type": user_role.context_type,
+                        "context_id": user_role.context_id,
+                        "assigned_at": user_role.assigned_at,
+                        "expires_at": user_role.expires_at,
+                        "conditions": user_role.conditions or {},
+                        "metadata": user_role.user_role_metadata or {},
+                    }
+                    for user_role, role in results
+                ]
+
+            except SQLAlchemyError as e:
+                raise BackendError(f"Database error: {e}")
+
+    async def check_permission(
+        self, user_id: str, resource_type: str, resource_id: str, operation: str
+    ) -> dict[str, Any]:
+        """Check if a user has permission for a resource/operation."""
+        self._initialize_database()
+
+        with self._get_session() as session:
+            try:
+                # Get user's roles
+                user_roles = (
+                    session.query(UserRoleModel, RoleModel)
+                    .join(RoleModel, UserRoleModel.role_id == RoleModel.id)
+                    .filter(
+                        UserRoleModel.user_id == user_id,
+                        UserRoleModel.is_active == True,
+                    )
+                    .all()
+                )
+
+                if not user_roles:
+                    return {"granted": False, "reason": "No active roles assigned"}
+
+                # Get permissions for user's roles
+                role_ids = [str(user_role.role_id) for user_role, _ in user_roles]
+                permissions = (
+                    session.query(RolePermissionModel, PermissionModel)
+                    .join(
+                        PermissionModel,
+                        RolePermissionModel.permission_id == PermissionModel.id,
+                    )
+                    .filter(
+                        RolePermissionModel.role_id.in_(role_ids),
+                        RolePermissionModel.is_active == True,
+                        PermissionModel.is_active == True,
+                    )
+                    .all()
+                )
+
+                # Check for matching permission
+                for role_permission, permission in permissions:
+                    if (
+                        permission.resource_type == resource_type
+                        and permission.operation == operation
+                    ):
+                        return {
+                            "granted": True,
+                            "reason": f"Permission granted via role {permission.name}",
+                            "permission_id": str(permission.id),
+                            "role_id": str(role_permission.role_id),
+                            "conditions": permission.conditions or {},
+                        }
+
+                return {"granted": False, "reason": "No matching permission found"}
+
+            except SQLAlchemyError as e:
+                raise BackendError(f"Database error: {e}")

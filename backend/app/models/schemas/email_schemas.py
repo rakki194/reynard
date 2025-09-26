@@ -14,7 +14,8 @@ class EmailAttachmentModel(BaseModel):
 
     file_path: str = Field(..., description="Path to the attachment file")
     filename: str | None = Field(
-        None, description="Custom filename for the attachment",
+        None,
+        description="Custom filename for the attachment",
     )
 
     @field_validator("file_path")
@@ -30,24 +31,29 @@ class EmailSendRequest(BaseModel):
     """Request model for sending emails."""
 
     to_emails: list[EmailStr] = Field(
-        ..., min_length=1, description="List of recipient email addresses",
+        ...,
+        min_length=1,
+        description="List of recipient email addresses",
     )
     subject: str = Field(..., min_length=1, max_length=200, description="Email subject")
     body: str = Field(..., min_length=1, description="Plain text email body")
     html_body: str | None = Field(None, description="HTML email body")
     cc_emails: list[EmailStr] | None = Field(None, description="CC email addresses")
     bcc_emails: list[EmailStr] | None = Field(
-        None, description="BCC email addresses",
+        None,
+        description="BCC email addresses",
     )
     attachments: list[EmailAttachmentModel] | None = Field(
-        None, description="Email attachments",
+        None,
+        description="Email attachments",
     )
     reply_to: EmailStr | None = Field(None, description="Reply-to email address")
 
     @field_validator("to_emails", "cc_emails", "bcc_emails")
     @classmethod
     def validate_email_lists(
-        cls, v: list[EmailStr] | None,
+        cls,
+        v: list[EmailStr] | None,
     ) -> list[EmailStr] | None:
         """Validate email lists are not empty if provided."""
         if v is not None and len(v) == 0:
@@ -61,7 +67,8 @@ class EmailSendResponse(BaseModel):
     success: bool = Field(..., description="Whether the email was sent successfully")
     message_id: str | None = Field(None, description="Email message ID")
     sent_at: datetime | None = Field(
-        None, description="Timestamp when email was sent",
+        None,
+        description="Timestamp when email was sent",
     )
     recipients: list[str] = Field(..., description="List of recipients")
     error: str | None = Field(None, description="Error message if sending failed")
@@ -71,23 +78,31 @@ class EmailTemplateRequest(BaseModel):
     """Request model for sending templated emails."""
 
     to_emails: list[EmailStr] = Field(
-        ..., min_length=1, description="List of recipient email addresses",
+        ...,
+        min_length=1,
+        description="List of recipient email addresses",
     )
     template_name: str = Field(
-        ..., min_length=1, description="Name of the email template",
+        ...,
+        min_length=1,
+        description="Name of the email template",
     )
     template_variables: dict[str, Any] = Field(
-        default_factory=dict, description="Template variables",
+        default_factory=dict,
+        description="Template variables",
     )
     subject: str | None = Field(
-        None, description="Custom subject (overrides template)",
+        None,
+        description="Custom subject (overrides template)",
     )
     cc_emails: list[EmailStr] | None = Field(None, description="CC email addresses")
     bcc_emails: list[EmailStr] | None = Field(
-        None, description="BCC email addresses",
+        None,
+        description="BCC email addresses",
     )
     attachments: list[EmailAttachmentModel] | None = Field(
-        None, description="Email attachments",
+        None,
+        description="Email attachments",
     )
 
 
@@ -95,16 +110,24 @@ class EmailBulkRequest(BaseModel):
     """Request model for bulk email sending."""
 
     to_emails: list[EmailStr] = Field(
-        ..., min_length=1, description="List of recipient email addresses",
+        ...,
+        min_length=1,
+        description="List of recipient email addresses",
     )
     subject: str = Field(..., min_length=1, max_length=200, description="Email subject")
     body: str = Field(..., min_length=1, description="Plain text email body")
     html_body: str | None = Field(None, description="HTML email body")
     batch_size: int = Field(
-        10, ge=1, le=100, description="Number of emails to send per batch",
+        10,
+        ge=1,
+        le=100,
+        description="Number of emails to send per batch",
     )
     delay_between_batches: float = Field(
-        1.0, ge=0.0, le=60.0, description="Delay between batches in seconds",
+        1.0,
+        ge=0.0,
+        le=60.0,
+        description="Delay between batches in seconds",
     )
 
 
@@ -135,13 +158,16 @@ class EmailStatusModel(BaseModel):
     """Email status model."""
 
     service_configured: bool = Field(
-        ..., description="Whether email service is properly configured",
+        ...,
+        description="Whether email service is properly configured",
     )
     smtp_server: str = Field(..., description="SMTP server being used")
     from_email: str = Field(..., description="Default from email")
     test_connection: bool = Field(
-        ..., description="Whether SMTP connection test passed",
+        ...,
+        description="Whether SMTP connection test passed",
     )
     last_test_time: datetime | None = Field(
-        None, description="Last connection test time",
+        None,
+        description="Last connection test time",
     )

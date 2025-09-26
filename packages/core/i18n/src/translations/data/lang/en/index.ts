@@ -18,6 +18,8 @@ import { apiClientTranslations } from "./api-client";
 import { algorithmsTranslations } from "./algorithms";
 import { testingTranslations } from "./testing";
 import { gamesTranslations } from "./games";
+import { navigationTranslations } from "./navigation";
+import { uiTranslations } from "./ui";
 
 export default {
   common: commonTranslations,
@@ -34,4 +36,6 @@ export default {
   algorithms: algorithmsTranslations,
   testing: testingTranslations,
   games: gamesTranslations,
+  navigation: navigationTranslations,
+  ui: uiTranslations,
 } as const satisfies Translations;

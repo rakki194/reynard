@@ -2,5 +2,3 @@
 
 This package contains comprehensive tests for all database models and schemas.
 """
-
-

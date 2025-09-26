@@ -1,5 +1,4 @@
-"""Mock gatekeeper core package.
-"""
+"""Mock gatekeeper core package."""
 
 from ..main import MockAuthManager, MockPasswordManager, MockTokenManager
 

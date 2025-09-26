@@ -32,7 +32,7 @@ if [[ ! -d "${WORKFLOW_DIR}" ]]; then
 fi
 
 # Count workflow files
-WORKFLOW_COUNT=$(find "${WORKFLOW_DIR}" -name "*.yml" -o -name "*.yaml" | wc -l)
+WORKFLOW_COUNT=$(find "${WORKFLOW_DIR}" -name "*.yml" -o -name "*.yaml" | wc -l || true)
 echo "📊 Found ${WORKFLOW_COUNT} workflow files"
 echo ""
 

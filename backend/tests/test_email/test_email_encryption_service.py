@@ -28,7 +28,9 @@ class TestEmailEncryptionService:
         temp_dir = tempfile.mkdtemp()
         try:
             config = EncryptionConfig(
-                pgp_enabled=True, smime_enabled=True, default_encryption="pgp",
+                pgp_enabled=True,
+                smime_enabled=True,
+                default_encryption="pgp",
             )
             service = EmailEncryptionService(config=config, data_dir=temp_dir)
             yield service
@@ -78,7 +80,10 @@ class TestEmailEncryptionService:
 
     @pytest.mark.asyncio
     async def test_generate_pgp_key_success(
-        self, encryption_service, mock_gpg, sample_key_data,
+        self,
+        encryption_service,
+        mock_gpg,
+        sample_key_data,
     ):
         """Test successful PGP key generation."""
         # Mock the GnuPG instance
@@ -115,7 +120,8 @@ class TestEmailEncryptionService:
 
         with pytest.raises(ValueError, match="Failed to generate PGP key"):
             await encryption_service.generate_pgp_key(
-                name="Test User", email="test@example.com",
+                name="Test User",
+                email="test@example.com",
             )
 
     @pytest.mark.asyncio
@@ -125,12 +131,16 @@ class TestEmailEncryptionService:
 
         with pytest.raises(ValueError, match="PGP encryption not available"):
             await encryption_service.generate_pgp_key(
-                name="Test User", email="test@example.com",
+                name="Test User",
+                email="test@example.com",
             )
 
     @pytest.mark.asyncio
     async def test_import_pgp_key_success(
-        self, encryption_service, mock_gpg, sample_key_data,
+        self,
+        encryption_service,
+        mock_gpg,
+        sample_key_data,
     ):
         """Test successful PGP key import."""
         encryption_service.gpg = mock_gpg
@@ -264,7 +274,8 @@ class TestEmailEncryptionService:
         """Test email encryption with no recipient key found."""
         with pytest.raises(ValueError, match="No encryption key found for"):
             await encryption_service.encrypt_email(
-                content="Test email content", recipient_email="nonexistent@example.com",
+                content="Test email content",
+                recipient_email="nonexistent@example.com",
             )
 
     @pytest.mark.asyncio
@@ -299,7 +310,8 @@ class TestEmailEncryptionService:
     async def test_encrypt_email_unsupported_method(self, encryption_service):
         """Test email encryption with unsupported method."""
         with pytest.raises(
-            ValueError, match="No encryption key found for test@example.com",
+            ValueError,
+            match="No encryption key found for test@example.com",
         ):
             await encryption_service.encrypt_email(
                 content="Test email content",
@@ -334,7 +346,8 @@ class TestEmailEncryptionService:
 
         with pytest.raises(ValueError, match="PGP decryption failed"):
             await encryption_service.decrypt_email(
-                encrypted_content="Invalid encrypted content", encryption_method="pgp",
+                encrypted_content="Invalid encrypted content",
+                encryption_method="pgp",
             )
 
     @pytest.mark.asyncio
@@ -352,7 +365,8 @@ class TestEmailEncryptionService:
         """Test SMIME email decryption with invalid content."""
         with pytest.raises(ValueError, match="Invalid SMIME encrypted content"):
             await encryption_service.decrypt_email(
-                encrypted_content="Invalid SMIME content", encryption_method="smime",
+                encrypted_content="Invalid SMIME content",
+                encryption_method="smime",
             )
 
     @pytest.mark.asyncio
@@ -397,7 +411,8 @@ class TestEmailEncryptionService:
         """Test email signing with non-existent key."""
         with pytest.raises(ValueError, match="Signing key not found"):
             await encryption_service.sign_email(
-                content="Test email content", signer_key_id="nonexistent_key",
+                content="Test email content",
+                signer_key_id="nonexistent_key",
             )
 
     @pytest.mark.asyncio
@@ -434,7 +449,8 @@ class TestEmailEncryptionService:
         mock_gpg.verify.side_effect = Exception("Verification failed")
 
         verification_result = await encryption_service.verify_signature(
-            signed_content="Invalid signed content", encryption_method="pgp",
+            signed_content="Invalid signed content",
+            encryption_method="pgp",
         )
 
         assert verification_result["valid"] is False
@@ -456,7 +472,8 @@ class TestEmailEncryptionService:
     async def test_verify_signature_smime_invalid_content(self, encryption_service):
         """Test signature verification with invalid SMIME content."""
         verification_result = await encryption_service.verify_signature(
-            signed_content="Invalid SMIME content", encryption_method="smime",
+            signed_content="Invalid SMIME content",
+            encryption_method="smime",
         )
 
         assert verification_result["valid"] is False
@@ -484,7 +501,8 @@ class TestEmailEncryptionService:
     async def test_get_public_key_not_found(self, encryption_service):
         """Test getting public key when key doesn't exist."""
         public_key = await encryption_service.get_public_key(
-            "nonexistent@example.com", "pgp",
+            "nonexistent@example.com",
+            "pgp",
         )
         assert public_key is None
 
@@ -578,7 +596,8 @@ class TestEmailEncryptionService:
         encryption_service.keys["test_key"] = test_key
 
         found_key = await encryption_service._find_recipient_key(
-            "test@example.com", "pgp",
+            "test@example.com",
+            "pgp",
         )
         assert found_key == test_key
 
@@ -586,7 +605,8 @@ class TestEmailEncryptionService:
     async def test_find_recipient_key_not_found(self, encryption_service):
         """Test finding recipient key when key doesn't exist."""
         found_key = await encryption_service._find_recipient_key(
-            "nonexistent@example.com", "pgp",
+            "nonexistent@example.com",
+            "pgp",
         )
         assert found_key is None
 
@@ -607,7 +627,8 @@ class TestEmailEncryptionService:
         encryption_service.keys["test_key"] = test_key
 
         found_key = await encryption_service._find_recipient_key(
-            "test@example.com", "pgp",
+            "test@example.com",
+            "pgp",
         )
         assert found_key is None
 
@@ -631,7 +652,8 @@ class TestEmailEncryptionService:
 
         # Create new service instance to test loading
         new_service = EmailEncryptionService(
-            config=encryption_service.config, data_dir=encryption_service.data_dir,
+            config=encryption_service.config,
+            data_dir=encryption_service.data_dir,
         )
 
         # Verify key was loaded
@@ -647,7 +669,9 @@ class TestEmailEncryptionService:
         """Test error handling in various methods."""
         # Test with invalid data - the method should handle exceptions gracefully
         with patch.object(
-            encryption_service, "_save_keys", side_effect=Exception("Save error"),
+            encryption_service,
+            "_save_keys",
+            side_effect=Exception("Save error"),
         ):
             # Should handle the exception gracefully
             try:
@@ -657,7 +681,9 @@ class TestEmailEncryptionService:
 
         # Test with invalid key data
         with patch.object(
-            encryption_service, "_load_keys", side_effect=Exception("Load error"),
+            encryption_service,
+            "_load_keys",
+            side_effect=Exception("Load error"),
         ):
             # Should handle gracefully
             try:

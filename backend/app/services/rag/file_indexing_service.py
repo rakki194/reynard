@@ -60,7 +60,9 @@ class FileIndexingService:
             return False
 
     async def index_files(
-        self, directories: list[str], file_types: list[str],
+        self,
+        directories: list[str],
+        file_types: list[str],
     ) -> dict[str, Any]:
         """Index files in specified directories for fast discovery.
 
@@ -107,7 +109,9 @@ class FileIndexingService:
         index_time = time.time() - start_time
 
         logger.info(
-            "🔥 Indexed %d files in %.2f seconds", len(indexed_files), index_time,
+            "🔥 Indexed %d files in %.2f seconds",
+            len(indexed_files),
+            index_time,
         )
 
         return {
@@ -163,7 +167,9 @@ class FileIndexingService:
         self._stats["total_search_time"] += search_time
 
         logger.debug(
-            "🔥 Text search found %d files in %.3f seconds", len(results), search_time,
+            "🔥 Text search found %d files in %.3f seconds",
+            len(results),
+            search_time,
         )
 
         return results

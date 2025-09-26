@@ -4,12 +4,13 @@
 
 import { describe, it, expect } from "vitest";
 import { readFileSync, existsSync } from "fs";
+import { join } from "path";
 import { HumilityParser } from "../parser";
 import { SeverityLevel, DetectionCategory } from "../types";
 
 describe("HumilityParser Integration Tests", () => {
   const parser = new HumilityParser();
-  const realReportPath = "/home/kade/runeset/reynard/scripts/humility/core_humility_report.json";
+  const realReportPath = join(process.cwd(), "scripts", "humility", "core_humility_report.json");
 
   describe("Real Data Integration", () => {
     it("should parse real humility detector output", () => {

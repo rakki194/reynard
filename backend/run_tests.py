@@ -63,7 +63,15 @@ def run_all_tests() -> int:
     """Run all tests."""
     print("🦊 Running all tests...")
     return run_command(
-        [sys.executable, "-m", "pytest", "tests/", "-v", "--tb=short", "--durations=10"],
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "tests/",
+            "-v",
+            "--tb=short",
+            "--durations=10",
+        ],
     )
 
 

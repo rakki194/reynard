@@ -1,5 +1,4 @@
-"""Tests for core humility detector functionality.
-"""
+"""Tests for core humility detector functionality."""
 
 import os
 

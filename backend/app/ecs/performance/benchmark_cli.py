@@ -106,7 +106,9 @@ class LoadTester:
         return valid_results
 
     async def _test_endpoint(
-        self, endpoint_config: dict[str, Any], semaphore: asyncio.Semaphore,
+        self,
+        endpoint_config: dict[str, Any],
+        semaphore: asyncio.Semaphore,
     ) -> LoadTestResult:
         """Test a single endpoint."""
         endpoint = endpoint_config["endpoint"]
@@ -128,7 +130,13 @@ class LoadTester:
             # Ramp-up phase
             if self.config.ramp_up_seconds > 0:
                 await self._ramp_up(
-                    semaphore, session, url, method, payload, headers, endpoint_config,
+                    semaphore,
+                    session,
+                    url,
+                    method,
+                    payload,
+                    headers,
+                    endpoint_config,
                 )
 
             # Main test phase
@@ -144,12 +152,16 @@ class LoadTester:
                                 await response.text()  # Consume response
                         elif method.upper() == "POST":
                             async with session.post(
-                                url, json=payload, headers=headers,
+                                url,
+                                json=payload,
+                                headers=headers,
                             ) as response:
                                 await response.text()
                         elif method.upper() == "PUT":
                             async with session.put(
-                                url, json=payload, headers=headers,
+                                url,
+                                json=payload,
+                                headers=headers,
                             ) as response:
                                 await response.text()
                         elif method.upper() == "DELETE":
@@ -250,7 +262,9 @@ class LoadTester:
                                 await response.text()
                         elif method.upper() == "POST":
                             async with session.post(
-                                url, json=payload, headers=headers,
+                                url,
+                                json=payload,
+                                headers=headers,
                             ) as response:
                                 await response.text()
                     except Exception:
@@ -330,7 +344,8 @@ class PerformanceProfiler:
                             await response.text()
                     elif method.upper() == "POST":
                         async with session.post(
-                            f"{self.base_url}{endpoint}", json=payload,
+                            f"{self.base_url}{endpoint}",
+                            json=payload,
                         ) as response:
                             await response.text()
 
@@ -452,7 +467,9 @@ async def main():
         description="FastAPI ECS Performance Benchmarking Tool",
     )
     parser.add_argument(
-        "--base-url", default="http://localhost:8000", help="Base URL of the API",
+        "--base-url",
+        default="http://localhost:8000",
+        help="Base URL of the API",
     )
     parser.add_argument(
         "--mode",
@@ -468,21 +485,36 @@ async def main():
         help="Endpoints to test (e.g., /api/health /api/users)",
     )
     parser.add_argument(
-        "--concurrent-users", type=int, default=10, help="Number of concurrent users",
+        "--concurrent-users",
+        type=int,
+        default=10,
+        help="Number of concurrent users",
     )
     parser.add_argument(
-        "--duration", type=int, default=60, help="Test duration in seconds",
+        "--duration",
+        type=int,
+        default=60,
+        help="Test duration in seconds",
     )
     parser.add_argument(
-        "--ramp-up", type=int, default=10, help="Ramp-up duration in seconds",
+        "--ramp-up",
+        type=int,
+        default=10,
+        help="Ramp-up duration in seconds",
     )
     parser.add_argument(
-        "--timeout", type=int, default=30, help="Request timeout in seconds",
+        "--timeout",
+        type=int,
+        default=30,
+        help="Request timeout in seconds",
     )
 
     # Profiling arguments
     parser.add_argument(
-        "--iterations", type=int, default=100, help="Number of profiling iterations",
+        "--iterations",
+        type=int,
+        default=100,
+        help="Number of profiling iterations",
     )
     parser.add_argument("--method", default="GET", help="HTTP method for profiling")
     parser.add_argument("--payload", help="JSON payload for POST/PUT requests")
@@ -530,7 +562,10 @@ async def main():
 
         profiler = PerformanceProfiler(args.base_url)
         result = await profiler.profile_endpoint(
-            endpoint, args.method, payload, args.iterations,
+            endpoint,
+            args.method,
+            payload,
+            args.iterations,
         )
         print_profiling_results(result)
 

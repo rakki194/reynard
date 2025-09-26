@@ -25,8 +25,8 @@ from pathlib import Path
 from typing import Any, Optional
 from uuid import uuid4
 
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
 from .pgp_key_models import (
     AuthSessionLocal,
@@ -163,6 +163,7 @@ Expire-Date: 0
 
             # Clean up temporary directory
             import shutil
+
             shutil.rmtree(temp_key_dir, ignore_errors=True)
 
             return {
@@ -184,7 +185,9 @@ Expire-Date: 0
             logger.error(f"Unexpected error during key generation: {e}")
             raise
 
-    def _parse_gpg_key_info(self, gpg_output: str, email: str) -> Optional[dict[str, Any]]:
+    def _parse_gpg_key_info(
+        self, gpg_output: str, email: str
+    ) -> Optional[dict[str, Any]]:
         """Parse GPG key information from gpg --list-keys --with-colons output."""
         try:
             lines = gpg_output.strip().split("\n")
@@ -276,7 +279,9 @@ Expire-Date: 0
                 name=name,
                 public_key_armored=key_data["public_key_armored"],
                 private_key_armored=key_data["private_key_armored"],
-                passphrase_hash=self._hash_passphrase(passphrase) if passphrase else None,
+                passphrase_hash=(
+                    self._hash_passphrase(passphrase) if passphrase else None
+                ),
                 status=PGPKeyStatus.ACTIVE,
                 is_primary=is_primary,
                 auto_rotate=auto_rotate,
@@ -310,7 +315,7 @@ Expire-Date: 0
             session.rollback()
             error_msg = f"Key already exists: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -325,13 +330,13 @@ Expire-Date: 0
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise ValueError(error_msg)
         except Exception as e:
             session.rollback()
             error_msg = f"Failed to generate PGP key: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -346,7 +351,7 @@ Expire-Date: 0
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -452,7 +457,9 @@ Expire-Date: 0
                 request_id=request_id,
             )
 
-            logger.info(f"Regenerated PGP key {old_key_id} -> {new_key_data['key_id']} for user {user_id}")
+            logger.info(
+                f"Regenerated PGP key {old_key_id} -> {new_key_data['key_id']} for user {user_id}"
+            )
 
             return new_key_data
 
@@ -460,7 +467,7 @@ Expire-Date: 0
             session.rollback()
             error_msg = f"Failed to regenerate PGP key: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -476,7 +483,7 @@ Expire-Date: 0
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -494,7 +501,7 @@ Expire-Date: 0
         session = self.session_factory()
         try:
             query = session.query(PGPKey).filter(PGPKey.user_id == user_id)
-            
+
             if not include_revoked:
                 query = query.filter(PGPKey.status != PGPKeyStatus.REVOKED)
 
@@ -521,7 +528,7 @@ Expire-Date: 0
         except Exception as e:
             error_msg = f"Failed to get user keys: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -537,7 +544,7 @@ Expire-Date: 0
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -600,7 +607,7 @@ Expire-Date: 0
             session.rollback()
             error_msg = f"Failed to revoke PGP key: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -616,7 +623,7 @@ Expire-Date: 0
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()
@@ -656,9 +663,11 @@ Expire-Date: 0
             session.commit()
 
             result = key.to_dict()
-            
+
             # Remove private key if not requested or not authorized
-            if not include_private or (user_id and key.user_id != user_id and not admin_user_id):
+            if not include_private or (
+                user_id and key.user_id != user_id and not admin_user_id
+            ):
                 result.pop("private_key_armored", None)
 
             # Log the access
@@ -681,7 +690,7 @@ Expire-Date: 0
         except Exception as e:
             error_msg = f"Failed to get key by fingerprint: {e}"
             logger.error(error_msg)
-            
+
             # Log the failed access
             self._log_access(
                 session=session,
@@ -696,7 +705,7 @@ Expire-Date: 0
                 user_agent=user_agent,
                 request_id=request_id,
             )
-            
+
             raise
         finally:
             session.close()

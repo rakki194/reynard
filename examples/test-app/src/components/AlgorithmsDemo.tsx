@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
-import { Card, Tabs, TabPanel } from "reynard-components";
+import { Card, Tabs, TabPanel } from "reynard-primitives";
 import { getIcon } from "reynard-fluent-icons";
-import { UnionFindGame, CollisionGame, SpatialHashDemo, GeometryDemo, PerformanceDemo } from "reynard-games";
+// import { UnionFindGame, CollisionGame, SpatialHashDemo, GeometryDemo, PerformanceDemo } from "reynard-games";
 import "./AlgorithmsDemo.css";
 
 export function AlgorithmsDemo() {
@@ -36,31 +36,31 @@ export function AlgorithmsDemo() {
       >
         <TabPanel tabId="union-find" activeTab={activeDemo()}>
           <Card>
-            <UnionFindGame />
+            <div>Union-Find Game (temporarily disabled)</div>
           </Card>
         </TabPanel>
 
         <TabPanel tabId="collision" activeTab={activeDemo()}>
           <Card>
-            <CollisionGame />
+            <div>Collision Game (temporarily disabled)</div>
           </Card>
         </TabPanel>
 
         <TabPanel tabId="spatial-hash" activeTab={activeDemo()}>
           <Card>
-            <SpatialHashDemo />
+            <div>Spatial Hash Demo (temporarily disabled)</div>
           </Card>
         </TabPanel>
 
         <TabPanel tabId="geometry" activeTab={activeDemo()}>
           <Card>
-            <GeometryDemo />
+            <div>Geometry Demo (temporarily disabled)</div>
           </Card>
         </TabPanel>
 
         <TabPanel tabId="performance" activeTab={activeDemo()}>
           <Card>
-            <PerformanceDemo />
+            <div>Performance Demo (temporarily disabled)</div>
           </Card>
         </TabPanel>
       </Tabs>

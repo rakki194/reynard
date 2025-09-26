@@ -95,7 +95,8 @@ class NLWebService:
             return False
 
     async def suggest_tools(
-        self, request: NLWebSuggestionRequest,
+        self,
+        request: NLWebSuggestionRequest,
     ) -> NLWebSuggestionResponse:
         """Get tool suggestions for a natural language query."""
         if not self.enabled or not self.initialized:
@@ -193,7 +194,9 @@ class NLWebService:
             return NLWebPerformanceStats()
 
     async def get_tools(
-        self, category: str | None = None, tags: list[str] | None = None,
+        self,
+        category: str | None = None,
+        tags: list[str] | None = None,
     ) -> list[NLWebTool]:
         """Get available tools, optionally filtered by category or tags."""
         try:
@@ -261,7 +264,8 @@ class NLWebService:
             return False
 
     async def enable_rollback(
-        self, request: NLWebRollbackRequest,
+        self,
+        request: NLWebRollbackRequest,
     ) -> NLWebRollbackResponse:
         """Enable or disable emergency rollback."""
         try:
@@ -426,19 +430,19 @@ class NLWebService:
         try:
             # Import MCP bridge
             from app.services.mcp_bridge import get_mcp_bridge
-            
+
             # Get MCP bridge instance
             bridge = get_mcp_bridge()
-            
+
             # Discover tools from MCP server
             mcp_tools = await bridge.discover_tools()
-            
+
             # Convert MCP tools to NLWeb tools
             for mcp_tool in mcp_tools:
                 nlweb_tool = self._convert_mcp_to_nlweb_tool(mcp_tool)
                 if nlweb_tool:
                     self.tool_registry.register_tool(nlweb_tool)
-            
+
             logger.info(f"Registered {len(mcp_tools)} tools from MCP bridge")
 
         except Exception as e:
@@ -446,10 +450,10 @@ class NLWebService:
 
     def _convert_mcp_to_nlweb_tool(self, mcp_tool: dict) -> NLWebTool | None:
         """Convert an MCP tool to an NLWeb tool.
-        
+
         Args:
             mcp_tool: MCP tool definition
-            
+
         Returns:
             NLWeb tool or None if conversion fails
         """
@@ -457,12 +461,12 @@ class NLWebService:
             tool_name = mcp_tool.get("name", "")
             if not tool_name:
                 return None
-            
+
             # Extract tool information
             description = mcp_tool.get("description", f"Execute {tool_name}")
             category = mcp_tool.get("category", "general")
             tags = mcp_tool.get("tags", [])
-            
+
             # Create NLWeb tool that calls MCP bridge
             nlweb_tool = NLWebTool(
                 name=tool_name,
@@ -494,11 +498,13 @@ class NLWebService:
                 ],
                 priority=80,
             )
-            
+
             return nlweb_tool
-            
+
         except Exception as e:
-            logger.error(f"Failed to convert MCP tool {mcp_tool.get('name', 'unknown')}: {e}")
+            logger.error(
+                f"Failed to convert MCP tool {mcp_tool.get('name', 'unknown')}: {e}"
+            )
             return None
 
     async def _initialize_router(self):

@@ -24,7 +24,7 @@
   "files": ["dist"],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
+    "build": "vite build && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --noEmit false",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=validation-package ../../../scripts/testing/vitest-global-queue.sh run validation-package",
     "test:coverage": "vitest run --coverage",

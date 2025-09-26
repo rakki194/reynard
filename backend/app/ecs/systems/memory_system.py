@@ -63,7 +63,9 @@ class MemorySystem(System):
                 self._process_agent_memories(memory_comp, delta_time)
 
     def _process_agent_memories(
-        self, memory_comp: MemoryComponent, delta_time: float,
+        self,
+        memory_comp: MemoryComponent,
+        delta_time: float,
     ) -> None:
         """Process memory operations for a specific agent.
 
@@ -86,7 +88,9 @@ class MemorySystem(System):
         self.total_memories_processed += len(memory_comp.memories)
 
     def _process_memory_decay(
-        self, memory_comp: MemoryComponent, delta_time: float,
+        self,
+        memory_comp: MemoryComponent,
+        delta_time: float,
     ) -> None:
         """Apply decay to memories based on importance and access patterns.
 
@@ -228,7 +232,9 @@ class MemorySystem(System):
             return []
 
         return memory_comp.search_memories(
-            query=query, memory_type=memory_type, limit=limit,
+            query=query,
+            memory_type=memory_type,
+            limit=limit,
         )
 
     def get_memory_stats_for_agent(self, agent_id: str) -> dict[str, Any]:

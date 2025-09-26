@@ -498,7 +498,9 @@ class StatisticalValidation:
             # Extract genetic material
             genetic_material = (
                 await self.knowledge_distillation.extract_genetic_material(
-                    agent=self.agent_state, output=content_text, generation=1,
+                    agent=self.agent_state,
+                    output=content_text,
+                    generation=1,
                 )
             )
 
@@ -769,7 +771,8 @@ async def main():
 
     # Setup logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     # Initialize analyzer

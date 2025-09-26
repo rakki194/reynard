@@ -122,7 +122,9 @@ class SimpleChangelogScanner:
 
             for pattern in patterns:
                 result = await self.file_tools.search_files(
-                    pattern=pattern, directory="../../", recursive=True,
+                    pattern=pattern,
+                    directory="../../",
+                    recursive=True,
                 )
                 files = result.get("files", [])
                 all_files.extend(files)

@@ -168,7 +168,9 @@ async def services_status(
         )
     except Exception as e:
         services["database"] = ServiceStatus(
-            name="database", status="error", details={"error": str(e)},
+            name="database",
+            status="error",
+            details={"error": str(e)},
         )
 
     # Cache service
@@ -181,7 +183,9 @@ async def services_status(
         )
     except Exception as e:
         services["cache"] = ServiceStatus(
-            name="cache", status="error", details={"error": str(e)},
+            name="cache",
+            status="error",
+            details={"error": str(e)},
         )
 
     # Background service
@@ -194,7 +198,9 @@ async def services_status(
         )
     except Exception as e:
         services["background"] = ServiceStatus(
-            name="background", status="error", details={"error": str(e)},
+            name="background",
+            status="error",
+            details={"error": str(e)},
         )
 
     return services

@@ -36,7 +36,8 @@ class CacheMonitoringDashboard:
         """Get current cache metrics from the API."""
         try:
             response = requests.get(
-                f"{self.base_url}/api/search/performance", timeout=5,
+                f"{self.base_url}/api/search/performance",
+                timeout=5,
             )
             if response.status_code == 200:
                 return response.json()

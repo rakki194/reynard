@@ -16,7 +16,7 @@ async function generateRealEcosystemDiagram() {
 
   try {
     // Create diagram generator with real codebase analysis
-    const generator = new DiagramGeneratorMain("/home/kade/runeset/reynard");
+    const generator = new DiagramGeneratorMain(process.cwd());
 
     const config = {
       outputDir: "./diagrams",

@@ -11,17 +11,17 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 from app.core.debug_logging import (
-    get_debug_stats,
-    DEBUG_LOGGING_ENABLED,
-    DEBUG_SQL_QUERIES,
-    DEBUG_RAG_OPERATIONS,
     DEBUG_CACHE_OPERATIONS,
     DEBUG_DATABASE_CONNECTIONS,
+    DEBUG_LOGGING_ENABLED,
     DEBUG_PERFORMANCE_METRICS,
-    sql_query_logger,
-    rag_operation_logger,
+    DEBUG_RAG_OPERATIONS,
+    DEBUG_SQL_QUERIES,
     cache_operation_logger,
     db_connection_logger,
+    get_debug_stats,
+    rag_operation_logger,
+    sql_query_logger,
 )
 
 logger = logging.getLogger(__name__)

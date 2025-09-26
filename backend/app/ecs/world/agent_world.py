@@ -1,12 +1,14 @@
 """Agent World
 
 Specialized ECS world for agent management with breeding and trait inheritance.
+Now fully integrated with RBAC system for comprehensive access control.
 """
 
 import logging
 import os
 import random
 from pathlib import Path
+from typing import Optional
 
 from ..components import (
     AgentComponent,
@@ -44,11 +46,12 @@ class AgentWorld(ECSWorld):
     trait inheritance, and world simulation.
     """
 
-    def __init__(self, data_dir: Path | None = None):
+    def __init__(self, data_dir: Path | None = None, world_id: str = "default_world"):
         """Initialize the agent world.
 
         Args:
             data_dir: Directory for persistent data storage
+            world_id: Unique identifier for this world
 
         """
         super().__init__()
@@ -59,6 +62,13 @@ class AgentWorld(ECSWorld):
             # Ensure data_dir is a Path object
             self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
+
+        # World metadata
+        self.world_id = world_id
+        self.owner_id: Optional[str] = None
+        self.collaborators: list[str] = []
+        self.created_at = None
+        self.last_accessed = None
 
         # Add systems
         self.add_system(MemorySystem(self))
@@ -79,6 +89,7 @@ class AgentWorld(ECSWorld):
         spirit: str | None = None,
         style: str | None = None,
         name: str | None = None,
+        user_id: str = "system",
     ) -> Entity:
         """Create a new agent entity with comprehensive traits.
 
@@ -87,6 +98,7 @@ class AgentWorld(ECSWorld):
             spirit: Animal spirit (fox, wolf, otter, etc.)
             style: Naming style (foundation, exo, hybrid, etc.)
             name: Optional custom name
+            user_id: ID of the user creating the agent
 
         Returns:
             The created agent entity
@@ -151,7 +163,16 @@ class AgentWorld(ECSWorld):
         )
         entity.add_component(GenderComponent(gender_profile))
 
-        logger.info(f"Created agent {agent_id} with spirit {spirit} and style {style}")
+        # Store agent metadata for RBAC
+        entity.metadata = {
+            "created_by": user_id,
+            "created_at": self.current_time,
+            "world_id": self.world_id,
+        }
+
+        logger.info(
+            f"Created agent {agent_id} with spirit {spirit} and style {style} for user {user_id}"
+        )
         return entity
 
     def create_offspring(
@@ -285,7 +306,9 @@ class AgentWorld(ECSWorld):
         return offspring
 
     def _inherit_traits(
-        self, traits1: TraitComponent, traits2: TraitComponent,
+        self,
+        traits1: TraitComponent,
+        traits2: TraitComponent,
     ) -> TraitComponent:
         """Create offspring traits by inheriting from parents."""
         offspring_traits = TraitComponent()
@@ -426,13 +449,16 @@ class AgentWorld(ECSWorld):
 
         # Analyze trait similarities
         personality_similarity = self._calculate_trait_similarity(
-            traits1.personality, traits2.personality,
+            traits1.personality,
+            traits2.personality,
         )
         physical_similarity = self._calculate_trait_similarity(
-            traits1.physical, traits2.physical,
+            traits1.physical,
+            traits2.physical,
         )
         ability_similarity = self._calculate_trait_similarity(
-            traits1.abilities, traits2.abilities,
+            traits1.abilities,
+            traits2.abilities,
         )
 
         return {
@@ -582,4 +608,46 @@ class AgentWorld(ECSWorld):
             "spirit_distribution": spirit_counts,
             "systems_active": len(self.systems),
             "current_time": self.current_time,
+            "world_id": self.world_id,
+            "owner_id": self.owner_id,
+            "collaborators": self.collaborators,
         }
+
+    def set_owner(self, user_id: str) -> None:
+        """Set the owner of this world."""
+        self.owner_id = user_id
+        if user_id not in self.collaborators:
+            self.collaborators.append(user_id)
+
+    def add_collaborator(self, user_id: str) -> None:
+        """Add a collaborator to this world."""
+        if user_id not in self.collaborators:
+            self.collaborators.append(user_id)
+
+    def remove_collaborator(self, user_id: str) -> None:
+        """Remove a collaborator from this world."""
+        if user_id in self.collaborators and user_id != self.owner_id:
+            self.collaborators.remove(user_id)
+
+    def has_access(self, user_id: str) -> bool:
+        """Check if a user has access to this world."""
+        return user_id == self.owner_id or user_id in self.collaborators
+
+    def can_manage(self, user_id: str) -> bool:
+        """Check if a user can manage this world."""
+        return user_id == self.owner_id
+
+    def can_create_agents(self, user_id: str) -> bool:
+        """Check if a user can create agents in this world."""
+        return self.has_access(user_id)
+
+    def can_control_simulation(self, user_id: str) -> bool:
+        """Check if a user can control simulation in this world."""
+        return self.can_manage(user_id)
+
+    def get_agent_creator(self, agent_id: str) -> Optional[str]:
+        """Get the user who created a specific agent."""
+        entity = self.get_entity(agent_id)
+        if entity and hasattr(entity, 'metadata') and entity.metadata:
+            return entity.metadata.get("created_by")
+        return None

@@ -24,7 +24,9 @@ class MermaidRenderingService:
             if self.available:
                 logger.info("Mermaid rendering service initialized successfully")
             else:
-                logger.warning("Mermaid rendering service initialized but Playwright not available")
+                logger.warning(
+                    "Mermaid rendering service initialized but Playwright not available"
+                )
         except Exception as e:
             logger.error(f"Failed to initialize Mermaid rendering service: {e}")
             self.renderer = None
@@ -157,7 +159,14 @@ class MermaidRenderingService:
 
         try:
             return self.renderer.save_pdf(
-                diagram, output_path, theme, bg_color, width, height, config, pdf_options
+                diagram,
+                output_path,
+                theme,
+                bg_color,
+                width,
+                height,
+                config,
+                pdf_options,
             )
         except Exception as e:
             logger.error(f"PDF save error: {e}")
@@ -222,7 +231,7 @@ class MermaidRenderingService:
             # Test with a simple diagram
             test_diagram = "graph TD\n    A[Test] --> B[Health Check]"
             is_valid, errors, warnings = self.validate_diagram(test_diagram)
-            
+
             return {
                 "status": "healthy" if is_valid else "unhealthy",
                 "available": self.available,

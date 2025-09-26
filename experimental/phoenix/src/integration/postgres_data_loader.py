@@ -155,7 +155,8 @@ class PostgresDataLoader:
             return {}
 
     async def get_agent_performance_metrics(
-        self, agent_id: str,
+        self,
+        agent_id: str,
     ) -> list[dict[str, Any]]:
         """Get agent performance metrics from PostgreSQL.
 
@@ -223,7 +224,9 @@ class PostgresDataLoader:
             return {}
 
     def _calculate_trait_similarity(
-        self, traits1: dict[str, float], traits2: dict[str, float],
+        self,
+        traits1: dict[str, float],
+        traits2: dict[str, float],
     ) -> float:
         """Calculate similarity between two trait dictionaries.
 

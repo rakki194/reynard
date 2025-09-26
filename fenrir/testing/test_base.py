@@ -52,14 +52,19 @@ class FenrirTestBase:
         await self.session.aclose()
 
     async def make_request(
-        self, method: str, endpoint: str, **kwargs: Any,
+        self,
+        method: str,
+        endpoint: str,
+        **kwargs: Any,
     ) -> httpx.Response:
         """Make an HTTP request and return the response"""
         url = f"{self.base_url}{endpoint}"
         return await self.session.request(method, url, **kwargs)
 
     def assert_vulnerability_detected(
-        self, result: SecurityTestResult, should_be_vulnerable: bool = True,
+        self,
+        result: SecurityTestResult,
+        should_be_vulnerable: bool = True,
     ) -> None:
         """Assert that a vulnerability was or wasn't detected as expected"""
         if should_be_vulnerable:
@@ -72,7 +77,9 @@ class FenrirTestBase:
             ), f"Unexpected vulnerability in {result.test_name}: {result.details}"
 
     def assert_response_time(
-        self, result: SecurityTestResult, max_time: float = 5.0,
+        self,
+        result: SecurityTestResult,
+        max_time: float = 5.0,
     ) -> None:
         """Assert that the response time is within acceptable limits"""
         assert (
@@ -80,7 +87,9 @@ class FenrirTestBase:
         ), f"Response time too slow: {result.response_time:.2f}s > {max_time}s"
 
     def assert_status_code(
-        self, result: SecurityTestResult, expected_codes: list[int],
+        self,
+        result: SecurityTestResult,
+        expected_codes: list[int],
     ) -> None:
         """Assert that the status code is one of the expected values"""
         assert (

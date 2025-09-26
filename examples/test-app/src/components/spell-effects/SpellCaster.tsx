@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-primitives";
 import { SpellCasterCanvas } from "./SpellCasterCanvas";
 import { SpellCasterControls } from "./SpellCasterControls";
 import { createSpellCasterLogic } from "./SpellCasterLogic";

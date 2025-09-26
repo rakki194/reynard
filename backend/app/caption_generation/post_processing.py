@@ -64,7 +64,8 @@ def post_process_caption(
             caption = _normalize_spacing(caption)
         elif step == "case_conversion":
             caption = _apply_case(
-                caption, (rules.get("case_conversion") or "none").lower(),
+                caption,
+                (rules.get("case_conversion") or "none").lower(),
             )
         elif step == "ensure_terminal_punctuation" and rules.get(
             "ensure_terminal_punctuation",

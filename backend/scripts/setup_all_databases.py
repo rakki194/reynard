@@ -24,7 +24,8 @@ from sqlalchemy import create_engine, text
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -139,7 +140,8 @@ def initialize_gatekeeper(database_url: str, database_name: str) -> bool:
             # Verify database connection
             if not verify_database_connection():
                 logger.error(
-                    "❌ Failed to connect to auth database for %s", database_name,
+                    "❌ Failed to connect to auth database for %s",
+                    database_name,
                 )
                 return False
 

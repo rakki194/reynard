@@ -26,8 +26,7 @@ class ContextFilter(logging.Filter):
 
 
 class StructuredFormatter(logging.Formatter):
-    """Custom formatter that outputs structured JSON logs.
-    """
+    """Custom formatter that outputs structured JSON logs."""
 
     def format(self, record: logging.LogRecord) -> str:
         """Format log record as structured JSON."""
@@ -77,8 +76,7 @@ class StructuredFormatter(logging.Formatter):
 
 
 class ServiceContextFilter(logging.Filter):
-    """Filter that adds service context to log records.
-    """
+    """Filter that adds service context to log records."""
 
     def __init__(self, service_name: str):
         super().__init__()

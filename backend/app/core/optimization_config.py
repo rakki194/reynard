@@ -52,7 +52,8 @@ DEFAULT_OPTIMIZATION_CONFIG = {
     "cache": {
         "enabled": True,  # Enable/disable caching system
         "redis_url": os.getenv(
-            "REDIS_URL", "redis://localhost:6379/1",
+            "REDIS_URL",
+            "redis://localhost:6379/1",
         ),  # Redis connection URL
         "max_connections": int(
             os.getenv("REDIS_MAX_CONNECTIONS", "20"),

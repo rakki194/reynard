@@ -21,7 +21,8 @@ async def setup_database():
 
     # Database configuration
     database_url = os.getenv(
-        "DATABASE_URL", "postgresql://yipyap:yipyap@localhost:5432/yipyap",
+        "DATABASE_URL",
+        "postgresql://yipyap:yipyap@localhost:5432/yipyap",
     )
 
     print(f"📊 Using database: {database_url}")
@@ -29,7 +30,8 @@ async def setup_database():
     # Initialize PostgreSQL backend
     print("🔧 Initializing PostgreSQL backend...")
     backend = PostgreSQLBackend(
-        database_url=database_url, echo=True,  # Enable SQL logging for setup
+        database_url=database_url,
+        echo=True,  # Enable SQL logging for setup
     )
 
     # Test database connection

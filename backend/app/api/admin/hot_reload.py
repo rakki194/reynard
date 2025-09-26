@@ -72,7 +72,8 @@ async def reload_service(service_name: str) -> JSONResponse:
 @router.post("/services")
 async def reload_services_by_pattern(
     pattern: str = Query(
-        ..., description="Pattern to match service names (e.g., 'rag*', '*indexing*')",
+        ...,
+        description="Pattern to match service names (e.g., 'rag*', '*indexing*')",
     ),
 ) -> JSONResponse:
     """Hot-reload multiple services matching a pattern.

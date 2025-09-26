@@ -40,7 +40,9 @@ class BaseFuzzer(ABC):
     """
 
     def __init__(
-        self, base_url: str = "http://localhost:8000", max_concurrent: int = 10,
+        self,
+        base_url: str = "http://localhost:8000",
+        max_concurrent: int = 10,
     ):
         """Initialize the base fuzzer.
 
@@ -137,7 +139,9 @@ class BaseFuzzer(ABC):
         except httpx.RequestError:
             # Create a mock response for error cases
             return httpx.Response(
-                status_code=0, content=b"", request=httpx.Request(method, url),
+                status_code=0,
+                content=b"",
+                request=httpx.Request(method, url),
             )
 
     def add_result(self, result: Any) -> None:

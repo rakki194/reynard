@@ -48,21 +48,21 @@ import logging
 import time
 from typing import Any
 
-from app.core.debug_logging import log_rag_operation, debug_log
+from app.core.debug_logging import debug_log, log_rag_operation
 
 from ..email.infrastructure.continuous_indexing import ContinuousIndexingService
-from .services.core import VectorStoreService, DocumentIndexer, SearchEngine
-from .services.core.embedding import EmbeddingService
-from .services.core.document_categorization import DocumentCategorizationService
-from .services.core.paper_indexing_integration import PaperIndexingIntegration
-from .services.monitoring.prometheus_monitoring import PrometheusMonitoringService
-from .services.security.access_control_security import AccessControlSecurityService
-from .services.evaluation.model_evaluation import ModelEvaluationService
-from .services.improvement.continuous_improvement import ContinuousImprovementService
-from .services.documentation.auto_documentation import AutoDocumentationService
 from .file_indexing_service import get_file_indexing_service
 from .initial_indexing import InitialIndexingService
 from .progress_monitor import get_progress_monitor
+from .services.core import DocumentIndexer, SearchEngine, VectorStoreService
+from .services.core.document_categorization import DocumentCategorizationService
+from .services.core.embedding import EmbeddingService
+from .services.core.paper_indexing_integration import PaperIndexingIntegration
+from .services.documentation.auto_documentation import AutoDocumentationService
+from .services.evaluation.model_evaluation import ModelEvaluationService
+from .services.improvement.continuous_improvement import ContinuousImprovementService
+from .services.monitoring.prometheus_monitoring import PrometheusMonitoringService
+from .services.rbac.rbac_rag_service import RBACRAGService
 
 logger = logging.getLogger("uvicorn")
 
@@ -116,7 +116,7 @@ class RAGService:
         self.vector_store_service: VectorStoreService | None = None
         self.document_indexer: DocumentIndexer | None = None
         self.search_engine: SearchEngine | None = None
-        
+
         # Document categorization services
         self.categorization_service: DocumentCategorizationService | None = None
         self.paper_indexing_integration: PaperIndexingIntegration | None = None
@@ -126,7 +126,7 @@ class RAGService:
 
         # Advanced services
         self.performance_monitor: PrometheusMonitoringService | None = None
-        self.security_service: AccessControlSecurityService | None = None
+        self.security_service: RBACRAGService | None = None
         self.continuous_improvement: ContinuousImprovementService | None = None
         self.documentation_service: AutoDocumentationService | None = None
         self.model_evaluator: ModelEvaluationService | None = None
@@ -188,10 +188,11 @@ class RAGService:
         logger.info("✅ File indexing service initialized")
 
         # Initialize embedding service with AI service
-        from app.core.service_registry import get_service_registry
-        service_registry = get_service_registry()
-        ai_service = service_registry.get_service_instance("ai_service")
-        
+        # Get AI service directly from the AI service initializer
+        from app.core.ai_service_initializer import get_ai_service
+
+        ai_service = get_ai_service()
+
         self.embedding_service = EmbeddingService(ai_service, self.config)
         if not await self.embedding_service.initialize():
             raise RuntimeError("Failed to initialize embedding service")
@@ -230,7 +231,7 @@ class RAGService:
                 logger.warning("Failed to initialize categorization service")
             else:
                 logger.info("✅ Document categorization service initialized")
-        
+
         # Initialize paper indexing integration
         if self.config.get("auto_categorize_papers", True):
             self.paper_indexing_integration = PaperIndexingIntegration(self.config)
@@ -255,11 +256,11 @@ class RAGService:
 
         # Initialize security service
         if self.config.get("rag_security_enabled", True):
-            self.security_service = AccessControlSecurityService(self.config)
+            self.security_service = RBACRAGService(self.config)
             if not await self.security_service.initialize():
-                logger.warning("Failed to initialize security service")
+                logger.warning("Failed to initialize RBAC security service")
             else:
-                logger.info("Security service initialized")
+                logger.info("RBAC security service initialized")
 
         # Initialize continuous improvement
         if self.config.get("rag_continuous_improvement_enabled", True):
@@ -300,7 +301,8 @@ class RAGService:
                 # Initialize initial indexing service
                 self.initial_indexing_service = InitialIndexingService(self.config)
                 await self.initial_indexing_service.initialize(
-                    self.continuous_indexing, self.vector_store_service,
+                    self.continuous_indexing,
+                    self.vector_store_service,
                 )
                 logger.info("Initial indexing service initialized")
 
@@ -353,7 +355,9 @@ class RAGService:
     # Core API Methods
 
     async def embed_text(
-        self, text: str, model: str = "embeddinggemma:latest",
+        self,
+        text: str,
+        model: str = "embeddinggemma:latest",
     ) -> list[float]:
         """Generate embedding for text."""
         if not self.initialized:
@@ -393,11 +397,26 @@ class RAGService:
             raise
 
     async def embed_batch(
-        self, texts: list[str], model: str = "embeddinggemma:latest",
+        self,
+        texts: list[str],
+        model: str = "embeddinggemma:latest",
+        user_id: str = "system",
     ) -> list[list[float]]:
         """Generate embeddings for a batch of texts."""
         if not self.initialized:
             raise RuntimeError("RAG service not initialized")
+
+        # Check RBAC permissions for embedding operation
+        if self.security_service:
+            from ...interfaces.security import AccessLevel, OperationType
+
+            has_permission = await self.security_service.check_embedding_permission(
+                user_id=user_id, text=texts[0] if texts else "", model=model
+            )
+            if not has_permission:
+                raise PermissionError(
+                    f"User {user_id} does not have permission to generate embeddings"
+                )
 
         try:
             self.stats["embedding_requests"] += 1
@@ -443,10 +462,23 @@ class RAGService:
         search_type: str = "hybrid",
         limit: int = 10,
         filters: dict[str, Any] | None = None,
+        user_id: str = "system",
     ) -> list[dict[str, Any]]:
         """Perform search using the specified method."""
         if not self.initialized:
             raise RuntimeError("RAG service not initialized")
+
+        # Check RBAC permissions for search operation
+        if self.security_service:
+            from ...interfaces.security import AccessLevel, OperationType
+
+            has_permission = await self.security_service.check_search_permission(
+                user_id=user_id, query=query, filters=filters
+            )
+            if not has_permission:
+                raise PermissionError(
+                    f"User {user_id} does not have permission to search"
+                )
 
         try:
             self.stats["search_requests"] += 1
@@ -456,7 +488,10 @@ class RAGService:
             if self.performance_monitor:
                 start_time = time.time()
                 results = await self.search_engine.search_with_filters(
-                    query, search_type, limit, filters,
+                    query,
+                    search_type,
+                    limit,
+                    filters,
                 )
                 latency_ms = (time.time() - start_time) * 1000
 
@@ -467,7 +502,10 @@ class RAGService:
                 )
             else:
                 results = await self.search_engine.search_with_filters(
-                    query, search_type, limit, filters,
+                    query,
+                    search_type,
+                    limit,
+                    filters,
                 )
 
             return results
@@ -492,7 +530,10 @@ class RAGService:
             filters["file_type"] = file_type_filter
 
         return await self.search(
-            query=query, search_type="semantic", limit=top_k, filters=filters,
+            query=query,
+            search_type="semantic",
+            limit=top_k,
+            filters=filters,
         )
 
     async def keyword_search(
@@ -510,7 +551,10 @@ class RAGService:
             filters["file_type"] = file_type_filter
 
         return await self.search(
-            query=query, search_type="keyword", limit=top_k, filters=filters,
+            query=query,
+            search_type="keyword",
+            limit=top_k,
+            filters=filters,
         )
 
     async def hybrid_search(
@@ -528,7 +572,10 @@ class RAGService:
             filters["file_type"] = file_type_filter
 
         return await self.search(
-            query=query, search_type="hybrid", limit=top_k, filters=filters,
+            query=query,
+            search_type="hybrid",
+            limit=top_k,
+            filters=filters,
         )
 
     @debug_log("rag_index_documents", logger)
@@ -628,6 +675,14 @@ class RAGService:
                 "timestamp": time.time(),
             }
 
+    async def is_healthy(self) -> bool:
+        """Check if the RAG service is healthy."""
+        try:
+            health_status = await self.get_system_health()
+            return health_status.get("healthy", False)
+        except Exception:
+            return False
+
     async def get_statistics(self) -> dict[str, Any]:
         """Get comprehensive system statistics."""
         if not self.initialized:
@@ -710,7 +765,9 @@ class RAGService:
             return "Performance monitoring not available"
 
         try:
-            return await self.performance_monitor.generate_report("performance", hours=hours)
+            return await self.performance_monitor.generate_report(
+                "performance", hours=hours
+            )
         except Exception as e:
             logger.error(f"Failed to generate performance report: {e}")
             return f"Error generating report: {e}"
@@ -732,7 +789,9 @@ class RAGService:
             return []
 
         try:
-            return await self.continuous_improvement.generate_optimization_recommendations()
+            return (
+                await self.continuous_improvement.generate_optimization_recommendations()
+            )
         except Exception as e:
             logger.error(f"Failed to get optimization recommendations: {e}")
             return []
@@ -741,9 +800,11 @@ class RAGService:
         """Categorize a paper using the categorization service."""
         if not self.initialized or not self.categorization_service:
             return {"error": "Categorization service not available"}
-        
+
         try:
-            category = await self.categorization_service.categorize_paper_from_metadata(metadata)
+            category = await self.categorization_service.categorize_paper_from_metadata(
+                metadata
+            )
             if category:
                 return {
                     "success": True,
@@ -752,47 +813,45 @@ class RAGService:
                     "confidence": category.confidence,
                     "keywords": category.keywords,
                     "domain_tags": category.domain_tags,
-                    "reasoning": category.reasoning
+                    "reasoning": category.reasoning,
                 }
             else:
                 return {"success": False, "error": "Failed to categorize paper"}
         except Exception as e:
             logger.error(f"Failed to categorize paper: {e}")
             return {"success": False, "error": str(e)}
-    
+
     async def process_papers_for_rag(
         self,
         papers_directory: str = None,
         max_papers: int = None,
-        force_reprocess: bool = False
+        force_reprocess: bool = False,
     ) -> dict[str, Any]:
         """Process papers for RAG indexing with automatic categorization."""
         if not self.initialized or not self.paper_indexing_integration:
             return {"error": "Paper indexing integration not available"}
-        
+
         try:
             papers_dir = Path(papers_directory) if papers_directory else None
             return await self.paper_indexing_integration.batch_process_papers(
                 papers_directory=papers_dir,
                 max_papers=max_papers,
-                force_reprocess=force_reprocess
+                force_reprocess=force_reprocess,
             )
         except Exception as e:
             logger.error(f"Failed to process papers for RAG: {e}")
             return {"error": str(e)}
-    
+
     async def get_rag_ready_papers(
-        self,
-        domain_filter: str = None,
-        min_confidence: float = 0.0,
-        limit: int = None
+        self, domain_filter: str = None, min_confidence: float = 0.0, limit: int = None
     ) -> list[dict[str, Any]]:
         """Get papers ready for RAG indexing."""
         if not self.initialized or not self.paper_indexing_integration:
             return []
-        
+
         try:
             from .services.core.document_categorization import ScientificDomain
+
             domain_enum = None
             if domain_filter:
                 try:
@@ -800,21 +859,19 @@ class RAGService:
                 except ValueError:
                     logger.error(f"Invalid domain filter: {domain_filter}")
                     return []
-            
+
             return await self.paper_indexing_integration.get_rag_ready_papers(
-                domain_filter=domain_enum,
-                min_confidence=min_confidence,
-                limit=limit
+                domain_filter=domain_enum, min_confidence=min_confidence, limit=limit
             )
         except Exception as e:
             logger.error(f"Failed to get RAG ready papers: {e}")
             return []
-    
+
     async def get_categorization_statistics(self) -> dict[str, Any]:
         """Get categorization service statistics."""
         if not self.initialized or not self.categorization_service:
             return {"error": "Categorization service not available"}
-        
+
         try:
             return self.categorization_service.get_statistics()
         except Exception as e:
@@ -854,11 +911,11 @@ class RAGService:
 
             if self.model_evaluator:
                 await self.model_evaluator.shutdown()
-            
+
             # Shutdown categorization services
             if self.paper_indexing_integration:
                 await self.paper_indexing_integration.shutdown()
-            
+
             if self.categorization_service:
                 await self.categorization_service.shutdown()
 

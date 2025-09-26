@@ -21,7 +21,8 @@ from trainer import VulcanTrainer
 
 # Setup logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 console = Console()
@@ -50,17 +51,23 @@ def main():
     parser.add_argument("--data_path", type=str, help="Path to training data file")
 
     parser.add_argument(
-        "--output_dir", type=str, help="Output directory for trained model",
+        "--output_dir",
+        type=str,
+        help="Output directory for trained model",
     )
 
     parser.add_argument(
-        "--resume_from_checkpoint", type=str, help="Path to checkpoint to resume from",
+        "--resume_from_checkpoint",
+        type=str,
+        help="Path to checkpoint to resume from",
     )
 
     parser.add_argument("--lora_rank", type=int, help="LoRA rank (overrides config)")
 
     parser.add_argument(
-        "--learning_rate", type=float, help="Learning rate (overrides config)",
+        "--learning_rate",
+        type=float,
+        help="Learning rate (overrides config)",
     )
 
     parser.add_argument("--batch_size", type=int, help="Batch size (overrides config)")

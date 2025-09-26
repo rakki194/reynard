@@ -1,5 +1,4 @@
-"""Specialized Wikipedia scraper with optimized content extraction and filtering.
-"""
+"""Specialized Wikipedia scraper with optimized content extraction and filtering."""
 
 import logging
 import re
@@ -89,7 +88,8 @@ class WikipediaScraper(BaseScraper):
                 },
                 quality={
                     "score": self._calculate_wikipedia_quality_score(
-                        content, cleaned_content,
+                        content,
+                        cleaned_content,
                     ),
                     "factors": {
                         "content_length": len(cleaned_content),
@@ -205,7 +205,8 @@ class WikipediaScraper(BaseScraper):
 
             # Remove unwanted elements
             for element in content_div.find_all(
-                ["div", "span"], class_=re.compile(r"navbox|infobox|sidebar|ambox"),
+                ["div", "span"],
+                class_=re.compile(r"navbox|infobox|sidebar|ambox"),
             ):
                 element.decompose()
 
@@ -275,7 +276,9 @@ class WikipediaScraper(BaseScraper):
         return content
 
     def _calculate_wikipedia_quality_score(
-        self, content: dict[str, Any], cleaned_text: str,
+        self,
+        content: dict[str, Any],
+        cleaned_text: str,
     ) -> float:
         """Calculate quality score for Wikipedia content."""
         score = 0.0
@@ -443,7 +446,9 @@ class WikipediaScraper(BaseScraper):
             )
 
     async def search_articles(
-        self, query: str, limit: int = 10,
+        self,
+        query: str,
+        limit: int = 10,
     ) -> list[dict[str, Any]]:
         """Search for Wikipedia articles.
 

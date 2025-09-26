@@ -189,7 +189,9 @@ class AgentEmailService:
         return self._configs.get(agent_id)
 
     async def update_agent_config(
-        self, agent_id: str, config: AgentEmailConfig,
+        self,
+        agent_id: str,
+        config: AgentEmailConfig,
     ) -> AgentEmailConfig:
         """Update agent email configuration."""
         config.updated_at = datetime.now()
@@ -202,7 +204,10 @@ class AgentEmailService:
         return self._stats.get(agent_id)
 
     async def update_agent_stats(
-        self, agent_id: str, action: str, count: int = 1,
+        self,
+        agent_id: str,
+        action: str,
+        count: int = 1,
     ) -> None:
         """Update agent email statistics."""
         if agent_id not in self._stats:
@@ -234,7 +239,9 @@ class AgentEmailService:
         return self._templates.get(agent_id, [])
 
     async def create_agent_template(
-        self, agent_id: str, template: AgentEmailTemplate,
+        self,
+        agent_id: str,
+        template: AgentEmailTemplate,
     ) -> AgentEmailTemplate:
         """Create agent email template."""
         template.id = str(uuid.uuid4())
@@ -287,7 +294,10 @@ class AgentEmailService:
         self._save_data()
 
     async def get_agent_messages(
-        self, agent_id: str, limit: int = 50, offset: int = 0,
+        self,
+        agent_id: str,
+        limit: int = 50,
+        offset: int = 0,
     ) -> list[AgentEmailMessage]:
         """Get agent email messages."""
         agent_messages = [
@@ -300,7 +310,10 @@ class AgentEmailService:
         return agent_messages[offset : offset + limit]
 
     async def get_agent_interactions(
-        self, agent_id: str, limit: int = 50, offset: int = 0,
+        self,
+        agent_id: str,
+        limit: int = 50,
+        offset: int = 0,
     ) -> list[AgentEmailInteraction]:
         """Get agent email interactions."""
         agent_interactions = [
@@ -316,7 +329,10 @@ class AgentEmailService:
         return agent_interactions[offset : offset + limit]
 
     async def process_automated_email(
-        self, agent_id: str, event_type: str, context: dict[str, Any],
+        self,
+        agent_id: str,
+        event_type: str,
+        context: dict[str, Any],
     ) -> bool:
         """Process automated email for an agent."""
         try:
@@ -344,13 +360,15 @@ class AgentEmailService:
 
             # Generate email content
             subject = self._process_template_variables(
-                matching_template.subject, context,
+                matching_template.subject,
+                context,
             )
             body = self._process_template_variables(matching_template.body, context)
             html_body = None
             if matching_template.html_body:
                 html_body = self._process_template_variables(
-                    matching_template.html_body, context,
+                    matching_template.html_body,
+                    context,
                 )
 
             # Determine recipients
@@ -403,7 +421,10 @@ class AgentEmailService:
             return False
 
     def _template_matches_conditions(
-        self, template: AgentEmailTemplate, event_type: str, context: dict[str, Any],
+        self,
+        template: AgentEmailTemplate,
+        event_type: str,
+        context: dict[str, Any],
     ) -> bool:
         """Check if template matches trigger conditions."""
         conditions = template.trigger_conditions
@@ -441,7 +462,9 @@ class AgentEmailService:
         return True
 
     def _process_template_variables(
-        self, template: str, context: dict[str, Any],
+        self,
+        template: str,
+        context: dict[str, Any],
     ) -> str:
         """Process template variables."""
         processed = template
@@ -453,7 +476,10 @@ class AgentEmailService:
         return processed
 
     def _determine_recipients(
-        self, agent_id: str, event_type: str, context: dict[str, Any],
+        self,
+        agent_id: str,
+        event_type: str,
+        context: dict[str, Any],
     ) -> list[str]:
         """Determine email recipients based on event type and context."""
         recipients = []
@@ -502,7 +528,10 @@ class AgentEmailService:
         return notification
 
     async def get_agent_notifications(
-        self, agent_id: str, unread_only: bool = False, limit: int = 50,
+        self,
+        agent_id: str,
+        unread_only: bool = False,
+        limit: int = 50,
     ) -> list[AgentEmailNotification]:
         """Get agent email notifications."""
         notifications = [
@@ -534,7 +563,9 @@ class AgentEmailService:
         return self._settings.get(agent_id)
 
     async def update_agent_settings(
-        self, agent_id: str, settings: AgentEmailSettings,
+        self,
+        agent_id: str,
+        settings: AgentEmailSettings,
     ) -> AgentEmailSettings:
         """Update agent email settings."""
         settings.agent_id = agent_id

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""🦊 Reynard Development Server
-"""
+"""🦊 Reynard Development Server"""
 
 import importlib.util
 import logging

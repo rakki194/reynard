@@ -17,25 +17,25 @@ _mcp_bridge: Optional[MCPIntegration] = None
 
 def get_mcp_bridge() -> MCPIntegration:
     """Get the global MCP bridge instance.
-    
+
     Returns:
         MCPIntegration: The MCP bridge service instance
-        
+
     Raises:
         RuntimeError: If the MCP bridge is not initialized
     """
     global _mcp_bridge
-    
+
     if _mcp_bridge is None:
         _mcp_bridge = MCPIntegration()
         logger.info("MCP bridge service initialized")
-    
+
     return _mcp_bridge
 
 
 async def initialize_mcp_bridge() -> bool:
     """Initialize the MCP bridge service.
-    
+
     Returns:
         bool: True if initialization successful, False otherwise
     """
@@ -52,7 +52,7 @@ async def initialize_mcp_bridge() -> bool:
 async def shutdown_mcp_bridge() -> None:
     """Shutdown the MCP bridge service."""
     global _mcp_bridge
-    
+
     try:
         if _mcp_bridge:
             # Add any cleanup logic here if needed
@@ -64,7 +64,7 @@ async def shutdown_mcp_bridge() -> None:
 
 async def health_check_mcp_bridge() -> bool:
     """Check MCP bridge service health.
-    
+
     Returns:
         bool: True if service is healthy, False otherwise
     """

@@ -1,5 +1,4 @@
-"""Data models for the Enhanced Humility Detector.
-"""
+"""Data models for the Enhanced Humility Detector."""
 
 from dataclasses import dataclass, field
 from datetime import datetime

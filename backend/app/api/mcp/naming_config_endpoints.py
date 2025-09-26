@@ -70,7 +70,8 @@ class ConfigUpdateRequest(BaseModel):
     default_scheme: str | None = Field(None, description="New default scheme")
     default_style: str | None = Field(None, description="New default style")
     weighted_distribution: bool | None = Field(
-        None, description="Weighted distribution setting",
+        None,
+        description="Weighted distribution setting",
     )
 
 

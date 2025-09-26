@@ -21,7 +21,11 @@ from urllib.parse import urlparse
 def setup_logging():
     # Create logs directory if it doesn't exist
     log_dir = os.path.join(
-        os.path.dirname(__file__), "..", "results", "effects", "backend-logs",
+        os.path.dirname(__file__),
+        "..",
+        "results",
+        "effects",
+        "backend-logs",
     )
     os.makedirs(log_dir, exist_ok=True)
 
@@ -83,7 +87,8 @@ class MockAPIHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header(
-            "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS",
+            "Access-Control-Allow-Methods",
+            "GET, POST, PUT, DELETE, OPTIONS",
         )
         self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
         self.send_header("Access-Control-Max-Age", "86400")
@@ -292,7 +297,8 @@ class MockAPIHandler(BaseHTTPRequestHandler):
                 f"❌ REQUEST #{_global_state['request_count']} BLOCKED: Identical request pattern detected",
             )
             self.send_error(
-                429, "Too Many Requests - Identical Request Pattern Detected",
+                429,
+                "Too Many Requests - Identical Request Pattern Detected",
             )
             return
 
@@ -350,7 +356,8 @@ class MockAPIHandler(BaseHTTPRequestHandler):
         # Reset circuit breaker on successful request
         if _global_state["circuit_breaker_failures"] > 0:
             _global_state["circuit_breaker_failures"] = max(
-                0, _global_state["circuit_breaker_failures"] - 1,
+                0,
+                _global_state["circuit_breaker_failures"] - 1,
             )
 
         response_data = {
@@ -679,7 +686,8 @@ class MockAPIHandler(BaseHTTPRequestHandler):
             if current_time - ts < _global_state["rate_limit_window"]
         ]
         rate_limit_remaining = max(
-            0, _global_state["rate_limit_requests"] - len(recent_requests),
+            0,
+            _global_state["rate_limit_requests"] - len(recent_requests),
         )
 
         # Calculate circuit breaker status
@@ -817,7 +825,8 @@ class MockAPIServer:
             import requests
 
             response = requests.get(
-                f"http://localhost:{self.port}/api/v1/stats", timeout=1,
+                f"http://localhost:{self.port}/api/v1/stats",
+                timeout=1,
             )
             return response.json()
         except:

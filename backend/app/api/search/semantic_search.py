@@ -49,7 +49,9 @@ class SemanticSearchHandler:
             rag_result = await self._search_via_rag(request)
             if rag_result.get("success"):
                 result = self._format_rag_response(
-                    rag_result, request.query, start_time,
+                    rag_result,
+                    request.query,
+                    start_time,
                 )
                 # Only cache successful results, not errors
                 if result.success:
@@ -66,7 +68,8 @@ class SemanticSearchHandler:
             if result.success:
                 await self.search_service._cache_result(cache_key, result)
             self.search_service._metrics.record_search(
-                time.time() - start_time, cache_hit=False,
+                time.time() - start_time,
+                cache_hit=False,
             )
             return result
 
@@ -81,7 +84,8 @@ class SemanticSearchHandler:
                 error=str(e),
             )
             self.search_service._metrics.record_search(
-                time.time() - start_time, cache_hit=False,
+                time.time() - start_time,
+                cache_hit=False,
             )
             return error_result
 
@@ -111,7 +115,10 @@ class SemanticSearchHandler:
             return {"success": False, "error": str(e)}
 
     def _format_rag_response(
-        self, rag_result: dict[str, Any], query: str, start_time: float,
+        self,
+        rag_result: dict[str, Any],
+        query: str,
+        start_time: float,
     ) -> SearchResponse:
         """Format RAG backend response."""
         data = rag_result["data"]
@@ -142,7 +149,9 @@ class SemanticSearchHandler:
         )
 
     async def _local_semantic_search(
-        self, request: SemanticSearchRequest, start_time: float,
+        self,
+        request: SemanticSearchRequest,
+        start_time: float,
     ) -> SearchResponse:
         """Fallback local semantic search using BM25."""
         try:

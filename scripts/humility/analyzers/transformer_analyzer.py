@@ -1,5 +1,4 @@
-"""Transformer model analysis module (placeholder for BERT/RoBERTa integration).
-"""
+"""Transformer model analysis module (placeholder for BERT/RoBERTa integration)."""
 
 from typing import Any
 

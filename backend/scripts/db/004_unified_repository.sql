@@ -3,9 +3,10 @@
 -- Based on 2024-2025 research on unified repositories and vector databases
 
 -- Enable required extensions
+-- Note: uuid-ossp requires proper quoting due to hyphen
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pg_trgm"; -- For text similarity
-CREATE EXTENSION IF NOT EXISTS "btree_gin"; -- For composite indexes
+CREATE EXTENSION IF NOT EXISTS pg_trgm; -- For text similarity
+CREATE EXTENSION IF NOT EXISTS btree_gin; -- For composite indexes
 
 -- ============================================================================
 -- Core Dataset Management Tables

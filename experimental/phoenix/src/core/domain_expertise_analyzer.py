@@ -210,7 +210,9 @@ class DomainExpertiseAnalyzer:
         }
 
     def analyze_domain_expertise(
-        self, agent_output: str, agent_state: AgentState,
+        self,
+        agent_output: str,
+        agent_state: AgentState,
     ) -> dict[str, dict[str, Any]]:
         """Analyze domain expertise from agent output.
 
@@ -235,19 +237,25 @@ class DomainExpertiseAnalyzer:
                 domain_expertise[domain] = {
                     "expertise_score": expertise_score,
                     "expertise_level": self._determine_expertise_level(
-                        agent_output, patterns,
+                        agent_output,
+                        patterns,
                     ),
                     "confidence": self._calculate_domain_confidence(
-                        agent_output, patterns, expertise_score,
+                        agent_output,
+                        patterns,
+                        expertise_score,
                     ),
                     "indicators": self._extract_domain_indicators(
-                        agent_output, patterns,
+                        agent_output,
+                        patterns,
                     ),
                     "terminology_usage": self._analyze_terminology_usage(
-                        agent_output, patterns,
+                        agent_output,
+                        patterns,
                     ),
                     "concept_depth": self._analyze_concept_depth(
-                        agent_output, patterns,
+                        agent_output,
+                        patterns,
                     ),
                 }
 
@@ -272,7 +280,8 @@ class DomainExpertiseAnalyzer:
 
         # Analyze contextual relevance
         context_score = self._analyze_contextual_relevance(
-            text, patterns["context_indicators"],
+            text,
+            patterns["context_indicators"],
         )
         scores["context"] = context_score
 
@@ -321,7 +330,10 @@ class DomainExpertiseAnalyzer:
         return "unknown"
 
     def _calculate_domain_confidence(
-        self, text: str, patterns: dict[str, Any], expertise_score: float,
+        self,
+        text: str,
+        patterns: dict[str, Any],
+        expertise_score: float,
     ) -> float:
         """Calculate confidence in domain expertise assessment."""
         base_confidence = expertise_score
@@ -334,7 +346,8 @@ class DomainExpertiseAnalyzer:
 
         # Boost confidence for contextual coherence
         contextual_matches = self._analyze_contextual_relevance(
-            text, patterns["context_indicators"],
+            text,
+            patterns["context_indicators"],
         )
 
         confidence_boost = (pattern_type_matches * 0.1) + (contextual_matches * 0.2)
@@ -342,7 +355,9 @@ class DomainExpertiseAnalyzer:
         return min(1.0, base_confidence + confidence_boost)
 
     def _extract_domain_indicators(
-        self, text: str, patterns: dict[str, Any],
+        self,
+        text: str,
+        patterns: dict[str, Any],
     ) -> list[str]:
         """Extract specific domain indicators from text."""
         indicators = []
@@ -360,7 +375,9 @@ class DomainExpertiseAnalyzer:
         return indicators[:5]  # Limit to 5 total indicators
 
     def _analyze_terminology_usage(
-        self, text: str, patterns: dict[str, Any],
+        self,
+        text: str,
+        patterns: dict[str, Any],
     ) -> dict[str, Any]:
         """Analyze terminology usage patterns."""
         terminology_analysis = {
@@ -387,7 +404,9 @@ class DomainExpertiseAnalyzer:
         return terminology_analysis
 
     def _analyze_concept_depth(
-        self, text: str, patterns: dict[str, Any],
+        self,
+        text: str,
+        patterns: dict[str, Any],
     ) -> dict[str, Any]:
         """Analyze depth of concept understanding."""
         concept_analysis = {
@@ -429,7 +448,8 @@ class DomainExpertiseAnalyzer:
         return concept_analysis
 
     def calculate_cross_domain_transfer(
-        self, domain_expertise: dict[str, dict[str, Any]],
+        self,
+        domain_expertise: dict[str, dict[str, Any]],
     ) -> dict[str, float]:
         """Calculate potential for cross-domain knowledge transfer."""
         if len(domain_expertise) < 2:

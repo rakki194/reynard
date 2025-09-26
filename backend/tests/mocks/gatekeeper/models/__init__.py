@@ -1,5 +1,4 @@
-"""Mock gatekeeper models package.
-"""
+"""Mock gatekeeper models package."""
 
 from ..main import (
     MockTokenResponse,

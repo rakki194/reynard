@@ -4,14 +4,14 @@ This module contains models for notes, todos, tags, and related content manageme
 """
 
 from .notes import (
-    Notebook,
+    AIMetadata,
     Note,
-    Todo,
-    Tag,
     NoteAttachment,
+    Notebook,
     NoteCollaboration,
     NoteVersion,
-    AIMetadata,
+    Tag,
+    Todo,
     note_tags,
     todo_tags,
 )
@@ -19,7 +19,7 @@ from .notes import (
 __all__ = [
     "Notebook",
     "Note",
-    "Todo", 
+    "Todo",
     "Tag",
     "NoteAttachment",
     "NoteCollaboration",
@@ -28,5 +28,3 @@ __all__ = [
     "note_tags",
     "todo_tags",
 ]
-
-

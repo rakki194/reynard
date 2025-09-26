@@ -86,7 +86,11 @@ class DatabaseEmailEncryptionService:
     ):
         """Initialize the database email encryption service."""
         self.config = config or EncryptionConfig()
-        self.temp_dir = Path(temp_dir) if temp_dir else Path(tempfile.gettempdir()) / "reynard_pgp_temp"
+        self.temp_dir = (
+            Path(temp_dir)
+            if temp_dir
+            else Path(tempfile.gettempdir()) / "reynard_pgp_temp"
+        )
         self.temp_dir.mkdir(exist_ok=True)
 
         # PGP setup
@@ -144,6 +148,7 @@ class DatabaseEmailEncryptionService:
         """Clean up temporary GPG home directory."""
         try:
             import shutil
+
             shutil.rmtree(temp_gpg_home, ignore_errors=True)
         except Exception as e:
             logger.warning(f"Failed to cleanup temporary GPG home {temp_gpg_home}: {e}")
@@ -175,7 +180,11 @@ class DatabaseEmailEncryptionService:
                 email=key_data["email"],
                 created_at=datetime.fromisoformat(key_data["created_at"]),
                 private_key=None,  # Not needed for encryption
-                expires_at=datetime.fromisoformat(key_data["expires_at"]) if key_data["expires_at"] else None,
+                expires_at=(
+                    datetime.fromisoformat(key_data["expires_at"])
+                    if key_data["expires_at"]
+                    else None
+                ),
                 is_revoked=key_data["is_revoked"],
                 trust_level=key_data["trust_level"],
             )
@@ -273,7 +282,9 @@ class DatabaseEmailEncryptionService:
             raise ValueError(f"Unsupported encryption method: {encryption_method}")
 
         # Find recipient's key
-        recipient_key = await self._find_recipient_key(recipient_email, encryption_method)
+        recipient_key = await self._find_recipient_key(
+            recipient_email, encryption_method
+        )
         if not recipient_key:
             raise ValueError(f"No encryption key found for {recipient_email}")
 

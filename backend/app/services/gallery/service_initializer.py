@@ -55,8 +55,7 @@ class GalleryServiceManager:
 
     @classmethod
     async def shutdown(cls) -> None:
-        """Shutdown the gallery service.
-        """
+        """Shutdown the gallery service."""
         if cls._instance:
             try:
                 logger.info("Shutting down gallery service...")

@@ -1,5 +1,5 @@
 import { createSignal, For, Show, onCleanup } from "solid-js";
-import { Button, Card } from "reynard-components";
+import { Button, Card } from "reynard-primitives";
 import { MarkdownRenderer } from "reynard-chat";
 import { getIcon } from "reynard-fluent-icons";
 

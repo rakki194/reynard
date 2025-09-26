@@ -9,12 +9,13 @@ import os
 from logging.config import fileConfig
 
 from alembic import context
+from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 from sqlalchemy.ext.asyncio import AsyncEngine
-from dotenv import load_dotenv
 
 # Import your models here if you have custom auth models
 from app.security.pgp_key_models import AuthBase
+
 # SSH key models use the same AuthBase
 
 # Load environment variables from the .env file

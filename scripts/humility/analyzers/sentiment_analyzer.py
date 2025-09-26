@@ -1,5 +1,4 @@
-"""Sentiment analysis module for humility detection.
-"""
+"""Sentiment analysis module for humility detection."""
 
 from typing import Any
 

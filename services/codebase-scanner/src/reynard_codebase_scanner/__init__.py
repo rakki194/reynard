@@ -14,7 +14,7 @@ __author__ = "Reynard Team"
 
 __all__ = [
     "CodebaseAnalysisEngine",
-    "CodebaseMetricsInsights", 
+    "CodebaseMetricsInsights",
     "CodebaseScannerService",
     "ExportManager",
     "MCPIntegration",

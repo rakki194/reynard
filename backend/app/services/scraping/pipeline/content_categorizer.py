@@ -49,7 +49,9 @@ class ContentCategorizer:
             return False
 
     async def categorize_content(
-        self, content: str, metadata: dict[str, Any] | None = None,
+        self,
+        content: str,
+        metadata: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """Categorize content based on analysis.
 
@@ -109,7 +111,9 @@ class ContentCategorizer:
             return 0.0
 
     def _generate_tags(
-        self, content: str, metadata: dict[str, Any] | None = None,
+        self,
+        content: str,
+        metadata: dict[str, Any] | None = None,
     ) -> list[str]:
         """Generate tags for content."""
         tags = []

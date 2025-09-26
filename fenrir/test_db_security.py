@@ -5,8 +5,10 @@
 Quick test to verify database security after implementing the reynard user.
 """
 
-import psycopg2
 import sys
+
+import psycopg2
+
 
 def test_database_security():
     """Test database security with different user credentials."""
@@ -24,13 +26,16 @@ def test_database_security():
                 database=db,
                 user="postgres",
                 password="password",
-                port=5432
+                port=5432,
             )
             conn.close()
             print(f"❌ SECURITY ISSUE: postgres user can access {db} database")
             return False
         except psycopg2.OperationalError as e:
-            if "permission denied" in str(e).lower() or "authentication failed" in str(e).lower():
+            if (
+                "permission denied" in str(e).lower()
+                or "authentication failed" in str(e).lower()
+            ):
                 print(f"✅ SECURE: postgres user cannot access {db} database")
             else:
                 print(f"⚠️  Unexpected error for {db}: {e}")
@@ -46,7 +51,7 @@ def test_database_security():
                 database=db,
                 user="reynard",
                 password="WmAGEbIWBIbqBPID^a6UHw@6s34iHw4o",
-                port=5432
+                port=5432,
             )
             conn.close()
             print(f"✅ SECURE: reynard user can access {db} database")
@@ -58,6 +63,7 @@ def test_database_security():
     print("✅ postgres user cannot access Reynard databases")
     print("✅ reynard user can access all Reynard databases")
     return True
+
 
 if __name__ == "__main__":
     success = test_database_security()

@@ -109,34 +109,61 @@ class GenderProfile:
             GenderIdentity.MALE: PronounSet("he", "him", "his", "himself"),
             GenderIdentity.FEMALE: PronounSet("she", "her", "hers", "herself"),
             GenderIdentity.NON_BINARY: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.AGENDER: PronounSet("they", "them", "theirs", "themselves"),
             GenderIdentity.GENDERFLUID: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.DEMIGENDER: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.BIGENDER: PronounSet("they", "them", "theirs", "themselves"),
             GenderIdentity.TRIGENDER: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.PANGENDER: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.TWO_SPIRIT: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.GENDERQUEER: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.NEUTROIS: PronounSet("they", "them", "theirs", "themselves"),
             GenderIdentity.ANDROGYNE: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.QUESTIONING: PronounSet(
-                "they", "them", "theirs", "themselves",
+                "they",
+                "them",
+                "theirs",
+                "themselves",
             ),
             GenderIdentity.OTHER: PronounSet("they", "them", "theirs", "themselves"),
         }
@@ -244,7 +271,8 @@ class GenderComponent(Component):
     def update_expression_confidence(self, delta: float) -> None:
         """Update confidence in gender expression."""
         self.expression_confidence = max(
-            0.0, min(1.0, self.expression_confidence + delta),
+            0.0,
+            min(1.0, self.expression_confidence + delta),
         )
         self.last_updated = datetime.now()
 

@@ -1,19 +1,20 @@
 """Test suite for Modular RAG Core Services.
 
-Tests the new modular RAG core functionality including embeddings, vector store, 
+Tests the new modular RAG core functionality including embeddings, vector store,
 document processing, and search with the new interface-based architecture.
 """
 
-import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.services.rag.services.core.embedding import OllamaEmbeddingService
-from app.services.rag.services.core.vector_store import PostgreSQLVectorStore
-from app.services.rag.services.core.document_processor import ASTDocumentProcessor
-from app.services.rag.services.core.search import HybridSearchEngine
+import pytest
+
 from app.services.rag.interfaces.base import ServiceStatus
+from app.services.rag.services.core.document_processor import ASTDocumentProcessor
+from app.services.rag.services.core.embedding import OllamaEmbeddingService
+from app.services.rag.services.core.search import HybridSearchEngine
+from app.services.rag.services.core.vector_store import PostgreSQLVectorStore
 
 
 class TestModularOllamaEmbeddingService:
@@ -36,7 +37,9 @@ class TestModularOllamaEmbeddingService:
         return OllamaEmbeddingService(config)
 
     @pytest.mark.asyncio
-    async def test_embedding_service_initialization(self, embedding_service: OllamaEmbeddingService):
+    async def test_embedding_service_initialization(
+        self, embedding_service: OllamaEmbeddingService
+    ):
         """Test embedding service initialization."""
         result = await embedding_service.initialize()
         assert result is True
@@ -102,7 +105,9 @@ class TestModularOllamaEmbeddingService:
             assert result1 == result2
 
     @pytest.mark.asyncio
-    async def test_embedding_error_handling(self, embedding_service: OllamaEmbeddingService):
+    async def test_embedding_error_handling(
+        self, embedding_service: OllamaEmbeddingService
+    ):
         """Test embedding error handling."""
         with patch("aiohttp.ClientSession.post") as mock_post:
             mock_post.side_effect = Exception("Network error")
@@ -172,7 +177,9 @@ class TestModularPostgreSQLVectorStore:
         return PostgreSQLVectorStore(config)
 
     @pytest.mark.asyncio
-    async def test_vector_store_initialization(self, vector_store_service: PostgreSQLVectorStore):
+    async def test_vector_store_initialization(
+        self, vector_store_service: PostgreSQLVectorStore
+    ):
         """Test vector store service initialization."""
         result = await vector_store_service.initialize()
         assert result is True
@@ -214,7 +221,8 @@ class TestModularPostgreSQLVectorStore:
 
             await vector_store_service.initialize()
             results = await vector_store_service.similarity_search(
-                query_embedding, limit,
+                query_embedding,
+                limit,
             )
 
             assert len(results) == 2
@@ -222,7 +230,9 @@ class TestModularPostgreSQLVectorStore:
             assert all("similarity" in result for result in results)
 
     @pytest.mark.asyncio
-    async def test_insert_document_embeddings(self, vector_store_service: PostgreSQLVectorStore):
+    async def test_insert_document_embeddings(
+        self, vector_store_service: PostgreSQLVectorStore
+    ):
         """Test inserting document embeddings."""
         embedding_data = [
             {
@@ -249,7 +259,9 @@ class TestModularPostgreSQLVectorStore:
             assert result == 1
 
     @pytest.mark.asyncio
-    async def test_get_document_chunks(self, vector_store_service: PostgreSQLVectorStore):
+    async def test_get_document_chunks(
+        self, vector_store_service: PostgreSQLVectorStore
+    ):
         """Test getting document chunks."""
         file_id = "test_file_1"
 
@@ -344,7 +356,9 @@ class TestModularASTDocumentProcessor:
         return ASTDocumentProcessor(config)
 
     @pytest.mark.asyncio
-    async def test_document_indexer_initialization(self, document_indexer: ASTDocumentProcessor):
+    async def test_document_indexer_initialization(
+        self, document_indexer: ASTDocumentProcessor
+    ):
         """Test document indexer initialization."""
         result = await document_indexer.initialize()
         assert result is True
@@ -376,10 +390,10 @@ class TestModularASTDocumentProcessor:
     async def test_pause_resume(self, document_indexer: ASTDocumentProcessor):
         """Test pausing and resuming the indexer."""
         await document_indexer.initialize()
-        
+
         await document_indexer.pause()
         # Should not raise an exception
-        
+
         await document_indexer.resume()
         # Should not raise an exception
 
@@ -463,10 +477,10 @@ class TestModularHybridSearchEngine:
 
     @pytest.mark.asyncio
     async def test_search_engine_initialization(
-        self, 
+        self,
         search_engine: HybridSearchEngine,
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ):
         """Test search engine initialization."""
         result = await search_engine.initialize()
@@ -475,17 +489,19 @@ class TestModularHybridSearchEngine:
 
     @pytest.mark.asyncio
     async def test_semantic_search(
-        self, 
+        self,
         search_engine: HybridSearchEngine,
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ):
         """Test semantic search functionality."""
         query = "machine learning algorithm"
         limit = 10
 
         await search_engine.initialize()
-        search_engine.set_dependencies(mock_embedding_service, mock_vector_store_service)
+        search_engine.set_dependencies(
+            mock_embedding_service, mock_vector_store_service
+        )
 
         results = await search_engine.semantic_search(query, limit)
 
@@ -495,10 +511,10 @@ class TestModularHybridSearchEngine:
 
     @pytest.mark.asyncio
     async def test_keyword_search(
-        self, 
+        self,
         search_engine: HybridSearchEngine,
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ):
         """Test keyword search functionality."""
         query = "python function"
@@ -518,10 +534,10 @@ class TestModularHybridSearchEngine:
 
     @pytest.mark.asyncio
     async def test_hybrid_search(
-        self, 
+        self,
         search_engine: HybridSearchEngine,
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ):
         """Test hybrid search functionality."""
         query = "authentication system"
@@ -546,10 +562,10 @@ class TestModularHybridSearchEngine:
 
     @pytest.mark.asyncio
     async def test_search_with_filters(
-        self, 
+        self,
         search_engine: HybridSearchEngine,
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ):
         """Test search with filters."""
         query = "test query"
@@ -562,7 +578,10 @@ class TestModularHybridSearchEngine:
 
             await search_engine.initialize()
             results = await search_engine.search_with_filters(
-                query, "hybrid", 10, filters,
+                query,
+                "hybrid",
+                10,
+                filters,
             )
 
             assert len(results) == 1
@@ -570,14 +589,16 @@ class TestModularHybridSearchEngine:
 
     @pytest.mark.asyncio
     async def test_populate_from_vector_store(
-        self, 
+        self,
         search_engine: HybridSearchEngine,
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ):
         """Test populating search index from vector store."""
         await search_engine.initialize()
-        search_engine.set_dependencies(mock_embedding_service, mock_vector_store_service)
+        search_engine.set_dependencies(
+            mock_embedding_service, mock_vector_store_service
+        )
 
         # Should not raise an exception
         await search_engine.populate_from_vector_store()
@@ -588,7 +609,9 @@ class TestModularHybridSearchEngine:
         search_engine.clear_index()
 
     @pytest.mark.asyncio
-    async def test_benchmark_search_performance(self, search_engine: HybridSearchEngine):
+    async def test_benchmark_search_performance(
+        self, search_engine: HybridSearchEngine
+    ):
         """Test search performance benchmarking."""
         test_queries = ["query1", "query2", "query3"]
         iterations = 2
@@ -598,7 +621,8 @@ class TestModularHybridSearchEngine:
 
             await search_engine.initialize()
             results = await search_engine.benchmark_search_performance(
-                test_queries, iterations,
+                test_queries,
+                iterations,
             )
 
             assert "semantic_search" in results
@@ -607,15 +631,17 @@ class TestModularHybridSearchEngine:
 
     @pytest.mark.asyncio
     async def test_health_check(
-        self, 
+        self,
         search_engine: HybridSearchEngine,
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ):
         """Test search engine health check."""
         await search_engine.initialize()
-        search_engine.set_dependencies(mock_embedding_service, mock_vector_store_service)
-        
+        search_engine.set_dependencies(
+            mock_embedding_service, mock_vector_store_service
+        )
+
         health = await search_engine.health_check()
 
         assert "status" in health
@@ -624,15 +650,17 @@ class TestModularHybridSearchEngine:
 
     @pytest.mark.asyncio
     async def test_get_stats(
-        self, 
+        self,
         search_engine: HybridSearchEngine,
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ):
         """Test search engine statistics."""
         await search_engine.initialize()
-        search_engine.set_dependencies(mock_embedding_service, mock_vector_store_service)
-        
+        search_engine.set_dependencies(
+            mock_embedding_service, mock_vector_store_service
+        )
+
         stats = await search_engine.get_stats()
 
         assert "service_name" in stats
@@ -714,7 +742,10 @@ class TestModularRAGCoreIntegration:
 
             # Test search
             search_results = await search_engine.search_with_filters(
-                "hello function", "hybrid", 5, None,
+                "hello function",
+                "hybrid",
+                5,
+                None,
             )
             assert isinstance(search_results, list)
 
@@ -748,7 +779,7 @@ class TestModularRAGCoreIntegration:
         # Test initialization failure
         with patch("aiohttp.ClientSession.post") as mock_post:
             mock_post.side_effect = Exception("Connection failed")
-            
+
             result = await embedding_service.initialize()
             assert result is False
             assert embedding_service.status == ServiceStatus.ERROR
@@ -758,7 +789,7 @@ class TestModularRAGCoreIntegration:
             mock_response = AsyncMock()
             mock_response.json.return_value = {"embedding": [0.1, 0.2, 0.3] * 100}
             mock_post.return_value.__aenter__.return_value = mock_response
-            
+
             result = await embedding_service.initialize()
             assert result is True
             assert embedding_service.status == ServiceStatus.HEALTHY

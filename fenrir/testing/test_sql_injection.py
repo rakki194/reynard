@@ -18,8 +18,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestSQLInjection(FenrirTestBase):
-    """*otter curiosity* Test suite for SQL injection exploits
-    """
+    """*otter curiosity* Test suite for SQL injection exploits"""
 
     async def test_blind_sql_injection(self):
         """Test that blind SQL injection detection works correctly"""
@@ -34,7 +33,9 @@ class TestSQLInjection(FenrirTestBase):
             # Mock the exploit to avoid actual network calls
             with patch.object(exploit, "_test_boolean_based_blind", return_value=False):
                 with patch.object(
-                    exploit, "_test_time_based_blind", return_value=False,
+                    exploit,
+                    "_test_time_based_blind",
+                    return_value=False,
                 ):
                     results = exploit.run_exploit()
 

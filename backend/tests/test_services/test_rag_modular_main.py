@@ -3,13 +3,14 @@
 Tests the main RAG service orchestrator that coordinates all the modular services.
 """
 
-import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.services.rag.rag_service import RAGService
+import pytest
+
 from app.services.rag.interfaces.base import ServiceStatus
+from app.services.rag.rag_service import RAGService
 
 
 class TestRAGServiceOrchestrator:
@@ -44,7 +45,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock embedding response
             mock_embedding_response = AsyncMock()
@@ -73,7 +76,7 @@ class TestRAGServiceOrchestrator:
         """Test RAG service when disabled."""
         config = {"rag_enabled": False}
         rag_service = RAGService(config)
-        
+
         result = await rag_service.initialize()
         assert result is True
         assert rag_service.initialized is False
@@ -84,7 +87,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -114,7 +119,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -144,7 +151,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -164,7 +173,9 @@ class TestRAGServiceOrchestrator:
             await rag_service.initialize()
 
             # Mock search engine
-            with patch.object(rag_service.search_engine, "search_with_filters") as mock_search:
+            with patch.object(
+                rag_service.search_engine, "search_with_filters"
+            ) as mock_search:
                 mock_search.return_value = [
                     {"id": 1, "text": "Test result", "score": 0.95},
                 ]
@@ -180,7 +191,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -200,7 +213,9 @@ class TestRAGServiceOrchestrator:
             await rag_service.initialize()
 
             # Mock search engine
-            with patch.object(rag_service.search_engine, "search_with_filters") as mock_search:
+            with patch.object(
+                rag_service.search_engine, "search_with_filters"
+            ) as mock_search:
                 mock_search.return_value = [
                     {"id": 1, "text": "Semantic result", "score": 0.95},
                 ]
@@ -216,7 +231,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -236,7 +253,9 @@ class TestRAGServiceOrchestrator:
             await rag_service.initialize()
 
             # Mock search engine
-            with patch.object(rag_service.search_engine, "search_with_filters") as mock_search:
+            with patch.object(
+                rag_service.search_engine, "search_with_filters"
+            ) as mock_search:
                 mock_search.return_value = [
                     {"id": 1, "text": "Keyword result", "score": 0.85},
                 ]
@@ -252,7 +271,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -272,7 +293,9 @@ class TestRAGServiceOrchestrator:
             await rag_service.initialize()
 
             # Mock search engine
-            with patch.object(rag_service.search_engine, "search_with_filters") as mock_search:
+            with patch.object(
+                rag_service.search_engine, "search_with_filters"
+            ) as mock_search:
                 mock_search.return_value = [
                     {"id": 1, "text": "Hybrid result", "score": 0.92},
                 ]
@@ -288,7 +311,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -308,7 +333,9 @@ class TestRAGServiceOrchestrator:
             await rag_service.initialize()
 
             # Mock document indexer
-            with patch.object(rag_service.document_indexer, "index_documents") as mock_index:
+            with patch.object(
+                rag_service.document_indexer, "index_documents"
+            ) as mock_index:
                 mock_index.return_value = [
                     {"status": "success", "file_id": "test_1"},
                 ]
@@ -334,7 +361,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -355,9 +384,15 @@ class TestRAGServiceOrchestrator:
 
             # Mock health checks
             with (
-                patch.object(rag_service.embedding_service, "health_check") as mock_embedding_health,
-                patch.object(rag_service.vector_store_service, "health_check") as mock_vector_health,
-                patch.object(rag_service.document_indexer, "health_check") as mock_doc_health,
+                patch.object(
+                    rag_service.embedding_service, "health_check"
+                ) as mock_embedding_health,
+                patch.object(
+                    rag_service.vector_store_service, "health_check"
+                ) as mock_vector_health,
+                patch.object(
+                    rag_service.document_indexer, "health_check"
+                ) as mock_doc_health,
             ):
                 mock_embedding_health.return_value = {"status": "healthy"}
                 mock_vector_health.return_value = {"status": "healthy"}
@@ -376,7 +411,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -397,10 +434,18 @@ class TestRAGServiceOrchestrator:
 
             # Mock stats
             with (
-                patch.object(rag_service.embedding_service, "get_stats") as mock_embedding_stats,
-                patch.object(rag_service.vector_store_service, "get_stats") as mock_vector_stats,
-                patch.object(rag_service.document_indexer, "get_stats") as mock_doc_stats,
-                patch.object(rag_service.search_engine, "get_stats") as mock_search_stats,
+                patch.object(
+                    rag_service.embedding_service, "get_stats"
+                ) as mock_embedding_stats,
+                patch.object(
+                    rag_service.vector_store_service, "get_stats"
+                ) as mock_vector_stats,
+                patch.object(
+                    rag_service.document_indexer, "get_stats"
+                ) as mock_doc_stats,
+                patch.object(
+                    rag_service.search_engine, "get_stats"
+                ) as mock_search_stats,
             ):
                 mock_embedding_stats.return_value = {"embedding_requests": 10}
                 mock_vector_stats.return_value = {"total_embeddings": 100}
@@ -420,7 +465,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -440,7 +487,9 @@ class TestRAGServiceOrchestrator:
             await rag_service.initialize()
 
             # Mock performance monitor
-            with patch.object(rag_service.performance_monitor, "generate_report") as mock_report:
+            with patch.object(
+                rag_service.performance_monitor, "generate_report"
+            ) as mock_report:
                 mock_report.return_value = "Performance Report Content"
 
                 report = await rag_service.generate_performance_report(24)
@@ -454,7 +503,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -474,7 +525,9 @@ class TestRAGServiceOrchestrator:
             await rag_service.initialize()
 
             # Mock model evaluator
-            with patch.object(rag_service.model_evaluator, "evaluate_models") as mock_evaluate:
+            with patch.object(
+                rag_service.model_evaluator, "evaluate_models"
+            ) as mock_evaluate:
                 mock_evaluate.return_value = {
                     "embeddinggemma:latest": {"accuracy": 0.95, "latency": 100}
                 }
@@ -490,7 +543,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -510,7 +565,10 @@ class TestRAGServiceOrchestrator:
             await rag_service.initialize()
 
             # Mock continuous improvement
-            with patch.object(rag_service.continuous_improvement, "generate_optimization_recommendations") as mock_recommendations:
+            with patch.object(
+                rag_service.continuous_improvement,
+                "generate_optimization_recommendations",
+            ) as mock_recommendations:
                 mock_recommendations.return_value = [
                     {"type": "performance", "description": "Optimize embedding cache"},
                 ]
@@ -526,7 +584,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()
@@ -547,9 +607,15 @@ class TestRAGServiceOrchestrator:
 
             # Mock shutdown methods
             with (
-                patch.object(rag_service.embedding_service, "shutdown") as mock_embedding_shutdown,
-                patch.object(rag_service.vector_store_service, "shutdown") as mock_vector_shutdown,
-                patch.object(rag_service.document_indexer, "shutdown") as mock_doc_shutdown,
+                patch.object(
+                    rag_service.embedding_service, "shutdown"
+                ) as mock_embedding_shutdown,
+                patch.object(
+                    rag_service.vector_store_service, "shutdown"
+                ) as mock_vector_shutdown,
+                patch.object(
+                    rag_service.document_indexer, "shutdown"
+                ) as mock_doc_shutdown,
             ):
                 await rag_service.shutdown()
 
@@ -561,7 +627,7 @@ class TestRAGServiceOrchestrator:
     def test_is_initialized(self, rag_service: RAGService):
         """Test initialization status check."""
         assert rag_service.is_initialized() is False
-        
+
         rag_service.initialized = True
         assert rag_service.is_initialized() is True
 
@@ -571,9 +637,11 @@ class TestRAGServiceOrchestrator:
 
     def test_get_available_models(self, rag_service: RAGService):
         """Test getting available models."""
-        with patch.object(rag_service.embedding_service, "get_available_models") as mock_models:
+        with patch.object(
+            rag_service.embedding_service, "get_available_models"
+        ) as mock_models:
             mock_models.return_value = ["embeddinggemma:latest", "nomic-embed-text"]
-            
+
             models = rag_service.get_available_models()
             assert models == ["embeddinggemma:latest", "nomic-embed-text"]
 
@@ -581,16 +649,18 @@ class TestRAGServiceOrchestrator:
         """Test getting best model."""
         with patch.object(rag_service.embedding_service, "get_best_model") as mock_best:
             mock_best.return_value = "embeddinggemma:latest"
-            
+
             best_model = rag_service.get_best_model()
             assert best_model == "embeddinggemma:latest"
 
     @pytest.mark.asyncio
     async def test_error_handling_during_initialization(self, rag_service: RAGService):
         """Test error handling during initialization."""
-        with patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing:
+        with patch.object(
+            rag_service.file_indexing_service, "initialize"
+        ) as mock_file_indexing:
             mock_file_indexing.side_effect = Exception("File indexing failed")
-            
+
             result = await rag_service.initialize()
             assert result is False
             assert rag_service.initialized is False
@@ -608,7 +678,9 @@ class TestRAGServiceOrchestrator:
         with (
             patch("aiohttp.ClientSession.post") as mock_post,
             patch("sqlalchemy.create_engine") as mock_engine,
-            patch.object(rag_service.file_indexing_service, "initialize") as mock_file_indexing,
+            patch.object(
+                rag_service.file_indexing_service, "initialize"
+            ) as mock_file_indexing,
         ):
             # Mock responses
             mock_embedding_response = AsyncMock()

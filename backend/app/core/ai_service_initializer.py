@@ -27,40 +27,40 @@ logger = logging.getLogger(__name__)
 
 class AIServiceInitializer:
     """Initializer for the AI service."""
-    
+
     def __init__(self):
         self._ai_service: AIService | None = None
         self._initialized = False
-    
+
     async def initialize(self, config: dict[str, Any]) -> bool:
         """Initialize the AI service with configuration.
-        
+
         Args:
             config: Service configuration dictionary
-            
+
         Returns:
             True if initialization successful, False otherwise
         """
         try:
             logger.info("Initializing AI service...")
-            
+
             # Get configuration manager
             config_manager = get_config_manager()
-            
+
             # Load all provider configurations
             provider_configs = config_manager.load_all_configs()
-            
+
             # Filter enabled providers
             enabled_providers = {
                 provider_type: provider_config
                 for provider_type, provider_config in provider_configs.items()
                 if provider_config.get("enabled", False)
             }
-            
+
             if not enabled_providers:
                 logger.warning("No AI providers enabled in configuration")
                 return False
-            
+
             # Create AI service configuration
             ai_config = AIServiceConfig(
                 default_provider=ProviderType.OLLAMA,  # Default to Ollama for compatibility
@@ -71,22 +71,24 @@ class AIServiceInitializer:
                 retry_delay=config.get("retry_delay", 1.0),
                 provider_configs=enabled_providers,
             )
-            
+
             # Create and initialize AI service
             self._ai_service = AIService(ai_config)
-            
+
             if await self._ai_service.initialize():
                 self._initialized = True
-                logger.info(f"AI service initialized with {len(enabled_providers)} providers")
+                logger.info(
+                    f"AI service initialized with {len(enabled_providers)} providers"
+                )
                 return True
             else:
                 logger.error("Failed to initialize AI service")
                 return False
-                
+
         except Exception as e:
             logger.error(f"Error initializing AI service: {e}")
             return False
-    
+
     async def shutdown(self) -> None:
         """Shutdown the AI service and cleanup resources."""
         try:
@@ -97,35 +99,38 @@ class AIServiceInitializer:
                 logger.info("AI service shutdown complete")
         except Exception as e:
             logger.error(f"Error during AI service shutdown: {e}")
-    
+
     async def health_check(self) -> bool:
         """Check AI service health.
-        
+
         Returns:
             True if service is healthy, False otherwise
         """
         try:
             if not self._ai_service or not self._initialized:
                 return False
-            
+
             health_status = self._ai_service.get_health_status()
-            return health_status["service_initialized"] and health_status["healthy_providers"] > 0
-            
+            return (
+                health_status["service_initialized"]
+                and health_status["healthy_providers"] > 0
+            )
+
         except Exception as e:
             logger.error(f"Error checking AI service health: {e}")
             return False
-    
+
     def get_service(self) -> AIService | None:
         """Get the AI service instance.
-        
+
         Returns:
             AI service instance or None if not initialized
         """
         return self._ai_service
-    
+
     def is_initialized(self) -> bool:
         """Check if the service is initialized.
-        
+
         Returns:
             True if service is initialized, False otherwise
         """
@@ -146,10 +151,10 @@ def get_ai_service_initializer() -> AIServiceInitializer:
 
 async def init_ai_service(service_config: dict[str, Any]) -> bool:
     """Initialize the AI service.
-    
+
     Args:
         service_config: Service configuration dictionary
-        
+
     Returns:
         True if initialization successful, False otherwise
     """
@@ -165,7 +170,7 @@ async def shutdown_ai_service() -> None:
 
 async def health_check_ai_service() -> bool:
     """Check AI service health.
-    
+
     Returns:
         True if service is healthy, False otherwise
     """
@@ -175,7 +180,7 @@ async def health_check_ai_service() -> bool:
 
 def get_ai_service() -> AIService | None:
     """Get the AI service instance.
-    
+
     Returns:
         AI service instance or None if not initialized
     """

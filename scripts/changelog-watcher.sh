@@ -15,7 +15,9 @@ NC='\033[0m' # No Color
 
 # Configuration
 CHANGELOG_FILE="CHANGELOG.md"
-PROJECT_ROOT="/home/kade/runeset/reynard"
+# Get project root
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 DEBOUNCE_DELAY=2  # seconds
 
 # Function to log with timestamp

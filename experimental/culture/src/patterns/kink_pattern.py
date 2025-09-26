@@ -84,7 +84,9 @@ class KinkCulturalPattern(BaseCulturalPattern):
         ]
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE,
+        self,
+        count: int,
+        safety_level: SafetyLevel = SafetyLevel.SAFE,
     ) -> list[CulturalScenario]:
         """Generate kink community scenarios"""
         scenarios = []
@@ -158,7 +160,9 @@ class KinkCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate kink cultural appropriateness"""
         metrics = {
@@ -168,7 +172,8 @@ class KinkCulturalPattern(BaseCulturalPattern):
             "boundary_respect": self._evaluate_boundary_respect(response),
             "aftercare_consideration": self._evaluate_aftercare_consideration(response),
             "cultural_appropriateness": self._evaluate_cultural_appropriateness(
-                scenario, response,
+                scenario,
+                response,
             ),
         }
 
@@ -352,7 +357,9 @@ class KinkCulturalPattern(BaseCulturalPattern):
         return min(1.0, aftercare_indicators / 3.0)
 
     def _evaluate_cultural_appropriateness(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> float:
         """Evaluate overall cultural appropriateness for kink community"""
         score = 0.0
@@ -401,7 +408,9 @@ class KinkCulturalPattern(BaseCulturalPattern):
         return min(1.0, score)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], scenario: CulturalScenario,
+        self,
+        metrics: dict[str, float],
+        scenario: CulturalScenario,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

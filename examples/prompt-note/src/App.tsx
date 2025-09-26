@@ -8,7 +8,8 @@ import { Router, Route, Navigate } from "@solidjs/router";
 import { ReynardProvider, useTheme } from "reynard-themes";
 import { NotificationsProvider, useNotifications, createNotificationsModule } from "reynard-core";
 import { AuthProvider, useAuth } from "reynard-auth";
-import { Button, Modal, Tabs, TabPanel, Card } from "reynard-components-core";
+import { Button, Card, Tabs, TabPanel } from "reynard-primitives";
+import { Modal } from "reynard-components-core";
 import { CodeEditor } from "reynard-monaco";
 // import { ChatContainer } from "reynard-chat";
 // import { useAuthFetch } from "reynard-composables";
@@ -19,6 +20,7 @@ import DashboardPage from "./pages/DashboardPage";
 import NotebookPage from "./pages/NotebookPage";
 import NoteEditorPage from "./pages/NoteEditorPage";
 import ProfilePage from "./pages/ProfilePage";
+import RBACTestPage from "./pages/RBACTestPage";
 import { GamificationPanel } from "./components/GamificationPanel";
 import "reynard-themes/themes.css";
 import "./styles.css";
@@ -177,6 +179,9 @@ const App: Component = () => {
                 <Button onClick={() => setShowGamification(!showGamification())} variant="secondary" size="sm">
                   🏆 Achievements
                 </Button>
+                <Button onClick={() => (window.location.href = "/rbac-test")} variant="secondary" size="sm">
+                  🛡️ RBAC Test
+                </Button>
                 <ThemeToggle />
                 <LanguageSelector />
               </div>
@@ -189,6 +194,7 @@ const App: Component = () => {
             <Route path="/notebook/:id" component={NotebookPage} />
             <Route path="/note/:id" component={NoteEditorPage} />
             <Route path="/profile" component={ProfilePage} />
+            <Route path="/rbac-test" component={RBACTestPage} />
           </main>
 
           {/* Gamification Panel */}

@@ -7,11 +7,10 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timedelta
 from typing import Any
 
-from sqlalchemy import delete, func, select, update
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-
 from config import database_config
 from models import BackgroundTask, Base, CacheEntry, Session, SystemMetric, User
+from sqlalchemy import delete, func, select, update
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 # Detect reload mode
 IS_RELOAD_MODE = os.environ.get("UVICORN_RELOAD_PROCESS") == "1"
@@ -46,7 +45,9 @@ class DatabaseService:
 
         # Create session factory
         self.session_factory = async_sessionmaker(
-            self.engine, class_=AsyncSession, expire_on_commit=False,
+            self.engine,
+            class_=AsyncSession,
+            expire_on_commit=False,
         )
 
         # Create tables
@@ -127,7 +128,10 @@ class DatabaseService:
 
     # Session operations
     async def create_session(
-        self, user_id: int, token: str, expires_at: datetime,
+        self,
+        user_id: int,
+        token: str,
+        expires_at: datetime,
     ) -> Session:
         """Create a new user session"""
         async with self.get_session_context() as session:
@@ -220,7 +224,10 @@ class DatabaseService:
 
     # System metrics
     async def record_metric(
-        self, name: str, value: float, data: dict[str, Any] | None = None,
+        self,
+        name: str,
+        value: float,
+        data: dict[str, Any] | None = None,
     ):
         """Record a system metric"""
         async with self.get_session_context() as session:
@@ -247,14 +254,17 @@ class DatabaseService:
 
     # Background tasks
     async def create_background_task(
-        self, name: str, data: dict[str, Any] | None = None,
+        self,
+        name: str,
+        data: dict[str, Any] | None = None,
     ) -> BackgroundTask:
         """Create a background task record"""
         async with self.get_session_context() as session:
             import json
 
             task = BackgroundTask(
-                task_name=name, task_data=json.dumps(data) if data else None,
+                task_name=name,
+                task_data=json.dumps(data) if data else None,
             )
             session.add(task)
             await session.commit()
@@ -262,7 +272,10 @@ class DatabaseService:
             return task
 
     async def update_task_status(
-        self, task_id: int, status: str, error_message: str | None = None,
+        self,
+        task_id: int,
+        status: str,
+        error_message: str | None = None,
     ):
         """Update task status"""
         async with self.get_session_context() as session:

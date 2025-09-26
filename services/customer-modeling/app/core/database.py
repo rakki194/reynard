@@ -2,12 +2,13 @@
 Database configuration and session management for Customer Modeling Microservice.
 """
 
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.pool import StaticPool
 import logging
 from typing import Generator
+
+from sqlalchemy import MetaData, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.pool import StaticPool
 
 from app.core.config import get_settings
 
@@ -21,7 +22,7 @@ engine = create_engine(
     pool_size=settings.DATABASE_POOL_SIZE,
     max_overflow=settings.DATABASE_MAX_OVERFLOW,
     pool_pre_ping=True,
-    echo=settings.DEBUG
+    echo=settings.DEBUG,
 )
 
 # Create session factory
@@ -48,11 +49,11 @@ async def init_db():
     try:
         # Import all models to ensure they are registered
         from app.models import customer  # noqa
-        
+
         # Create all tables
         Base.metadata.create_all(bind=engine)
         logger.info("Database tables created successfully")
-        
+
     except Exception as e:
         logger.error(f"Failed to initialize database: {e}")
         raise

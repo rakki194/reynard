@@ -16,7 +16,7 @@ from .base import BaseService
 @dataclass
 class VectorDocument:
     """Document stored in vector database."""
-    
+
     id: str
     content: str
     embedding: List[float]
@@ -28,7 +28,7 @@ class VectorDocument:
 @dataclass
 class VectorSearchResult:
     """Result of vector search."""
-    
+
     document: VectorDocument
     similarity_score: float
     rank: int
@@ -39,7 +39,8 @@ class IVectorStoreService(BaseService, ABC):
 
     @abstractmethod
     async def insert_document_embeddings(
-        self, embeddings: Sequence[Dict[str, Any]],
+        self,
+        embeddings: Sequence[Dict[str, Any]],
     ) -> int:
         """Insert document embeddings into the database."""
         pass
@@ -76,7 +77,8 @@ class VectorStore(ABC):
 
     @abstractmethod
     async def store_documents(
-        self, documents: List[VectorDocument],
+        self,
+        documents: List[VectorDocument],
     ) -> List[str]:
         """Store documents in the vector store."""
         pass

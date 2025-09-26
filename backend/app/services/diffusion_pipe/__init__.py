@@ -5,19 +5,22 @@ diffusion-pipe training integration following the AI service pattern
 with provider registry, health monitoring, and fallback mechanisms.
 """
 
-from .diffusion_pipe_service import DiffusionPipeService, get_diffusion_pipe_service
-from .training_manager import TrainingManager
-from .model_provider import ModelProvider
 from .checkpoint_manager import CheckpointManager
-from .metrics_collector import MetricsCollector
-from .training_profile_manager import TrainingProfileManager, get_training_profile_manager
-from .websocket_manager import WebSocketManager, get_websocket_manager
 from .chroma_service import ChromaService, get_chroma_service
+from .diffusion_pipe_service import DiffusionPipeService, get_diffusion_pipe_service
+from .metrics_collector import MetricsCollector
+from .model_provider import ModelProvider
+from .training_manager import TrainingManager
+from .training_profile_manager import (
+    TrainingProfileManager,
+    get_training_profile_manager,
+)
+from .websocket_manager import WebSocketManager, get_websocket_manager
 
 __all__ = [
     "DiffusionPipeService",
     "get_diffusion_pipe_service",
-    "TrainingManager", 
+    "TrainingManager",
     "ModelProvider",
     "CheckpointManager",
     "MetricsCollector",

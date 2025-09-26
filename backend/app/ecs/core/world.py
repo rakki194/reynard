@@ -125,7 +125,8 @@ class ECSWorld:
                     logger.error(f"Error updating system {type(system).__name__}: {e}")
 
     def get_entities_with_components(
-        self, *component_types: type[Component],
+        self,
+        *component_types: type[Component],
     ) -> list[Entity]:
         """Get entities that have all specified components.
 

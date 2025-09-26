@@ -19,7 +19,8 @@ from services.refinement_service import PromptRefinementService
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -41,7 +42,12 @@ class ReynardIntegration:
         """Check if PawPrint scraper is available."""
         try:
             # Try to import PawPrint components
-            sys.path.append("/home/kade/runeset/reynard/third_party/pawprint/src")
+            # Get project root and add pawprint path
+            current_file = Path(__file__)
+            project_root = (
+                current_file.parent.parent.parent.parent
+            )  # experimental/prompt-refinement-tools/examples -> experimental/prompt-refinement-tools -> experimental -> project root
+            sys.path.append(str(project_root / "third_party" / "pawprint" / "src"))
             from pawprint.scraper import EnhancedContentExtractor
 
             return True
@@ -53,7 +59,12 @@ class ReynardIntegration:
         """Check if RAG backend is available."""
         try:
             # Try to import RAG components
-            sys.path.append("/home/kade/runeset/reynard/backend/app/services/rag")
+            # Get project root and add RAG path
+            current_file = Path(__file__)
+            project_root = (
+                current_file.parent.parent.parent.parent
+            )  # experimental/prompt-refinement-tools/examples -> experimental/prompt-refinement-tools -> experimental -> project root
+            sys.path.append(str(project_root / "backend" / "app" / "services" / "rag"))
             from core.search import SearchEngine
 
             return True
@@ -65,8 +76,13 @@ class ReynardIntegration:
         """Check if TextProcessor is available."""
         try:
             # Try to import TextProcessor
+            # Get project root and add yipyap path
+            current_file = Path(__file__)
+            project_root = (
+                current_file.parent.parent.parent.parent
+            )  # experimental/prompt-refinement-tools/examples -> experimental/prompt-refinement-tools -> experimental -> project root
             sys.path.append(
-                "/home/kade/runeset/reynard/third_party/yipyap/app/data_access",
+                str(project_root / "third_party" / "yipyap" / "app" / "data_access")
             )
             from text_processor import TextProcessor
 

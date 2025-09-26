@@ -132,7 +132,9 @@ It contains Python files and documentation.
 
     @pytest.mark.asyncio
     async def test_file_indexing_with_filters(
-        self, file_indexing_service, temp_directory,
+        self,
+        file_indexing_service,
+        temp_directory,
     ):
         """Test file indexing with file type filters."""
         directories = [str(temp_directory)]
@@ -245,7 +247,8 @@ It contains Python files and documentation.
         """Test error handling for invalid inputs."""
         # Test indexing non-existent directory
         result = await file_indexing_service.index_files(
-            ["/non/existent/path"], [".py"],
+            ["/non/existent/path"],
+            [".py"],
         )
         assert result["success"] is False
         assert result["indexed_files"] == 0
@@ -336,7 +339,8 @@ It contains Python files and documentation.
 
         # Test searching for specific terms
         results = await file_indexing_service.search_files(
-            "hello_world", max_results=10,
+            "hello_world",
+            max_results=10,
         )
         assert len(results) > 0
 

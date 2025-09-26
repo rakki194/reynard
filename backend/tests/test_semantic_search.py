@@ -181,7 +181,8 @@ class TestEmbeddingService:
         # For now, we'll test that the method exists and handles errors gracefully
         try:
             embedding = await self.embedding_service._embed_with_ollama(
-                "test text", "embeddinggemma:latest",
+                "test text",
+                "embeddinggemma:latest",
             )
             # If Ollama is not running, this should return None
             assert embedding is None or isinstance(embedding, list)
@@ -195,7 +196,8 @@ class TestEmbeddingService:
         # Test that the method exists and can be called
         try:
             embedding = await self.embedding_service._embed_with_ollama(
-                "test text", "embeddinggemma:latest",
+                "test text",
+                "embeddinggemma:latest",
             )
             # If Ollama is not running, this should return None
             assert embedding is None or isinstance(embedding, list)
@@ -285,7 +287,8 @@ class TestEnhancedSearchService:
         """Test intelligent search functionality."""
         # Mock the NLP processor to ensure it's treated as natural language
         with patch.object(
-            self.search_service.nlp_processor, "process_query",
+            self.search_service.nlp_processor,
+            "process_query",
         ) as mock_process:
             mock_process.return_value = {
                 "intent": "function_search",
@@ -297,7 +300,8 @@ class TestEnhancedSearchService:
             }
 
             with patch.object(
-                self.search_service, "natural_language_search",
+                self.search_service,
+                "natural_language_search",
             ) as mock_nlp:
                 mock_nlp.return_value = SearchResponse(
                     success=True,
@@ -325,7 +329,8 @@ class TestEnhancedSearchService:
             )
 
             result = await self.search_service.contextual_search(
-                "test query", context="test context",
+                "test query",
+                context="test context",
             )
 
             assert result.success is True
@@ -422,7 +427,11 @@ class TestSearchIntegration:
         search_service._nlp_enabled = True
         with patch.object(search_service, "semantic_search") as mock_search:
             mock_search.return_value = SearchResponse(
-                success=True, query=query, total_results=1, results=[], search_time=0.1,
+                success=True,
+                query=query,
+                total_results=1,
+                results=[],
+                search_time=0.1,
             )
 
             result = await search_service.natural_language_search(query)
@@ -454,13 +463,15 @@ class TestSearchIntegration:
         # Mock Ollama failure
         with patch.object(embedding_service, "_embed_with_ollama", return_value=None):
             with patch.object(
-                embedding_service, "_embed_with_sentence_transformers",
+                embedding_service,
+                "_embed_with_sentence_transformers",
             ) as mock_st:
                 mock_st.return_value = [[0.1] * 384]  # Different dimension for fallback
 
                 # This should fallback to sentence-transformers
                 embedding = await embedding_service.embed_text(
-                    "test text", "embeddinggemma:latest",
+                    "test text",
+                    "embeddinggemma:latest",
                 )
 
                 # Should have called sentence-transformers fallback

@@ -1,2 +1,1 @@
-"""Python validation scripts for Reynard framework.
-"""
+"""Python validation scripts for Reynard framework."""

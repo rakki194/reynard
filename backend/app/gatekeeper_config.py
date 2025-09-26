@@ -35,7 +35,9 @@ class ReynardGatekeeperConfig:
         # Password security level
         security_level_str = os.getenv("GATEKEEPER_PASSWORD_SECURITY_LEVEL", "MEDIUM")
         self.password_security_level = getattr(
-            SecurityLevel, security_level_str.upper(), SecurityLevel.MEDIUM,
+            SecurityLevel,
+            security_level_str.upper(),
+            SecurityLevel.MEDIUM,
         )
 
         # Database configuration - Use dedicated auth database

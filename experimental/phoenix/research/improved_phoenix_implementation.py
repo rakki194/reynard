@@ -59,7 +59,14 @@ except ImportError as e:
 
     class AgentState:
         def __init__(
-            self, id, name, spirit, generation, traits, knowledge, performance_metrics,
+            self,
+            id,
+            name,
+            spirit,
+            generation,
+            traits,
+            knowledge,
+            performance_metrics,
         ):
             self.id = id
             self.name = name
@@ -72,7 +79,8 @@ except ImportError as e:
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -261,18 +269,21 @@ class ImprovedPhoenixImplementation:
 
         # Normalize text length
         normalization_result = self.text_normalizer.normalize_text_length(
-            text, strategy="adaptive",
+            text,
+            strategy="adaptive",
         )
         normalized_text = normalization_result["normalized_text"]
 
         # Extract traits with improved extractor
         traits = self.trait_extractor.extract_traits_from_output(
-            normalized_text, agent_state,
+            normalized_text,
+            agent_state,
         )
 
         # Analyze domain expertise with improved analyzer
         domain_expertise = self.domain_analyzer.analyze_domain_expertise(
-            normalized_text, agent_state,
+            normalized_text,
+            agent_state,
         )
 
         # Calculate metrics
@@ -283,16 +294,19 @@ class ImprovedPhoenixImplementation:
         )
         domain_count = len(domain_expertise)
         specialization_accuracy = self._calculate_specialization_accuracy(
-            traits, domain_expertise,
+            traits,
+            domain_expertise,
         )
         knowledge_fidelity = self._calculate_knowledge_fidelity(
-            traits, domain_expertise,
+            traits,
+            domain_expertise,
         )
 
         # Apply length normalization to metrics
         quality_metrics = self._analyze_output_quality(text)
         normalized_quality_metrics = self.text_normalizer.normalize_metrics_by_length(
-            quality_metrics, text,
+            quality_metrics,
+            text,
         )
 
         return {
@@ -385,7 +399,8 @@ class ImprovedPhoenixImplementation:
         )
 
     def _calculate_domain_expertise_score(
-        self, domain_expertise: dict[str, Any],
+        self,
+        domain_expertise: dict[str, Any],
     ) -> float:
         """Calculate overall domain expertise score."""
         if not domain_expertise:
@@ -406,7 +421,9 @@ class ImprovedPhoenixImplementation:
         return total_score / total_weight if total_weight > 0 else 0.0
 
     def _calculate_specialization_accuracy(
-        self, traits: list[SubliminalTrait], domain_expertise: dict[str, Any],
+        self,
+        traits: list[SubliminalTrait],
+        domain_expertise: dict[str, Any],
     ) -> float:
         """Calculate specialization accuracy."""
         if not traits:
@@ -422,20 +439,30 @@ class ImprovedPhoenixImplementation:
                     and details.get("expertise_score", 0) > 0.3
                 ):
                     # Simple alignment check - in practice, this could be more sophisticated
-                    if (trait.category.value in ["cognitive", "creative"] and domain in [
-                        "software_engineering",
-                        "machine_learning",
-                    ]) or (trait.category.value in [
-                        "social",
-                        "personality",
-                    ] and domain in ["business_strategy", "project_management"]):
+                    if (
+                        trait.category.value in ["cognitive", "creative"]
+                        and domain
+                        in [
+                            "software_engineering",
+                            "machine_learning",
+                        ]
+                    ) or (
+                        trait.category.value
+                        in [
+                            "social",
+                            "personality",
+                        ]
+                        and domain in ["business_strategy", "project_management"]
+                    ):
                         aligned_traits += 1
                         break
 
         return aligned_traits / len(traits) if traits else 0.0
 
     def _calculate_knowledge_fidelity(
-        self, traits: list[SubliminalTrait], domain_expertise: dict[str, Any],
+        self,
+        traits: list[SubliminalTrait],
+        domain_expertise: dict[str, Any],
     ) -> float:
         """Calculate knowledge fidelity score."""
         if not traits or not domain_expertise:
@@ -451,7 +478,8 @@ class ImprovedPhoenixImplementation:
             for domain, details in domain_expertise.items():
                 if isinstance(details, dict):
                     domain_score = details.get("expertise_score", 0) * details.get(
-                        "confidence", 0,
+                        "confidence",
+                        0,
                     )
                     best_domain_score = max(best_domain_score, domain_score)
 
@@ -498,7 +526,8 @@ class ImprovedPhoenixImplementation:
 
         # Perform statistical analysis
         statistical_analysis = self._perform_statistical_analysis(
-            baseline_results, phoenix_results,
+            baseline_results,
+            phoenix_results,
         )
         self.results["statistical_analysis"] = statistical_analysis
 
@@ -509,7 +538,9 @@ class ImprovedPhoenixImplementation:
         return self.results
 
     def _perform_statistical_analysis(
-        self, baseline_results: list[dict], phoenix_results: list[dict],
+        self,
+        baseline_results: list[dict],
+        phoenix_results: list[dict],
     ) -> dict[str, Any]:
         """Perform comprehensive statistical analysis."""
         self.logger.info("Performing statistical analysis...")
@@ -580,7 +611,9 @@ class ImprovedPhoenixImplementation:
         return statistical_results
 
     def _calculate_improvements(
-        self, baseline_results: list[dict], phoenix_results: list[dict],
+        self,
+        baseline_results: list[dict],
+        phoenix_results: list[dict],
     ) -> dict[str, Any]:
         """Calculate improvement metrics."""
         improvements = {}

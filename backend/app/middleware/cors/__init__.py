@@ -10,6 +10,6 @@ from .validator import CORSValidator
 
 __all__ = [
     "CORSConfig",
-    "CORSMiddleware", 
+    "CORSMiddleware",
     "CORSValidator",
 ]

@@ -14,7 +14,8 @@ from gatekeeper.api.dependencies import get_auth_manager  # type: ignore[import-
 
 
 async def create_access_token(
-    data: dict[str, Any], expires_delta: timedelta | None = None,
+    data: dict[str, Any],
+    expires_delta: timedelta | None = None,
 ) -> str:
     """Create a JWT access token.
 
@@ -33,7 +34,8 @@ async def create_access_token(
 
 
 async def create_refresh_token(
-    data: dict[str, Any], expires_delta: timedelta | None = None,
+    data: dict[str, Any],
+    expires_delta: timedelta | None = None,
 ) -> str:
     """Create a JWT refresh token.
 
@@ -73,7 +75,8 @@ async def verify_token(token: str, kind: str = "access") -> dict[str, Any] | Non
 
 # Synchronous wrappers for backward compatibility with tests
 def create_access_token_sync(
-    data: dict[str, Any], expires_delta: timedelta | None = None,
+    data: dict[str, Any],
+    expires_delta: timedelta | None = None,
 ) -> str:
     """Synchronous wrapper for create_access_token.
 
@@ -140,7 +143,8 @@ def create_access_token_sync(
 
 
 def create_refresh_token_sync(
-    data: dict[str, Any], expires_delta: timedelta | None = None,
+    data: dict[str, Any],
+    expires_delta: timedelta | None = None,
 ) -> str:
     """Synchronous wrapper for create_refresh_token.
 
@@ -249,7 +253,8 @@ def verify_token_sync(token: str, kind: str = "access") -> dict[str, Any] | None
 
 # itsdangerous-based token functions (recommended for new code)
 async def create_secure_token(
-    data: dict[str, Any], expires_delta: timedelta | None = None,
+    data: dict[str, Any],
+    expires_delta: timedelta | None = None,
 ) -> str:
     """Create a secure token using itsdangerous (recommended approach).
 
@@ -298,7 +303,8 @@ async def verify_secure_token(token: str) -> dict[str, Any] | None:
 
 
 def create_secure_token_sync(
-    data: dict[str, Any], expires_delta: timedelta | None = None,
+    data: dict[str, Any],
+    expires_delta: timedelta | None = None,
 ) -> str:
     """Synchronous version of create_secure_token.
 

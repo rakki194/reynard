@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 class Agent(Base):
     """Core Agent model for the main database.
-    
+
     This represents a user/agent in the Reynard system, separate from
     the ECS simulation agents. Used for authentication, notes, todos, etc.
     """
@@ -45,7 +45,8 @@ class Agent(Base):
     is_system_agent = Column(Boolean, default=False)
     preferences = Column(Text, nullable=True)  # JSON string for preferences
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -53,7 +54,8 @@ class Agent(Base):
         onupdate=text("CURRENT_TIMESTAMP"),
     )
     last_activity = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     # Relationships - these will be defined in the related models
@@ -79,8 +81,12 @@ class Agent(Base):
             "preferences": self.preferences,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "updated_at": self.updated_at.isoformat() if self.updated_at else None,
-            "last_activity": self.last_activity.isoformat() if self.last_activity else None,
+            "last_activity": (
+                self.last_activity.isoformat() if self.last_activity else None
+            ),
         }
 
     def __repr__(self) -> str:
-        return f"<Agent(id='{self.id}', agent_id='{self.agent_id}', name='{self.name}')>"
+        return (
+            f"<Agent(id='{self.id}', agent_id='{self.agent_id}', name='{self.name}')>"
+        )

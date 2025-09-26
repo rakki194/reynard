@@ -204,7 +204,8 @@ Expire-Date: 0
 """
 
             result = self._run_gpg_command(
-                ["--gen-key", "--batch"], input_data=key_input.encode(),
+                ["--gen-key", "--batch"],
+                input_data=key_input.encode(),
             )
 
             # Get the fingerprint from the output
@@ -356,7 +357,8 @@ Expire-Date: 0
 
             # Find recipient's key
             recipient_key = await self._find_recipient_key(
-                recipient_email, encryption_method,
+                recipient_email,
+                encryption_method,
             )
             if not recipient_key:
                 raise ValueError(f"No encryption key found for {recipient_email}")
@@ -400,7 +402,10 @@ Expire-Date: 0
             raise
 
     async def sign_email(
-        self, content: str, signer_key_id: str, passphrase: str | None = None,
+        self,
+        content: str,
+        signer_key_id: str,
+        passphrase: str | None = None,
     ) -> str:
         """Sign email content.
 
@@ -432,7 +437,9 @@ Expire-Date: 0
             raise
 
     async def verify_signature(
-        self, signed_content: str, encryption_method: str,
+        self,
+        signed_content: str,
+        encryption_method: str,
     ) -> dict[str, Any]:
         """Verify email signature.
 
@@ -456,7 +463,9 @@ Expire-Date: 0
             raise
 
     async def get_public_key(
-        self, email: str, encryption_method: str = "pgp",
+        self,
+        email: str,
+        encryption_method: str = "pgp",
     ) -> str | None:
         """Get public key for an email address.
 
@@ -604,7 +613,9 @@ Expire-Date: 0
         return email_match.group(1) if email_match else "unknown@example.com"
 
     async def _find_recipient_key(
-        self, email: str, encryption_method: str,
+        self,
+        email: str,
+        encryption_method: str,
     ) -> EncryptionKey | None:
         """Find encryption key for recipient email."""
         for key in self.keys.values():
@@ -689,7 +700,9 @@ Expire-Date: 0
             raise
 
     async def _decrypt_with_pgp(
-        self, encrypted_content: str, passphrase: str | None = None,
+        self,
+        encrypted_content: str,
+        passphrase: str | None = None,
     ) -> str:
         """Decrypt content with PGP."""
         if not PGP_AVAILABLE or self.gpg is None:
@@ -708,7 +721,9 @@ Expire-Date: 0
             raise
 
     async def _decrypt_with_smime(
-        self, encrypted_content: str, passphrase: str | None = None,
+        self,
+        encrypted_content: str,
+        passphrase: str | None = None,
     ) -> str:
         """Decrypt content with SMIME."""
         if not SMIME_AVAILABLE:
@@ -730,7 +745,10 @@ Expire-Date: 0
             raise
 
     async def _sign_with_pgp(
-        self, content: str, signing_key: EncryptionKey, passphrase: str | None = None,
+        self,
+        content: str,
+        signing_key: EncryptionKey,
+        passphrase: str | None = None,
     ) -> str:
         """Sign content with PGP."""
         if not PGP_AVAILABLE or self.gpg is None:
@@ -738,7 +756,9 @@ Expire-Date: 0
 
         try:
             signed_data = self.gpg.sign(
-                content, keyid=signing_key.fingerprint, passphrase=passphrase,
+                content,
+                keyid=signing_key.fingerprint,
+                passphrase=passphrase,
             )
 
             if not signed_data:
@@ -751,7 +771,10 @@ Expire-Date: 0
             raise
 
     async def _sign_with_smime(
-        self, content: str, signing_key: EncryptionKey, passphrase: str | None = None,
+        self,
+        content: str,
+        signing_key: EncryptionKey,
+        passphrase: str | None = None,
     ) -> str:
         """Sign content with SMIME."""
         if not SMIME_AVAILABLE:

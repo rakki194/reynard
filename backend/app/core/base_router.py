@@ -111,7 +111,9 @@ class BaseServiceRouter(ABC):
             except Exception as e:
                 logger.error(f"Health check failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="health_check", error=e, service_name=self.service_name,
+                    operation="health_check",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.get("/status")
@@ -129,11 +131,17 @@ class BaseServiceRouter(ABC):
             except Exception as e:
                 logger.error(f"Status check failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="status_check", error=e, service_name=self.service_name,
+                    operation="status_check",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
     def _standard_operation(
-        self, operation_name: str, operation_func, *args, **kwargs,
+        self,
+        operation_name: str,
+        operation_func,
+        *args,
+        **kwargs,
     ) -> Any:
         """Execute a standard operation with error handling and logging.
 
@@ -161,11 +169,17 @@ class BaseServiceRouter(ABC):
                 f"Operation {operation_name} failed for {self.service_name}: {e}",
             )
             raise service_error_handler.handle_service_error(
-                operation=operation_name, error=e, service_name=self.service_name,
+                operation=operation_name,
+                error=e,
+                service_name=self.service_name,
             )
 
     async def _standard_async_operation(
-        self, operation_name: str, operation_func, *args, **kwargs,
+        self,
+        operation_name: str,
+        operation_func,
+        *args,
+        **kwargs,
     ) -> Any:
         """Execute a standard async operation with error handling and logging.
 
@@ -193,7 +207,9 @@ class BaseServiceRouter(ABC):
                 f"Async operation {operation_name} failed for {self.service_name}: {e}",
             )
             raise service_error_handler.handle_service_error(
-                operation=operation_name, error=e, service_name=self.service_name,
+                operation=operation_name,
+                error=e,
+                service_name=self.service_name,
             )
 
     def ensure_service_available(self) -> None:
@@ -261,8 +277,7 @@ class BaseServiceRouter(ABC):
         self.router.add_middleware(middleware_class, **kwargs)
 
     def initialize_service(self) -> None:
-        """Initialize the service and its dependencies.
-        """
+        """Initialize the service and its dependencies."""
         try:
             logger.info(f"Initializing service {self.service_name}")
 
@@ -284,8 +299,7 @@ class BaseServiceRouter(ABC):
             )
 
     def shutdown_service(self) -> None:
-        """Shutdown the service and its dependencies.
-        """
+        """Shutdown the service and its dependencies."""
         try:
             logger.info(f"Shutting down service {self.service_name}")
 

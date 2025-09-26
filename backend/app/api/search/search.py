@@ -46,7 +46,9 @@ class SearchService:
         self.semantic_handler = SemanticSearchHandler(self)
         self.syntax_handler = SyntaxSearchHandler(self)
         self.hybrid_handler = HybridSearchHandler(
-            self, self.semantic_handler, self.syntax_handler,
+            self,
+            self.semantic_handler,
+            self.syntax_handler,
         )
 
         # Initialize NLP processor
@@ -104,7 +106,10 @@ class SearchService:
         return None  # Simplified for now
 
     async def _cache_result(
-        self, cache_key: str, result: SearchResponse, ttl: int = 3600,
+        self,
+        cache_key: str,
+        result: SearchResponse,
+        ttl: int = 3600,
     ):
         """Cache search result."""
         # Simplified for now
@@ -204,19 +209,27 @@ class SearchService:
             # Execute search based on strategy
             if search_strategy == "semantic":
                 return await self._execute_semantic_nlp_search(
-                    processed_query, max_results, start_time,
+                    processed_query,
+                    max_results,
+                    start_time,
                 )
             if search_strategy == "syntax":
                 return await self._execute_syntax_nlp_search(
-                    processed_query, max_results, start_time,
+                    processed_query,
+                    max_results,
+                    start_time,
                 )
             if search_strategy == "hybrid":
                 return await self._execute_hybrid_nlp_search(
-                    processed_query, max_results, start_time,
+                    processed_query,
+                    max_results,
+                    start_time,
                 )
             # Fallback to general search
             return await self._execute_general_nlp_search(
-                processed_query, max_results, start_time,
+                processed_query,
+                max_results,
+                start_time,
             )
 
         except Exception as e:
@@ -247,7 +260,8 @@ class SearchService:
 
             # Determine if this is a natural language query
             is_natural_language = self._is_natural_language_query(
-                query, processed_query,
+                query,
+                processed_query,
             )
 
             if is_natural_language:
@@ -260,7 +274,11 @@ class SearchService:
                 )
             # Use traditional search with query expansion
             return await self._execute_expanded_search(
-                query, max_results, file_types, directories, start_time,
+                query,
+                max_results,
+                file_types,
+                directories,
+                start_time,
             )
 
         except Exception as e:
@@ -313,7 +331,9 @@ class SearchService:
             )
 
     async def get_intelligent_suggestions(
-        self, query: str, max_suggestions: int = 5,
+        self,
+        query: str,
+        max_suggestions: int = 5,
     ) -> SuggestionsResponse:
         """Get intelligent query suggestions based on natural language processing."""
         try:
@@ -322,7 +342,8 @@ class SearchService:
 
             # Get traditional suggestions
             traditional_suggestions = await self.get_query_suggestions(
-                query, max_suggestions,
+                query,
+                max_suggestions,
             )
 
             # Convert QuerySuggestion objects to dictionaries
@@ -333,7 +354,9 @@ class SearchService:
 
             # Combine and rank suggestions
             combined_suggestions = self._combine_suggestions(
-                nlp_suggestions, traditional_suggestions_dict, max_suggestions,
+                nlp_suggestions,
+                traditional_suggestions_dict,
+                max_suggestions,
             )
 
             # Convert to QuerySuggestion objects
@@ -433,7 +456,9 @@ class SearchService:
             )
 
     async def get_query_suggestions(
-        self, query: str, max_suggestions: int = 5,
+        self,
+        query: str,
+        max_suggestions: int = 5,
     ) -> SuggestionsResponse:
         """Get intelligent query suggestions."""
         try:
@@ -450,19 +475,27 @@ class SearchService:
             )
 
             return SuggestionsResponse(
-                success=True, query=query, suggestions=suggestions,
+                success=True,
+                query=query,
+                suggestions=suggestions,
             )
 
         except Exception as e:
             logger.exception("Failed to generate query suggestions")
             return SuggestionsResponse(
-                success=False, query=query, suggestions=[], error=str(e),
+                success=False,
+                query=query,
+                suggestions=[],
+                error=str(e),
             )
 
     # Private helper methods
 
     async def _execute_semantic_nlp_search(
-        self, processed_query: dict[str, Any], max_results: int, start_time: float,
+        self,
+        processed_query: dict[str, Any],
+        max_results: int,
+        start_time: float,
     ) -> SearchResponse:
         """Execute semantic search with NLP processing."""
         # Create semantic search request
@@ -484,7 +517,10 @@ class SearchService:
         return result
 
     async def _execute_syntax_nlp_search(
-        self, processed_query: dict[str, Any], max_results: int, start_time: float,
+        self,
+        processed_query: dict[str, Any],
+        max_results: int,
+        start_time: float,
     ) -> SearchResponse:
         """Execute syntax search with NLP processing."""
         # Create syntax search request
@@ -507,7 +543,10 @@ class SearchService:
         return result
 
     async def _execute_hybrid_nlp_search(
-        self, processed_query: dict[str, Any], max_results: int, start_time: float,
+        self,
+        processed_query: dict[str, Any],
+        max_results: int,
+        start_time: float,
     ) -> SearchResponse:
         """Execute hybrid search with NLP processing."""
         # Create hybrid search request
@@ -530,7 +569,10 @@ class SearchService:
         return result
 
     async def _execute_general_nlp_search(
-        self, processed_query: dict[str, Any], max_results: int, start_time: float,
+        self,
+        processed_query: dict[str, Any],
+        max_results: int,
+        start_time: float,
     ) -> SearchResponse:
         """Execute general search with NLP processing."""
         # Try multiple search strategies and combine results
@@ -539,7 +581,9 @@ class SearchService:
         # Semantic search
         try:
             semantic_result = await self._execute_semantic_nlp_search(
-                processed_query, max_results // 2, start_time,
+                processed_query,
+                max_results // 2,
+                start_time,
             )
             if semantic_result.success:
                 results.extend(semantic_result.results)
@@ -549,7 +593,9 @@ class SearchService:
         # Syntax search
         try:
             syntax_result = await self._execute_syntax_nlp_search(
-                processed_query, max_results // 2, start_time,
+                processed_query,
+                max_results // 2,
+                start_time,
             )
             if syntax_result.success:
                 results.extend(syntax_result.results)
@@ -615,7 +661,9 @@ class SearchService:
         )
 
     def _is_natural_language_query(
-        self, query: str, processed_query: dict[str, Any],
+        self,
+        query: str,
+        processed_query: dict[str, Any],
     ) -> bool:
         """Determine if a query is natural language."""
         # Check for natural language indicators
@@ -658,7 +706,9 @@ class SearchService:
         return False
 
     def _enhance_query_with_context(
-        self, query: str, context: dict[str, Any] | None,
+        self,
+        query: str,
+        context: dict[str, Any] | None,
     ) -> str:
         """Enhance query with contextual information."""
         if not context:
@@ -687,7 +737,8 @@ class SearchService:
         return " ".join(enhanced_parts)
 
     def _determine_contextual_filters(
-        self, context: dict[str, Any] | None,
+        self,
+        context: dict[str, Any] | None,
     ) -> dict[str, Any]:
         """Determine file filters based on context."""
         if not context:
@@ -856,7 +907,9 @@ class SearchService:
             return {"success": False, "error": str(e)}
 
     async def _local_index_codebase(
-        self, request: IndexRequest, start_time: float,
+        self,
+        request: IndexRequest,
+        start_time: float,
     ) -> IndexResponse:
         """Fallback local codebase indexing with ignore file support."""
         try:

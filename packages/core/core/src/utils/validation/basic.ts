@@ -3,11 +3,6 @@
  * Simple validation functions for common data types
  */
 
-import { t } from "../optional-i18n";
-
-// Email, URL, and phone validation functions moved to security module
-// Import from: packages/core/src/security/input-validation/url.ts
-
 /**
  * Username validation
  */

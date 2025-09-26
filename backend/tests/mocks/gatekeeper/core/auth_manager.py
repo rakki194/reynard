@@ -1,5 +1,4 @@
-"""Mock auth manager.
-"""
+"""Mock auth manager."""
 
 from ..main import MockAuthManager
 

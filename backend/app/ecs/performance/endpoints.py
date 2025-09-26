@@ -170,7 +170,8 @@ async def get_endpoint_details(endpoint: str):
 
         if not endpoint_key:
             raise HTTPException(
-                status_code=404, detail=f"Endpoint '{endpoint}' not found",
+                status_code=404,
+                detail=f"Endpoint '{endpoint}' not found",
             )
 
         stats = performance_tracker.endpoint_stats[endpoint_key]
@@ -283,7 +284,8 @@ async def get_performance_health():
 
         # Get key metrics
         avg_response_time = performance_summary.get("summary", {}).get(
-            "avg_duration_ms", 0,
+            "avg_duration_ms",
+            0,
         )
         error_rate = performance_summary.get("summary", {}).get("error_rate_percent", 0)
         memory_usage = memory_summary.get("current_memory_mb", 0)

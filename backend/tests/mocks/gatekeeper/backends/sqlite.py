@@ -1,5 +1,4 @@
-"""Mock SQLite backend.
-"""
+"""Mock SQLite backend."""
 
 from .memory import MockMemoryBackend
 

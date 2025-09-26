@@ -111,14 +111,17 @@ class TestCoreFrameworkComprehensive:
         mock_response.headers = {}
 
         is_vulnerable, vuln_type = analyzer.analyze_response(
-            mock_response, "test payload",
+            mock_response,
+            "test payload",
         )
         assert isinstance(is_vulnerable, bool)
         assert vuln_type is None or isinstance(vuln_type, str)
 
         # Test analyze_websocket_response method - it expects a string response, not a response object
         is_vulnerable, vuln_type = analyzer.analyze_websocket_response(
-            "test websocket message", "test message", "test_attack",
+            "test websocket message",
+            "test message",
+            "test_attack",
         )
         assert isinstance(is_vulnerable, bool)
         assert vuln_type is None or isinstance(vuln_type, str)
@@ -127,14 +130,19 @@ class TestCoreFrameworkComprehensive:
         model_response = {"response": "test model response"}
         payload = {"prompt": "test prompt"}
         is_vulnerable, vuln_type = analyzer.analyze_ml_response(
-            mock_response, model_response, payload, "test_attack",
+            mock_response,
+            model_response,
+            payload,
+            "test_attack",
         )
         assert isinstance(is_vulnerable, bool)
         assert vuln_type is None or isinstance(vuln_type, str)
 
         # Test analyze_auth_bypass method
         is_vulnerable, vuln_type = analyzer.analyze_auth_bypass(
-            mock_response, "test payload", "test_attack",
+            mock_response,
+            "test payload",
+            "test_attack",
         )
         assert isinstance(is_vulnerable, bool)
         assert vuln_type is None or isinstance(vuln_type, str)

@@ -118,7 +118,7 @@ export default defineConfig({
     timeout: 30 * 1000,
   },
 
-  outputDir: "../results/performance-results/",
+  outputDir: resultsPaths.artifactsDir,
 
   // Global setup for performance testing
   globalSetup: "../core/setup/global-performance-setup.ts",

@@ -231,7 +231,8 @@ class ServiceRegistry:
         for i, existing_name in enumerate(self._startup_order):
             if existing_name in self._services:
                 existing_priority = self._services[existing_name].config.get(
-                    "startup_priority", 0,
+                    "startup_priority",
+                    0,
                 )
                 if startup_priority > existing_priority:
                     insert_index = i
@@ -280,7 +281,9 @@ class ServiceRegistry:
             # Initialize services in dependency order
             for service_name in resolved_order:
                 if service_name in self._services:
-                    success = await self._initialize_service_with_dependencies(service_name)
+                    success = await self._initialize_service_with_dependencies(
+                        service_name
+                    )
                     if not success:
                         logger.error(f"Failed to initialize service '{service_name}'")
                         return False
@@ -307,7 +310,9 @@ class ServiceRegistry:
 
         def visit(service_name: str) -> None:
             if service_name in visiting:
-                raise ValueError(f"Circular dependency detected involving '{service_name}'")
+                raise ValueError(
+                    f"Circular dependency detected involving '{service_name}'"
+                )
             if service_name in visited:
                 return
 
@@ -333,20 +338,22 @@ class ServiceRegistry:
     async def _initialize_service_with_dependencies(self, service_name: str) -> bool:
         """Initialize a service with its dependencies."""
         service_info = self._services[service_name]
-        
+
         # Check dependencies first
         if service_name in self._dependencies:
             for dep in self._dependencies[service_name]:
                 if dep.dependency_type == ServiceDependencyType.REQUIRED:
                     if not await self._is_dependency_healthy(dep.name):
-                        logger.error(f"Required dependency '{dep.name}' not healthy for service '{service_name}'")
+                        logger.error(
+                            f"Required dependency '{dep.name}' not healthy for service '{service_name}'"
+                        )
                         return False
 
         # Initialize the service
         if service_info.startup_func:
             service_info.status = ServiceStatus.INITIALIZING
             start_time = time.time()
-            
+
             try:
                 success = await service_info.startup_func(service_info.config)
                 if success:
@@ -363,25 +370,30 @@ class ServiceRegistry:
                 service_info.status = ServiceStatus.ERROR
                 logger.error(f"Service '{service_name}' initialization error: {e}")
                 return False
-        
-        return True
+        else:
+            # Services without startup functions are considered running immediately
+            service_info.status = ServiceStatus.RUNNING
+            logger.info(f"Service '{service_name}' initialized (no startup function)")
+            return True
 
     async def _is_dependency_healthy(self, dependency_name: str) -> bool:
         """Check if a dependency is healthy."""
         if dependency_name not in self._services:
             return False
-        
+
         service_info = self._services[dependency_name]
         if service_info.status != ServiceStatus.RUNNING:
             return False
-        
+
         if service_info.health_check_func:
             try:
                 return await service_info.health_check_func()
             except Exception as e:
-                logger.warning(f"Health check failed for dependency '{dependency_name}': {e}")
+                logger.warning(
+                    f"Health check failed for dependency '{dependency_name}': {e}"
+                )
                 return False
-        
+
         return True
 
     async def shutdown_all(self, timeout: float = 30.0) -> bool:
@@ -423,14 +435,14 @@ class ServiceRegistry:
         def visit(service_name: str) -> None:
             if service_name in visited:
                 return
-            
+
             visited.add(service_name)
-            
+
             # Shutdown dependents first
             if service_name in self._dependents:
                 for dependent in self._dependents[service_name]:
                     visit(dependent)
-            
+
             shutdown_order.append(service_name)
 
         # Visit all services in reverse startup order
@@ -443,16 +455,15 @@ class ServiceRegistry:
     async def _shutdown_service_with_grace(self, service_name: str) -> None:
         """Shutdown a service with grace period."""
         service_info = self._services[service_name]
-        
+
         if service_info.shutdown_func:
             service_info.status = ServiceStatus.STOPPING
             start_time = time.time()
-            
+
             try:
                 # Give service time to shutdown gracefully
                 await asyncio.wait_for(
-                    service_info.shutdown_func(),
-                    timeout=self._shutdown_grace_period
+                    service_info.shutdown_func(), timeout=self._shutdown_grace_period
                 )
                 service_info.status = ServiceStatus.STOPPED
                 service_info.shutdown_time = time.time() - start_time
@@ -469,7 +480,7 @@ class ServiceRegistry:
         """Start health monitoring for all services."""
         if self._health_check_running:
             return
-        
+
         self._health_check_running = True
         logger.info("Starting health monitoring...")
 
@@ -477,13 +488,13 @@ class ServiceRegistry:
         """Stop health monitoring."""
         if not self._health_check_running:
             return
-        
+
         self._health_check_running = False
-        
+
         # Cancel all health check tasks
         for task in self._health_check_tasks.values():
             task.cancel()
-        
+
         self._health_check_tasks.clear()
         logger.info("Health monitoring stopped")
 
@@ -494,10 +505,10 @@ class ServiceRegistry:
                 if service_name in self._services:
                     service_info = self._services[service_name]
                     health_info = self._health_info[service_name]
-                    
+
                     if service_info.health_check_func:
                         is_healthy = await service_info.health_check_func()
-                        
+
                         if is_healthy:
                             health_info.status = ServiceHealthStatus.HEALTHY
                             health_info.consecutive_failures = 0
@@ -510,16 +521,18 @@ class ServiceRegistry:
                                 health_info.status = ServiceHealthStatus.DEGRADED
                     else:
                         health_info.status = ServiceHealthStatus.UNKNOWN
-                    
+
                     health_info.last_check = time.time()
-                
+
                 await asyncio.sleep(health_info.check_interval)
-                
+
             except Exception as e:
                 logger.error(f"Health monitoring error for '{service_name}': {e}")
                 if service_name in self._health_info:
                     self._health_info[service_name].last_error = str(e)
-                    self._health_info[service_name].status = ServiceHealthStatus.UNHEALTHY
+                    self._health_info[service_name].status = (
+                        ServiceHealthStatus.UNHEALTHY
+                    )
                 await asyncio.sleep(5.0)  # Wait before retrying
 
     async def _initialize_service(self, name: str) -> bool:
@@ -626,15 +639,15 @@ class ServiceRegistry:
     async def reload_services_by_pattern(self, pattern: str) -> dict[str, bool]:
         """Reload services matching a pattern."""
         results = {}
-        matching_services = [
-            name for name in self._services.keys() if pattern in name
-        ]
+        matching_services = [name for name in self._services.keys() if pattern in name]
 
         if not matching_services:
             logger.warning(f"No services found matching pattern '{pattern}'")
             return results
 
-        logger.info(f"Reloading services matching pattern '{pattern}': {matching_services}")
+        logger.info(
+            f"Reloading services matching pattern '{pattern}': {matching_services}"
+        )
 
         for service_name in matching_services:
             results[service_name] = await self.reload_service(service_name)
@@ -720,15 +733,15 @@ def get_service_registry() -> ServiceRegistry:
 async def service_lifespan():
     """Context manager for service lifecycle management."""
     registry = get_service_registry()
-    
+
     try:
         # Initialize all services
         success = await registry.initialize_all()
         if not success:
             raise RuntimeError("Failed to initialize services")
-        
+
         yield registry
-        
+
     finally:
         # Shutdown all services
         await registry.shutdown_all()

@@ -46,11 +46,15 @@ class QualityAssurance:
 
         """
         self.logger.info(
-            "Running comprehensive quality assurance checks", "quality_checks",
+            "Running comprehensive quality assurance checks",
+            "quality_checks",
         )
 
         result = QualityResult(
-            all_passed=True, passed_checks=0, failed_checks=0, total_checks=0,
+            all_passed=True,
+            passed_checks=0,
+            failed_checks=0,
+            total_checks=0,
         )
 
         checks = []
@@ -85,7 +89,8 @@ class QualityAssurance:
                     error_msg = check_result.get("error", "Unknown error")
                     result.errors.append(f"{check_name}: {error_msg}")
                     self.logger.error(
-                        f"{check_name} check failed: {error_msg}", "quality_checks",
+                        f"{check_name} check failed: {error_msg}",
+                        "quality_checks",
                     )
 
                     if self.config.fail_on_errors:
@@ -96,12 +101,14 @@ class QualityAssurance:
                 result.all_passed = False
                 result.errors.append(f"{check_name}: {e!s}")
                 self.logger.error(
-                    f"{check_name} check failed with exception: {e}", "quality_checks",
+                    f"{check_name} check failed with exception: {e}",
+                    "quality_checks",
                 )
 
         if result.all_passed:
             self.logger.success(
-                f"All {result.total_checks} quality checks passed", "quality_checks",
+                f"All {result.total_checks} quality checks passed",
+                "quality_checks",
             )
         else:
             self.logger.error(
@@ -137,7 +144,10 @@ class QualityAssurance:
         try:
             # Check if ESLint is available
             result = subprocess.run(
-                ["npx", "eslint", "--version"], capture_output=True, text=True, check=False,
+                ["npx", "eslint", "--version"],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode != 0:
@@ -147,7 +157,8 @@ class QualityAssurance:
             result = subprocess.run(
                 ["npx", "eslint", ".", "--ext", ".js,.ts,.tsx,.jsx"],
                 capture_output=True,
-                text=True, check=False,
+                text=True,
+                check=False,
             )
 
             if result.returncode == 0:
@@ -183,7 +194,10 @@ class QualityAssurance:
         try:
             # Check if flake8 is available
             result = subprocess.run(
-                ["flake8", "--version"], capture_output=True, text=True, check=False,
+                ["flake8", "--version"],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode != 0:
@@ -193,7 +207,8 @@ class QualityAssurance:
             result = subprocess.run(
                 ["flake8", ".", "--max-line-length=140", "--extend-ignore=E203,W503"],
                 capture_output=True,
-                text=True, check=False,
+                text=True,
+                check=False,
             )
 
             if result.returncode == 0:
@@ -244,7 +259,10 @@ class QualityAssurance:
         try:
             # Check if Prettier is available
             result = subprocess.run(
-                ["npx", "prettier", "--version"], capture_output=True, text=True, check=False,
+                ["npx", "prettier", "--version"],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode != 0:
@@ -252,7 +270,10 @@ class QualityAssurance:
 
             # Run Prettier check
             result = subprocess.run(
-                ["npx", "prettier", "--check", "."], capture_output=True, text=True, check=False,
+                ["npx", "prettier", "--check", "."],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode == 0:
@@ -280,7 +301,10 @@ class QualityAssurance:
         try:
             # Check if Black is available
             result = subprocess.run(
-                ["black", "--version"], capture_output=True, text=True, check=False,
+                ["black", "--version"],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode != 0:
@@ -290,7 +314,8 @@ class QualityAssurance:
             result = subprocess.run(
                 ["black", "--check", "--line-length=140", "."],
                 capture_output=True,
-                text=True, check=False,
+                text=True,
+                check=False,
             )
 
             if result.returncode == 0:
@@ -334,7 +359,10 @@ class QualityAssurance:
         try:
             # Check if TypeScript is available
             result = subprocess.run(
-                ["npx", "tsc", "--version"], capture_output=True, text=True, check=False,
+                ["npx", "tsc", "--version"],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode != 0:
@@ -342,7 +370,10 @@ class QualityAssurance:
 
             # Run TypeScript check
             result = subprocess.run(
-                ["npx", "tsc", "--noEmit"], capture_output=True, text=True, check=False,
+                ["npx", "tsc", "--noEmit"],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode == 0:
@@ -370,7 +401,10 @@ class QualityAssurance:
         try:
             # Check if mypy is available
             result = subprocess.run(
-                ["mypy", "--version"], capture_output=True, text=True, check=False,
+                ["mypy", "--version"],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode != 0:
@@ -380,7 +414,8 @@ class QualityAssurance:
             result = subprocess.run(
                 ["mypy", ".", "--ignore-missing-imports"],
                 capture_output=True,
-                text=True, check=False,
+                text=True,
+                check=False,
             )
 
             if result.returncode == 0:
@@ -483,12 +518,18 @@ class QualityAssurance:
             if Path("package.json").exists():
                 # Frontend formatting fix
                 result = subprocess.run(
-                    ["npx", "prettier", "--write", "."], capture_output=True, text=True, check=False,
+                    ["npx", "prettier", "--write", "."],
+                    capture_output=True,
+                    text=True,
+                    check=False,
                 )
             else:
                 # Python formatting fix
                 result = subprocess.run(
-                    ["black", "--line-length=140", "."], capture_output=True, text=True, check=False,
+                    ["black", "--line-length=140", "."],
+                    capture_output=True,
+                    text=True,
+                    check=False,
                 )
 
             if result.returncode == 0:
@@ -519,14 +560,16 @@ class QualityAssurance:
                 result = subprocess.run(
                     ["npx", "eslint", ".", "--ext", ".js,.ts,.tsx,.jsx", "--fix"],
                     capture_output=True,
-                    text=True, check=False,
+                    text=True,
+                    check=False,
                 )
             else:
                 # Python linting fix (flake8 doesn't have auto-fix, but we can try autopep8)
                 result = subprocess.run(
                     ["autopep8", "--in-place", "--recursive", "."],
                     capture_output=True,
-                    text=True, check=False,
+                    text=True,
+                    check=False,
                 )
 
             if result.returncode == 0:

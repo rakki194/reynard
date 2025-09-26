@@ -98,7 +98,8 @@ class TestItsDangerousUtils:
         """Test password reset token creation."""
         user_id = "test_user_123"
         token = utils.create_password_reset_token(
-            user_id, expires_in=timedelta(hours=1),
+            user_id,
+            expires_in=timedelta(hours=1),
         )
 
         assert token is not None
@@ -109,7 +110,8 @@ class TestItsDangerousUtils:
         """Test password reset token verification."""
         user_id = "test_user_123"
         token = utils.create_password_reset_token(
-            user_id, expires_in=timedelta(hours=1),
+            user_id,
+            expires_in=timedelta(hours=1),
         )
 
         data = utils.verify_password_reset_token(token)
@@ -122,7 +124,9 @@ class TestItsDangerousUtils:
         user_id = "test_user_123"
         email = "test@example.com"
         token = utils.create_email_verification_token(
-            user_id, email, expires_in=timedelta(hours=24),
+            user_id,
+            email,
+            expires_in=timedelta(hours=24),
         )
 
         assert token is not None
@@ -134,7 +138,9 @@ class TestItsDangerousUtils:
         user_id = "test_user_123"
         email = "test@example.com"
         token = utils.create_email_verification_token(
-            user_id, email, expires_in=timedelta(hours=24),
+            user_id,
+            email,
+            expires_in=timedelta(hours=24),
         )
 
         data = utils.verify_email_verification_token(token)
@@ -148,7 +154,9 @@ class TestItsDangerousUtils:
         user_id = "test_user_123"
         permissions = ["read", "write", "admin"]
         token = utils.create_api_key_token(
-            user_id, permissions, expires_in=timedelta(days=30),
+            user_id,
+            permissions,
+            expires_in=timedelta(days=30),
         )
 
         assert token is not None
@@ -160,7 +168,9 @@ class TestItsDangerousUtils:
         user_id = "test_user_123"
         permissions = ["read", "write", "admin"]
         token = utils.create_api_key_token(
-            user_id, permissions, expires_in=timedelta(days=30),
+            user_id,
+            permissions,
+            expires_in=timedelta(days=30),
         )
 
         data = utils.verify_api_key_token(token)
@@ -328,7 +338,10 @@ class TestHybridSessions:
             return SessionEncryptionManager(redis_client=mock_redis)
 
     def test_create_hybrid_session(
-        self, session_manager, mock_redis, mock_itsdangerous_utils,
+        self,
+        session_manager,
+        mock_redis,
+        mock_itsdangerous_utils,
     ):
         """Test hybrid session creation."""
         # Mock the itsdangerous token creation
@@ -370,7 +383,10 @@ class TestHybridSessions:
         assert "created_at" in token_data
 
     def test_get_hybrid_session(
-        self, session_manager, mock_redis, mock_itsdangerous_utils,
+        self,
+        session_manager,
+        mock_redis,
+        mock_itsdangerous_utils,
     ):
         """Test hybrid session retrieval."""
         # Mock the itsdangerous token verification
@@ -412,7 +428,9 @@ class TestHybridSessions:
         mock_redis.get.assert_called_once_with("session:test_session_123")
 
     def test_get_hybrid_session_invalid_token(
-        self, session_manager, mock_itsdangerous_utils,
+        self,
+        session_manager,
+        mock_itsdangerous_utils,
     ):
         """Test hybrid session retrieval with invalid token."""
         # Mock the itsdangerous token verification to return None (invalid)
@@ -426,7 +444,10 @@ class TestHybridSessions:
         )
 
     def test_get_hybrid_session_fingerprint_mismatch(
-        self, session_manager, mock_redis, mock_itsdangerous_utils,
+        self,
+        session_manager,
+        mock_redis,
+        mock_itsdangerous_utils,
     ):
         """Test hybrid session retrieval with fingerprint mismatch."""
         # Mock the itsdangerous token verification
@@ -468,7 +489,10 @@ class TestHybridSessions:
             result = create_hybrid_session(user_id="test", ip_address="127.0.0.1")
             assert result == "test_token"
             mock_manager.create_hybrid_session.assert_called_once_with(
-                "test", "127.0.0.1", None, None,
+                "test",
+                "127.0.0.1",
+                None,
+                None,
             )
 
             # Test get_hybrid_session convenience function
@@ -627,7 +651,8 @@ class TestIntegration:
             metadata = key_manager.get_key_metadata("itsdangerous_session_key")
             if not metadata:
                 key_manager.generate_key(
-                    "itsdangerous_session_key", KeyType.SESSION_SIGNING,
+                    "itsdangerous_session_key",
+                    KeyType.SESSION_SIGNING,
                 )
 
         # Step 4: Ensure the session manager's itsdangerous_utils uses the same key manager

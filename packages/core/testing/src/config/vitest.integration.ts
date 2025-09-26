@@ -1,6 +1,5 @@
 import { defineConfig } from "vitest/config";
 import solid from "vite-plugin-solid";
-import type { Plugin } from "vite";
 
 /**
  * Vitest configuration for integration testing

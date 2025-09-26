@@ -1,5 +1,4 @@
-"""Gallery-dl integration for the scraping service
-"""
+"""Gallery-dl integration for the scraping service"""
 
 import asyncio
 import logging
@@ -21,7 +20,9 @@ class GalleryIntegration:
         self.download_history: list[GalleryDownloadJob] = []
 
     async def start_gallery_download(
-        self, url: str, config: dict[str, Any] | None = None,
+        self,
+        url: str,
+        config: dict[str, Any] | None = None,
     ) -> GalleryDownloadJob:
         """Start a gallery download job"""
         try:
@@ -59,7 +60,8 @@ class GalleryIntegration:
             # Configure gallery-dl options
             options = {
                 "output_directory": job.galleryDlConfig.get(
-                    "outputDirectory", "./downloads",
+                    "outputDirectory",
+                    "./downloads",
                 ),
                 "filename": job.galleryDlConfig.get("filename", "{title}_{id}"),
                 "max_concurrent": job.galleryDlConfig.get("maxConcurrent", 5),
@@ -68,7 +70,9 @@ class GalleryIntegration:
 
             # Start download with progress tracking
             download_result = await self.gallery_service.download_gallery(
-                job.url, options=options, on_progress=self._on_download_progress(job.id),
+                job.url,
+                options=options,
+                on_progress=self._on_download_progress(job.id),
             )
 
             if download_result.success:
@@ -122,7 +126,9 @@ class GalleryIntegration:
         return progress_callback
 
     def _emit_progress_event(
-        self, job: GalleryDownloadJob, progress_data: dict[str, Any],
+        self,
+        job: GalleryDownloadJob,
+        progress_data: dict[str, Any],
     ) -> None:
         """Emit progress event for WebSocket clients"""
         # This would integrate with the event system

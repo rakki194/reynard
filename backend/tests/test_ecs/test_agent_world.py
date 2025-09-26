@@ -27,7 +27,10 @@ class TestAgentWorld:
 
         agent_id = "test-agent-1"
         entity = world.create_agent(
-            agent_id=agent_id, spirit="fox", style="foundation", name="TestAgent",
+            agent_id=agent_id,
+            spirit="fox",
+            style="foundation",
+            name="TestAgent",
         )
 
         assert entity is not None

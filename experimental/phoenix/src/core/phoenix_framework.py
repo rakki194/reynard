@@ -89,7 +89,8 @@ class PhoenixFramework:
         self.logger.info(f"🔗 Added integration: {type(integration).__name__}")
 
     async def initialize_population(
-        self, initial_agents: list[AgentState] | None = None,
+        self,
+        initial_agents: list[AgentState] | None = None,
     ) -> list[AgentState]:
         """Initialize the initial population of agents.
 
@@ -209,7 +210,9 @@ class PhoenixFramework:
         return population
 
     def _generate_spirit_based_traits(
-        self, spirit: SpiritType, trait_ranges: dict[str, tuple[float, float]],
+        self,
+        spirit: SpiritType,
+        trait_ranges: dict[str, tuple[float, float]],
     ) -> dict[str, float]:
         """Generate traits based on spirit characteristics rather than random values."""
         traits = {}
@@ -267,7 +270,8 @@ class PhoenixFramework:
                 base_value = preferences[trait_name]
                 variation = (max_val - min_val) * 0.1  # 10% variation
                 traits[trait_name] = max(
-                    min_val, min(max_val, base_value + variation * (0.5 - 0.5)),
+                    min_val,
+                    min(max_val, base_value + variation * (0.5 - 0.5)),
                 )  # Small variation
             else:
                 # Use balanced middle value for traits not specific to this spirit
@@ -346,7 +350,8 @@ class PhoenixFramework:
         for integration in self.integrations:
             if hasattr(integration, "on_generation_completed"):
                 await integration.on_generation_completed(
-                    generation, self.evolution_state,
+                    generation,
+                    self.evolution_state,
                 )
 
     async def _evaluate_population(self):
@@ -362,7 +367,8 @@ class PhoenixFramework:
         self.logger.info("✅ Population evaluation completed")
 
     async def _generate_performance_metrics(
-        self, agent: AgentState,
+        self,
+        agent: AgentState,
     ) -> PerformanceMetrics:
         """Generate real performance metrics for an agent."""
         # Generate real agent output based on agent characteristics
@@ -370,12 +376,14 @@ class PhoenixFramework:
             "Analyze and provide a strategic solution for optimizing system performance"
         )
         agent_output = await self.performance_analyzer.generate_real_agent_output(
-            agent, task,
+            agent,
+            task,
         )
 
         # Analyze the real output to get performance metrics
         performance_metrics = await self.performance_analyzer.analyze_agent_output(
-            agent, agent_output,
+            agent,
+            agent_output,
         )
 
         return performance_metrics
@@ -398,7 +406,8 @@ class PhoenixFramework:
             # Generate real agent output based on agent characteristics
             task = "Provide a comprehensive analysis and strategic recommendations"
             agent_output = await self.performance_analyzer.generate_real_agent_output(
-                agent, task,
+                agent,
+                task,
             )
 
             # Extract genetic material from real output
@@ -417,7 +426,8 @@ class PhoenixFramework:
         )
 
     async def _breed_offspring(
-        self, parents: list[tuple[AgentState, AgentState]],
+        self,
+        parents: list[tuple[AgentState, AgentState]],
     ) -> list[AgentState]:
         """Breed offspring from selected parents."""
         self.logger.info(f"👶 Breeding offspring from {len(parents)} parent pairs...")
@@ -502,7 +512,11 @@ class PhoenixFramework:
             population_diversity=diversity,
             convergence_rate=convergence_rate,
             significance=StatisticalSignificance(
-                0.05, (0.0, 1.0), 0.5, 0.8, len(population),
+                0.05,
+                (0.0, 1.0),
+                0.5,
+                0.8,
+                len(population),
             ),
         )
 

@@ -88,7 +88,6 @@ class EmbeddingBackendsConfig:
         default_factory=lambda: os.getenv("EMBEDDING_DEFAULT_BACKEND", "ollama"),
     )
 
-
     def __post_init__(self) -> None:
         """Initialize default backend configurations if not provided."""
         if not self.backends:
@@ -106,7 +105,8 @@ class EmbeddingBackendsConfig:
             max_retries=int(os.getenv("EMBEDDING_OLLAMA_MAX_RETRIES", "3")),
             retry_delay=float(os.getenv("EMBEDDING_OLLAMA_RETRY_DELAY", "1.0")),
             default_model=os.getenv(
-                "EMBEDDING_OLLAMA_DEFAULT_MODEL", "embeddinggemma:latest",
+                "EMBEDDING_OLLAMA_DEFAULT_MODEL",
+                "embeddinggemma:latest",
             ),
             supported_models=[
                 "embeddinggemma:latest",
@@ -167,7 +167,8 @@ class EmbeddingBackendsConfig:
             max_retries=int(os.getenv("EMBEDDING_OPENAI_MAX_RETRIES", "3")),
             retry_delay=float(os.getenv("EMBEDDING_OPENAI_RETRY_DELAY", "1.0")),
             default_model=os.getenv(
-                "EMBEDDING_OPENAI_DEFAULT_MODEL", "text-embedding-3-small",
+                "EMBEDDING_OPENAI_DEFAULT_MODEL",
+                "text-embedding-3-small",
             ),
             supported_models=[
                 "text-embedding-3-small",

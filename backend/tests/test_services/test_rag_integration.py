@@ -248,7 +248,9 @@ class UserManager {
 
             # Test hybrid search
             search_results = await rag_service.search(
-                "hello function", search_type="hybrid", limit=10,
+                "hello function",
+                search_type="hybrid",
+                limit=10,
             )
 
             assert isinstance(search_results, list)

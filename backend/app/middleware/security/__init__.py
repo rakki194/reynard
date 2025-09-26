@@ -10,6 +10,6 @@ from .threat_detection import ThreatDetectionMiddleware
 
 __all__ = [
     "SecurityHeadersMiddleware",
-    "InputValidationMiddleware", 
+    "InputValidationMiddleware",
     "ThreatDetectionMiddleware",
 ]

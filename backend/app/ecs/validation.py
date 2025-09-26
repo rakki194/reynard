@@ -19,7 +19,6 @@ class ECSValidationError(Exception):
     """Custom validation error for ECS endpoints."""
 
 
-
 class AgentIDValidator:
     """Validator for agent IDs."""
 
@@ -255,7 +254,9 @@ class CoordinateValidator:
 
     @classmethod
     def validate(
-        cls, value: int | float, field_name: str = "coordinate",
+        cls,
+        value: int | float,
+        field_name: str = "coordinate",
     ) -> float:
         """Validate coordinate value.
 
@@ -317,7 +318,9 @@ class InteractionTypeValidator:
 
     @classmethod
     def validate_and_raise(
-        cls, interaction_type: str, field_name: str = "interaction_type",
+        cls,
+        interaction_type: str,
+        field_name: str = "interaction_type",
     ) -> str:
         """Validate interaction type and raise exception if invalid.
 
@@ -345,7 +348,10 @@ class ValidatedAgentCreateRequest(BaseModel):
     """Validated request model for creating a new agent."""
 
     agent_id: str = Field(
-        ..., min_length=3, max_length=50, description="Unique agent identifier",
+        ...,
+        min_length=3,
+        max_length=50,
+        description="Unique agent identifier",
     )
     spirit: str | None = Field("fox", description="Agent spirit type")
     style: str | None = Field("foundation", description="Naming style")
@@ -434,7 +440,10 @@ class ValidatedChatRequest(BaseModel):
 
     receiver_id: str = Field(..., description="Receiver agent ID")
     message: str = Field(
-        ..., min_length=1, max_length=1000, description="Message content",
+        ...,
+        min_length=1,
+        max_length=1000,
+        description="Message content",
     )
     interaction_type: str = Field("communication", description="Type of interaction")
 
@@ -462,7 +471,8 @@ class ValidatedSpiritInhabitationRequest(BaseModel):
 
 # Validation Functions
 def validate_agent_exists(
-    agent_id: str, agent_data: dict[str, Any] | None = None,
+    agent_id: str,
+    agent_data: dict[str, Any] | None = None,
 ) -> str:
     """Validate that an agent exists.
 
@@ -527,7 +537,8 @@ def validate_query_parameters(
     if limit is not None:
         if not isinstance(limit, int) or limit < 1 or limit > 1000:
             raise HTTPException(
-                status_code=400, detail="Invalid limit: must be between 1 and 1000",
+                status_code=400,
+                detail="Invalid limit: must be between 1 and 1000",
             )
         validated["limit"] = limit
 
@@ -539,7 +550,8 @@ def validate_query_parameters(
     if max_results is not None:
         if not isinstance(max_results, int) or max_results < 1 or max_results > 100:
             raise HTTPException(
-                status_code=400, detail="Invalid max_results: must be between 1 and 100",
+                status_code=400,
+                detail="Invalid max_results: must be between 1 and 100",
             )
         validated["max_results"] = max_results
 
@@ -570,21 +582,24 @@ def validate_breeding_parameters(
     if enabled is not None:
         if not isinstance(enabled, bool):
             raise HTTPException(
-                status_code=400, detail="Invalid enabled: must be boolean",
+                status_code=400,
+                detail="Invalid enabled: must be boolean",
             )
         validated["enabled"] = enabled
 
     if max_depth is not None:
         if not isinstance(max_depth, int) or max_depth < 1 or max_depth > 10:
             raise HTTPException(
-                status_code=400, detail="Invalid max_depth: must be between 1 and 10",
+                status_code=400,
+                detail="Invalid max_depth: must be between 1 and 10",
             )
         validated["max_depth"] = max_depth
 
     if radius is not None:
         if not isinstance(radius, (int, float)) or radius < 1.0 or radius > 1000.0:
             raise HTTPException(
-                status_code=400, detail="Invalid radius: must be between 1.0 and 1000.0",
+                status_code=400,
+                detail="Invalid radius: must be between 1.0 and 1000.0",
             )
         validated["radius"] = float(radius)
 
@@ -613,7 +628,8 @@ def handle_validation_error(error: Exception, endpoint: str) -> HTTPException:
     logger.error(f"Unexpected validation error in {endpoint}: {error}")
 
     return HTTPException(
-        status_code=500, detail=f"Internal validation error in {endpoint}",
+        status_code=500,
+        detail=f"Internal validation error in {endpoint}",
     )
 
 
@@ -642,12 +658,14 @@ def validate_endpoint_inputs(endpoint: str, **kwargs) -> dict[str, Any]:
 
         if "agent1_id" in kwargs:
             validated["agent1_id"] = AgentIDValidator.validate_and_raise(
-                kwargs["agent1_id"], "agent1_id",
+                kwargs["agent1_id"],
+                "agent1_id",
             )
 
         if "agent2_id" in kwargs:
             validated["agent2_id"] = AgentIDValidator.validate_and_raise(
-                kwargs["agent2_id"], "agent2_id",
+                kwargs["agent2_id"],
+                "agent2_id",
             )
 
         # Spirit validation
@@ -741,7 +759,9 @@ def test_validation():
     print("\n✅ Testing Pydantic Models:")
     try:
         request = ValidatedAgentCreateRequest(
-            agent_id="test-agent-123", spirit="fox", style="foundation",
+            agent_id="test-agent-123",
+            spirit="fox",
+            style="foundation",
         )
         print(f"   ✅ Valid request: {request}")
     except Exception as e:

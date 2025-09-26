@@ -1,5 +1,4 @@
-"""Security Configuration Management for Reynard Backend
-"""
+"""Security Configuration Management for Reynard Backend"""
 
 import logging
 import os
@@ -127,13 +126,15 @@ class SecurityConfigManager:
             "security_level": security_level,
             "enabled": os.getenv("SECURITY_ENABLED", "true").lower() == "true",
             "threat_detection_enabled": os.getenv(
-                "SECURITY_THREAT_DETECTION", "true",
+                "SECURITY_THREAT_DETECTION",
+                "true",
             ).lower()
             == "true",
             "rate_limiting_enabled": os.getenv("SECURITY_RATE_LIMITING", "true").lower()
             == "true",
             "adaptive_rate_limiting": os.getenv(
-                "SECURITY_ADAPTIVE_RATE_LIMITING", "true",
+                "SECURITY_ADAPTIVE_RATE_LIMITING",
+                "true",
             ).lower()
             == "true",
             "security_headers_enabled": os.getenv("SECURITY_HEADERS", "true").lower()
@@ -143,7 +144,8 @@ class SecurityConfigManager:
             "monitoring_enabled": os.getenv("SECURITY_MONITORING", "true").lower()
             == "true",
             "development_bypass": os.getenv(
-                "SECURITY_DEVELOPMENT_BYPASS", "false",
+                "SECURITY_DEVELOPMENT_BYPASS",
+                "false",
             ).lower()
             == "true",
             "debug_mode": os.getenv("SECURITY_DEBUG_MODE", "false").lower() == "true",

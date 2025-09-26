@@ -24,7 +24,8 @@ from scipy import stats
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -76,7 +77,9 @@ class StandaloneTraitExtractor:
         }
 
     def extract_traits_from_output(
-        self, agent_output: str, agent_state,
+        self,
+        agent_output: str,
+        agent_state,
     ) -> list[SubliminalTrait]:
         """Extract traits from agent output."""
         traits = []
@@ -91,7 +94,8 @@ class StandaloneTraitExtractor:
                     strength=score,
                     category=pattern_data["category"],
                     manifestation=self._extract_manifestation(
-                        agent_output, pattern_data,
+                        agent_output,
+                        pattern_data,
                     ),
                     confidence=min(1.0, score * 1.2),
                 )
@@ -161,7 +165,9 @@ class StandaloneDomainAnalyzer:
         }
 
     def analyze_domain_expertise(
-        self, agent_output: str, agent_state,
+        self,
+        agent_output: str,
+        agent_state,
     ) -> dict[str, Any]:
         """Analyze domain expertise."""
         domain_expertise = {}
@@ -237,7 +243,9 @@ class StandaloneSpecializationAnalyzer:
         }
 
     def analyze_specialization_accuracy(
-        self, agent_output: str, agent_state,
+        self,
+        agent_output: str,
+        agent_state,
     ) -> dict[str, Any]:
         """Analyze specialization accuracy."""
         spirit = agent_state.spirit.lower()
@@ -340,18 +348,21 @@ class StandaloneRealImplementation:
 
         # Use real trait extraction
         subliminal_traits = self.trait_extractor.extract_traits_from_output(
-            baseline_output, baseline_agent,
+            baseline_output,
+            baseline_agent,
         )
 
         # Use real domain expertise analysis
         domain_expertise = self.domain_analyzer.analyze_domain_expertise(
-            baseline_output, baseline_agent,
+            baseline_output,
+            baseline_agent,
         )
 
         # Use real specialization accuracy analysis
         specialization_accuracy = (
             self.specialization_analyzer.analyze_specialization_accuracy(
-                baseline_output, baseline_agent,
+                baseline_output,
+                baseline_agent,
             )
         )
 
@@ -385,12 +396,15 @@ class StandaloneRealImplementation:
 
         # Real specialization accuracy
         metrics["specialization_accuracy"] = specialization_accuracy.get(
-            "overall_accuracy", 0.0,
+            "overall_accuracy",
+            0.0,
         )
 
         # Real knowledge fidelity calculation
         metrics["knowledge_fidelity"] = self._calculate_real_knowledge_fidelity(
-            subliminal_traits, domain_expertise, specialization_accuracy,
+            subliminal_traits,
+            domain_expertise,
+            specialization_accuracy,
         )
 
         # Real overall quality calculation
@@ -408,18 +422,21 @@ class StandaloneRealImplementation:
 
         # Use real trait extraction
         subliminal_traits = self.trait_extractor.extract_traits_from_output(
-            phoenix_output, phoenix_agent,
+            phoenix_output,
+            phoenix_agent,
         )
 
         # Use real domain expertise analysis
         domain_expertise = self.domain_analyzer.analyze_domain_expertise(
-            phoenix_output, phoenix_agent,
+            phoenix_output,
+            phoenix_agent,
         )
 
         # Use real specialization accuracy analysis
         specialization_accuracy = (
             self.specialization_analyzer.analyze_specialization_accuracy(
-                phoenix_output, phoenix_agent,
+                phoenix_output,
+                phoenix_agent,
             )
         )
 
@@ -453,12 +470,15 @@ class StandaloneRealImplementation:
 
         # Real specialization accuracy
         metrics["specialization_accuracy"] = specialization_accuracy.get(
-            "overall_accuracy", 0.0,
+            "overall_accuracy",
+            0.0,
         )
 
         # Real knowledge fidelity calculation
         metrics["knowledge_fidelity"] = self._calculate_real_knowledge_fidelity(
-            subliminal_traits, domain_expertise, specialization_accuracy,
+            subliminal_traits,
+            domain_expertise,
+            specialization_accuracy,
         )
 
         # Real overall quality calculation
@@ -534,7 +554,8 @@ class StandaloneRealImplementation:
 
         # Perform statistical analysis
         statistical_analysis = self._perform_statistical_analysis(
-            baseline_results, phoenix_results,
+            baseline_results,
+            phoenix_results,
         )
 
         # Generate results
@@ -546,7 +567,9 @@ class StandaloneRealImplementation:
             "phoenix_results": phoenix_results,
             "statistical_analysis": statistical_analysis,
             "summary": self._generate_summary(
-                baseline_results, phoenix_results, statistical_analysis,
+                baseline_results,
+                phoenix_results,
+                statistical_analysis,
             ),
         }
 
@@ -557,7 +580,9 @@ class StandaloneRealImplementation:
         return results
 
     def _perform_statistical_analysis(
-        self, baseline_results: list[dict], phoenix_results: list[dict],
+        self,
+        baseline_results: list[dict],
+        phoenix_results: list[dict],
     ) -> dict[str, Any]:
         """Perform statistical analysis on real results."""
         self.logger.info("📊 Performing statistical analysis on real results...")

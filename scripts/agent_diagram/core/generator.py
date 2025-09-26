@@ -1,5 +1,4 @@
-"""Mermaid diagram generator for agent contributions.
-"""
+"""Mermaid diagram generator for agent contributions."""
 
 import re
 from collections import defaultdict

@@ -27,7 +27,8 @@ class AgentEmailConfig(BaseModel):
     agent_email: EmailStr = Field(..., description="Agent email address")
     auto_reply_enabled: bool = Field(False, description="Enable auto-reply")
     auto_reply_template: str | None = Field(
-        None, description="Auto-reply template ID",
+        None,
+        description="Auto-reply template ID",
     )
     notification_preferences: dict[str, bool] = Field(
         default_factory=lambda: {
@@ -38,10 +39,12 @@ class AgentEmailConfig(BaseModel):
         description="Notification preferences",
     )
     created_at: datetime = Field(
-        default_factory=datetime.now, description="Creation timestamp",
+        default_factory=datetime.now,
+        description="Creation timestamp",
     )
     updated_at: datetime = Field(
-        default_factory=datetime.now, description="Last update timestamp",
+        default_factory=datetime.now,
+        description="Last update timestamp",
     )
 
 
@@ -55,10 +58,12 @@ class AgentEmailStats(BaseModel):
     last_activity: datetime | None = Field(None, description="Last email activity")
     active_conversations: int = Field(0, description="Number of active conversations")
     created_at: datetime = Field(
-        default_factory=datetime.now, description="Creation timestamp",
+        default_factory=datetime.now,
+        description="Creation timestamp",
     )
     updated_at: datetime = Field(
-        default_factory=datetime.now, description="Last update timestamp",
+        default_factory=datetime.now,
+        description="Last update timestamp",
     )
 
 
@@ -72,14 +77,17 @@ class AgentEmailTemplate(BaseModel):
     body: str = Field(..., description="Email body")
     html_body: str | None = Field(None, description="HTML email body")
     trigger_conditions: dict[str, Any] = Field(
-        default_factory=dict, description="Template trigger conditions",
+        default_factory=dict,
+        description="Template trigger conditions",
     )
     variables: list[str] = Field(default_factory=list, description="Template variables")
     created_at: datetime = Field(
-        default_factory=datetime.now, description="Creation timestamp",
+        default_factory=datetime.now,
+        description="Creation timestamp",
     )
     updated_at: datetime = Field(
-        default_factory=datetime.now, description="Last update timestamp",
+        default_factory=datetime.now,
+        description="Last update timestamp",
     )
 
 
@@ -98,10 +106,12 @@ class AgentEmailMessage(BaseModel):
     html_body: str | None = Field(None, description="HTML email body")
     cc_emails: list[EmailStr] | None = Field(None, description="CC email addresses")
     bcc_emails: list[EmailStr] | None = Field(
-        None, description="BCC email addresses",
+        None,
+        description="BCC email addresses",
     )
     attachments: list[dict[str, Any]] | None = Field(
-        None, description="Email attachments",
+        None,
+        description="Email attachments",
     )
     reply_to: EmailStr | None = Field(None, description="Reply-to email address")
 
@@ -110,12 +120,17 @@ class AgentEmailBulkRequest(BaseModel):
     """Request model for sending bulk agent emails."""
 
     target_agent_ids: list[str] = Field(
-        ..., min_length=1, description="Target agent IDs",
+        ...,
+        min_length=1,
+        description="Target agent IDs",
     )
     message: AgentEmailMessage = Field(..., description="Email message")
     batch_size: int | None = Field(10, ge=1, le=100, description="Batch size")
     delay_between_batches: float | None = Field(
-        1.0, ge=0.0, le=60.0, description="Delay between batches",
+        1.0,
+        ge=0.0,
+        le=60.0,
+        description="Delay between batches",
     )
 
 
@@ -136,10 +151,12 @@ class AgentEmailInteraction(BaseModel):
     subject: str | None = Field(None, description="Email subject")
     message_id: str | None = Field(None, description="Email message ID")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata",
+        default_factory=dict,
+        description="Additional metadata",
     )
     created_at: datetime = Field(
-        default_factory=datetime.now, description="Creation timestamp",
+        default_factory=datetime.now,
+        description="Creation timestamp",
     )
 
 
@@ -156,10 +173,12 @@ class AgentEmailMessage(BaseModel):
     status: str = Field("sent", description="Message status")
     message_id: str | None = Field(None, description="Email message ID")
     created_at: datetime = Field(
-        default_factory=datetime.now, description="Creation timestamp",
+        default_factory=datetime.now,
+        description="Creation timestamp",
     )
     updated_at: datetime = Field(
-        default_factory=datetime.now, description="Last update timestamp",
+        default_factory=datetime.now,
+        description="Last update timestamp",
     )
 
 
@@ -172,11 +191,13 @@ class AgentEmailNotification(BaseModel):
     title: str = Field(..., description="Notification title")
     message: str = Field(..., description="Notification message")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata",
+        default_factory=dict,
+        description="Additional metadata",
     )
     read: bool = Field(False, description="Whether notification is read")
     created_at: datetime = Field(
-        default_factory=datetime.now, description="Creation timestamp",
+        default_factory=datetime.now,
+        description="Creation timestamp",
     )
 
 
@@ -191,10 +212,12 @@ class AgentEmailSettings(BaseModel):
     archive_days: int = Field(30, description="Days before auto-archive")
     signature: str | None = Field(None, description="Email signature")
     created_at: datetime = Field(
-        default_factory=datetime.now, description="Creation timestamp",
+        default_factory=datetime.now,
+        description="Creation timestamp",
     )
     updated_at: datetime = Field(
-        default_factory=datetime.now, description="Last update timestamp",
+        default_factory=datetime.now,
+        description="Last update timestamp",
     )
 
 

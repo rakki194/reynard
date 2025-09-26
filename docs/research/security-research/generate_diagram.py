@@ -31,7 +31,8 @@ def main():
         help="List of diagram nodes/steps (e.g., 'A-->B' 'B-->C').",
     )
     parser.add_argument(
-        "--output", help="Output filename for the Mermaid definition (.mmd).",
+        "--output",
+        help="Output filename for the Mermaid definition (.mmd).",
     )
 
     args = parser.parse_args()

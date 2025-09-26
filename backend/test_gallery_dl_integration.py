@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Test script for gallery-dl library integration
-"""
+"""Test script for gallery-dl library integration"""
 
 import sys
 from pathlib import Path

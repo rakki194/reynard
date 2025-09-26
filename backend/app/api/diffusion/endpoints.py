@@ -67,35 +67,57 @@ class DiffusionConfigModel(BaseModel):
     """Configuration model for Diffusion service."""
 
     default_model: str = Field(
-        default="diffusion-llm", description="Default model to use",
+        default="diffusion-llm",
+        description="Default model to use",
     )
     max_length: int = Field(
-        default=512, ge=1, le=2048, description="Maximum text length per request",
+        default=512,
+        ge=1,
+        le=2048,
+        description="Maximum text length per request",
     )
     temperature: float = Field(
-        default=0.8, ge=0.0, le=2.0, description="Response creativity level",
+        default=0.8,
+        ge=0.0,
+        le=2.0,
+        description="Response creativity level",
     )
     top_p: float = Field(
-        default=0.9, ge=0.0, le=1.0, description="Nucleus sampling parameter",
+        default=0.9,
+        ge=0.0,
+        le=1.0,
+        description="Nucleus sampling parameter",
     )
     top_k: int = Field(default=50, ge=1, le=100, description="Top-k sampling parameter")
     repetition_penalty: float = Field(
-        default=1.1, ge=0.0, le=2.0, description="Repetition penalty",
+        default=1.1,
+        ge=0.0,
+        le=2.0,
+        description="Repetition penalty",
     )
     timeout: int = Field(
-        default=60, ge=5, le=600, description="Request timeout in seconds",
+        default=60,
+        ge=5,
+        le=600,
+        description="Request timeout in seconds",
     )
     enable_streaming: bool = Field(
-        default=True, description="Enable streaming responses",
+        default=True,
+        description="Enable streaming responses",
     )
     max_concurrent_requests: int = Field(
-        default=5, ge=1, le=50, description="Max concurrent requests",
+        default=5,
+        ge=1,
+        le=50,
+        description="Max concurrent requests",
     )
     enable_model_caching: bool = Field(default=True, description="Enable model caching")
 
 
 class DiffusionServiceRouter(
-    BaseServiceRouter, ConfigEndpointMixin, StreamingResponseMixin,
+    BaseServiceRouter,
+    ConfigEndpointMixin,
+    StreamingResponseMixin,
 ):
     """Diffusion service router with enterprise-grade patterns.
 
@@ -109,7 +131,9 @@ class DiffusionServiceRouter(
 
     def __init__(self):
         super().__init__(
-            service_name="diffusion", prefix="/api/diffusion", tags=["diffusion"],
+            service_name="diffusion",
+            prefix="/api/diffusion",
+            tags=["diffusion"],
         )
 
         # Setup configuration endpoints
@@ -165,71 +189,90 @@ class DiffusionServiceRouter(
         async def generate_text(request: DiffusionGenerationRequest):
             """Generate text using diffusion models."""
             return await self._standard_async_operation(
-                "generate_text", self._handle_generate_request, request,
+                "generate_text",
+                self._handle_generate_request,
+                request,
             )
 
         @self.router.post("/generate/stream")
         async def generate_text_stream(request: DiffusionGenerationRequest):
             """Generate text with streaming support."""
             return await self._standard_async_operation(
-                "generate_text_stream", self._handle_generate_stream_request, request,
+                "generate_text_stream",
+                self._handle_generate_stream_request,
+                request,
             )
 
         @self.router.post("/infill", response_model=DiffusionInfillingResponse)
         async def infill_text(request: DiffusionInfillingRequest):
             """Infill text using diffusion models."""
             return await self._standard_async_operation(
-                "infill_text", self._handle_infill_request, request,
+                "infill_text",
+                self._handle_infill_request,
+                request,
             )
 
         @self.router.post("/infill/stream")
         async def infill_text_stream(request: DiffusionInfillingRequest):
             """Infill text with streaming support."""
             return await self._standard_async_operation(
-                "infill_text_stream", self._handle_infill_stream_request, request,
+                "infill_text_stream",
+                self._handle_infill_stream_request,
+                request,
             )
 
         @self.router.get("/models")
         async def get_models():
             """Get available diffusion models."""
             return await self._standard_async_operation(
-                "get_models", self._handle_get_models_request,
+                "get_models",
+                self._handle_get_models_request,
             )
 
         @self.router.post(
-            "/batch/generate", response_model=DiffusionBatchGenerationResponse,
+            "/batch/generate",
+            response_model=DiffusionBatchGenerationResponse,
         )
         async def batch_generate_text(request: DiffusionBatchGenerationRequest):
             """Generate text for multiple inputs in batch with optimization."""
             return await self._standard_async_operation(
-                "batch_generate_text", self._handle_batch_generate_request, request,
+                "batch_generate_text",
+                self._handle_batch_generate_request,
+                request,
             )
 
         @self.router.post(
-            "/batch/infill", response_model=DiffusionBatchInfillingResponse,
+            "/batch/infill",
+            response_model=DiffusionBatchInfillingResponse,
         )
         async def batch_infill_text(request: DiffusionBatchInfillingRequest):
             """Infill text for multiple requests in batch with optimization."""
             return await self._standard_async_operation(
-                "batch_infill_text", self._handle_batch_infill_request, request,
+                "batch_infill_text",
+                self._handle_batch_infill_request,
+                request,
             )
 
         @self.router.get("/cache/stats")
         async def get_cache_stats():
             """Get model cache statistics and status."""
             return await self._standard_async_operation(
-                "get_cache_stats", self._handle_get_cache_stats_request,
+                "get_cache_stats",
+                self._handle_get_cache_stats_request,
             )
 
         @self.router.post("/cache/validate/{model_id}")
         async def validate_cached_model(model_id: str):
             """Validate a specific cached model."""
             return await self._standard_async_operation(
-                "validate_cached_model", self._handle_validate_model_request, model_id,
+                "validate_cached_model",
+                self._handle_validate_model_request,
+                model_id,
             )
 
     async def _handle_generate_request(
-        self, request: DiffusionGenerationRequest,
+        self,
+        request: DiffusionGenerationRequest,
     ) -> DiffusionGenerationResponse:
         """Handle text generation request with standardized error handling."""
         service = self.get_service()
@@ -276,7 +319,8 @@ class DiffusionServiceRouter(
         )
 
     async def _handle_generate_stream_request(
-        self, request: DiffusionGenerationRequest,
+        self,
+        request: DiffusionGenerationRequest,
     ):
         """Handle streaming text generation request."""
         service = self.get_service()
@@ -307,7 +351,8 @@ class DiffusionServiceRouter(
         return self.create_sse_response(event_generator())
 
     async def _handle_infill_request(
-        self, request: DiffusionInfillingRequest,
+        self,
+        request: DiffusionInfillingRequest,
     ) -> DiffusionInfillingResponse:
         """Handle text infilling request with standardized error handling."""
         service = self.get_service()
@@ -387,7 +432,8 @@ class DiffusionServiceRouter(
         return {"models": models}
 
     async def _handle_batch_generate_request(
-        self, request: DiffusionBatchGenerationRequest,
+        self,
+        request: DiffusionBatchGenerationRequest,
     ) -> DiffusionBatchGenerationResponse:
         """Handle batch text generation request with optimization."""
         import asyncio
@@ -538,7 +584,8 @@ class DiffusionServiceRouter(
         )
 
     async def _handle_batch_infill_request(
-        self, request: DiffusionBatchInfillingRequest,
+        self,
+        request: DiffusionBatchInfillingRequest,
     ) -> DiffusionBatchInfillingResponse:
         """Handle batch text infilling request with optimization."""
         import asyncio

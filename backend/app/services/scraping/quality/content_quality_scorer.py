@@ -50,7 +50,9 @@ class ContentQualityScorer:
             return False
 
     async def assess_quality(
-        self, content: str, metadata: dict[str, Any] | None = None,
+        self,
+        content: str,
+        metadata: dict[str, Any] | None = None,
     ) -> ContentQuality:
         """Assess the quality of content.
 
@@ -73,7 +75,9 @@ class ContentQualityScorer:
 
             for factor_template in self.quality_factors:
                 score = await self._calculate_factor_score(
-                    factor_template.name, content, metadata,
+                    factor_template.name,
+                    content,
+                    metadata,
                 )
                 factor = QualityFactor(
                     name=factor_template.name,
@@ -91,7 +95,9 @@ class ContentQualityScorer:
             overall_level = self._get_quality_level(overall_score)
 
             return ContentQuality(
-                score=overall_score, factors=factors, overall=overall_level,
+                score=overall_score,
+                factors=factors,
+                overall=overall_level,
             )
 
         except Exception as e:
@@ -99,7 +105,10 @@ class ContentQualityScorer:
             return self._create_quality_result(0, f"Error: {e!s}")
 
     async def _calculate_factor_score(
-        self, factor_name: str, content: str, metadata: dict[str, Any] | None = None,
+        self,
+        factor_name: str,
+        content: str,
+        metadata: dict[str, Any] | None = None,
     ) -> float:
         """Calculate score for a specific quality factor.
 
@@ -166,7 +175,9 @@ class ContentQualityScorer:
             return 50.0
 
     def _score_relevance(
-        self, content: str, metadata: dict[str, Any] | None = None,
+        self,
+        content: str,
+        metadata: dict[str, Any] | None = None,
     ) -> float:
         """Score based on content relevance."""
         # This is a simplified implementation
@@ -210,7 +221,9 @@ class ContentQualityScorer:
             return 50.0
 
     def _score_completeness(
-        self, content: str, metadata: dict[str, Any] | None = None,
+        self,
+        content: str,
+        metadata: dict[str, Any] | None = None,
     ) -> float:
         """Score based on content completeness."""
         try:
@@ -243,14 +256,19 @@ class ContentQualityScorer:
         return QualityLevel.POOR
 
     def _create_quality_result(
-        self, score: float, error_message: str,
+        self,
+        score: float,
+        error_message: str,
     ) -> ContentQuality:
         """Create a quality result with error information."""
         return ContentQuality(
             score=score,
             factors=[
                 QualityFactor(
-                    name="Error", score=0, weight=1.0, description=error_message,
+                    name="Error",
+                    score=0,
+                    weight=1.0,
+                    description=error_message,
                 ),
             ],
             overall=self._get_quality_level(score),

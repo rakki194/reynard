@@ -1,5 +1,4 @@
-"""Tests for utility modules.
-"""
+"""Tests for utility modules."""
 
 import sys
 from pathlib import Path
@@ -286,7 +285,8 @@ class TestMetricsCalculator:
         predicted_findings = []
 
         metrics = calculator.calculate_detection_metrics(
-            true_findings, predicted_findings,
+            true_findings,
+            predicted_findings,
         )
 
         assert hasattr(metrics, "precision")

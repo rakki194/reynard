@@ -144,14 +144,18 @@ class SuccessAdvisor8LegacyTracker:
             # Check for Success-Advisor-8 references
             if self._contains_success_advisor_8_reference(line):
                 activity = await self._extract_activity_from_line(
-                    line, i, current_version, current_date,
+                    line,
+                    i,
+                    current_version,
+                    current_date,
                 )
                 if activity:
                     activities.append(activity)
 
         self.activities.extend(activities)
         logger.info(
-            "Found %d Success-Advisor-8 activities in CHANGELOG", len(activities),
+            "Found %d Success-Advisor-8 activities in CHANGELOG",
+            len(activities),
         )
         return activities
 
@@ -244,7 +248,8 @@ class SuccessAdvisor8LegacyTracker:
             output_file = Path(output_path)
             output_file.parent.mkdir(parents=True, exist_ok=True)
             output_file.write_text(
-                json.dumps(export_data, indent=2, default=str), encoding="utf-8",
+                json.dumps(export_data, indent=2, default=str),
+                encoding="utf-8",
             )
 
             logger.info("Exported legacy data to %s", output_path)
@@ -263,7 +268,11 @@ class SuccessAdvisor8LegacyTracker:
         return False
 
     async def _extract_activity_from_line(
-        self, line: str, line_number: int, version: str | None, date: datetime | None,
+        self,
+        line: str,
+        line_number: int,
+        version: str | None,
+        date: datetime | None,
     ) -> SuccessAdvisor8Activity | None:
         """Extract Success-Advisor-8 activity from changelog line."""
         try:
@@ -501,7 +510,9 @@ class SuccessAdvisor8LegacyTracker:
         return None
 
     def _get_js_function_context(
-        self, lines: list[str], line_number: int,
+        self,
+        lines: list[str],
+        line_number: int,
     ) -> str | None:
         """Get function context for JavaScript/TypeScript line."""
         for i in range(line_number - 1, max(0, line_number - 10), -1):
@@ -527,7 +538,9 @@ class SuccessAdvisor8LegacyTracker:
         return None
 
     def _generate_summary(
-        self, activities: list[SuccessAdvisor8Activity], movements: list[CodeMovement],
+        self,
+        activities: list[SuccessAdvisor8Activity],
+        movements: list[CodeMovement],
     ) -> dict[str, Any]:
         """Generate summary statistics for legacy report."""
         # Activity type distribution
@@ -564,10 +577,12 @@ class SuccessAdvisor8LegacyTracker:
             "total_files_scanned": len({movement.file_path for movement in movements}),
             "date_range": {
                 "earliest": min(
-                    (activity.timestamp for activity in activities), default=None,
+                    (activity.timestamp for activity in activities),
+                    default=None,
                 ),
                 "latest": max(
-                    (activity.timestamp for activity in activities), default=None,
+                    (activity.timestamp for activity in activities),
+                    default=None,
                 ),
             },
         }

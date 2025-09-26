@@ -1,2 +1,1 @@
-"""Test suite for the agent diagram library.
-"""
+"""Test suite for the agent diagram library."""

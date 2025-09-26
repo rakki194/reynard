@@ -7,25 +7,31 @@
 import type { OKLCHColor } from "../types";
 import { clampToGamut, handleEdgeCases } from "./colorConversion";
 
-// Smart import for unified animation system
-let animationPackage: unknown = null;
-let isPackageAvailable = false;
+// Optional animation package integration for enhanced hue shifting
+interface AnimationPackage {
+  Easing: Record<string, (t: number) => number>;
+  [key: string]: unknown;
+}
+
+let animationPackage: AnimationPackage | null = null;
+let isAnimationAvailable = false;
 
 const checkAnimationPackageAvailability = async () => {
   try {
     const packageCheck = await import("reynard-animation");
-    if (packageCheck && packageCheck.useColorAnimation) {
+    if (packageCheck && packageCheck.Easing) {
       animationPackage = packageCheck;
-      isPackageAvailable = true;
+      isAnimationAvailable = true;
       return true;
     }
   } catch (error) {
-    console.warn("🦊 Colors: reynard-animation package not available, using fallback color animations");
+    // Animation package not available - this is fine, we have fallback easing functions
+    console.debug("🦊 Colors: reynard-animation package not available, using built-in easing functions");
   }
   return false;
 };
 
-// Initialize package availability
+// Initialize package availability check
 checkAnimationPackageAvailability();
 
 /**
@@ -154,22 +160,72 @@ export function batchHueShift(colors: OKLCHColor[], deltaH: number): OKLCHColor[
  * @param deltaH - Maximum hue shift amount
  * @param progress - Progress value (0-1)
  * @param easingFunction - Easing function (default: linear)
+ * @param useAnimationPackage - Whether to use animation package easing if available
  * @returns Shifted OKLCH color
  */
 export function easedHueShift(
   baseColor: OKLCHColor,
   deltaH: number,
   progress: number,
-  easingFunction: (t: number) => number = (t: number) => t
+  easingFunction: (t: number) => number = (t: number) => t,
+  useAnimationPackage: boolean = true
 ): OKLCHColor {
-  const easedProgress = easingFunction(progress);
+  let actualEasingFunction = easingFunction;
+
+  // Use animation package easing if available and requested
+  if (useAnimationPackage && isAnimationAvailable && animationPackage?.Easing) {
+    // If a string is passed, try to use the animation package's easing
+    if (typeof easingFunction === "string") {
+      const animationEasing = animationPackage.Easing[easingFunction as keyof typeof animationPackage.Easing];
+      if (animationEasing) {
+        actualEasingFunction = animationEasing;
+      }
+    }
+  }
+
+  const easedProgress = actualEasingFunction(progress);
   const actualDeltaH = deltaH * easedProgress;
 
   return pureHueShift(baseColor, actualDeltaH);
 }
 
 /**
+ * Get the best available easing function
+ * @param easingName - Name of the easing function
+ * @returns Easing function (from animation package if available, otherwise built-in)
+ */
+export function getEasingFunction(easingName: keyof typeof EasingFunctions): (t: number) => number {
+  // Try animation package first
+  if (isAnimationAvailable && animationPackage?.Easing) {
+    const animationEasing = animationPackage.Easing[easingName];
+    if (animationEasing) {
+      return animationEasing;
+    }
+  }
+
+  // Fallback to built-in easing functions
+  return EasingFunctions[easingName];
+}
+
+/**
+ * Check if animation package is available
+ * @returns True if animation package is loaded and available
+ */
+export function isAnimationPackageAvailable(): boolean {
+  return isAnimationAvailable;
+}
+
+/**
+ * Get animation package instance (if available)
+ * @returns Animation package instance or null
+ */
+export function getAnimationPackage(): AnimationPackage | null {
+  return isAnimationAvailable ? animationPackage : null;
+}
+
+/**
  * Common easing functions for smooth hue transitions
+ * These are fallback functions when the animation package is not available
  */
 export const EasingFunctions = {
   linear: (t: number) => t,

@@ -85,7 +85,8 @@ class TestUnifiedChangelogParser:
             assert parser._existing_parser_available is False
 
     def test_parse_success_advisor_8_activities_with_existing_parser(
-        self, temp_changelog,
+        self,
+        temp_changelog,
     ):
         """Test parsing Success-Advisor-8 activities with existing parser."""
         # Mock existing parser

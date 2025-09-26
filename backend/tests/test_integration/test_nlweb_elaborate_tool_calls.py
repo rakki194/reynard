@@ -266,7 +266,10 @@ class TestElaborateNLWebToolCalls:
         ]
 
     def test_elaborate_tool_suggestion_workflow(
-        self, client, auth_headers, elaborate_tools,
+        self,
+        client,
+        auth_headers,
+        elaborate_tools,
     ):
         """Test NLWeb suggesting elaborate tools for complex queries."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -374,7 +377,9 @@ class TestElaborateNLWebToolCalls:
             }
 
             response = client.post(
-                "/api/nlweb/suggest", json=request_data, headers=auth_headers,
+                "/api/nlweb/suggest",
+                json=request_data,
+                headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -399,7 +404,10 @@ class TestElaborateNLWebToolCalls:
 
     @pytest.mark.asyncio
     async def test_elaborate_ollama_tool_calling_workflow(
-        self, async_client, auth_headers, elaborate_tools,
+        self,
+        async_client,
+        auth_headers,
+        elaborate_tools,
     ):
         """Test elaborate Ollama tool calling with multiple tools and complex parameters."""
         with patch("app.api.ollama.endpoints.get_ollama_service") as mock_service:
@@ -505,7 +513,9 @@ class TestElaborateNLWebToolCalls:
             }
 
             response = await async_client.post(
-                "/api/ollama/chat", json=request_data, headers=auth_headers,
+                "/api/ollama/chat",
+                json=request_data,
+                headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -520,7 +530,10 @@ class TestElaborateNLWebToolCalls:
             assert "code_analysis" in data["tools_used"]
 
     def test_multi_tool_workflow_suggestion(
-        self, client, auth_headers, elaborate_tools,
+        self,
+        client,
+        auth_headers,
+        elaborate_tools,
     ):
         """Test NLWeb suggesting multi-tool workflows for complex tasks."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -669,7 +682,9 @@ class TestElaborateNLWebToolCalls:
             }
 
             response = client.post(
-                "/api/nlweb/suggest", json=request_data, headers=auth_headers,
+                "/api/nlweb/suggest",
+                json=request_data,
+                headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -692,7 +707,10 @@ class TestElaborateNLWebToolCalls:
 
     @pytest.mark.asyncio
     async def test_streaming_elaborate_tool_execution(
-        self, async_client, auth_headers, elaborate_tools,
+        self,
+        async_client,
+        auth_headers,
+        elaborate_tools,
     ):
         """Test streaming execution of elaborate tool calls with real-time updates."""
         with patch("app.api.ollama.endpoints.get_ollama_service") as mock_service:
@@ -851,7 +869,9 @@ class TestElaborateNLWebToolCalls:
             }
 
             response = await async_client.post(
-                "/api/ollama/chat", json=request_data, headers=auth_headers,
+                "/api/ollama/chat",
+                json=request_data,
+                headers=auth_headers,
             )
 
             assert response.status_code == 200
@@ -866,7 +886,10 @@ class TestElaborateNLWebToolCalls:
             assert "data_processing" in data["tools_used"]
 
     def test_error_handling_in_elaborate_tool_calls(
-        self, client, auth_headers, elaborate_tools,
+        self,
+        client,
+        auth_headers,
+        elaborate_tools,
     ):
         """Test error handling in elaborate tool calling scenarios."""
         with patch("app.api.ollama.endpoints.get_ollama_service") as mock_service:
@@ -966,7 +989,9 @@ class TestElaborateNLWebToolCalls:
             }
 
             response = client.post(
-                "/api/ollama/chat", json=request_data, headers=auth_headers,
+                "/api/ollama/chat",
+                json=request_data,
+                headers=auth_headers,
             )
 
             assert response.status_code == 200

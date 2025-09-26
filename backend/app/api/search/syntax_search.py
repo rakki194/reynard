@@ -31,7 +31,8 @@ class SyntaxSearchHandler:
             cached_result = await self.search_service._get_cached_result(cache_key)
             if cached_result:
                 self.search_service._metrics.record_search(
-                    time.time() - start_time, cache_hit=True,
+                    time.time() - start_time,
+                    cache_hit=True,
                 )
                 logger.debug(f"Cache hit for syntax search: {request.query[:50]}...")
                 return cached_result
@@ -56,10 +57,13 @@ class SyntaxSearchHandler:
 
             # Cache the result
             await self.search_service._cache_result(
-                cache_key, search_response, ttl=1800,
+                cache_key,
+                search_response,
+                ttl=1800,
             )  # 30 minutes for syntax search
             self.search_service._metrics.record_search(
-                time.time() - start_time, cache_hit=False,
+                time.time() - start_time,
+                cache_hit=False,
             )
             return search_response
 
@@ -74,7 +78,8 @@ class SyntaxSearchHandler:
                 error=str(e),
             )
             self.search_service._metrics.record_search(
-                time.time() - start_time, cache_hit=False,
+                time.time() - start_time,
+                cache_hit=False,
             )
             return error_result
 
@@ -133,7 +138,9 @@ class SyntaxSearchHandler:
             return {"success": False, "stdout": "", "stderr": str(e), "returncode": -1}
 
     def _parse_ripgrep_results(
-        self, result: dict[str, Any], request: SyntaxSearchRequest,
+        self,
+        result: dict[str, Any],
+        request: SyntaxSearchRequest,
     ) -> list[SearchResult]:
         """Parse ripgrep output into SearchResult objects."""
         if not result["success"] or not result["stdout"]:

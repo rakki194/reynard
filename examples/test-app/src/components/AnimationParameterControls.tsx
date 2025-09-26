@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Card, Button } from "reynard-components";
+import { Card, Button } from "reynard-primitives";
 import type { GameConfig } from "./PhyllotacticSpiralLogic";
 
 interface AnimationParameterControlsProps {

@@ -134,7 +134,9 @@ class SummarizationManager:
         return self._summarizers.get(name)
 
     def select_summarizer(
-        self, content_type: ContentType, preferred_summarizer: str | None = None,
+        self,
+        content_type: ContentType,
+        preferred_summarizer: str | None = None,
     ) -> BaseSummarizer | None:
         """Select the best summarizer for a given content type.
 
@@ -180,7 +182,9 @@ class SummarizationManager:
         return None
 
     async def summarize(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> SummarizationResult:
         """Summarize text using the best available summarizer.
 
@@ -228,7 +232,9 @@ class SummarizationManager:
             raise
 
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Stream summarization progress and results.
 
@@ -343,7 +349,8 @@ class SummarizationManager:
         return ContentType.GENERAL
 
     async def get_summary_quality_metrics(
-        self, result: SummarizationResult,
+        self,
+        result: SummarizationResult,
     ) -> dict[str, float]:
         """Get quality metrics for a summarization result.
 
@@ -458,13 +465,15 @@ class SummarizationManager:
                 # Convert request to SummarizationOptions
                 options_dict = req["options"].copy()
                 if "content_type" in options_dict and isinstance(
-                    options_dict["content_type"], str,
+                    options_dict["content_type"],
+                    str,
                 ):
                     options_dict["content_type"] = ContentType(
                         options_dict["content_type"],
                     )
                 if "summary_level" in options_dict and isinstance(
-                    options_dict["summary_level"], str,
+                    options_dict["summary_level"],
+                    str,
                 ):
                     options_dict["summary_level"] = SummaryLevel(
                         options_dict["summary_level"],

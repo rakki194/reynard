@@ -48,7 +48,8 @@ class SuccessAdvisor8:
 
         """
         self.logger.info(
-            "Initializing agent state from documentation", "initialization",
+            "Initializing agent state from documentation",
+            "initialization",
         )
 
         # Reconstruct agent state
@@ -201,7 +202,8 @@ class SuccessAdvisor8:
         )
 
         self.logger.success(
-            "Agent state reconstructed from documentation", "reconstruction",
+            "Agent state reconstructed from documentation",
+            "reconstruction",
         )
         return agent_state
 
@@ -322,7 +324,8 @@ class SuccessAdvisor8:
             "style": self.agent_state.style.value,
             "role": self.agent_state.knowledge_base.get("role", "unknown"),
             "authority_level": self.agent_state.knowledge_base.get(
-                "authority_level", "unknown",
+                "authority_level",
+                "unknown",
             ),
             "generation": self.agent_state.generation,
             "fitness_score": self.agent_state.get_fitness_score(),
@@ -332,10 +335,12 @@ class SuccessAdvisor8:
             "specializations": specializations,
             "achievements": achievements,
             "total_operations": self.agent_state.knowledge_base.get(
-                "total_operations", 0,
+                "total_operations",
+                0,
             ),
             "last_activity": self.agent_state.knowledge_base.get(
-                "last_activity", "unknown",
+                "last_activity",
+                "unknown",
             ),
             "created_at": self.agent_state.created_at.isoformat(),
             "last_updated": self.agent_state.last_updated.isoformat(),

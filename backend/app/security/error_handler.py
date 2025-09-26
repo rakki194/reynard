@@ -86,7 +86,9 @@ class SecurityErrorHandler:
         return JSONResponse(status_code=status_code, content=response_data)
 
     def handle_validation_error(
-        self, error: RequestValidationError, request: Request,
+        self,
+        error: RequestValidationError,
+        request: Request,
     ) -> JSONResponse:
         """Handle Pydantic validation errors."""
         # Extract validation errors
@@ -104,7 +106,9 @@ class SecurityErrorHandler:
         )
 
     def handle_http_exception(
-        self, error: HTTPException, request: Request,
+        self,
+        error: HTTPException,
+        request: Request,
     ) -> JSONResponse:
         """Handle HTTP exceptions."""
         # Map status codes to error codes
@@ -130,7 +134,9 @@ class SecurityErrorHandler:
         )
 
     def handle_starlette_exception(
-        self, error: StarletteHTTPException, request: Request,
+        self,
+        error: StarletteHTTPException,
+        request: Request,
     ) -> JSONResponse:
         """Handle Starlette HTTP exceptions."""
         # Map status codes to error codes
@@ -156,7 +162,9 @@ class SecurityErrorHandler:
         )
 
     def handle_generic_exception(
-        self, error: Exception, request: Request,
+        self,
+        error: Exception,
+        request: Request,
     ) -> JSONResponse:
         """Handle generic exceptions."""
         # Log the full error for debugging
@@ -222,7 +230,9 @@ class SecurityErrorHandler:
 
         # Remove email addresses
         text = re.sub(
-            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text,
+            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+            "[EMAIL]",
+            text,
         )
 
         # Remove tokens and keys
@@ -255,7 +265,8 @@ error_handler = SecurityErrorHandler()
 
 
 async def validation_exception_handler(
-    request: Request, exc: RequestValidationError,
+    request: Request,
+    exc: RequestValidationError,
 ) -> JSONResponse:
     """Handle Pydantic validation errors."""
     return error_handler.handle_validation_error(exc, request)
@@ -267,7 +278,8 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
 
 
 async def starlette_exception_handler(
-    request: Request, exc: StarletteHTTPException,
+    request: Request,
+    exc: StarletteHTTPException,
 ) -> JSONResponse:
     """Handle Starlette HTTP exceptions."""
     return error_handler.handle_starlette_exception(exc, request)

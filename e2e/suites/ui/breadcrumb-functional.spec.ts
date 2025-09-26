@@ -1,4 +1,5 @@
 import { test, expect, Page } from "@playwright/test";
+import { getE2EDir } from "../../core/utils/project-root";
 import { createTestPage } from "../../modules/dom";
 
 test.describe("Breadcrumb Component Functional E2E Tests", () => {
@@ -7,7 +8,7 @@ test.describe("Breadcrumb Component Functional E2E Tests", () => {
   test.beforeEach(async ({ browser }) => {
     page = await browser.newPage();
     // Load our custom component test page
-    await page.goto("file://" + "/home/kade/runeset/reynard/e2e/fixtures/component-test-page.html");
+    await page.goto("file://" + getE2EDir() + "/fixtures/component-test-page.html");
   });
 
   test.afterEach(async () => {

@@ -17,7 +17,7 @@ async function generateAndVerifyDetailedDiagrams() {
   console.log("🐉 Generating and Verifying Detailed Ecosystem Diagrams...");
 
   try {
-    const rootPath = "/home/kade/runeset/reynard";
+    const rootPath = process.cwd();
     const generator = new DiagramGeneratorMain(rootPath);
     const verifier = new DiagramAccuracyVerifier(rootPath);
 

@@ -57,7 +57,8 @@ class TestEmbeddingReductionEndpoint:
             }
 
             response = client.post(
-                "/api/embedding-visualization/reduce", json=request_data,
+                "/api/embedding-visualization/reduce",
+                json=request_data,
             )
 
             assert response.status_code == 200
@@ -106,7 +107,8 @@ class TestEmbeddingReductionEndpoint:
             }
 
             response = client.post(
-                "/api/embedding-visualization/reduce", json=request_data,
+                "/api/embedding-visualization/reduce",
+                json=request_data,
             )
 
             assert response.status_code == 500
@@ -229,7 +231,8 @@ class TestEmbeddingQualityEndpoint:
             }
 
             response = client.post(
-                "/api/embedding-visualization/quality", json=request_data,
+                "/api/embedding-visualization/quality",
+                json=request_data,
             )
 
             assert response.status_code == 200
@@ -264,7 +267,8 @@ class TestEmbeddingQualityEndpoint:
             }
 
             response = client.post(
-                "/api/embedding-visualization/quality", json=request_data,
+                "/api/embedding-visualization/quality",
+                json=request_data,
             )
 
             assert response.status_code == 500
@@ -279,7 +283,8 @@ class TestEmbeddingQualityEndpoint:
         request_data = {}
 
         response = client.post(
-            "/api/embedding-visualization/quality", json=request_data,
+            "/api/embedding-visualization/quality",
+            json=request_data,
         )
         assert response.status_code == 422
 

@@ -232,7 +232,8 @@ class TestModelEvaluator:
     def test_calculate_code_specificity(self, model_evaluator):
         """Test code specificity calculation."""
         specificity = model_evaluator._calculate_code_specificity(
-            "embeddinggemma:latest", 0.8,
+            "embeddinggemma:latest",
+            0.8,
         )
         assert 0.0 <= specificity <= 1.0
 
@@ -372,12 +373,15 @@ class TestHybridSearchEngine:
 
         # Add documents to keyword index
         hybrid_search_engine.keyword_index.add_document(
-            "doc1", "This is a fibonacci function", {"id": "doc1"},
+            "doc1",
+            "This is a fibonacci function",
+            {"id": "doc1"},
         )
 
         # Perform hybrid search
         results = await hybrid_search_engine.hybrid_search(
-            "fibonacci function", limit=5,
+            "fibonacci function",
+            limit=5,
         )
 
         assert len(results) > 0
@@ -406,7 +410,9 @@ class TestHybridSearchEngine:
         """Test keyword search functionality."""
         # Add test documents
         hybrid_search_engine.keyword_index.add_document(
-            "doc1", "This is a test document", {"id": "doc1"},
+            "doc1",
+            "This is a test document",
+            {"id": "doc1"},
         )
 
         results = await hybrid_search_engine._keyword_search("test document", limit=5)
@@ -447,7 +453,11 @@ class TestHybridSearchEngine:
         ]
 
         fused_results = hybrid_search_engine._reciprocal_rank_fusion(
-            semantic_results, keyword_results, 0.7, 0.3, limit=5,
+            semantic_results,
+            keyword_results,
+            0.7,
+            0.3,
+            limit=5,
         )
 
         assert len(fused_results) > 0
@@ -455,10 +465,12 @@ class TestHybridSearchEngine:
 
         # Result 1 should have higher score since it appears in both
         doc1_score = next(
-            (r["score"] for r in fused_results if r["metadata"]["id"] == "doc1"), 0,
+            (r["score"] for r in fused_results if r["metadata"]["id"] == "doc1"),
+            0,
         )
         doc3_score = next(
-            (r["score"] for r in fused_results if r["metadata"]["id"] == "doc3"), 0,
+            (r["score"] for r in fused_results if r["metadata"]["id"] == "doc3"),
+            0,
         )
         assert doc1_score > doc3_score
 
@@ -508,7 +520,8 @@ class TestHybridSearchEngine:
         test_queries = ["test query 1", "test query 2"]
 
         benchmark_results = await hybrid_search_engine.benchmark_search_performance(
-            test_queries, iterations=2,
+            test_queries,
+            iterations=2,
         )
 
         assert "semantic_only" in benchmark_results
@@ -559,7 +572,9 @@ def fibonacci(n):
         # Test hybrid search
         hybrid_engine = HybridSearchEngine(embedding_service, vector_db_service)
         hybrid_engine.keyword_index.add_document(
-            "doc1", "fibonacci function", {"id": "doc1"},
+            "doc1",
+            "fibonacci function",
+            {"id": "doc1"},
         )
 
         results = await hybrid_engine.hybrid_search("fibonacci", limit=5)

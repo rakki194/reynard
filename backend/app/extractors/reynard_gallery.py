@@ -40,7 +40,8 @@ class ReynardGalleryExtractor(Extractor):
                 Message.Directory,
                 {
                     "title": gallery_data.get(
-                        "title", f"Reynard Gallery {self.gallery_id}",
+                        "title",
+                        f"Reynard Gallery {self.gallery_id}",
                     ),
                     "author": gallery_data.get("author", "Unknown"),
                     "category": "gallery",

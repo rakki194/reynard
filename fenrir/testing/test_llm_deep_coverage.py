@@ -15,8 +15,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestLLMDeepCoverage(FenrirTestBase):
-    """*otter curiosity* Test suite for deep LLM module coverage
-    """
+    """*otter curiosity* Test suite for deep LLM module coverage"""
 
     async def test_llm_universal_encoding_deep_coverage(self):
         """Test universal encoding exploits with deep coverage"""

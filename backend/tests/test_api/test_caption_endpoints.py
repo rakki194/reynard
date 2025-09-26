@@ -13,7 +13,9 @@ class TestCaptionGenerators:
     """Test caption generator information endpoints."""
 
     def test_get_available_generators_success(
-        self, client: TestClient, mock_caption_service,
+        self,
+        client: TestClient,
+        mock_caption_service,
     ):
         """Test successful retrieval of available generators."""
         with patch(
@@ -67,7 +69,9 @@ class TestCaptionGenerators:
             assert "config_schema" in data
 
     def test_get_generator_info_not_found(
-        self, client: TestClient, mock_caption_service,
+        self,
+        client: TestClient,
+        mock_caption_service,
     ):
         """Test retrieval of nonexistent generator info."""
         mock_caption_service.get_generator_info.side_effect = ValueError(
@@ -88,7 +92,10 @@ class TestSingleCaptionGeneration:
     """Test single caption generation endpoints."""
 
     def test_generate_single_caption_success(
-        self, client: TestClient, mock_caption_service, test_image_data,
+        self,
+        client: TestClient,
+        mock_caption_service,
+        test_image_data,
     ):
         """Test successful single caption generation."""
         mock_result = {
@@ -135,7 +142,9 @@ class TestSingleCaptionGeneration:
         assert response.status_code == 422
 
     def test_generate_single_caption_invalid_generator(
-        self, client: TestClient, test_image_data,
+        self,
+        client: TestClient,
+        test_image_data,
     ):
         """Test single caption generation with invalid generator."""
         files = {"file": ("test.jpg", test_image_data, "image/jpeg")}
@@ -150,7 +159,10 @@ class TestSingleCaptionGeneration:
         assert response.status_code == 400
 
     def test_generate_single_caption_service_error(
-        self, client: TestClient, mock_caption_service, test_image_data,
+        self,
+        client: TestClient,
+        mock_caption_service,
+        test_image_data,
     ):
         """Test error handling during caption generation."""
         mock_caption_service.upload_and_generate_caption.side_effect = Exception(
@@ -175,7 +187,10 @@ class TestSingleCaptionGeneration:
             assert "Generation failed" in response.json()["detail"]
 
     def test_generate_single_caption_generation_failed(
-        self, client: TestClient, mock_caption_service, test_image_data,
+        self,
+        client: TestClient,
+        mock_caption_service,
+        test_image_data,
     ):
         """Test handling of failed caption generation."""
         mock_result = {
@@ -212,7 +227,10 @@ class TestBatchCaptionGeneration:
     """Test batch caption generation endpoints."""
 
     def test_generate_batch_captions_success(
-        self, client: TestClient, mock_caption_service, test_image_data,
+        self,
+        client: TestClient,
+        mock_caption_service,
+        test_image_data,
     ):
         """Test successful batch caption generation."""
         mock_results = [
@@ -267,7 +285,10 @@ class TestBatchCaptionGeneration:
         assert response.status_code == 422
 
     def test_generate_batch_captions_mixed_results(
-        self, client: TestClient, mock_caption_service, test_image_data,
+        self,
+        client: TestClient,
+        mock_caption_service,
+        test_image_data,
     ):
         """Test batch caption generation with mixed success/failure results."""
         mock_results = [

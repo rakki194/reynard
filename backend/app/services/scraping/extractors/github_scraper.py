@@ -1,5 +1,4 @@
-"""Specialized GitHub scraper for handling GitHub repositories, issues, and pull requests.
-"""
+"""Specialized GitHub scraper for handling GitHub repositories, issues, and pull requests."""
 
 import logging
 import re
@@ -104,7 +103,10 @@ class GitHubScraper(BaseScraper):
         return None, None
 
     async def _scrape_with_api(
-        self, content_type: str, identifiers: dict[str, str], url: str,
+        self,
+        content_type: str,
+        identifiers: dict[str, str],
+        url: str,
     ) -> dict[str, Any] | None:
         """Scrape content using GitHub API."""
         try:
@@ -147,7 +149,10 @@ class GitHubScraper(BaseScraper):
             return None
 
     def _create_result_from_api_content(
-        self, url: str, content_type: str, content: dict[str, Any],
+        self,
+        url: str,
+        content_type: str,
+        content: dict[str, Any],
     ) -> ScrapingResult:
         """Create ScrapingResult from API content."""
         if content_type == "repository":
@@ -161,7 +166,9 @@ class GitHubScraper(BaseScraper):
         return self._create_generic_result(url, content)
 
     def _create_repository_result(
-        self, url: str, content: dict[str, Any],
+        self,
+        url: str,
+        content: dict[str, Any],
     ) -> ScrapingResult:
         """Create result for repository content."""
         title = content.get("name", "GitHub Repository")
@@ -264,7 +271,9 @@ class GitHubScraper(BaseScraper):
         )
 
     def _create_pull_request_result(
-        self, url: str, content: dict[str, Any],
+        self,
+        url: str,
+        content: dict[str, Any],
     ) -> ScrapingResult:
         """Create result for pull request content."""
         title = content.get("title", "GitHub Pull Request")
@@ -355,7 +364,9 @@ class GitHubScraper(BaseScraper):
         )
 
     def _create_generic_result(
-        self, url: str, content: dict[str, Any],
+        self,
+        url: str,
+        content: dict[str, Any],
     ) -> ScrapingResult:
         """Create generic result for unknown content types."""
         return ScrapingResult(

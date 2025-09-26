@@ -1,5 +1,4 @@
-"""Report generation utilities for humility detection.
-"""
+"""Report generation utilities for humility detection."""
 
 import json
 

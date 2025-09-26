@@ -27,6 +27,23 @@ export {
   adjustSaturation,
 } from "./utils/colorUtils";
 
+// Export hue shifting utilities with animation integration
+export {
+  pureHueShift,
+  generateHueShiftRamp,
+  createComplementaryPair,
+  createTriadicSet,
+  createTetradicSet,
+  createAnalogousSet,
+  perceptualHueShift,
+  batchHueShift,
+  easedHueShift,
+  getEasingFunction,
+  isAnimationPackageAvailable,
+  getAnimationPackage,
+  EasingFunctions,
+} from "./utils/hueShifting";
+
 export {
   createThemeContext,
   getStoredTheme,

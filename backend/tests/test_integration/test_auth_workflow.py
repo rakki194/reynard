@@ -85,7 +85,9 @@ class TestCompleteAuthWorkflow:
         assert refresh_after_logout.status_code == 401
 
     def test_multiple_user_registration_and_login(
-        self, client: TestClient, clean_databases,
+        self,
+        client: TestClient,
+        clean_databases,
     ):
         """Test registration and login of multiple users."""
         users = [

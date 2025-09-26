@@ -9,9 +9,9 @@ from .agent_email_service import agent_email_service
 from .ai_email_response_service import (
     ai_email_response_service,
     get_ai_email_response_service,
+    health_check_ai_email_response_service,
     initialize_ai_email_response_service,
     shutdown_ai_email_response_service,
-    health_check_ai_email_response_service,
 )
 
 __all__ = [

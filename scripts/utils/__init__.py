@@ -1,2 +1,1 @@
-"""Utility scripts for Reynard development.
-"""
+"""Utility scripts for Reynard development."""

@@ -14,14 +14,18 @@ import logging
 import os
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, pool
-from dotenv import load_dotenv
-
 from alembic import context
+from dotenv import load_dotenv
+from sqlalchemy import engine_from_config, pool
 
 # Import the models to ensure they're registered with SQLAlchemy
 from app.models.base import Base
-from app.models.mcp.tool_config import Tool, ToolCategory, ToolConfigHistory, ToolConfiguration
+from app.models.mcp.tool_config import (
+    Tool,
+    ToolCategory,
+    ToolConfigHistory,
+    ToolConfiguration,
+)
 
 # Load environment variables from the .env file
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '../../.env'))
@@ -51,7 +55,7 @@ def get_database_url():
     database_url = os.getenv("MCP_DATABASE_URL")
     if database_url:
         return database_url
-    
+
     # Fall back to config file
     return config.get_main_option("sqlalchemy.url")
 
@@ -89,7 +93,7 @@ def run_migrations_online() -> None:
     """
     configuration = config.get_section(config.config_ini_section)
     configuration["sqlalchemy.url"] = get_database_url()
-    
+
     connectable = engine_from_config(
         configuration,
         prefix="sqlalchemy.",
@@ -97,9 +101,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

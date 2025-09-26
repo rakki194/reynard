@@ -264,7 +264,9 @@ class SecureChatRequest(SecureModel):
     message: str = Field(..., max_length=100000, description="Chat message")
     model: str | None = Field(None, max_length=100, description="Model name")
     system_prompt: str | None = Field(
-        None, max_length=100000, description="System prompt",
+        None,
+        max_length=100000,
+        description="System prompt",
     )
     temperature: float = Field(0.7, ge=0.0, le=2.0, description="Temperature")
     max_tokens: int | None = Field(None, ge=1, le=4096, description="Max tokens")
@@ -307,7 +309,10 @@ class SecureSummarizationRequest(SecureModel):
         pattern="^(brief|executive|detailed|comprehensive|bullet|tts_optimized)$",
     )
     max_length: int | None = Field(
-        default=None, description="Maximum length of summary in words", ge=10, le=5000,
+        default=None,
+        description="Maximum length of summary in words",
+        ge=10,
+        le=5000,
     )
     model: str | None = Field(None, max_length=100, description="Model name")
 

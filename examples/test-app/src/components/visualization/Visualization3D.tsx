@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, createMemo } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-primitives";
 import { type DataPoint, type VisualizationConfig } from "./VisualizationCore";
 import { DataProcessor } from "./DataProcessor";
 import { Visualization3DControls } from "./Visualization3DControls";

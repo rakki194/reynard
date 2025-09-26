@@ -1,5 +1,4 @@
-"""Enhanced Humility Detector - Core Detection Engine
-"""
+"""Enhanced Humility Detector - Core Detection Engine"""
 
 import asyncio
 import logging
@@ -15,7 +14,6 @@ from analyzers import (
     SentimentAnalyzer,
     TransformerAnalyzer,
 )
-
 from utils import CulturalAdapter, MetricsCalculator, TextProcessor
 
 from .config import HumilityConfig
@@ -84,7 +82,10 @@ class HumilityDetector:
         self.logger.info("Humility Detector initialized")
 
     async def analyze_text(
-        self, text: str, file_path: str = "", cultural_context: str | None = None,
+        self,
+        text: str,
+        file_path: str = "",
+        cultural_context: str | None = None,
     ) -> HumilityProfile:
         """Analyze text for humility-related patterns and generate comprehensive profile.
 
@@ -151,7 +152,8 @@ class HumilityDetector:
         # Apply cultural adaptation if enabled
         if self.cultural_adapter and cultural_context:
             all_findings = self.cultural_adapter.adapt_findings(
-                all_findings, cultural_context,
+                all_findings,
+                cultural_context,
             )
 
         # Filter findings by confidence and severity
@@ -159,7 +161,8 @@ class HumilityDetector:
 
         # Calculate comprehensive scores
         scores = self._calculate_comprehensive_scores(
-            filtered_findings, analysis_metrics,
+            filtered_findings,
+            analysis_metrics,
         )
 
         # Generate recommendations
@@ -210,7 +213,9 @@ class HumilityDetector:
             return self._create_empty_profile()
 
     async def analyze_directory(
-        self, directory: Path, extensions: list[str] | None = None,
+        self,
+        directory: Path,
+        extensions: list[str] | None = None,
     ) -> dict[str, HumilityProfile]:
         """Analyze all files in a directory."""
         if extensions is None:
@@ -280,7 +285,9 @@ class HumilityDetector:
             return {"findings": [], "metrics": {}}
 
     async def _run_sentiment_analysis(
-        self, text: str, file_path: str,
+        self,
+        text: str,
+        file_path: str,
     ) -> dict[str, Any]:
         """Run sentiment analysis."""
         try:
@@ -308,7 +315,9 @@ class HumilityDetector:
             return {"findings": [], "metrics": {}}
 
     async def _run_epistemic_analysis(
-        self, text: str, file_path: str,
+        self,
+        text: str,
+        file_path: str,
     ) -> dict[str, Any]:
         """Run epistemic humility analysis."""
         try:
@@ -336,7 +345,9 @@ class HumilityDetector:
             return {"findings": [], "metrics": {}}
 
     async def _run_transformer_analysis(
-        self, text: str, file_path: str,
+        self,
+        text: str,
+        file_path: str,
     ) -> dict[str, Any]:
         """Run transformer model analysis."""
         try:
@@ -351,7 +362,8 @@ class HumilityDetector:
             return {"findings": [], "metrics": {}}
 
     def _filter_findings(
-        self, findings: list[HumilityFinding],
+        self,
+        findings: list[HumilityFinding],
     ) -> list[HumilityFinding]:
         """Filter findings based on confidence and severity thresholds."""
         filtered = []
@@ -380,7 +392,9 @@ class HumilityDetector:
         return filtered
 
     def _calculate_comprehensive_scores(
-        self, findings: list[HumilityFinding], analysis_metrics: dict[str, Any],
+        self,
+        findings: list[HumilityFinding],
+        analysis_metrics: dict[str, Any],
     ) -> dict[str, float]:
         """Calculate comprehensive humility scores."""
         scores = {}
@@ -402,7 +416,8 @@ class HumilityDetector:
 
             max_possible_penalty = len(findings) * 4 * 1.0
             scores["overall"] = max(
-                0, 100 - (total_penalty / max_possible_penalty * 100),
+                0,
+                100 - (total_penalty / max_possible_penalty * 100),
             )
 
         # Individual component scores
@@ -415,7 +430,9 @@ class HumilityDetector:
         return scores
 
     def _generate_recommendations(
-        self, findings: list[HumilityFinding], scores: dict[str, float],
+        self,
+        findings: list[HumilityFinding],
+        scores: dict[str, float],
     ) -> dict[str, list[str]]:
         """Generate recommendations based on findings and scores."""
         recommendations = []

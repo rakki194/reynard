@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Card, Slider } from "reynard-components";
+import { Card, Slider } from "reynard-primitives";
 
 interface Phyllotactic3DControlsProps {
   pointCount: () => number;

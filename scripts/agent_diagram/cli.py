@@ -1,5 +1,4 @@
-"""Command-line interface for the agent diagram generator.
-"""
+"""Command-line interface for the agent diagram generator."""
 
 import argparse
 import os
@@ -23,10 +22,14 @@ def main() -> int:
         description="Generate agent contributions diagram from changelog",
     )
     parser.add_argument(
-        "--changelog", default="CHANGELOG.md", help="Path to changelog file",
+        "--changelog",
+        default="CHANGELOG.md",
+        help="Path to changelog file",
     )
     parser.add_argument(
-        "--output", default="agent_contributions_diagram.md", help="Output file path",
+        "--output",
+        default="agent_contributions_diagram.md",
+        help="Output file path",
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 

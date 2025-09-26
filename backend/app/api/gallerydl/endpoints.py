@@ -175,7 +175,8 @@ async def download_gallery(
     except Exception as e:
         logger.exception(f"Error starting gallery download: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to start download: {e!s}",
+            status_code=500,
+            detail=f"Failed to start download: {e!s}",
         )
 
 
@@ -244,7 +245,8 @@ async def get_extractors(
     except Exception as e:
         logger.exception(f"Error getting extractors: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get extractors: {e!s}",
+            status_code=500,
+            detail=f"Failed to get extractors: {e!s}",
         )
 
 
@@ -327,7 +329,8 @@ async def get_active_downloads(
     except Exception as e:
         logger.exception(f"Error getting active downloads: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get active downloads: {e!s}",
+            status_code=500,
+            detail=f"Failed to get active downloads: {e!s}",
         )
 
 
@@ -355,7 +358,8 @@ async def cancel_download(
     except Exception as e:
         logger.exception(f"Error cancelling download: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to cancel download: {e!s}",
+            status_code=500,
+            detail=f"Failed to cancel download: {e!s}",
         )
 
 
@@ -377,7 +381,8 @@ async def get_download_history(
     except Exception as e:
         logger.exception(f"Error getting download history: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get download history: {e!s}",
+            status_code=500,
+            detail=f"Failed to get download history: {e!s}",
         )
 
 
@@ -401,7 +406,8 @@ async def get_health(service: ReynardGalleryService = Depends(get_gallery_servic
     except Exception as e:
         logger.exception(f"Error getting health status: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get health status: {e!s}",
+            status_code=500,
+            detail=f"Failed to get health status: {e!s}",
         )
 
 

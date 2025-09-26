@@ -32,5 +32,3 @@ def clean_database(test_engine):
     Base.metadata.drop_all(test_engine)
     # Recreate all tables
     Base.metadata.create_all(test_engine)
-
-

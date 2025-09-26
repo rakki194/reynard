@@ -33,7 +33,10 @@ class CaptionerPlugin:
     """
 
     def __init__(
-        self, name: str, module_path: str, config: dict[str, Any] | None = None,
+        self,
+        name: str,
+        module_path: str,
+        config: dict[str, Any] | None = None,
     ):
         self.name = name
         self.module_path = module_path
@@ -42,7 +45,8 @@ class CaptionerPlugin:
         self._available: bool | None = None
         self._loading_lock = asyncio.Lock()
         self._executor = ThreadPoolExecutor(
-            max_workers=1, thread_name_prefix=f"captioner-{name}",
+            max_workers=1,
+            thread_name_prefix=f"captioner-{name}",
         )
 
     def get_instance(self) -> CaptionGenerator | None:
@@ -134,7 +138,8 @@ class CaptionerPlugin:
                 # Run loading in thread pool to avoid blocking
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(
-                    self._executor, lambda: asyncio.run(instance.load(self.config)),
+                    self._executor,
+                    lambda: asyncio.run(instance.load(self.config)),
                 )
                 logger.info(f"Successfully loaded model for plugin: {self.name}")
                 return True
@@ -165,7 +170,8 @@ class CaptionerPlugin:
                 # Run unloading in thread pool to avoid blocking
                 loop = asyncio.get_event_loop()
                 await loop.run_in_executor(
-                    self._executor, lambda: asyncio.run(instance.unload()),
+                    self._executor,
+                    lambda: asyncio.run(instance.unload()),
                 )
                 logger.info(f"Successfully unloaded model for plugin: {self.name}")
                 return True

@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple, Union
 try:
     import tree_sitter
     from tree_sitter import Language, Parser
+
     TREE_SITTER_AVAILABLE = True
 except ImportError:
     TREE_SITTER_AVAILABLE = False
@@ -24,6 +25,7 @@ except ImportError:
 
 try:
     import git
+
     GIT_AVAILABLE = True
 except ImportError:
     GIT_AVAILABLE = False
@@ -39,14 +41,14 @@ class CodebaseAnalysisEngine:
         self.root_path = Path(root_path).resolve()
         self.tree_sitter_available = TREE_SITTER_AVAILABLE
         self.git_available = GIT_AVAILABLE
-        
+
         # Language parsers
         self.parsers: Dict[str, Parser] = {}
         self._setup_parsers()
-        
+
         # Analysis results cache
         self._cache: Dict[str, Any] = {}
-        
+
         # Supported file extensions
         self.supported_extensions = {
             '.py': 'python',
@@ -66,13 +68,16 @@ class CodebaseAnalysisEngine:
     def _setup_parsers(self) -> None:
         """Setup Tree-sitter parsers for supported languages."""
         if not self.tree_sitter_available:
-            logger.warning("Tree-sitter not available. Install with: pip install tree-sitter")
+            logger.warning(
+                "Tree-sitter not available. Install with: pip install tree-sitter"
+            )
             return
 
         try:
             # Python parser
             try:
                 from tree_sitter_python import language as python_language
+
                 python_parser = Parser()
                 python_parser.set_language(python_language())
                 self.parsers['python'] = python_parser
@@ -83,7 +88,10 @@ class CodebaseAnalysisEngine:
 
             # TypeScript parser
             try:
-                from tree_sitter_typescript import language_typescript as typescript_language
+                from tree_sitter_typescript import (
+                    language_typescript as typescript_language,
+                )
+
                 typescript_parser = Parser()
                 typescript_parser.set_language(typescript_language())
                 self.parsers['typescript'] = typescript_parser
@@ -95,6 +103,7 @@ class CodebaseAnalysisEngine:
             # JavaScript parser
             try:
                 from tree_sitter_javascript import language as javascript_language
+
                 javascript_parser = Parser()
                 javascript_parser.set_language(javascript_language())
                 self.parsers['javascript'] = javascript_parser
@@ -106,6 +115,7 @@ class CodebaseAnalysisEngine:
             # JSON parser
             try:
                 from tree_sitter_json import language as json_language
+
                 json_parser = Parser()
                 json_parser.set_language(json_language())
                 self.parsers['json'] = json_parser
@@ -117,10 +127,12 @@ class CodebaseAnalysisEngine:
         except Exception as e:
             logger.error(f"Error setting up parsers: {e}")
 
-    def discover_files(self, 
-                      include_patterns: Optional[List[str]] = None,
-                      exclude_patterns: Optional[List[str]] = None,
-                      max_depth: Optional[int] = None) -> List[Path]:
+    def discover_files(
+        self,
+        include_patterns: Optional[List[str]] = None,
+        exclude_patterns: Optional[List[str]] = None,
+        max_depth: Optional[int] = None,
+    ) -> List[Path]:
         """
         Discover files in the codebase.
 
@@ -133,7 +145,7 @@ class CodebaseAnalysisEngine:
             List of discovered file paths
         """
         files = []
-        
+
         # Default exclude patterns
         default_exclude = {
             '**/__pycache__/**',
@@ -151,7 +163,7 @@ class CodebaseAnalysisEngine:
             '**/.mypy_cache/**',
             '**/.ruff_cache/**',
         }
-        
+
         if exclude_patterns:
             exclude_patterns.extend(default_exclude)
         else:
@@ -166,24 +178,28 @@ class CodebaseAnalysisEngine:
                     continue
 
             # Filter directories
-            dirs[:] = [d for d in dirs if not any(
-                Path(root, d).match(pattern) for pattern in exclude_patterns
-            )]
+            dirs[:] = [
+                d
+                for d in dirs
+                if not any(Path(root, d).match(pattern) for pattern in exclude_patterns)
+            ]
 
             # Process files
             for filename in filenames:
                 file_path = Path(root, filename)
                 relative_path = file_path.relative_to(self.root_path)
-                
+
                 # Check exclude patterns
                 if any(relative_path.match(pattern) for pattern in exclude_patterns):
                     continue
-                
+
                 # Check include patterns
                 if include_patterns:
-                    if not any(relative_path.match(pattern) for pattern in include_patterns):
+                    if not any(
+                        relative_path.match(pattern) for pattern in include_patterns
+                    ):
                         continue
-                
+
                 files.append(file_path)
 
         return sorted(files)
@@ -202,7 +218,7 @@ class CodebaseAnalysisEngine:
             # Get file extension and language
             extension = file_path.suffix.lower()
             language = self.supported_extensions.get(extension, 'unknown')
-            
+
             # Read file content
             try:
                 with open(file_path, 'r', encoding='utf-8') as f:
@@ -211,7 +227,7 @@ class CodebaseAnalysisEngine:
                 # Try with different encoding
                 with open(file_path, 'r', encoding='latin-1') as f:
                     content = f.read()
-            
+
             # Basic file metrics
             lines = content.splitlines()
             analysis = {
@@ -228,7 +244,7 @@ class CodebaseAnalysisEngine:
                 'class_count': 0,
                 'import_count': 0,
             }
-            
+
             # Language-specific analysis
             if language == 'python':
                 analysis.update(self._analyze_python_file(content, file_path))
@@ -240,9 +256,9 @@ class CodebaseAnalysisEngine:
                 analysis.update(self._analyze_yaml_file(content, file_path))
             elif language == 'markdown':
                 analysis.update(self._analyze_markdown_file(content, file_path))
-            
+
             return analysis
-            
+
         except Exception as e:
             logger.error(f"Error analyzing file {file_path}: {e}")
             return {
@@ -255,22 +271,22 @@ class CodebaseAnalysisEngine:
     def _analyze_python_file(self, content: str, file_path: Path) -> Dict[str, Any]:
         """Analyze Python file using AST."""
         analysis = {}
-        
+
         try:
             # Parse AST
             tree = ast.parse(content, filename=str(file_path))
-            
+
             # Count different node types
             node_counts = {}
             imports = []
             functions = []
             classes = []
             decorators = []
-            
+
             for node in ast.walk(tree):
                 node_type = type(node).__name__
                 node_counts[node_type] = node_counts.get(node_type, 0) + 1
-                
+
                 if isinstance(node, ast.Import):
                     for alias in node.names:
                         imports.append(alias.name)
@@ -279,33 +295,47 @@ class CodebaseAnalysisEngine:
                     for alias in node.names:
                         imports.append(f"{module}.{alias.name}")
                 elif isinstance(node, ast.FunctionDef):
-                    functions.append({
-                        'name': node.name,
-                        'line': node.lineno,
-                        'args': len(node.args.args),
-                        'decorators': [d.id if hasattr(d, 'id') else str(d) for d in node.decorator_list]
-                    })
+                    functions.append(
+                        {
+                            'name': node.name,
+                            'line': node.lineno,
+                            'args': len(node.args.args),
+                            'decorators': [
+                                d.id if hasattr(d, 'id') else str(d)
+                                for d in node.decorator_list
+                            ],
+                        }
+                    )
                 elif isinstance(node, ast.ClassDef):
-                    classes.append({
-                        'name': node.name,
-                        'line': node.lineno,
-                        'bases': [base.id if hasattr(base, 'id') else str(base) for base in node.bases],
-                        'methods': len([n for n in node.body if isinstance(n, ast.FunctionDef)])
-                    })
+                    classes.append(
+                        {
+                            'name': node.name,
+                            'line': node.lineno,
+                            'bases': [
+                                base.id if hasattr(base, 'id') else str(base)
+                                for base in node.bases
+                            ],
+                            'methods': len(
+                                [n for n in node.body if isinstance(n, ast.FunctionDef)]
+                            ),
+                        }
+                    )
                 elif isinstance(node, ast.Decorator):
                     decorators.append(str(node))
-            
-            analysis.update({
-                'ast_node_counts': node_counts,
-                'imports': imports,
-                'functions': functions,
-                'classes': classes,
-                'decorators': decorators,
-                'function_count': len(functions),
-                'class_count': len(classes),
-                'import_count': len(imports),
-            })
-            
+
+            analysis.update(
+                {
+                    'ast_node_counts': node_counts,
+                    'imports': imports,
+                    'functions': functions,
+                    'classes': classes,
+                    'decorators': decorators,
+                    'function_count': len(functions),
+                    'class_count': len(classes),
+                    'import_count': len(imports),
+                }
+            )
+
         except SyntaxError as e:
             analysis['syntax_error'] = {
                 'message': str(e),
@@ -314,135 +344,166 @@ class CodebaseAnalysisEngine:
             }
         except Exception as e:
             analysis['parse_error'] = str(e)
-        
+
         return analysis
 
-    def _analyze_js_file(self, content: str, file_path: Path, language: str) -> Dict[str, Any]:
+    def _analyze_js_file(
+        self, content: str, file_path: Path, language: str
+    ) -> Dict[str, Any]:
         """Analyze JavaScript/TypeScript file."""
         analysis = {}
-        
+
         if language in self.parsers:
             try:
                 parser = self.parsers[language]
                 tree = parser.parse(bytes(content, 'utf8'))
-                
+
                 # Basic AST analysis
                 functions = []
                 classes = []
                 imports = []
-                
+
                 def traverse_node(node, depth=0):
                     if depth > 20:  # Prevent infinite recursion
                         return
-                    
+
                     if hasattr(node, 'type'):
                         if node.type == 'function_declaration':
-                            functions.append({
-                                'name': node.child_by_field_name('name').text.decode('utf8') if node.child_by_field_name('name') else 'anonymous',
-                                'line': node.start_point[0] + 1,
-                            })
+                            functions.append(
+                                {
+                                    'name': (
+                                        node.child_by_field_name('name').text.decode(
+                                            'utf8'
+                                        )
+                                        if node.child_by_field_name('name')
+                                        else 'anonymous'
+                                    ),
+                                    'line': node.start_point[0] + 1,
+                                }
+                            )
                         elif node.type == 'class_declaration':
-                            classes.append({
-                                'name': node.child_by_field_name('name').text.decode('utf8') if node.child_by_field_name('name') else 'anonymous',
-                                'line': node.start_point[0] + 1,
-                            })
+                            classes.append(
+                                {
+                                    'name': (
+                                        node.child_by_field_name('name').text.decode(
+                                            'utf8'
+                                        )
+                                        if node.child_by_field_name('name')
+                                        else 'anonymous'
+                                    ),
+                                    'line': node.start_point[0] + 1,
+                                }
+                            )
                         elif node.type in ['import_statement', 'import_declaration']:
                             imports.append(node.text.decode('utf8'))
-                    
+
                     for child in node.children:
                         traverse_node(child, depth + 1)
-                
+
                 traverse_node(tree.root_node)
-                
-                analysis.update({
-                    'functions': functions,
-                    'classes': classes,
-                    'imports': imports,
-                    'function_count': len(functions),
-                    'class_count': len(classes),
-                    'import_count': len(imports),
-                })
-                
+
+                analysis.update(
+                    {
+                        'functions': functions,
+                        'classes': classes,
+                        'imports': imports,
+                        'function_count': len(functions),
+                        'class_count': len(classes),
+                        'import_count': len(imports),
+                    }
+                )
+
             except Exception as e:
                 analysis['parse_error'] = str(e)
-        
+
         return analysis
 
     def _analyze_json_file(self, content: str, file_path: Path) -> Dict[str, Any]:
         """Analyze JSON file."""
         analysis = {}
-        
+
         try:
             data = json.loads(content)
-            analysis.update({
-                'json_valid': True,
-                'json_type': type(data).__name__,
-                'json_size': len(str(data)),
-            })
-            
+            analysis.update(
+                {
+                    'json_valid': True,
+                    'json_type': type(data).__name__,
+                    'json_size': len(str(data)),
+                }
+            )
+
             if isinstance(data, dict):
                 analysis['json_keys'] = list(data.keys())
                 analysis['json_key_count'] = len(data.keys())
             elif isinstance(data, list):
                 analysis['json_length'] = len(data)
-                
+
         except json.JSONDecodeError as e:
-            analysis.update({
-                'json_valid': False,
-                'json_error': str(e),
-            })
-        
+            analysis.update(
+                {
+                    'json_valid': False,
+                    'json_error': str(e),
+                }
+            )
+
         return analysis
 
     def _analyze_yaml_file(self, content: str, file_path: Path) -> Dict[str, Any]:
         """Analyze YAML file."""
         analysis = {}
-        
+
         try:
             import yaml
+
             data = yaml.safe_load(content)
-            analysis.update({
-                'yaml_valid': True,
-                'yaml_type': type(data).__name__ if data is not None else 'null',
-            })
-            
+            analysis.update(
+                {
+                    'yaml_valid': True,
+                    'yaml_type': type(data).__name__ if data is not None else 'null',
+                }
+            )
+
             if isinstance(data, dict):
                 analysis['yaml_keys'] = list(data.keys())
                 analysis['yaml_key_count'] = len(data.keys())
             elif isinstance(data, list):
                 analysis['yaml_length'] = len(data)
-                
+
         except ImportError:
             analysis['yaml_error'] = 'PyYAML not available'
         except yaml.YAMLError as e:
-            analysis.update({
-                'yaml_valid': False,
-                'yaml_error': str(e),
-            })
-        
+            analysis.update(
+                {
+                    'yaml_valid': False,
+                    'yaml_error': str(e),
+                }
+            )
+
         return analysis
 
     def _analyze_markdown_file(self, content: str, file_path: Path) -> Dict[str, Any]:
         """Analyze Markdown file."""
         analysis = {}
-        
+
         # Count markdown elements
         headers = re.findall(r'^#{1,6}\s+(.+)$', content, re.MULTILINE)
         links = re.findall(r'\[([^\]]+)\]\(([^)]+)\)', content)
         images = re.findall(r'!\[([^\]]*)\]\(([^)]+)\)', content)
         code_blocks = re.findall(r'```(\w+)?\n(.*?)\n```', content, re.DOTALL)
-        
-        analysis.update({
-            'markdown_headers': headers,
-            'markdown_links': links,
-            'markdown_images': images,
-            'markdown_code_blocks': code_blocks,
-            'header_count': len(headers),
-            'link_count': len(links),
-            'image_count': len(images),
-            'code_block_count': len(code_blocks),
-        })
-        
+
+        analysis.update(
+            {
+                'markdown_headers': headers,
+                'markdown_links': links,
+                'markdown_images': images,
+                'markdown_code_blocks': code_blocks,
+                'header_count': len(headers),
+                'link_count': len(links),
+                'image_count': len(images),
+                'code_block_count': len(code_blocks),
+            }
+        )
+
         return analysis
 
     def analyze_dependencies(self, file_paths: List[Path]) -> Dict[str, Any]:
@@ -461,31 +522,33 @@ class CodebaseAnalysisEngine:
             'typescript': set(),
             'files': {},
         }
-        
+
         for file_path in file_paths:
             analysis = self.analyze_file(file_path)
-            
+
             if 'imports' in analysis:
                 language = analysis.get('language', 'unknown')
                 if language in dependencies:
                     dependencies[language].update(analysis['imports'])
-                
-                dependencies['files'][str(file_path.relative_to(self.root_path))] = analysis['imports']
-        
+
+                dependencies['files'][str(file_path.relative_to(self.root_path))] = (
+                    analysis['imports']
+                )
+
         # Convert sets to lists for JSON serialization
         for lang in ['python', 'javascript', 'typescript']:
             dependencies[lang] = list(dependencies[lang])
-        
+
         return dependencies
 
     def get_git_info(self) -> Dict[str, Any]:
         """Get Git repository information."""
         if not self.git_available:
             return {'error': 'Git not available'}
-        
+
         try:
             repo = git.Repo(self.root_path)
-            
+
             return {
                 'is_git_repo': True,
                 'branch': repo.active_branch.name if repo.active_branch else 'detached',
@@ -505,10 +568,12 @@ class CodebaseAnalysisEngine:
         except Exception as e:
             return {'error': str(e)}
 
-    def analyze_codebase(self, 
-                        include_patterns: Optional[List[str]] = None,
-                        exclude_patterns: Optional[List[str]] = None,
-                        max_depth: Optional[int] = None) -> Dict[str, Any]:
+    def analyze_codebase(
+        self,
+        include_patterns: Optional[List[str]] = None,
+        exclude_patterns: Optional[List[str]] = None,
+        max_depth: Optional[int] = None,
+    ) -> Dict[str, Any]:
         """
         Perform comprehensive codebase analysis.
 
@@ -521,21 +586,21 @@ class CodebaseAnalysisEngine:
             Dictionary with comprehensive analysis results
         """
         logger.info(f"Starting codebase analysis for {self.root_path}")
-        
+
         # Discover files
         files = self.discover_files(include_patterns, exclude_patterns, max_depth)
         logger.info(f"Discovered {len(files)} files")
-        
+
         # Analyze files
         file_analyses = []
         language_stats = {}
         total_lines = 0
         total_size = 0
-        
+
         for file_path in files:
             analysis = self.analyze_file(file_path)
             file_analyses.append(analysis)
-            
+
             # Update language statistics
             language = analysis.get('language', 'unknown')
             if language not in language_stats:
@@ -544,20 +609,20 @@ class CodebaseAnalysisEngine:
                     'total_lines': 0,
                     'total_size': 0,
                 }
-            
+
             language_stats[language]['file_count'] += 1
             language_stats[language]['total_lines'] += analysis.get('line_count', 0)
             language_stats[language]['total_size'] += analysis.get('size_bytes', 0)
-            
+
             total_lines += analysis.get('line_count', 0)
             total_size += analysis.get('size_bytes', 0)
-        
+
         # Analyze dependencies
         dependencies = self.analyze_dependencies(files)
-        
+
         # Get Git information
         git_info = self.get_git_info()
-        
+
         # Compile results
         results = {
             'metadata': {
@@ -575,6 +640,6 @@ class CodebaseAnalysisEngine:
             'tree_sitter_available': self.tree_sitter_available,
             'git_available': self.git_available,
         }
-        
+
         logger.info(f"Codebase analysis completed. Analyzed {len(files)} files.")
         return results

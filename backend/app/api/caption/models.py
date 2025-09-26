@@ -15,13 +15,16 @@ class CaptionRequest(BaseModel):
     image_path: str = Field(..., description="Path to the image file")
     generator_name: str = Field(..., description="Name of the caption generator")
     config: dict[str, Any] | None = Field(
-        default_factory=dict, description="Generator configuration",
+        default_factory=dict,
+        description="Generator configuration",
     )
     force: bool = Field(
-        default=False, description="Force regeneration even if caption exists",
+        default=False,
+        description="Force regeneration even if caption exists",
     )
     post_process: bool = Field(
-        default=True, description="Apply post-processing to caption",
+        default=True,
+        description="Apply post-processing to caption",
     )
 
 
@@ -29,10 +32,12 @@ class BatchCaptionRequest(BaseModel):
     """Request model for batch caption generation."""
 
     tasks: list[CaptionRequest] = Field(
-        ..., description="List of caption generation tasks",
+        ...,
+        description="List of caption generation tasks",
     )
     max_concurrent: int = Field(
-        default=4, description="Maximum number of concurrent operations",
+        default=4,
+        description="Maximum number of concurrent operations",
     )
 
 
@@ -70,5 +75,6 @@ class ModelLoadRequest(BaseModel):
     """Request model for loading a caption model."""
 
     config: dict[str, Any] | None = Field(
-        default_factory=dict, description="Model configuration",
+        default_factory=dict,
+        description="Model configuration",
     )

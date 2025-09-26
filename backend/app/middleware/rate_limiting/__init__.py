@@ -5,8 +5,8 @@ adaptive rate limiting, static rate limiting, and bypass mechanisms for
 development and testing scenarios.
 """
 
-from .simple import SimpleRateLimiter, setup_simple_rate_limiting
 from .bypass import RateLimitBypassMiddleware, setup_rate_limit_bypass
+from .simple import SimpleRateLimiter, setup_simple_rate_limiting
 
 __all__ = [
     "SimpleRateLimiter",
@@ -21,10 +21,10 @@ def setup_rate_limiting(
     app,
     environment: str = "development",
     rate_limiting_type: str = "simple",
-    **config_kwargs
+    **config_kwargs,
 ) -> None:
     """Setup rate limiting for a FastAPI application.
-    
+
     Args:
         app: The FastAPI application
         environment: The environment (development, staging, production)

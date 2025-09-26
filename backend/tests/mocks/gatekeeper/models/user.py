@@ -1,5 +1,4 @@
-"""Mock user models.
-"""
+"""Mock user models."""
 
 from ..main import MockUser, MockUserCreate, MockUserPublic, MockUserUpdate
 

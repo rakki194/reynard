@@ -25,9 +25,9 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.pool import StaticPool
 
 from app.core.debug_logging import (
-    setup_sqlalchemy_debug_logging,
+    debug_log,
     setup_connection_pool_logging,
-    debug_log
+    setup_sqlalchemy_debug_logging,
 )
 from app.security.audit_logger import log_data_access_event
 from app.security.encryption_utils import EncryptionUtils
@@ -77,7 +77,8 @@ class DatabaseEncryptionManager:
         master_key_id = f"{self.database_name}_master_key"
         if not self.key_manager.get_key(master_key_id):
             logger.info(
-                "Creating master encryption key for database %s", self.database_name,
+                "Creating master encryption key for database %s",
+                self.database_name,
             )
             self.key_manager.generate_key(
                 key_id=master_key_id,
@@ -134,7 +135,7 @@ class DatabaseEncryptionManager:
             engine_kwargs["connect_args"]["sslmode"] = self.config.ssl_verify_mode
 
         engine = create_engine(self.database_url, **engine_kwargs)
-        
+
         # Setup debug logging for encrypted database
         setup_sqlalchemy_debug_logging(engine, f"{self.database_name}_encrypted")
         setup_connection_pool_logging(engine, f"{self.database_name}_encrypted")
@@ -156,11 +157,11 @@ class DatabaseEncryptionManager:
         }
 
         engine = create_engine(self.database_url, **engine_kwargs)
-        
+
         # Setup debug logging for unencrypted database
         setup_sqlalchemy_debug_logging(engine, f"{self.database_name}_unencrypted")
         setup_connection_pool_logging(engine, f"{self.database_name}_unencrypted")
-        
+
         return engine
 
     def _ensure_pgcrypto_extension(self, engine: Engine) -> None:
@@ -174,7 +175,10 @@ class DatabaseEncryptionManager:
             logger.warning("Failed to enable pgcrypto extension: %s", e)
 
     def encrypt_field_value(
-        self, value: str | bytes | None, field_name: str, table_name: str,
+        self,
+        value: str | bytes | None,
+        field_name: str,
+        table_name: str,
     ) -> str | None:
         """Encrypt a field value for database storage.
 
@@ -204,7 +208,9 @@ class DatabaseEncryptionManager:
 
             # Encrypt the value
             encrypted_value = EncryptionUtils.encrypt_field(
-                data=value, key=encryption_key, field_name=field_identifier,
+                data=value,
+                key=encryption_key,
+                field_name=field_identifier,
             )
 
             # Log the encryption operation
@@ -219,12 +225,17 @@ class DatabaseEncryptionManager:
 
         except Exception as e:
             logger.exception(
-                "Failed to encrypt field %s in table %s", field_name, table_name,
+                "Failed to encrypt field %s in table %s",
+                field_name,
+                table_name,
             )
             raise DatabaseEncryptionError(f"Field encryption failed: {e}") from e
 
     def decrypt_field_value(
-        self, encrypted_value: str, field_name: str, table_name: str,
+        self,
+        encrypted_value: str,
+        field_name: str,
+        table_name: str,
     ) -> str | None:
         """Decrypt a field value from database storage.
 
@@ -271,12 +282,17 @@ class DatabaseEncryptionManager:
 
         except Exception as e:
             logger.exception(
-                "Failed to decrypt field %s in table %s", field_name, table_name,
+                "Failed to decrypt field %s in table %s",
+                field_name,
+                table_name,
             )
             raise DatabaseEncryptionError(f"Field decryption failed: {e}") from e
 
     def encrypt_sensitive_columns(
-        self, table_name: str, data: dict[str, Any], sensitive_columns: list[str],
+        self,
+        table_name: str,
+        data: dict[str, Any],
+        sensitive_columns: list[str],
     ) -> dict[str, Any]:
         """Encrypt sensitive columns in a data dictionary.
 
@@ -302,7 +318,10 @@ class DatabaseEncryptionManager:
         return encrypted_data
 
     def decrypt_sensitive_columns(
-        self, table_name: str, data: dict[str, Any], sensitive_columns: list[str],
+        self,
+        table_name: str,
+        data: dict[str, Any],
+        sensitive_columns: list[str],
     ) -> dict[str, Any]:
         """Decrypt sensitive columns in a data dictionary.
 
@@ -351,7 +370,9 @@ class DatabaseEncryptionManager:
         return sensitive_columns_map.get(table_name, [])
 
     def migrate_table_to_encryption(
-        self, table_name: str, batch_size: int = 1000,
+        self,
+        table_name: str,
+        batch_size: int = 1000,
     ) -> dict[str, Any]:
         """Migrate an existing table to use encryption.
 
@@ -386,7 +407,8 @@ class DatabaseEncryptionManager:
             with engine.connect() as conn:
                 # Get total record count - using parameterized query to prevent SQL injection
                 count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM :table_name"), {"table_name": table_name},
+                    text("SELECT COUNT(*) FROM :table_name"),
+                    {"table_name": table_name},
                 )
                 results["total_records"] = count_result.scalar()
 
@@ -502,7 +524,9 @@ class DatabaseEncryptionManager:
         return results
 
     def rotate_table_encryption_key(
-        self, table_name: str, batch_size: int = 1000,
+        self,
+        table_name: str,
+        batch_size: int = 1000,
     ) -> dict[str, Any]:
         """Rotate encryption key for a table by re-encrypting all data.
 
@@ -557,7 +581,8 @@ class DatabaseEncryptionManager:
             with engine.connect() as conn:
                 # Get total record count - using parameterized query to prevent SQL injection
                 count_result = conn.execute(
-                    text("SELECT COUNT(*) FROM :table_name"), {"table_name": table_name},
+                    text("SELECT COUNT(*) FROM :table_name"),
+                    {"table_name": table_name},
                 )
                 results["total_records"] = count_result.scalar()
 
@@ -716,14 +741,16 @@ _database_encryption_managers: dict[str, DatabaseEncryptionManager] = {}
 
 
 def get_database_encryption_manager(
-    database_url: str, database_name: str = "reynard",
+    database_url: str,
+    database_name: str = "reynard",
 ) -> DatabaseEncryptionManager:
     """Get or create a database encryption manager."""
     key = f"{database_url}:{database_name}"
 
     if key not in _database_encryption_managers:
         _database_encryption_managers[key] = DatabaseEncryptionManager(
-            database_url=database_url, database_name=database_name,
+            database_url=database_url,
+            database_name=database_name,
         )
 
     return _database_encryption_managers[key]

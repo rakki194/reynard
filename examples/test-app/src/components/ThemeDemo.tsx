@@ -1,4 +1,4 @@
-import { Button, Card } from "reynard-components";
+import { Button, Card } from "reynard-primitives";
 import { useTheme } from "reynard-themes";
 
 export function ThemeDemo() {

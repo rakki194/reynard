@@ -1,5 +1,4 @@
-"""Tests for the MermaidDiagramGenerator class.
-"""
+"""Tests for the MermaidDiagramGenerator class."""
 
 from ..core.contribution import AgentContribution
 from ..core.generator import MermaidDiagramGenerator

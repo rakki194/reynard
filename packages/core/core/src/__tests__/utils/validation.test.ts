@@ -1,10 +1,6 @@
 import { describe, it, expect } from "vitest";
-import {
-  isValidEmail,
-  isValidPhoneNumber,
-  validatePasswordStrength,
-  isValidUrl,
-} from "../../security/input-validation";
+// Note: isValidEmail, isValidPhoneNumber, validatePasswordStrength, isValidUrl
+// have been moved to the dedicated reynard-validation package
 import { isValidFileType, isValidFileSize } from "../../security/file-validation";
 import { isValidCreditCard, isValidPostalCode, isValidSSN } from "../../utils/validation/financial";
 import { isValidDate, isValidAge } from "../../utils/validation/date";
@@ -18,50 +14,6 @@ import {
 } from "../../utils/validation/basic";
 
 describe("validation", () => {
-  describe("isValidEmail", () => {
-    it("validates email addresses correctly", () => {
-      expect(isValidEmail("test@example.com")).toBe(true);
-      expect(isValidEmail("user.name+tag@domain.co.uk")).toBe(true);
-      expect(isValidEmail("invalid-email")).toBe(false);
-      expect(isValidEmail("@domain.com")).toBe(false);
-      expect(isValidEmail("user@")).toBe(false);
-    });
-  });
-
-  describe("isValidUrl", () => {
-    it("validates URLs correctly", () => {
-      expect(isValidUrl("https://example.com")).toBe(true);
-      expect(isValidUrl("http://localhost:3000")).toBe(true);
-      expect(isValidUrl("ftp://files.example.com")).toBe(true);
-      expect(isValidUrl("not-a-url")).toBe(false);
-      expect(isValidUrl("")).toBe(false);
-    });
-  });
-
-  describe("isValidPhoneNumber", () => {
-    it("validates phone numbers correctly", () => {
-      expect(isValidPhoneNumber("1234567890")).toBe(true);
-      expect(isValidPhoneNumber("+1 (555) 123-4567")).toBe(true);
-      expect(isValidPhoneNumber("555.123.4567")).toBe(true);
-      expect(isValidPhoneNumber("12345")).toBe(false); // Too short
-      expect(isValidPhoneNumber("12345678901234567890")).toBe(false); // Too long
-    });
-  });
-
-  describe("validatePasswordStrength", () => {
-    it("validates password strength correctly", () => {
-      const weak = validatePasswordStrength("123");
-      expect(weak.isValid).toBe(false);
-      expect(weak.score).toBe(0);
-      expect(weak.feedback.length).toBeGreaterThan(0);
-
-      const strong = validatePasswordStrength("MyStr0ng!Pass");
-      expect(strong.isValid).toBe(true);
-      expect(strong.score).toBe(100);
-      expect(strong.feedback.length).toBe(0);
-    });
-  });
-
   describe("isValidCreditCard", () => {
     it("validates credit card numbers using Luhn algorithm", () => {
       expect(isValidCreditCard("4532015112830366")).toBe(true); // Valid Visa
@@ -196,13 +148,7 @@ describe("validation", () => {
 
   describe("validation edge cases", () => {
     it("handles null and undefined values", () => {
-      expect(isValidEmail(null as any)).toBe(false);
-      expect(isValidEmail(undefined as any)).toBe(false);
-      expect(isValidUrl(null as any)).toBe(false);
-      expect(isValidUrl(undefined as any)).toBe(false);
-      // Fixed: isValidPhoneNumber now handles null/undefined properly
-      expect(isValidPhoneNumber(null as any)).toBe(false);
-      expect(isValidPhoneNumber(undefined as any)).toBe(false);
+      // Note: Tests for isValidEmail, isValidUrl, isValidPhoneNumber moved to reynard-validation package
       expect(isValidPostalCode(null as any, "US")).toBe(false);
       expect(isValidPostalCode("12345", null as any)).toBe(false);
       expect(isValidSSN(null as any)).toBe(false);
@@ -210,9 +156,7 @@ describe("validation", () => {
     });
 
     it("handles empty strings", () => {
-      expect(isValidEmail("")).toBe(false);
-      expect(isValidUrl("")).toBe(false);
-      expect(isValidPhoneNumber("")).toBe(false);
+      // Note: Tests for isValidEmail, isValidUrl, isValidPhoneNumber moved to reynard-validation package
       expect(isValidHexColor("")).toBe(false);
       expect(isValidIPAddress("")).toBe(false);
       expect(isValidPostalCode("", "US")).toBe(false);
@@ -220,9 +164,7 @@ describe("validation", () => {
     });
 
     it("handles invalid input types", () => {
-      expect(isValidEmail(123 as any)).toBe(false);
-      expect(isValidUrl({} as any)).toBe(false);
-      expect(isValidPhoneNumber([] as any)).toBe(false);
+      // Note: Tests for isValidEmail, isValidUrl, isValidPhoneNumber moved to reynard-validation package
       expect(isValidPostalCode(123 as any, "US")).toBe(false);
       expect(isValidPostalCode("12345", 123 as any)).toBe(false);
     });
@@ -235,9 +177,9 @@ describe("validation", () => {
 
     it("handles extremely long inputs", () => {
       const longString = "a".repeat(10000);
-      expect(isValidEmail(longString)).toBe(false);
-      expect(isValidUrl(longString)).toBe(false);
-      expect(isValidPhoneNumber(longString)).toBe(false);
+      // Note: Tests for isValidEmail, isValidUrl, isValidPhoneNumber moved to reynard-validation package
+      expect(isValidHexColor(longString)).toBe(false);
+      expect(isValidIPAddress(longString)).toBe(false);
     });
   });
 });

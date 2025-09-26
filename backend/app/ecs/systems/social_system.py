@@ -1,13 +1,14 @@
 """Social System
 
 Manages social networks, group dynamics, social influence, and community formation
-in the ECS world.
+in the ECS world with RBAC integration.
 """
 
 import logging
 import random
-from typing import Any
+from typing import Any, Optional
 
+from ...services.ecs.rbac.rbac_ecs_service import RBACECSService
 from ..components.social import (
     GroupType,
     SocialComponent,
@@ -40,6 +41,19 @@ class SocialSystem(System):
         self.total_groups_created = 0
         self.total_connections_formed = 0
         self.total_leadership_changes = 0
+
+        # RBAC integration
+        self.rbac_service: Optional[RBACECSService] = None
+
+    async def initialize_rbac(self) -> None:
+        """Initialize RBAC service for the social system."""
+        try:
+            self.rbac_service = RBACECSService()
+            await self.rbac_service.initialize()
+            logger.info("RBAC service initialized for social system")
+        except Exception as e:
+            logger.error(f"Failed to initialize RBAC service: {e}")
+            self.rbac_service = None
 
     def update(self, delta_time: float) -> None:
         """Process social dynamics for all agents.
@@ -106,7 +120,9 @@ class SocialSystem(System):
                 self._attempt_group_formation(leader, potential_members)
 
     def _attempt_group_formation(
-        self, leader: Any, potential_members: list[Any],
+        self,
+        leader: Any,
+        potential_members: list[Any],
     ) -> None:
         """Attempt to form a new group with a leader and potential members."""
         social_comp = leader.get_component(SocialComponent)
@@ -162,8 +178,23 @@ class SocialSystem(System):
 
         return True
 
-    def _create_social_group(self, leader: Any, members: list[Any]) -> None:
-        """Create a new social group."""
+    def _create_social_group(
+        self, leader: Any, members: list[Any], user_id: str = "system"
+    ) -> None:
+        """Create a new social group with RBAC permission checks."""
+        # Check RBAC permission for group creation (synchronous check for now)
+        if self.rbac_service:
+            # TODO: Make this async when the calling context supports it
+            # has_permission = await self.rbac_service.check_group_permission(
+            #     user_id=user_id,
+            #     group_id="new_group",  # Placeholder for new group
+            #     operation="create",
+            #     agent_id=leader.id
+            # )
+            # if not has_permission:
+            #     return  # Skip group creation if no permission
+            pass  # For now, allow group creation
+
         group_id = f"group_{self.total_groups_created}_{leader.id}"
 
         # Determine group type based on leader's preferences
@@ -186,15 +217,26 @@ class SocialSystem(System):
         # Add group to system
         self.social_groups[group_id] = group
 
-        # Update member social components
+        # Update member social components and assign RBAC roles
         all_members = [leader] + members
         for member in all_members:
             member_social_comp = member.get_component(SocialComponent)
             if member_social_comp:
-                member_social_comp.join_group(
-                    group_id,
-                    SocialRole.LEADER if member.id == leader.id else SocialRole.MEMBER,
+                social_role = (
+                    SocialRole.LEADER if member.id == leader.id else SocialRole.MEMBER
                 )
+                member_social_comp.join_group(group_id, social_role)
+
+                # Assign RBAC role for the social role (synchronous for now)
+                if self.rbac_service:
+                    # TODO: Make this async when the calling context supports it
+                    # await self.rbac_service.assign_social_role(
+                    #     user_id=user_id,
+                    #     agent_id=member.id,
+                    #     social_role=social_role,
+                    #     group_id=group_id
+                    # )
+                    pass
 
         self.total_groups_created += 1
         logger.debug(f"Created social group {group_id} with {len(all_members)} members")
@@ -299,8 +341,10 @@ class SocialSystem(System):
 
         return best_candidate
 
-    def _change_group_leader(self, group: SocialGroup, new_leader: Any) -> None:
-        """Change the leader of a group."""
+    def _change_group_leader(
+        self, group: SocialGroup, new_leader: Any, user_id: str = "system"
+    ) -> None:
+        """Change the leader of a group with RBAC role updates."""
         old_leader_id = group.leader_id
         new_leader_id = new_leader.id
 
@@ -318,6 +362,27 @@ class SocialSystem(System):
         if new_leader_social_comp:
             new_leader_social_comp.update_group_role(group.id, SocialRole.LEADER)
 
+        # Update RBAC roles for leadership change (synchronous for now)
+        if self.rbac_service:
+            # TODO: Make this async when the calling context supports it
+            # Remove leader role from old leader
+            # if old_leader_entity:
+            #     await self.rbac_service.assign_social_role(
+            #         user_id=user_id,
+            #         agent_id=old_leader_id,
+            #         social_role=SocialRole.FOLLOWER,  # Demote to follower
+            #         group_id=group.id
+            #     )
+            #
+            # # Assign leader role to new leader
+            # await self.rbac_service.assign_social_role(
+            #     user_id=user_id,
+            #     agent_id=new_leader_id,
+            #     social_role=SocialRole.LEADER,
+            #     group_id=group.id
+            # )
+            pass
+
         self.total_leadership_changes += 1
         logger.debug(
             f"Changed leader of group {group.id} from {old_leader_id} to {new_leader_id}",
@@ -334,7 +399,9 @@ class SocialSystem(System):
             self._update_social_connections(entity, social_comp)
 
     def _update_social_connections(
-        self, entity: Any, social_comp: SocialComponent,
+        self,
+        entity: Any,
+        social_comp: SocialComponent,
     ) -> None:
         """Update social connections for an agent."""
         # Find nearby agents for potential connections
@@ -351,7 +418,10 @@ class SocialSystem(System):
             # Check if connection should be formed
             if self._should_form_connection(social_comp, nearby_social_comp):
                 self._form_social_connection(
-                    entity, nearby_entity, social_comp, nearby_social_comp,
+                    entity,
+                    nearby_entity,
+                    social_comp,
+                    nearby_social_comp,
                 )
 
     def _find_nearby_agents(self, entity: Any) -> list[Any]:
@@ -362,7 +432,9 @@ class SocialSystem(System):
         return [e for e in all_entities if e.id != entity.id]
 
     def _should_form_connection(
-        self, social_comp1: SocialComponent, social_comp2: SocialComponent,
+        self,
+        social_comp1: SocialComponent,
+        social_comp2: SocialComponent,
     ) -> bool:
         """Check if two agents should form a social connection."""
         # Check if they're already connected

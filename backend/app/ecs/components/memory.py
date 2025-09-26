@@ -270,7 +270,8 @@ class MemoryComponent(Component):
 
         # Find memory with lowest importance and oldest access time
         oldest_memory = min(
-            self.memories.values(), key=lambda m: (m.importance, m.last_accessed),
+            self.memories.values(),
+            key=lambda m: (m.importance, m.last_accessed),
         )
 
         del self.memories[oldest_memory.id]

@@ -47,7 +47,8 @@ class PerformanceMonitor:
 
         """
         self.logger.info(
-            "Running comprehensive performance analysis", "performance_analysis",
+            "Running comprehensive performance analysis",
+            "performance_analysis",
         )
 
         results = {
@@ -98,18 +99,21 @@ class PerformanceMonitor:
             ):
                 results["overall_status"] = "failed"
                 self.logger.error(
-                    "Performance analysis found issues", "performance_analysis",
+                    "Performance analysis found issues",
+                    "performance_analysis",
                 )
             else:
                 self.logger.success(
-                    "Performance analysis passed", "performance_analysis",
+                    "Performance analysis passed",
+                    "performance_analysis",
                 )
 
         except Exception as e:
             results["overall_status"] = "error"
             results["error"] = str(e)
             self.logger.error(
-                f"Performance analysis failed: {e}", "performance_analysis",
+                f"Performance analysis failed: {e}",
+                "performance_analysis",
             )
 
         return results
@@ -141,7 +145,8 @@ class PerformanceMonitor:
                 ["npm", "run", "build"],
                 capture_output=True,
                 text=True,
-                timeout=self.benchmarks["build_time"] + 60, check=False,  # Add 1 minute buffer
+                timeout=self.benchmarks["build_time"] + 60,
+                check=False,  # Add 1 minute buffer
             )
 
             end_time = time.time()
@@ -212,7 +217,8 @@ class PerformanceMonitor:
                 ["npm", "run", test_script],
                 capture_output=True,
                 text=True,
-                timeout=self.benchmarks["test_time"] + 120, check=False,  # Add 2 minute buffer
+                timeout=self.benchmarks["test_time"] + 120,
+                check=False,  # Add 2 minute buffer
             )
 
             end_time = time.time()

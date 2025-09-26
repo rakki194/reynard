@@ -117,7 +117,9 @@ class ServiceErrorHandler:
             recovery_attempted = True
             try:
                 recovery_successful = self.recovery_strategies[error_code](
-                    operation, error, context,
+                    operation,
+                    error,
+                    context,
                 )
                 if recovery_successful:
                     logger.info(
@@ -359,7 +361,9 @@ class ServiceErrorHandler:
 
         # Remove email addresses
         text = re.sub(
-            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text,
+            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+            "[EMAIL]",
+            text,
         )
 
         # Remove tokens and keys
@@ -401,7 +405,10 @@ class ServiceErrorHandler:
 
     # Error recovery strategies
     def _retry_with_backoff(
-        self, operation: str, error: Exception, context: dict[str, Any] | None,
+        self,
+        operation: str,
+        error: Exception,
+        context: dict[str, Any] | None,
     ) -> bool:
         """Retry operation with exponential backoff."""
         self.error_metrics["recovery_attempts"] += 1
@@ -421,7 +428,10 @@ class ServiceErrorHandler:
         return False
 
     def _retry_database_operation(
-        self, operation: str, error: Exception, context: dict[str, Any] | None,
+        self,
+        operation: str,
+        error: Exception,
+        context: dict[str, Any] | None,
     ) -> bool:
         """Retry database operations with connection reset."""
         self.error_metrics["recovery_attempts"] += 1

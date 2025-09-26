@@ -61,7 +61,9 @@ class ScrapingRouter:
             return False
 
     async def register_scraper(
-        self, scraper_type: ScrapingType, scraper: BaseScraper,
+        self,
+        scraper_type: ScrapingType,
+        scraper: BaseScraper,
     ) -> bool:
         """Register a scraper.
 

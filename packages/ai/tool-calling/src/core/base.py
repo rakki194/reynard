@@ -335,7 +335,8 @@ class BaseTool(ABC):
 
             for param_name, param_value in params.items():
                 if param_name.lower() in path_like_names and isinstance(
-                    param_value, str,
+                    param_value,
+                    str,
                 ):
                     try:
                         # Attempt to resolve path; will raise if outside ROOT_DIR
@@ -380,7 +381,9 @@ class BaseTool(ABC):
         """
 
     async def execute_with_timeout(
-        self, context: ToolExecutionContext, **params,
+        self,
+        context: ToolExecutionContext,
+        **params,
     ) -> ToolResult:
         """Execute tool with timeout handling.
 
@@ -396,7 +399,8 @@ class BaseTool(ABC):
 
         try:
             return await asyncio.wait_for(
-                self.execute(context, **params), timeout=timeout,
+                self.execute(context, **params),
+                timeout=timeout,
             )
         except TimeoutError:
             from .exceptions import ToolTimeoutError

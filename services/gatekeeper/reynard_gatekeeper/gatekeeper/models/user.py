@@ -60,6 +60,11 @@ class User(BaseModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
     permissions: dict[str, Any] = Field(default_factory=dict)
 
+    # RBAC fields
+    rbac_enabled: bool = Field(default=False)
+    default_role: str | None = Field(default=None)
+    last_rbac_sync: datetime | None = Field(default=None)
+
     @field_validator("username")
     @classmethod
     def validate_username(cls, value: str) -> str:
@@ -151,6 +156,10 @@ class UserCreate(BaseModel):
     email: str | None = Field(default=None)
     role: UserRole = Field(UserRole.REGULAR)
 
+    # RBAC fields
+    rbac_enabled: bool = Field(default=False)
+    default_role: str | None = Field(default=None)
+
     @field_validator("password")
     @classmethod
     def validate_password_complexity(cls, value: str) -> str:
@@ -209,6 +218,10 @@ class UserUpdate(BaseModel):
     is_active: bool | None = Field(default=None)
     profile_picture_url: str | None = Field(default=None)
     metadata: dict[str, Any] | None = Field(default=None)
+
+    # RBAC fields
+    rbac_enabled: bool | None = Field(default=None)
+    default_role: str | None = Field(default=None)
 
     @field_validator("username")
     @classmethod

@@ -115,7 +115,9 @@ class CulturalEvaluator:
 
         # Validate cultural appropriateness
         validation_results = await self._validate_responses(
-            model_responses, scenarios, cultural_context,
+            model_responses,
+            scenarios,
+            cultural_context,
         )
 
         # Calculate metrics
@@ -123,7 +125,9 @@ class CulturalEvaluator:
 
         # Perform statistical analysis
         statistical_analysis = self.statistical_analyzer.analyze_results(
-            validation_results, scenarios, cultural_context,
+            validation_results,
+            scenarios,
+            cultural_context,
         )
 
         # Create comprehensive result
@@ -148,7 +152,9 @@ class CulturalEvaluator:
         return result
 
     async def _evaluate_scenarios(
-        self, model_name: str, scenarios: list[dict[str, Any]],
+        self,
+        model_name: str,
+        scenarios: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
         """Evaluate model responses for given scenarios."""
         responses = []
@@ -156,7 +162,8 @@ class CulturalEvaluator:
         for scenario in scenarios:
             try:
                 response = await self.model_interface.generate_response(
-                    model_name, scenario,
+                    model_name,
+                    scenario,
                 )
                 responses.append(
                     {
@@ -193,7 +200,9 @@ class CulturalEvaluator:
                 continue
 
             validation = await self.cultural_validator.validate_response(
-                response_data["response"], response_data["scenario"], cultural_context,
+                response_data["response"],
+                response_data["scenario"],
+                cultural_context,
             )
 
             validation_results.append(
@@ -211,7 +220,9 @@ class CulturalEvaluator:
         return validation_results
 
     def _calculate_metrics(
-        self, validation_results: list[dict[str, Any]], scenarios: list[dict[str, Any]],
+        self,
+        validation_results: list[dict[str, Any]],
+        scenarios: list[dict[str, Any]],
     ) -> dict[str, float]:
         """Calculate comprehensive cultural metrics."""
         if not validation_results:
@@ -305,7 +316,8 @@ class CulturalEvaluator:
 
         # Statistical comparison
         comparison_stats = self.statistical_analyzer.compare_groups(
-            accuracies, model_names,
+            accuracies,
+            model_names,
         )
 
         return {
@@ -320,7 +332,9 @@ class CulturalEvaluator:
         }
 
     def export_results(
-        self, result: CulturalEvaluationResult, output_path: Path,
+        self,
+        result: CulturalEvaluationResult,
+        output_path: Path,
     ) -> None:
         """Export evaluation results to file."""
         output_data = asdict(result)

@@ -19,7 +19,8 @@ from pathlib import Path
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -58,7 +59,11 @@ class ResearchAssignment:
 class ReynardComponentSelector:
     """Handles random selection of components from the Reynard ecosystem for research."""
 
-    def __init__(self, base_path: str = "/home/kade/runeset/reynard"):
+    def __init__(self, base_path: str = None):
+        if base_path is None:
+            # Get project root by walking up from this script
+            current_file = Path(__file__)
+            base_path = str(current_file.parent.parent)  # scripts -> project root
         self.base_path = Path(base_path)
         self.components = self._discover_components()
 
@@ -150,7 +155,10 @@ class ReynardComponentSelector:
             if pkg_path.exists():
                 components["specialized_packages"].append(
                     self._analyze_component(
-                        str(pkg_path), pkg, "specialized_packages", 0.20,
+                        str(pkg_path),
+                        pkg,
+                        "specialized_packages",
+                        0.20,
                     ),
                 )
 
@@ -218,14 +226,21 @@ class ReynardComponentSelector:
         if scripts_path.exists():
             components["tools_scripts"].append(
                 self._analyze_component(
-                    str(scripts_path), "scripts", "tools_scripts", 0.10,
+                    str(scripts_path),
+                    "scripts",
+                    "tools_scripts",
+                    0.10,
                 ),
             )
 
         return components
 
     def _analyze_component(
-        self, path: str, name: str, category: str, weight: float,
+        self,
+        path: str,
+        name: str,
+        category: str,
+        weight: float,
     ) -> ComponentInfo:
         """Analyze a component and extract comprehensive information."""
         path_obj = Path(path)
@@ -285,7 +300,9 @@ class ReynardComponentSelector:
 
         # Generate research focus areas based on component characteristics
         research_focus_areas = self._generate_research_focus_areas(
-            name, category, list(primary_languages),
+            name,
+            category,
+            list(primary_languages),
         )
 
         return ComponentInfo(
@@ -294,7 +311,10 @@ class ReynardComponentSelector:
             category=category,
             weight=weight,
             description=self._generate_description(
-                name, category, len(files), len(subdirectories),
+                name,
+                category,
+                len(files),
+                len(subdirectories),
             ),
             files=files[:100],  # Limit to first 100 files for performance
             subdirectories=subdirectories[:20],  # Limit to first 20 subdirectories
@@ -307,7 +327,10 @@ class ReynardComponentSelector:
         )
 
     def _generate_research_focus_areas(
-        self, name: str, category: str, languages: list[str],
+        self,
+        name: str,
+        category: str,
+        languages: list[str],
     ) -> list[str]:
         """Generate research focus areas based on component characteristics."""
         focus_areas = []
@@ -367,7 +390,11 @@ class ReynardComponentSelector:
         return list(set(focus_areas))  # Remove duplicates
 
     def _generate_description(
-        self, name: str, category: str, file_count: int, dir_count: int,
+        self,
+        name: str,
+        category: str,
+        file_count: int,
+        dir_count: int,
     ) -> str:
         """Generate a description for the component."""
         descriptions = {
@@ -424,7 +451,9 @@ class ResearchAssignmentGenerator:
         return assignment
 
     def _generate_research_questions(
-        self, component: ComponentInfo, specialist: str,
+        self,
+        component: ComponentInfo,
+        specialist: str,
     ) -> list[str]:
         """Generate research questions based on component and specialist."""
         base_questions = [
@@ -456,7 +485,9 @@ class ResearchAssignmentGenerator:
         return base_questions + specialist_questions.get(specialist, [])
 
     def _generate_analysis_focus(
-        self, component: ComponentInfo, specialist: str,
+        self,
+        component: ComponentInfo,
+        specialist: str,
     ) -> list[str]:
         """Generate analysis focus areas based on component and specialist."""
         base_focus = [
@@ -498,7 +529,7 @@ def main():
     )
     parser.add_argument(
         "--base-path",
-        default="/home/kade/runeset/reynard",
+        default=None,  # Will be determined dynamically
         help="Base path to the Reynard codebase",
     )
     parser.add_argument(
@@ -517,6 +548,11 @@ def main():
     args = parser.parse_args()
 
     try:
+        # Set default base path if not provided
+        if args.base_path is None:
+            current_file = Path(__file__)
+            args.base_path = str(current_file.parent.parent)  # scripts -> project root
+
         # Initialize components
         selector = ReynardComponentSelector(args.base_path)
         assignment_generator = ResearchAssignmentGenerator()
@@ -531,10 +567,12 @@ def main():
                 component=component,
                 agent_specialist=args.specialist,
                 research_questions=assignment_generator._generate_research_questions(
-                    component, args.specialist,
+                    component,
+                    args.specialist,
                 ),
                 analysis_focus=assignment_generator._generate_analysis_focus(
-                    component, args.specialist,
+                    component,
+                    args.specialist,
                 ),
                 timestamp=datetime.now(),
                 assignment_id=f"{component.name}_{args.specialist}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",

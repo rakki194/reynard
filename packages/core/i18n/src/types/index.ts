@@ -61,6 +61,8 @@ import type {
   AuthTranslations,
   ChatTranslations,
   MonacoTranslations,
+  NavigationTranslations,
+  UiTranslations,
 } from "./translations/types/translation-types";
 import type { SettingsTranslations } from "../translations/types/settings-translations";
 
@@ -75,6 +77,9 @@ export interface Translations {
   auth: AuthTranslations;
   chat: ChatTranslations;
   monaco: MonacoTranslations;
+  // Phase 1 translations (optional for backward compatibility)
+  navigation?: NavigationTranslations;
+  ui?: UiTranslations;
   // Enhanced translations from Yipyap
   settings?: SettingsTranslations;
   // Index signature for compatibility

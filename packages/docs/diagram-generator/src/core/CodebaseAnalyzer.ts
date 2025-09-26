@@ -46,7 +46,7 @@ export class CodebaseAnalyzer {
   private rootPath: string;
   private architecture = REYNARD_ARCHITECTURE;
 
-  constructor(rootPath: string = "/home/kade/runeset/reynard") {
+  constructor(rootPath: string = process.cwd()) {
     this.rootPath = rootPath;
   }
 

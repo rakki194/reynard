@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Card, Button, Slider } from "reynard-components";
+import { Card, Button, Slider } from "reynard-primitives";
 
 interface RotationSliderProps {
   label: string;

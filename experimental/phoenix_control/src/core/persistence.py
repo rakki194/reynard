@@ -43,7 +43,8 @@ class AgentPersistence:
         self.agent_states: dict[str, AgentState] = {}
 
         self.logger.info(
-            f"Agent persistence initialized at {self.data_dir}", "initialization",
+            f"Agent persistence initialized at {self.data_dir}",
+            "initialization",
         )
 
     async def save_agent_state(self, agent_state: AgentState) -> bool:
@@ -106,7 +107,8 @@ class AgentPersistence:
 
         except Exception as e:
             self.logger.error(
-                f"Failed to save agent state {agent_state.id}: {e}", "save",
+                f"Failed to save agent state {agent_state.id}: {e}",
+                "save",
             )
             return False
 
@@ -236,7 +238,8 @@ class AgentPersistence:
             return False
 
     async def backup_agent_states(
-        self, backup_dir: str = "backups/agent_states",
+        self,
+        backup_dir: str = "backups/agent_states",
     ) -> bool:
         """Create backup of all agent states.
 
@@ -319,7 +322,8 @@ class AgentPersistence:
                 restored_count += 1
 
             self.logger.success(
-                f"Restored {restored_count} agent states from backup", "restore",
+                f"Restored {restored_count} agent states from backup",
+                "restore",
             )
             return True
 

@@ -23,12 +23,12 @@ from collections.abc import AsyncGenerator
 from typing import Any
 
 from ...core.logging_config import get_service_logger
+from .ai_summarizer import AISummarizer
 from .article_summarizer import ArticleSummarizer
 from .base import ContentType, SummarizationOptions, SummaryLevel
 from .code_summarizer import CodeSummarizer
 from .document_summarizer import DocumentSummarizer
 from .manager import SummarizationManager
-from .ai_summarizer import AISummarizer
 from .technical_summarizer import TechnicalSummarizer
 
 logger = get_service_logger("summarization")
@@ -457,9 +457,7 @@ class SummarizationServiceManager:
         try:
             service = self.get_service()
             await service.initialize()
-        except (
-            Exception
-        ) as e:
+        except Exception as e:
             logger.exception(
                 "Failed to initialize Summarization service",
                 extra={

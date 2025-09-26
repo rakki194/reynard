@@ -1,5 +1,4 @@
-"""Enhanced Humility Detector - Utilities Module
-"""
+"""Enhanced Humility Detector - Utilities Module"""
 
 from .cultural_adapter import CulturalAdapter
 from .metrics_calculator import MetricsCalculator

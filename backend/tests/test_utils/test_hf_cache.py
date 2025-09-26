@@ -43,7 +43,8 @@ class TestHFCache:
     def test_get_hf_cache_dir_priority_order(self):
         """Test that HF_HOME takes priority over HF_CACHE."""
         with patch.dict(
-            os.environ, {"HF_HOME": "/priority/home", "HF_CACHE": "/secondary/cache"},
+            os.environ,
+            {"HF_HOME": "/priority/home", "HF_CACHE": "/secondary/cache"},
         ):
             result = get_hf_cache_dir()
             assert result == Path("/priority/home")

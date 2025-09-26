@@ -20,7 +20,8 @@ from alembic.config import Config
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -161,10 +162,14 @@ def main():
         help="Action to perform",
     )
     parser.add_argument(
-        "database", choices=list(DATABASES.keys()), help="Database to operate on",
+        "database",
+        choices=list(DATABASES.keys()),
+        help="Database to operate on",
     )
     parser.add_argument(
-        "--target", default="head", help="Target revision for upgrade (default: head)",
+        "--target",
+        default="head",
+        help="Target revision for upgrade (default: head)",
     )
     parser.add_argument("--message", help="Message for new migration")
 

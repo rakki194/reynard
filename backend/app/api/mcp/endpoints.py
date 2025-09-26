@@ -26,7 +26,8 @@ MCP_ADMIN_PERMISSION = "mcp:admin"
 def _raise_client_not_found() -> None:
     """Raise HTTP 404 for client not found."""
     raise HTTPException(
-        status_code=status.HTTP_404_NOT_FOUND, detail="Client not found",
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Client not found",
     )
 
 
@@ -35,7 +36,8 @@ class MCPTokenRequest(BaseModel):
 
     client_id: str = Field(..., description="MCP client identifier")
     additional_permissions: list[str] = Field(
-        default_factory=list, description="Additional permissions",
+        default_factory=list,
+        description="Additional permissions",
     )
 
 

@@ -1,5 +1,4 @@
-"""Tests for IMAP Service with Agent Integration
-"""
+"""Tests for IMAP Service with Agent Integration"""
 
 import asyncio
 import tempfile
@@ -99,7 +98,8 @@ class TestIMAPService:
 
         # Create new service instance to test loading
         new_service = IMAPService(
-            config=imap_service.config, data_dir=imap_service.data_dir,
+            config=imap_service.config,
+            data_dir=imap_service.data_dir,
         )
 
         # Check if email was loaded
@@ -110,7 +110,9 @@ class TestIMAPService:
 
     @pytest.mark.asyncio
     async def test_detect_agent_email_with_agent_service(
-        self, imap_service, sample_email,
+        self,
+        imap_service,
+        sample_email,
     ):
         """Test agent email detection with agent service available."""
         # Mock agent email service
@@ -130,11 +132,14 @@ class TestIMAPService:
 
     @pytest.mark.asyncio
     async def test_detect_agent_email_without_agent_service(
-        self, imap_service, sample_email,
+        self,
+        imap_service,
+        sample_email,
     ):
         """Test agent email detection without agent service."""
         with patch(
-            "app.services.imap_service.agent_email_service", side_effect=ImportError,
+            "app.services.imap_service.agent_email_service",
+            side_effect=ImportError,
         ):
             result = await imap_service._detect_agent_email(sample_email)
 
@@ -158,7 +163,8 @@ class TestIMAPService:
 
             # Verify agent stats were updated
             mock_service.update_agent_stats.assert_called_once_with(
-                "agent-123", "received",
+                "agent-123",
+                "received",
             )
 
             # Verify interaction was logged
@@ -281,7 +287,9 @@ class TestIMAPService:
     async def test_start_email_monitoring(self, imap_service):
         """Test starting email monitoring."""
         with patch.object(
-            imap_service, "get_unread_emails", new_callable=AsyncMock,
+            imap_service,
+            "get_unread_emails",
+            new_callable=AsyncMock,
         ) as mock_get_emails:
             mock_get_emails.return_value = []
 

@@ -1,5 +1,4 @@
-"""Tests for IMAP API Routes
-"""
+"""Tests for IMAP API Routes"""
 
 from datetime import datetime
 from unittest.mock import AsyncMock, patch

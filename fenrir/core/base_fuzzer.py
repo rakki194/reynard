@@ -36,7 +36,9 @@ class BaseFuzzer(ABC):
     """
 
     def __init__(
-        self, base_url: str = "http://localhost:8000", max_concurrent: int = 10,
+        self,
+        base_url: str = "http://localhost:8000",
+        max_concurrent: int = 10,
     ):
         """Initialize the base fuzzer with strategic configuration.
 
@@ -88,7 +90,8 @@ class BaseFuzzer(ABC):
 
             # Analyze response for vulnerabilities using specialized logic
             vulnerability_detected, vulnerability_type = self._analyze_response(
-                response, kwargs,
+                response,
+                kwargs,
             )
 
             result = FuzzResult(
@@ -130,7 +133,9 @@ class BaseFuzzer(ABC):
 
     @abstractmethod
     def _analyze_response(
-        self, response: httpx.Response, request_kwargs: dict,
+        self,
+        response: httpx.Response,
+        request_kwargs: dict,
     ) -> tuple[bool, str | None]:
         """Analyze response for vulnerabilities - specialized by fuzzer type.
 
@@ -304,7 +309,8 @@ class BaseFuzzer(ABC):
         ]
 
     def _detect_common_vulnerabilities(
-        self, response_text: str,
+        self,
+        response_text: str,
     ) -> tuple[bool, str | None]:
         """Detect common vulnerabilities in response text.
 

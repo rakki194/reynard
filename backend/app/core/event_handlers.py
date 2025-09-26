@@ -166,7 +166,9 @@ class EventRouter:
         return True
 
     async def _evaluate_filter(
-        self, filter_config: EventFilter, event: dict[str, Any],
+        self,
+        filter_config: EventFilter,
+        event: dict[str, Any],
     ) -> bool:
         """Evaluate a single filter against an event."""
         criteria = filter_config.criteria
@@ -211,7 +213,8 @@ class EventRouter:
 
             try:
                 transformed_event = await self._apply_transformer(
-                    transformer_config, transformed_event,
+                    transformer_config,
+                    transformed_event,
                 )
             except Exception as e:
                 logger.error(f"Error in transformer {transformer_config.name}: {e}")
@@ -220,7 +223,9 @@ class EventRouter:
         return transformed_event
 
     async def _apply_transformer(
-        self, transformer_config: EventTransformer, event: dict[str, Any],
+        self,
+        transformer_config: EventTransformer,
+        event: dict[str, Any],
     ) -> dict[str, Any]:
         """Apply a single transformer to the event."""
         transform_func = transformer_config.transform_func
@@ -411,7 +416,9 @@ class EventPersistence:
         self.event_index[event_type].append(len(self.persisted_events) - 1)
 
     def get_events_by_type(
-        self, event_type: str, limit: int = 100,
+        self,
+        event_type: str,
+        limit: int = 100,
     ) -> list[dict[str, Any]]:
         """Get events by type."""
         if event_type not in self.event_index:
@@ -427,7 +434,9 @@ class EventPersistence:
         return list(self.persisted_events)[-limit:]
 
     def replay_events(
-        self, event_type: str | None = None, limit: int = 100,
+        self,
+        event_type: str | None = None,
+        limit: int = 100,
     ) -> list[dict[str, Any]]:
         """Replay events for testing or analysis."""
         if event_type:
@@ -497,7 +506,9 @@ class ValidationEventProcessor(EventProcessor):
     """Event processor that validates events."""
 
     def __init__(
-        self, allowed_types: list[str], schema: dict[str, Any] | None = None,
+        self,
+        allowed_types: list[str],
+        schema: dict[str, Any] | None = None,
     ):
         self.allowed_types = allowed_types
         self.schema = schema or {}

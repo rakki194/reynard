@@ -200,7 +200,9 @@ def get_ecs_cache_manager() -> ECSCacheManager:
 
 
 def cache_ecs_query(
-    namespace: str = "ecs", ttl: int = 1800, cache_key_prefix: str = None,
+    namespace: str = "ecs",
+    ttl: int = 1800,
+    cache_key_prefix: str = None,
 ):
     """Decorator for caching ECS database queries.
 
@@ -261,7 +263,9 @@ def cache_naming_spirits(ttl: int = 1800):
 
     """
     return cache_ecs_query(
-        namespace="naming_spirits", ttl=ttl, cache_key_prefix="spirits",
+        namespace="naming_spirits",
+        ttl=ttl,
+        cache_key_prefix="spirits",
     )
 
 
@@ -276,7 +280,9 @@ def cache_naming_components(ttl: int = 1800):
 
     """
     return cache_ecs_query(
-        namespace="naming_components", ttl=ttl, cache_key_prefix="components",
+        namespace="naming_components",
+        ttl=ttl,
+        cache_key_prefix="components",
     )
 
 
@@ -291,7 +297,9 @@ def cache_naming_config(ttl: int = 3600):
 
     """
     return cache_ecs_query(
-        namespace="naming_config", ttl=ttl, cache_key_prefix="config",
+        namespace="naming_config",
+        ttl=ttl,
+        cache_key_prefix="config",
     )
 
 

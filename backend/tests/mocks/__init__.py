@@ -1,2 +1,1 @@
-"""Mock modules for testing.
-"""
+"""Mock modules for testing."""

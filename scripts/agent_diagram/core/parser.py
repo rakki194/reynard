@@ -1,5 +1,4 @@
-"""Changelog parser for extracting agent contributions.
-"""
+"""Changelog parser for extracting agent contributions."""
 
 import os
 import re
@@ -88,7 +87,9 @@ class ChangelogParser:
                     )
                     if not existing:
                         contribution = AgentContribution(
-                            agent_name=agent_name, title=title, description=description,
+                            agent_name=agent_name,
+                            title=title,
+                            description=description,
                         )
                         self.contributions.append(contribution)
 
@@ -115,12 +116,17 @@ class ChangelogParser:
                     )
                     if not existing:
                         contribution = AgentContribution(
-                            agent_name=agent_name, title=title, description=description,
+                            agent_name=agent_name,
+                            title=title,
+                            description=description,
                         )
                         self.contributions.append(contribution)
 
     def _extract_title_and_description(
-        self, lines: list[str], current_index: int, current_line: str,
+        self,
+        lines: list[str],
+        current_index: int,
+        current_line: str,
     ) -> tuple[str | None, str]:
         """Extract title and description from a line with agent credit."""
         title = None

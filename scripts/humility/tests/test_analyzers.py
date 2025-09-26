@@ -1,5 +1,4 @@
-"""Tests for analyzer modules.
-"""
+"""Tests for analyzer modules."""
 
 import sys
 from pathlib import Path
@@ -16,7 +15,6 @@ from analyzers import (
     PatternAnalyzer,
     SentimentAnalyzer,
 )
-
 from core import ConfidenceLevel, DetectionCategory, HumilityConfig, SeverityLevel
 
 
@@ -211,7 +209,8 @@ class TestHexacoAnalyzer:
 
         humble_score = analyzer._calculate_hexaco_score(humble_text, "honesty_humility")
         arrogant_score = analyzer._calculate_hexaco_score(
-            arrogant_text, "honesty_humility",
+            arrogant_text,
+            "honesty_humility",
         )
 
         assert humble_score > arrogant_score

@@ -20,8 +20,8 @@ from typing import Any, Optional
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from pydantic import BaseModel, EmailStr, Field
 
-from app.security.pgp_key_service import pgp_key_service
 from app.auth.dependencies import get_current_active_user, get_current_admin_user
+from app.security.pgp_key_service import pgp_key_service
 
 logger = logging.getLogger(__name__)
 
@@ -31,38 +31,65 @@ router = APIRouter(prefix="/api/pgp-keys", tags=["PGP Keys"])
 # Request/Response Models
 class PGPKeyGenerateRequest(BaseModel):
     """Request model for PGP key generation."""
-    
-    name: str = Field(..., min_length=1, max_length=255, description="Full name for the key")
+
+    name: str = Field(
+        ..., min_length=1, max_length=255, description="Full name for the key"
+    )
     email: EmailStr = Field(..., description="Email address for the key")
-    passphrase: Optional[str] = Field(None, min_length=8, max_length=128, description="Optional passphrase for the key")
+    passphrase: Optional[str] = Field(
+        None,
+        min_length=8,
+        max_length=128,
+        description="Optional passphrase for the key",
+    )
     key_length: int = Field(2048, ge=1024, le=4096, description="Key length in bits")
-    key_type: str = Field("RSA", pattern="^(RSA|DSA|ELGAMAL|ECDSA|EDDSA)$", description="Key type")
-    is_primary: bool = Field(False, description="Whether this should be the user's primary key")
+    key_type: str = Field(
+        "RSA", pattern="^(RSA|DSA|ELGAMAL|ECDSA|EDDSA)$", description="Key type"
+    )
+    is_primary: bool = Field(
+        False, description="Whether this should be the user's primary key"
+    )
     auto_rotate: bool = Field(False, description="Enable automatic key rotation")
-    rotation_schedule_days: int = Field(365, ge=30, le=3650, description="Days between automatic rotations")
+    rotation_schedule_days: int = Field(
+        365, ge=30, le=3650, description="Days between automatic rotations"
+    )
 
 
 class PGPKeyRegenerateRequest(BaseModel):
     """Request model for PGP key regeneration."""
-    
-    old_key_id: str = Field(..., min_length=16, max_length=16, description="ID of the key to regenerate")
-    name: Optional[str] = Field(None, min_length=1, max_length=255, description="New name for the key")
+
+    old_key_id: str = Field(
+        ..., min_length=16, max_length=16, description="ID of the key to regenerate"
+    )
+    name: Optional[str] = Field(
+        None, min_length=1, max_length=255, description="New name for the key"
+    )
     email: Optional[EmailStr] = Field(None, description="New email address for the key")
-    passphrase: Optional[str] = Field(None, min_length=8, max_length=128, description="New passphrase for the key")
-    key_length: Optional[int] = Field(None, ge=1024, le=4096, description="New key length in bits")
-    key_type: Optional[str] = Field(None, pattern="^(RSA|DSA|ELGAMAL|ECDSA|EDDSA)$", description="New key type")
+    passphrase: Optional[str] = Field(
+        None, min_length=8, max_length=128, description="New passphrase for the key"
+    )
+    key_length: Optional[int] = Field(
+        None, ge=1024, le=4096, description="New key length in bits"
+    )
+    key_type: Optional[str] = Field(
+        None, pattern="^(RSA|DSA|ELGAMAL|ECDSA|EDDSA)$", description="New key type"
+    )
 
 
 class PGPKeyRevokeRequest(BaseModel):
     """Request model for PGP key revocation."""
-    
-    key_id: str = Field(..., min_length=16, max_length=16, description="ID of the key to revoke")
-    reason: str = Field(..., min_length=1, max_length=500, description="Reason for revocation")
+
+    key_id: str = Field(
+        ..., min_length=16, max_length=16, description="ID of the key to revoke"
+    )
+    reason: str = Field(
+        ..., min_length=1, max_length=500, description="Reason for revocation"
+    )
 
 
 class PGPKeyResponse(BaseModel):
     """Response model for PGP key data."""
-    
+
     id: str
     key_id: str
     fingerprint: str
@@ -92,14 +119,14 @@ class PGPKeyResponse(BaseModel):
 
 class PGPKeyListResponse(BaseModel):
     """Response model for PGP key list."""
-    
+
     keys: list[PGPKeyResponse]
     total: int
 
 
 class PGPKeyOperationResponse(BaseModel):
     """Response model for PGP key operations."""
-    
+
     success: bool
     message: str
     key: Optional[PGPKeyResponse] = None
@@ -125,7 +152,7 @@ async def generate_pgp_key(
     """Generate a new PGP key for the current user."""
     try:
         context = get_request_context(http_request)
-        
+
         key_data = await pgp_key_service.generate_pgp_key(
             user_id=current_user["username"],
             name=request.name,
@@ -138,13 +165,13 @@ async def generate_pgp_key(
             rotation_schedule_days=request.rotation_schedule_days,
             **context,
         )
-        
+
         return PGPKeyOperationResponse(
             success=True,
             message="PGP key generated successfully",
             key=PGPKeyResponse(**key_data),
         )
-        
+
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -167,7 +194,7 @@ async def regenerate_pgp_key(
     """Regenerate an existing PGP key for the current user."""
     try:
         context = get_request_context(http_request)
-        
+
         key_data = await pgp_key_service.regenerate_pgp_key(
             user_id=current_user["username"],
             old_key_id=request.old_key_id,
@@ -178,13 +205,13 @@ async def regenerate_pgp_key(
             key_type=request.key_type,
             **context,
         )
-        
+
         return PGPKeyOperationResponse(
             success=True,
             message="PGP key regenerated successfully",
             key=PGPKeyResponse(**key_data),
         )
-        
+
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -207,20 +234,20 @@ async def get_my_pgp_keys(
     """Get all PGP keys for the current user."""
     try:
         context = get_request_context(http_request)
-        
+
         keys_data = await pgp_key_service.get_user_keys(
             user_id=current_user["username"],
             include_revoked=include_revoked,
             **context,
         )
-        
+
         keys = [PGPKeyResponse(**key_data) for key_data in keys_data]
-        
+
         return PGPKeyListResponse(
             keys=keys,
             total=len(keys),
         )
-        
+
     except Exception as e:
         logger.error(f"Failed to get user PGP keys: {e}")
         raise HTTPException(
@@ -238,20 +265,20 @@ async def revoke_pgp_key(
     """Revoke a PGP key for the current user."""
     try:
         context = get_request_context(http_request)
-        
+
         key_data = await pgp_key_service.revoke_key(
             user_id=current_user["username"],
             key_id=request.key_id,
             reason=request.reason,
             **context,
         )
-        
+
         return PGPKeyOperationResponse(
             success=True,
             message="PGP key revoked successfully",
             key=PGPKeyResponse(**key_data),
         )
-        
+
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -275,22 +302,22 @@ async def get_pgp_key_by_fingerprint(
     """Get a PGP key by fingerprint."""
     try:
         context = get_request_context(http_request)
-        
+
         key_data = await pgp_key_service.get_key_by_fingerprint(
             fingerprint=fingerprint,
             include_private=include_private,
             user_id=current_user["username"],
             **context,
         )
-        
+
         if not key_data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="PGP key not found",
             )
-        
+
         return PGPKeyResponse(**key_data)
-        
+
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -317,7 +344,7 @@ async def admin_generate_pgp_key(
     """Generate a new PGP key for any user (admin only)."""
     try:
         context = get_request_context(http_request)
-        
+
         key_data = await pgp_key_service.generate_pgp_key(
             user_id=user_id,
             name=request.name,
@@ -331,13 +358,13 @@ async def admin_generate_pgp_key(
             admin_user_id=admin_user["username"],
             **context,
         )
-        
+
         return PGPKeyOperationResponse(
             success=True,
             message=f"PGP key generated successfully for user {user_id}",
             key=PGPKeyResponse(**key_data),
         )
-        
+
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -361,7 +388,7 @@ async def admin_regenerate_pgp_key(
     """Regenerate a PGP key for any user (admin only)."""
     try:
         context = get_request_context(http_request)
-        
+
         key_data = await pgp_key_service.regenerate_pgp_key(
             user_id=user_id,
             old_key_id=request.old_key_id,
@@ -373,13 +400,13 @@ async def admin_regenerate_pgp_key(
             admin_user_id=admin_user["username"],
             **context,
         )
-        
+
         return PGPKeyOperationResponse(
             success=True,
             message=f"PGP key regenerated successfully for user {user_id}",
             key=PGPKeyResponse(**key_data),
         )
-        
+
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -403,21 +430,21 @@ async def admin_get_user_pgp_keys(
     """Get all PGP keys for any user (admin only)."""
     try:
         context = get_request_context(http_request)
-        
+
         keys_data = await pgp_key_service.get_user_keys(
             user_id=user_id,
             include_revoked=include_revoked,
             admin_user_id=admin_user["username"],
             **context,
         )
-        
+
         keys = [PGPKeyResponse(**key_data) for key_data in keys_data]
-        
+
         return PGPKeyListResponse(
             keys=keys,
             total=len(keys),
         )
-        
+
     except Exception as e:
         logger.error(f"Failed to get PGP keys for user {user_id}: {e}")
         raise HTTPException(
@@ -436,7 +463,7 @@ async def admin_revoke_pgp_key(
     """Revoke a PGP key for any user (admin only)."""
     try:
         context = get_request_context(http_request)
-        
+
         key_data = await pgp_key_service.revoke_key(
             user_id=user_id,
             key_id=request.key_id,
@@ -444,13 +471,13 @@ async def admin_revoke_pgp_key(
             admin_user_id=admin_user["username"],
             **context,
         )
-        
+
         return PGPKeyOperationResponse(
             success=True,
             message=f"PGP key revoked successfully for user {user_id}",
             key=PGPKeyResponse(**key_data),
         )
-        
+
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -474,22 +501,22 @@ async def admin_get_pgp_key_by_fingerprint(
     """Get any PGP key by fingerprint (admin only)."""
     try:
         context = get_request_context(http_request)
-        
+
         key_data = await pgp_key_service.get_key_by_fingerprint(
             fingerprint=fingerprint,
             include_private=include_private,
             admin_user_id=admin_user["username"],
             **context,
         )
-        
+
         if not key_data:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="PGP key not found",
             )
-        
+
         return PGPKeyResponse(**key_data)
-        
+
     except HTTPException:
         raise
     except Exception as e:

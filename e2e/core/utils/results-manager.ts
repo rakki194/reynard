@@ -29,6 +29,7 @@ export interface ResultsPaths {
   testTypeDir: string;
   runDir: string;
   htmlReport: string;
+  htmlReportDir: string;
   jsonReport: string;
   junitReport: string;
   artifactsDir: string;
@@ -101,7 +102,8 @@ export class ResultsManager {
       baseDir,
       testTypeDir,
       runDir,
-      htmlReport: join(runDir, "report.html"),
+      htmlReport: join(runDir, "html-report", "index.html"),
+      htmlReportDir: join(runDir, "html-report"),
       jsonReport: join(runDir, "results.json"),
       junitReport: join(runDir, "results.xml"),
       artifactsDir: join(runDir, "artifacts"),
@@ -126,6 +128,7 @@ export class ResultsManager {
       paths.screenshotsDir,
       paths.tracesDir,
       paths.videosDir,
+      paths.htmlReportDir, // HTML report directory
     ];
 
     for (const dir of dirs) {
@@ -148,9 +151,9 @@ export class ResultsManager {
       [
         "html",
         {
-          outputFolder: paths.runDir,
+          outputFolder: paths.htmlReportDir,
           open: "never",
-          attachmentsBaseURL: "attachments/",
+          attachmentsBaseURL: "../artifacts/",
         },
       ],
       ["json", { outputFile: paths.jsonReport }],

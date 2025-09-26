@@ -36,7 +36,7 @@ program
   .option("--no-file-paths", "Exclude file paths from diagrams")
   .option("--no-relationships", "Exclude relationship details")
   .option("--no-metadata", "Exclude metadata from diagrams")
-  .option("-r, --root <path>", "Project root path", "/home/kade/runeset/reynard")
+  .option("-r, --root <path>", "Project root path", process.cwd())
   .action(async options => {
     try {
       console.log("🦊 Reynard Diagram Generator");

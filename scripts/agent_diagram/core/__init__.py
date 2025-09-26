@@ -1,5 +1,4 @@
-"""Core modules for agent diagram processing.
-"""
+"""Core modules for agent diagram processing."""
 
 from .categorizer import AgentCategorizer
 from .contribution import AgentContribution

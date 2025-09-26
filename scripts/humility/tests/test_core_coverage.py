@@ -1,5 +1,4 @@
-"""Additional tests to improve core module coverage.
-"""
+"""Additional tests to improve core module coverage."""
 
 import os
 import sys
@@ -142,7 +141,9 @@ class TestHumilityDetectorCoverage:
         """Test text analysis with cultural context."""
         text = "This is the best solution ever!"
         profile = await detector.analyze_text(
-            text, "test.txt", cultural_context="eastern",
+            text,
+            "test.txt",
+            cultural_context="eastern",
         )
 
         assert isinstance(profile, HumilityProfile)

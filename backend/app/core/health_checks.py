@@ -173,7 +173,8 @@ class HealthCheckManager:
 
             # Perform basic health check
             basic_result = await self._perform_basic_health_check(
-                service_name, service_info,
+                service_name,
+                service_info,
             )
 
             # Perform dependency health check
@@ -264,7 +265,9 @@ class HealthCheckManager:
                 await asyncio.sleep(self.config.cache_ttl)
 
     async def _perform_basic_health_check(
-        self, service_name: str, service_info: Any,
+        self,
+        service_name: str,
+        service_info: Any,
     ) -> dict[str, Any]:
         """Perform basic health check."""
         result = {"status": HealthStatus.UNKNOWN, "details": {}}
@@ -308,7 +311,8 @@ class HealthCheckManager:
         return result
 
     async def _perform_dependency_health_check(
-        self, service_name: str,
+        self,
+        service_name: str,
     ) -> dict[str, Any]:
         """Perform dependency health check."""
         result = {"status": HealthStatus.HEALTHY, "dependencies": [], "details": {}}
@@ -328,12 +332,17 @@ class HealthCheckManager:
 
             # Build dependency results
             self._build_dependency_results(
-                result, dependencies, unhealthy_deps, degraded_deps,
+                result,
+                dependencies,
+                unhealthy_deps,
+                degraded_deps,
             )
 
             # Determine overall dependency status
             result["status"] = self._determine_dependency_status(
-                dependencies, unhealthy_deps, degraded_deps,
+                dependencies,
+                unhealthy_deps,
+                degraded_deps,
             )
 
         except Exception as e:
@@ -343,7 +352,8 @@ class HealthCheckManager:
         return result
 
     def _analyze_dependency_health(
-        self, dependencies: list,
+        self,
+        dependencies: list,
     ) -> tuple[list[str], list[str]]:
         """Analyze health of service dependencies."""
         unhealthy_deps = []
@@ -385,7 +395,10 @@ class HealthCheckManager:
         result["details"]["degraded_dependencies"] = degraded_deps
 
     def _determine_dependency_status(
-        self, dependencies: list, unhealthy_deps: list[str], degraded_deps: list[str],
+        self,
+        dependencies: list,
+        unhealthy_deps: list[str],
+        degraded_deps: list[str],
     ) -> HealthStatus:
         """Determine overall dependency health status."""
         if unhealthy_deps:
@@ -401,7 +414,8 @@ class HealthCheckManager:
         return HealthStatus.HEALTHY
 
     async def _perform_performance_health_check(
-        self, service_name: str,
+        self,
+        service_name: str,
     ) -> dict[str, Any]:
         """Perform performance health check."""
         result = {"status": HealthStatus.HEALTHY, "metrics": {}, "details": {}}
@@ -476,7 +490,9 @@ class HealthCheckManager:
         return warnings
 
     def _update_health_cache(
-        self, service_name: str, result: HealthCheckResult,
+        self,
+        service_name: str,
+        result: HealthCheckResult,
     ) -> None:
         """Update health check cache."""
         self.health_cache[service_name] = {
@@ -490,7 +506,9 @@ class HealthCheckManager:
         self.cache_timestamps[service_name] = result.timestamp
 
     def _update_health_history(
-        self, service_name: str, result: HealthCheckResult,
+        self,
+        service_name: str,
+        result: HealthCheckResult,
     ) -> None:
         """Update health history for predictive monitoring."""
         if service_name not in self.health_history:
@@ -702,7 +720,7 @@ async def health_check_rag() -> bool:
         if hasattr(rag_service, "get_system_health"):
             health_status = await rag_service.get_system_health()
             return health_status.get("healthy", False)
-        
+
         # Fallback to basic initialization check
         return rag_service.is_initialized()
 
@@ -714,7 +732,9 @@ async def health_check_rag() -> bool:
 async def health_check_ai_service() -> bool:
     """Health check for AI service."""
     try:
-        from app.core.ai_service_initializer import health_check_ai_service as ai_health_check
+        from app.core.ai_service_initializer import (
+            health_check_ai_service as ai_health_check,
+        )
 
         return await ai_health_check()
 
@@ -737,7 +757,7 @@ async def health_check_tts_service() -> bool:
         # Use the TTS service's built-in health check
         if hasattr(tts_service, "health_check"):
             return await tts_service.health_check()
-        
+
         # Fallback to basic enabled check
         return getattr(tts_service, "_enabled", False)
 

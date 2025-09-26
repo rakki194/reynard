@@ -86,5 +86,5 @@ export default defineConfig({
   },
 
   /* Output directory for test artifacts */
-  outputDir: resultsManager.getOutputDir(),
+  outputDir: resultsPaths.artifactsDir,
 });

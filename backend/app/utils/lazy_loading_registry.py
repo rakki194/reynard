@@ -93,7 +93,9 @@ def get_export_count() -> int:
 ml_packages = {
     "torch": create_lazy_export("torch", "torch", ExportType.MODULE),
     "transformers": create_lazy_export(
-        "transformers", "transformers", ExportType.MODULE,
+        "transformers",
+        "transformers",
+        ExportType.MODULE,
     ),
     "numpy": create_lazy_export("numpy", "numpy", ExportType.MODULE),
     "pandas": create_lazy_export("pandas", "pandas", ExportType.MODULE),
@@ -112,8 +114,7 @@ ml_packages = {
 
 
 class LazyLoadingSystem:
-    """Main lazy loading system that manages all exports.
-    """
+    """Main lazy loading system that manages all exports."""
 
     def __init__(self):
         self._exports = _export_registry
@@ -133,7 +134,11 @@ class LazyLoadingSystem:
     ) -> LazyPackageExport:
         """Create a new lazy export."""
         return create_lazy_export(
-            package_name, import_name, export_type, validation_level, dependencies,
+            package_name,
+            import_name,
+            export_type,
+            validation_level,
+            dependencies,
         )
 
     def get_all_exports(self) -> dict[str, LazyPackageExport]:

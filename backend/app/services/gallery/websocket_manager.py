@@ -95,7 +95,9 @@ class GalleryWebSocketManager:
         )
 
     async def subscribe_to_download(
-        self, connection_index: int, download_id: str,
+        self,
+        connection_index: int,
+        download_id: str,
     ) -> None:
         """Subscribe connection to download progress updates"""
         async with self.connection_lock:
@@ -113,7 +115,9 @@ class GalleryWebSocketManager:
                     )
 
     async def unsubscribe_from_download(
-        self, connection_index: int, download_id: str,
+        self,
+        connection_index: int,
+        download_id: str,
     ) -> None:
         """Unsubscribe connection from download progress updates"""
         async with self.connection_lock:
@@ -172,7 +176,9 @@ class GalleryWebSocketManager:
         await self._broadcast_to_download_subscribers(download_id, message)
 
     async def send_download_completed(
-        self, download_id: str, result: dict[str, Any],
+        self,
+        download_id: str,
+        result: dict[str, Any],
     ) -> None:
         """Send download completed notification"""
         message = {
@@ -209,7 +215,9 @@ class GalleryWebSocketManager:
         await self._broadcast_to_download_subscribers(download_id, message)
 
     async def _broadcast_to_download_subscribers(
-        self, download_id: str, message: dict[str, Any],
+        self,
+        download_id: str,
+        message: dict[str, Any],
     ) -> None:
         """Broadcast message to all subscribers of a download"""
         if download_id not in self.download_subscribers:

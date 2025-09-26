@@ -35,10 +35,12 @@ class LazyLoadingPerformanceMonitor:
             / self._performance_monitor.total_loads
         )
         self._performance_monitor.min_load_time = min(
-            self._performance_monitor.min_load_time, load_time,
+            self._performance_monitor.min_load_time,
+            load_time,
         )
         self._performance_monitor.max_load_time = max(
-            self._performance_monitor.max_load_time, load_time,
+            self._performance_monitor.max_load_time,
+            load_time,
         )
 
         if module:

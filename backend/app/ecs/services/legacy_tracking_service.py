@@ -40,7 +40,8 @@ class LegacyTrackingService:
         else:
             tracker_codebase_path = str(self.codebase_path)
         self.legacy_tracker = SuccessAdvisor8LegacyTracker(
-            tracker_codebase_path, "CHANGELOG.md",
+            tracker_codebase_path,
+            "CHANGELOG.md",
         )
         # Fix: Use the same path logic for the changelog parser
         if self.codebase_path.name == "backend":
@@ -135,7 +136,9 @@ class LegacyTrackingService:
             return {"error": str(e), "last_updated": datetime.now().isoformat()}
 
     async def track_success_advisor_8_activity(
-        self, activity: str, context: dict[str, Any],
+        self,
+        activity: str,
+        context: dict[str, Any],
     ) -> bool:
         """Track a new Success-Advisor-8 activity.
 

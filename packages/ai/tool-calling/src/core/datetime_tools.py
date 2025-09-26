@@ -75,7 +75,9 @@ def get_datetime_service():
     },
 )
 async def get_current_time_tool(
-    timezone: str = "UTC", format_name: str = "iso", include_timezone_info: bool = True,
+    timezone: str = "UTC",
+    format_name: str = "iso",
+    include_timezone_info: bool = True,
 ) -> dict[str, Any]:
     """Get current date and time with timezone support.
 
@@ -232,11 +234,14 @@ async def format_time_tool(
             parsed_time = DateTimeUtils.parse_iso_time(time_input, source_timezone)
         elif input_format == "unix":
             parsed_time = DateTimeUtils.parse_unix_timestamp(
-                time_input, source_timezone,
+                time_input,
+                source_timezone,
             )
         elif input_format == "custom" and custom_format and custom_format.strip():
             parsed_time = DateTimeUtils.parse_custom_time(
-                time_input, custom_format, source_timezone,
+                time_input,
+                custom_format,
+                source_timezone,
             )
         else:
             raise ValueError(f"Invalid input format: {input_format}")
@@ -252,7 +257,8 @@ async def format_time_tool(
             and target_timezone != source_timezone
         ):
             converted_time = DateTimeUtils.convert_timezone(
-                parsed_time, target_timezone,
+                parsed_time,
+                target_timezone,
             )
             if converted_time:
                 final_time = converted_time

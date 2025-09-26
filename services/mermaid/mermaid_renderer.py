@@ -242,7 +242,9 @@ class MermaidRenderer:
             return False, "", f"SVG extraction error: {e}"
 
     def _create_png_from_svg(
-        self, svg_content: str, bg_color: str | None = None,
+        self,
+        svg_content: str,
+        bg_color: str | None = None,
     ) -> tuple[bool, bytes, str]:
         """Convert SVG content to PNG using Playwright.
 
@@ -323,7 +325,11 @@ class MermaidRenderer:
         """
         try:
             html_content = self._create_mermaid_html(
-                diagram, theme, bg_color, width, height,
+                diagram,
+                theme,
+                bg_color,
+                width,
+                height,
             )
             return self._extract_svg_content(html_content)
         except Exception as e:
@@ -353,7 +359,11 @@ class MermaidRenderer:
         try:
             # First render to SVG
             success, svg_content, error = self.render_to_svg(
-                diagram, theme, bg_color, width, height,
+                diagram,
+                theme,
+                bg_color,
+                width,
+                height,
             )
             if not success:
                 return False, b"", error
@@ -389,7 +399,11 @@ class MermaidRenderer:
         """
         try:
             success, svg_content, error = self.render_to_svg(
-                diagram, theme, bg_color, width, height,
+                diagram,
+                theme,
+                bg_color,
+                width,
+                height,
             )
             if not success:
                 return False, "", error
@@ -431,7 +445,11 @@ class MermaidRenderer:
         """
         try:
             success, png_data, error = self.render_to_png(
-                diagram, theme, bg_color, width, height,
+                diagram,
+                theme,
+                bg_color,
+                width,
+                height,
             )
             if not success:
                 return False, "", error

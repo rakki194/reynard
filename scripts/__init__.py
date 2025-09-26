@@ -1,2 +1,1 @@
-"""Scripts package for Reynard framework.
-"""
+"""Scripts package for Reynard framework."""

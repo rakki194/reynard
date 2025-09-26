@@ -85,7 +85,10 @@ Examples:
         help="Minimum confidence threshold (0.0-1.0)",
     )
     parser.add_argument(
-        "--max-findings", type=int, default=100, help="Maximum findings per file",
+        "--max-findings",
+        type=int,
+        default=100,
+        help="Maximum findings per file",
     )
 
     # Advanced features
@@ -104,7 +107,10 @@ Examples:
 
     # Utility options
     parser.add_argument(
-        "--verbose", "-v", action="store_true", help="Enable verbose logging",
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
     )
     parser.add_argument(
         "--cache-results",
@@ -113,7 +119,9 @@ Examples:
         help="Cache analysis results",
     )
     parser.add_argument(
-        "--clear-cache", action="store_true", help="Clear analysis cache",
+        "--clear-cache",
+        action="store_true",
+        help="Clear analysis cache",
     )
 
     args = parser.parse_args()

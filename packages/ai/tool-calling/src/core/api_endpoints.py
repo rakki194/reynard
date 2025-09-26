@@ -144,7 +144,10 @@ async def list_tools(
 
         # Get all tools the user has access to
         all_tools = registry.list_tools(
-            category=category, tag=tag, permission=permission, user_role=user_role,
+            category=category,
+            tag=tag,
+            permission=permission,
+            user_role=user_role,
         )
 
         # Convert to API models
@@ -194,7 +197,9 @@ async def search_tools(
         tool_infos = [_tool_to_api_model(tool) for tool in matching_tools]
 
         return ToolSearchResponse(
-            tools=tool_infos, query=query, total_results=len(tool_infos),
+            tools=tool_infos,
+            query=query,
+            total_results=len(tool_infos),
         )
 
     except Exception as e:
@@ -306,7 +311,9 @@ async def execute_tool(
             context.timeout = request.timeout
 
         result = await executor.execute_tool(
-            tool=tool, context=context, parameters=request.parameters,
+            tool=tool,
+            context=context,
+            parameters=request.parameters,
         )
 
         execution_time = time.time() - start_time
@@ -353,7 +360,8 @@ async def execute_tool(
         execution_time = time.time() - start_time
         # Log full error details for debugging but don't expose to client
         logger.error(
-            f"Unexpected error executing tool '{tool_name}': {e}", exc_info=True,
+            f"Unexpected error executing tool '{tool_name}': {e}",
+            exc_info=True,
         )
         return ToolExecutionResult(
             success=False,

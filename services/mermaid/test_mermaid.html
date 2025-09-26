@@ -1,45 +1,42 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Mermaid Test</title>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background-color: white;
-        }
-        #container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .mermaid {
-            max-width: 100%;
-            height: auto;
-        }
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background-color: white;
+      }
+      #container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .mermaid {
+        max-width: 100%;
+        height: auto;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="container">
-        <div class="mermaid" id="mermaid-diagram">
-graph TD
-    A[Start] --> B[End]
-        </div>
+      <div class="mermaid" id="mermaid-diagram">graph TD A[Start] --> B[End]</div>
     </div>
-    
+
     <script>
-        // Load mermaid.js from local file
-        // This will be replaced with the actual content
-        console.log('Starting mermaid test...');
-        
-        // Simulate mermaid loading
-        setTimeout(function() {
-            console.log('Mermaid should be loaded now');
-            document.body.setAttribute('data-mermaid-ready', 'true');
-        }, 2000);
+      // Load mermaid.js from local file
+      // This will be replaced with the actual content
+      console.log("Starting mermaid test...");
+
+      // Simulate mermaid loading
+      setTimeout(function () {
+        console.log("Mermaid should be loaded now");
+        document.body.setAttribute("data-mermaid-ready", "true");
+      }, 2000);
     </script>
-</body>
+  </body>
 </html>

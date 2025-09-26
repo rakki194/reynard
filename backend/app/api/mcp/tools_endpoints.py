@@ -16,7 +16,8 @@ class MCPToolCall(BaseModel):
 
     method: str = Field(..., description="Name of the MCP tool to call")
     params: dict[str, Any] = Field(
-        default_factory=dict, description="Arguments for the MCP tool",
+        default_factory=dict,
+        description="Arguments for the MCP tool",
     )
 
 
@@ -41,7 +42,7 @@ async def call_mcp_tool(tool_call: MCPToolCall) -> MCPToolResponse:
 
         # Get MCP integration
         mcp_integration = get_mcp_integration()
-        
+
         # Call the tool
         result = await mcp_integration.call_tool(tool_call.method, tool_call.params)
 
@@ -57,13 +58,13 @@ async def list_mcp_tools() -> dict[str, Any]:
     """List all available MCP tools."""
     try:
         logger.info("Listing MCP tools")
-        
+
         # Get MCP integration
         mcp_integration = get_mcp_integration()
-        
+
         # Get tools list
         result = await mcp_integration.list_tools()
-        
+
         return {
             "success": True,
             "result": result,
@@ -82,10 +83,10 @@ async def mcp_health_check() -> dict[str, Any]:
     try:
         # Get MCP integration
         mcp_integration = get_mcp_integration()
-        
+
         # Check health
         health = await mcp_integration.health_check()
-        
+
         return health
     except Exception as e:
         return {

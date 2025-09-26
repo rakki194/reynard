@@ -36,7 +36,7 @@ from pydantic import BaseModel, Field
 
 class ProviderType(str, Enum):
     """Supported model provider types."""
-    
+
     OLLAMA = "ollama"
     VLLM = "vllm"
     SGLANG = "sglang"
@@ -48,7 +48,7 @@ class ProviderType(str, Enum):
 
 class ModelCapability(str, Enum):
     """Model capabilities and features."""
-    
+
     CHAT = "chat"
     COMPLETION = "completion"
     EMBEDDING = "embedding"
@@ -62,7 +62,7 @@ class ModelCapability(str, Enum):
 @dataclass
 class ModelInfo:
     """Information about a specific model."""
-    
+
     name: str
     provider: ProviderType
     capabilities: List[ModelCapability]
@@ -77,7 +77,7 @@ class ModelInfo:
 @dataclass
 class GenerationResult:
     """Result of a model generation request."""
-    
+
     text: str
     tokens_generated: int
     processing_time_ms: float
@@ -90,7 +90,7 @@ class GenerationResult:
 @dataclass
 class ChatMessage:
     """Chat message for conversational interfaces."""
-    
+
     role: str  # "system", "user", "assistant", "tool"
     content: str
     name: Optional[str] = None
@@ -101,7 +101,7 @@ class ChatMessage:
 @dataclass
 class ChatResult:
     """Result of a chat completion request."""
-    
+
     message: ChatMessage
     tokens_generated: int
     processing_time_ms: float
@@ -113,7 +113,7 @@ class ChatResult:
 
 class ModelProviderConfig(BaseModel):
     """Base configuration for model providers."""
-    
+
     provider_type: ProviderType
     enabled: bool = True
     base_url: Optional[str] = None
@@ -128,14 +128,14 @@ class ModelProviderConfig(BaseModel):
 
 class ModelProvider(ABC):
     """Abstract base class for all model providers.
-    
+
     This interface ensures consistency across different model serving frameworks
     while allowing provider-specific optimizations and features.
     """
-    
+
     def __init__(self, config: ModelProviderConfig):
         """Initialize the model provider.
-        
+
         Args:
             config: Provider-specific configuration
         """
@@ -152,39 +152,39 @@ class ModelProvider(ABC):
             "total_tokens_generated": 0,
             "average_latency_ms": 0.0,
         }
-    
+
     @abstractmethod
     async def initialize(self) -> bool:
         """Initialize the provider.
-        
+
         Returns:
             bool: True if initialization successful, False otherwise
         """
         pass
-    
+
     @abstractmethod
     async def shutdown(self) -> None:
         """Shutdown the provider and cleanup resources."""
         pass
-    
+
     @abstractmethod
     async def health_check(self) -> bool:
         """Check provider health.
-        
+
         Returns:
             bool: True if provider is healthy, False otherwise
         """
         pass
-    
+
     @abstractmethod
     async def get_available_models(self) -> List[ModelInfo]:
         """Get list of available models.
-        
+
         Returns:
             List[ModelInfo]: Available models with their capabilities
         """
         pass
-    
+
     @abstractmethod
     async def generate_completion(
         self,
@@ -192,22 +192,22 @@ class ModelProvider(ABC):
         model: Optional[str] = None,
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
-        **kwargs
+        **kwargs,
     ) -> GenerationResult:
         """Generate text completion.
-        
+
         Args:
             prompt: Input prompt
             model: Model to use (uses default if None)
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
             **kwargs: Additional provider-specific parameters
-            
+
         Returns:
             GenerationResult: Generated text and metadata
         """
         pass
-    
+
     @abstractmethod
     async def generate_chat_completion(
         self,
@@ -216,10 +216,10 @@ class ModelProvider(ABC):
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        **kwargs,
     ) -> ChatResult:
         """Generate chat completion.
-        
+
         Args:
             messages: List of chat messages
             model: Model to use (uses default if None)
@@ -227,12 +227,12 @@ class ModelProvider(ABC):
             temperature: Sampling temperature
             tools: Available tools for function calling
             **kwargs: Additional provider-specific parameters
-            
+
         Returns:
             ChatResult: Generated response and metadata
         """
         pass
-    
+
     @abstractmethod
     async def stream_completion(
         self,
@@ -240,22 +240,22 @@ class ModelProvider(ABC):
         model: Optional[str] = None,
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncGenerator[str, None]:
         """Stream text completion.
-        
+
         Args:
             prompt: Input prompt
             model: Model to use (uses default if None)
             max_tokens: Maximum tokens to generate
             temperature: Sampling temperature
             **kwargs: Additional provider-specific parameters
-            
+
         Yields:
             str: Streaming text chunks
         """
         pass
-    
+
     @abstractmethod
     async def stream_chat_completion(
         self,
@@ -264,10 +264,10 @@ class ModelProvider(ABC):
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncGenerator[ChatMessage, None]:
         """Stream chat completion.
-        
+
         Args:
             messages: List of chat messages
             model: Model to use (uses default if None)
@@ -275,23 +275,23 @@ class ModelProvider(ABC):
             temperature: Sampling temperature
             tools: Available tools for function calling
             **kwargs: Additional provider-specific parameters
-            
+
         Yields:
             ChatMessage: Streaming chat message chunks
         """
         pass
-    
+
     def get_metrics(self) -> Dict[str, Any]:
         """Get provider metrics.
-        
+
         Returns:
             Dict[str, Any]: Provider performance metrics
         """
         return self._metrics.copy()
-    
+
     def get_health_status(self) -> Dict[str, Any]:
         """Get provider health status.
-        
+
         Returns:
             Dict[str, Any]: Health status information
         """
@@ -303,94 +303,96 @@ class ModelProvider(ABC):
             "last_health_check": self._last_health_check,
             "metrics": self._metrics,
         }
-    
+
     def supports_capability(self, capability: ModelCapability) -> bool:
         """Check if provider supports a specific capability.
-        
+
         Args:
             capability: Capability to check
-            
+
         Returns:
             bool: True if capability is supported
         """
         return capability in self.config.capabilities
-    
+
     def is_model_supported(self, model: str) -> bool:
         """Check if a model is supported by this provider.
-        
+
         Args:
             model: Model name to check
-            
+
         Returns:
             bool: True if model is supported
         """
-        return model in self.config.supported_models or model == self.config.default_model
+        return (
+            model in self.config.supported_models or model == self.config.default_model
+        )
 
 
 class ModelProviderRegistry:
     """Registry for managing model providers."""
-    
+
     def __init__(self):
         self._providers: Dict[ProviderType, ModelProvider] = {}
         self._default_provider: Optional[ProviderType] = None
-    
+
     def register_provider(self, provider: ModelProvider) -> None:
         """Register a model provider.
-        
+
         Args:
             provider: Provider instance to register
         """
         self._providers[provider.provider_type] = provider
-    
+
     def get_provider(self, provider_type: ProviderType) -> Optional[ModelProvider]:
         """Get a provider by type.
-        
+
         Args:
             provider_type: Type of provider to get
-            
+
         Returns:
             Optional[ModelProvider]: Provider instance or None
         """
         return self._providers.get(provider_type)
-    
+
     def get_all_providers(self) -> Dict[ProviderType, ModelProvider]:
         """Get all registered providers.
-        
+
         Returns:
             Dict[ProviderType, ModelProvider]: All registered providers
         """
         return self._providers.copy()
-    
+
     def get_available_providers(self) -> List[ProviderType]:
         """Get list of available provider types.
-        
+
         Returns:
             List[ProviderType]: Available provider types
         """
         return list(self._providers.keys())
-    
+
     def set_default_provider(self, provider_type: ProviderType) -> None:
         """Set the default provider.
-        
+
         Args:
             provider_type: Provider type to set as default
         """
         if provider_type in self._providers:
             self._default_provider = provider_type
-    
+
     def get_default_provider(self) -> Optional[ModelProvider]:
         """Get the default provider.
-        
+
         Returns:
             Optional[ModelProvider]: Default provider or None
         """
         if self._default_provider:
             return self._providers.get(self._default_provider)
         return None
-    
+
     async def health_check_all(self) -> Dict[ProviderType, bool]:
         """Check health of all providers.
-        
+
         Returns:
             Dict[ProviderType, bool]: Health status for each provider
         """
@@ -401,10 +403,10 @@ class ModelProviderRegistry:
             except Exception:
                 results[provider_type] = False
         return results
-    
+
     async def initialize_all(self) -> bool:
         """Initialize all registered providers.
-        
+
         Returns:
             bool: True if all providers initialized successfully
         """
@@ -416,7 +418,7 @@ class ModelProviderRegistry:
             except Exception:
                 success = False
         return success
-    
+
     async def shutdown_all(self) -> None:
         """Shutdown all registered providers."""
         for provider in self._providers.values():

@@ -1,5 +1,4 @@
-"""Agent contribution data model.
-"""
+"""Agent contribution data model."""
 
 from dataclasses import dataclass
 

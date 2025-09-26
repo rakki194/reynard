@@ -87,7 +87,8 @@ class SQLiteBackend(UserBackend):
         # Convert SQLite URL to async format if needed
         if database_url.startswith("sqlite://"):
             self.async_database_url = database_url.replace(
-                "sqlite://", "sqlite+aiosqlite://",
+                "sqlite://",
+                "sqlite+aiosqlite://",
             )
         else:
             self.async_database_url = database_url
@@ -113,7 +114,9 @@ class SQLiteBackend(UserBackend):
 
             # Create session factory
             self.session_factory = sessionmaker(
-                bind=self.engine, class_=Session, expire_on_commit=False,
+                bind=self.engine,
+                class_=Session,
+                expire_on_commit=False,
             )
 
             # Create tables
@@ -443,7 +446,9 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None,
+        self,
+        username: str,
+        profile_picture_url: str | None,
     ) -> bool:
         """Update a user's profile picture URL."""
         await self._initialize()
@@ -473,7 +478,9 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_metadata(
-        self, username: str, metadata: dict[str, Any],
+        self,
+        username: str,
+        metadata: dict[str, Any],
     ) -> bool:
         """Update a user's metadata."""
         await self._initialize()
@@ -503,7 +510,10 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100,
+        self,
+        query: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Search for users by username or email."""
         await self._initialize()
@@ -530,7 +540,10 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100,
+        self,
+        role: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Get users by role."""
         await self._initialize()
@@ -613,7 +626,9 @@ class SQLiteBackend(UserBackend):
             session.close()
 
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any],
+        self,
+        username: str,
+        settings: dict[str, Any],
     ) -> bool:
         """Update user settings."""
         await self._initialize()

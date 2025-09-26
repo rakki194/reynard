@@ -91,7 +91,9 @@ class LoRAManager:
         self.peft_model.save_pretrained(output_dir)
 
     def load_lora_adapters(
-        self, model: torch.nn.Module, adapter_path: str,
+        self,
+        model: torch.nn.Module,
+        adapter_path: str,
     ) -> PeftModel:
         """Load LoRA adapters from disk."""
         logger.info(f"🔥 VULCAN: Loading LoRA adapters from {adapter_path}")

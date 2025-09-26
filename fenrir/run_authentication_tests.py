@@ -41,7 +41,7 @@ class FenrirTestRunner:
         self.results = {
             "timestamp": datetime.now().isoformat(),
             "test_suite": "Fenrir MCP Authentication Security",
-            "results": {}
+            "results": {},
         }
 
     def log(self, message: str, level: str = "INFO") -> None:
@@ -57,17 +57,23 @@ class FenrirTestRunner:
         # Check if required services are running
         services = {
             "MCP Server": os.getenv("MCP_SERVER_URL", "http://localhost:8001"),
-            "FastAPI Backend": os.getenv("FASTAPI_BACKEND_URL", "http://localhost:8000")
+            "FastAPI Backend": os.getenv(
+                "FASTAPI_BACKEND_URL", "http://localhost:8000"
+            ),
         }
 
         for service_name, url in services.items():
             try:
                 import requests
+
                 response = requests.get(f"{url}/health", timeout=5)
                 if response.status_code == 200:
                     self.log(f"✅ {service_name} is running at {url}")
                 else:
-                    self.log(f"⚠️  {service_name} responded with status {response.status_code}", "WARN")
+                    self.log(
+                        f"⚠️  {service_name} responded with status {response.status_code}",
+                        "WARN",
+                    )
             except Exception as e:
                 self.log(f"❌ {service_name} is not accessible: {e}", "ERROR")
                 return False
@@ -84,7 +90,9 @@ class FenrirTestRunner:
 
         # Check if Node.js and Playwright are available for e2e tests
         try:
-            result = subprocess.run(["node", "--version"], capture_output=True, text=True)
+            result = subprocess.run(
+                ["node", "--version"], capture_output=True, text=True
+            )
             if result.returncode == 0:
                 self.log(f"✅ Node.js is available: {result.stdout.strip()}")
             else:
@@ -95,7 +103,9 @@ class FenrirTestRunner:
             return False
 
         try:
-            result = subprocess.run(["npx", "playwright", "--version"], capture_output=True, text=True)
+            result = subprocess.run(
+                ["npx", "playwright", "--version"], capture_output=True, text=True
+            )
             if result.returncode == 0:
                 self.log(f"✅ Playwright is available: {result.stdout.strip()}")
             else:
@@ -119,17 +129,19 @@ class FenrirTestRunner:
             self.results["results"]["python_tests"] = {
                 "status": "completed",
                 "duration": end_time - start_time,
-                "results": results
+                "results": results,
             }
 
-            self.log(f"✅ Python tests completed in {end_time - start_time:.2f} seconds")
+            self.log(
+                f"✅ Python tests completed in {end_time - start_time:.2f} seconds"
+            )
             return results
 
         except Exception as e:
             self.log(f"❌ Python tests failed: {e}", "ERROR")
             self.results["results"]["python_tests"] = {
                 "status": "failed",
-                "error": str(e)
+                "error": str(e),
             }
             return {"summary": {"overall_status": "FAIL"}}
 
@@ -147,16 +159,24 @@ class FenrirTestRunner:
             # Run Playwright tests
             start_time = time.time()
             result = subprocess.run(
-                ["npx", "playwright", "test", "suites/security/mcp-authentication.spec.ts", "--reporter=json"],
+                [
+                    "npx",
+                    "playwright",
+                    "test",
+                    "suites/security/mcp-authentication.spec.ts",
+                    "--reporter=json",
+                ],
                 cwd=e2e_dir,
                 capture_output=True,
                 text=True,
-                timeout=300  # 5 minutes timeout
+                timeout=300,  # 5 minutes timeout
             )
             end_time = time.time()
 
             if result.returncode == 0:
-                self.log(f"✅ Playwright tests completed in {end_time - start_time:.2f} seconds")
+                self.log(
+                    f"✅ Playwright tests completed in {end_time - start_time:.2f} seconds"
+                )
 
                 # Parse JSON output if available
                 try:
@@ -167,18 +187,21 @@ class FenrirTestRunner:
                 self.results["results"]["playwright_tests"] = {
                     "status": "completed",
                     "duration": end_time - start_time,
-                    "results": test_results
+                    "results": test_results,
                 }
 
                 return test_results
             else:
-                self.log(f"❌ Playwright tests failed with return code {result.returncode}", "ERROR")
+                self.log(
+                    f"❌ Playwright tests failed with return code {result.returncode}",
+                    "ERROR",
+                )
                 self.log(f"Error output: {result.stderr}", "ERROR")
 
                 self.results["results"]["playwright_tests"] = {
                     "status": "failed",
                     "return_code": result.returncode,
-                    "error": result.stderr
+                    "error": result.stderr,
                 }
 
                 return {"status": "failed", "error": result.stderr}
@@ -187,7 +210,7 @@ class FenrirTestRunner:
             self.log("❌ Playwright tests timed out", "ERROR")
             self.results["results"]["playwright_tests"] = {
                 "status": "timeout",
-                "error": "Tests timed out after 5 minutes"
+                "error": "Tests timed out after 5 minutes",
             }
             return {"status": "timeout", "error": "Tests timed out"}
 
@@ -195,7 +218,7 @@ class FenrirTestRunner:
             self.log(f"❌ Playwright tests failed: {e}", "ERROR")
             self.results["results"]["playwright_tests"] = {
                 "status": "failed",
-                "error": str(e)
+                "error": str(e),
             }
             return {"status": "failed", "error": str(e)}
 
@@ -210,7 +233,7 @@ class FenrirTestRunner:
                 ["bandit", "-r", str(self.project_root / "backend"), "-f", "json"],
                 capture_output=True,
                 text=True,
-                timeout=60
+                timeout=60,
             )
             end_time = time.time()
 
@@ -219,12 +242,14 @@ class FenrirTestRunner:
                 bandit_results = json.loads(result.stdout)
             else:
                 self.log("⚠️  Bandit found security issues", "WARN")
-                bandit_results = json.loads(result.stdout) if result.stdout else {"issues": []}
+                bandit_results = (
+                    json.loads(result.stdout) if result.stdout else {"issues": []}
+                )
 
             self.results["results"]["security_scan"] = {
                 "status": "completed",
                 "duration": end_time - start_time,
-                "bandit_results": bandit_results
+                "bandit_results": bandit_results,
             }
 
             return bandit_results
@@ -233,7 +258,7 @@ class FenrirTestRunner:
             self.log(f"❌ Security scan failed: {e}", "ERROR")
             self.results["results"]["security_scan"] = {
                 "status": "failed",
-                "error": str(e)
+                "error": str(e),
             }
             return {"error": str(e)}
 
@@ -264,7 +289,11 @@ class FenrirTestRunner:
         report.append(f"Total Tests: {total_tests}")
         report.append(f"Passed: {passed_tests}")
         report.append(f"Failed: {failed_tests}")
-        report.append(f"Success Rate: {(passed_tests / total_tests * 100):.1f}%" if total_tests > 0 else "N/A")
+        report.append(
+            f"Success Rate: {(passed_tests / total_tests * 100):.1f}%"
+            if total_tests > 0
+            else "N/A"
+        )
         report.append("")
 
         # Detailed results
@@ -281,7 +310,9 @@ class FenrirTestRunner:
             elif result["status"] == "completed" and "results" in result:
                 if "summary" in result["results"]:
                     summary = result["results"]["summary"]
-                    report.append(f"Overall Status: {summary.get('overall_status', 'UNKNOWN')}")
+                    report.append(
+                        f"Overall Status: {summary.get('overall_status', 'UNKNOWN')}"
+                    )
 
             report.append("")
 
@@ -327,7 +358,9 @@ class FenrirTestRunner:
 
         # Check environment
         if not self.check_environment():
-            self.log("❌ Environment check failed. Please fix the issues above.", "ERROR")
+            self.log(
+                "❌ Environment check failed. Please fix the issues above.", "ERROR"
+            )
             return False
 
         # Run Python tests
@@ -347,7 +380,9 @@ class FenrirTestRunner:
         results_file = self.save_results()
 
         # Determine overall success
-        python_success = python_results.get("summary", {}).get("overall_status") == "PASS"
+        python_success = (
+            python_results.get("summary", {}).get("overall_status") == "PASS"
+        )
         playwright_success = playwright_results.get("status") == "completed"
 
         overall_success = python_success and playwright_success
@@ -355,7 +390,10 @@ class FenrirTestRunner:
         if overall_success:
             self.log("🎉 All authentication security tests passed!")
         else:
-            self.log("⚠️  Some authentication security tests failed. Review the report above.", "WARN")
+            self.log(
+                "⚠️  Some authentication security tests failed. Review the report above.",
+                "WARN",
+            )
 
         return overall_success
 
@@ -370,34 +408,18 @@ Examples:
   python run_authentication_tests.py --all --verbose
   python run_authentication_tests.py --unit
   python run_authentication_tests.py --e2e
-        """
+        """,
     )
 
     parser.add_argument(
-        "--unit",
-        action="store_true",
-        help="Run only Python unit tests"
+        "--unit", action="store_true", help="Run only Python unit tests"
     )
     parser.add_argument(
-        "--e2e",
-        action="store_true",
-        help="Run only Playwright e2e tests"
+        "--e2e", action="store_true", help="Run only Playwright e2e tests"
     )
-    parser.add_argument(
-        "--all",
-        action="store_true",
-        help="Run all tests (default)"
-    )
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Enable verbose logging"
-    )
-    parser.add_argument(
-        "--output",
-        type=str,
-        help="Output file for test results"
-    )
+    parser.add_argument("--all", action="store_true", help="Run all tests (default)")
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
+    parser.add_argument("--output", type=str, help="Output file for test results")
 
     args = parser.parse_args()
 

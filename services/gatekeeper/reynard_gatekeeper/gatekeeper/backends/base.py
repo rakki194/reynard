@@ -13,20 +13,16 @@ class BackendError(Exception):
     """Base exception for backend operations."""
 
 
-
 class UserNotFoundError(BackendError):
     """Raised when a user is not found in the backend."""
-
 
 
 class UserAlreadyExistsError(BackendError):
     """Raised when trying to create a user that already exists."""
 
 
-
 class InvalidCredentialsError(BackendError):
     """Raised when authentication credentials are invalid."""
-
 
 
 class UserBackend(ABC):
@@ -173,7 +169,9 @@ class UserBackend(ABC):
 
     @abstractmethod
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None,
+        self,
+        username: str,
+        profile_picture_url: str | None,
     ) -> bool:
         """Update a user's profile picture URL.
 
@@ -191,7 +189,9 @@ class UserBackend(ABC):
 
     @abstractmethod
     async def update_user_metadata(
-        self, username: str, metadata: dict[str, Any],
+        self,
+        username: str,
+        metadata: dict[str, Any],
     ) -> bool:
         """Update a user's metadata.
 
@@ -209,7 +209,10 @@ class UserBackend(ABC):
 
     @abstractmethod
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100,
+        self,
+        query: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Search for users by username or email.
 
@@ -225,7 +228,10 @@ class UserBackend(ABC):
 
     @abstractmethod
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100,
+        self,
+        role: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Get users by role.
 
@@ -280,7 +286,9 @@ class UserBackend(ABC):
 
     @abstractmethod
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any],
+        self,
+        username: str,
+        settings: dict[str, Any],
     ) -> bool:
         """Update user settings.
 
@@ -352,3 +360,294 @@ class UserBackend(ABC):
             bool: True if the backend is healthy, False otherwise
 
         """
+
+    # RBAC Methods
+
+    @abstractmethod
+    async def create_role(self, role_data: dict[str, Any]) -> dict[str, Any]:
+        """Create a new role.
+
+        Args:
+            role_data: Role creation data
+
+        Returns:
+            dict: Created role data
+
+        Raises:
+            BackendError: If role creation fails
+        """
+
+    @abstractmethod
+    async def get_role_by_name(self, name: str) -> dict[str, Any] | None:
+        """Get a role by name.
+
+        Args:
+            name: Role name
+
+        Returns:
+            dict: Role data if found, None otherwise
+        """
+
+    @abstractmethod
+    async def get_role_by_id(self, role_id: str) -> dict[str, Any] | None:
+        """Get a role by ID.
+
+        Args:
+            role_id: Role ID
+
+        Returns:
+            dict: Role data if found, None otherwise
+        """
+
+    @abstractmethod
+    async def create_permission(
+        self, permission_data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a new permission.
+
+        Args:
+            permission_data: Permission creation data
+
+        Returns:
+            dict: Created permission data
+
+        Raises:
+            BackendError: If permission creation fails
+        """
+
+    @abstractmethod
+    async def get_permission_by_id(self, permission_id: str) -> dict[str, Any] | None:
+        """Get a permission by ID.
+
+        Args:
+            permission_id: Permission ID
+
+        Returns:
+            dict: Permission data if found, None otherwise
+        """
+
+    @abstractmethod
+    async def assign_role_to_user(
+        self, user_id: str, role_id: str, context: dict[str, Any] | None = None
+    ) -> bool:
+        """Assign a role to a user.
+
+        Args:
+            user_id: User ID
+            role_id: Role ID
+            context: Optional context for the assignment
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+
+    @abstractmethod
+    async def remove_role_from_user(
+        self, user_id: str, role_id: str, context: dict[str, Any] | None = None
+    ) -> bool:
+        """Remove a role from a user.
+
+        Args:
+            user_id: User ID
+            role_id: Role ID
+            context: Optional context for the removal
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+
+    @abstractmethod
+    async def get_user_roles(
+        self, user_id: str, context: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
+        """Get all roles for a user.
+
+        Args:
+            user_id: User ID
+            context: Optional context filter
+
+        Returns:
+            list: List of user roles
+        """
+
+    @abstractmethod
+    async def check_permission(
+        self, user_id: str, resource_type: str, resource_id: str, operation: str
+    ) -> dict[str, Any]:
+        """Check if a user has permission for a resource/operation.
+
+        Args:
+            user_id: User ID
+            resource_type: Type of resource
+            resource_id: ID of the resource
+            operation: Operation to check
+
+        Returns:
+            dict: Permission check result
+        """
+
+    @abstractmethod
+    async def get_permissions_for_role(self, role_id: str) -> list[dict[str, Any]]:
+        """Get all permissions for a role.
+
+        Args:
+            role_id: Role ID
+
+        Returns:
+            list: List of permissions
+        """
+
+    # Advanced RBAC Methods
+
+    async def create_conditional_permission(
+        self, conditional_permission_data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a conditional permission.
+
+        Args:
+            conditional_permission_data: Conditional permission data
+
+        Returns:
+            dict: Created conditional permission data
+        """
+        raise NotImplementedError(
+            "Conditional permissions not implemented in this backend"
+        )
+
+    async def get_conditional_permissions_for_role(
+        self, role_id: str
+    ) -> list[dict[str, Any]]:
+        """Get conditional permissions for a role.
+
+        Args:
+            role_id: Role ID
+
+        Returns:
+            list: List of conditional permissions
+        """
+        raise NotImplementedError(
+            "Conditional permissions not implemented in this backend"
+        )
+
+    async def create_role_assignment_rule(
+        self, rule_data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a role assignment rule.
+
+        Args:
+            rule_data: Rule data
+
+        Returns:
+            dict: Created rule data
+        """
+        raise NotImplementedError(
+            "Role assignment rules not implemented in this backend"
+        )
+
+    async def get_role_assignment_rules_by_trigger(
+        self, trigger_type: str
+    ) -> list[dict[str, Any]]:
+        """Get role assignment rules by trigger type.
+
+        Args:
+            trigger_type: Trigger type
+
+        Returns:
+            list: List of rules
+        """
+        raise NotImplementedError(
+            "Role assignment rules not implemented in this backend"
+        )
+
+    async def create_role_delegation(
+        self, delegation_data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a role delegation.
+
+        Args:
+            delegation_data: Delegation data
+
+        Returns:
+            dict: Created delegation data
+        """
+        raise NotImplementedError("Role delegation not implemented in this backend")
+
+    async def get_role_delegation_by_id(
+        self, delegation_id: str
+    ) -> dict[str, Any] | None:
+        """Get a role delegation by ID.
+
+        Args:
+            delegation_id: Delegation ID
+
+        Returns:
+            dict: Delegation data if found, None otherwise
+        """
+        raise NotImplementedError("Role delegation not implemented in this backend")
+
+    async def revoke_role_delegation(self, delegation_id: str) -> bool:
+        """Revoke a role delegation.
+
+        Args:
+            delegation_id: Delegation ID
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        raise NotImplementedError("Role delegation not implemented in this backend")
+
+    async def create_role_hierarchy(
+        self, hierarchy_data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a role hierarchy relationship.
+
+        Args:
+            hierarchy_data: Hierarchy data
+
+        Returns:
+            dict: Created hierarchy data
+        """
+        raise NotImplementedError("Role hierarchy not implemented in this backend")
+
+    async def get_role_hierarchies_by_child(
+        self, child_role_id: str
+    ) -> list[dict[str, Any]]:
+        """Get role hierarchies by child role ID.
+
+        Args:
+            child_role_id: Child role ID
+
+        Returns:
+            list: List of hierarchy relationships
+        """
+        raise NotImplementedError("Role hierarchy not implemented in this backend")
+
+    async def create_permission_override(
+        self, override_data: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Create a permission override.
+
+        Args:
+            override_data: Override data
+
+        Returns:
+            dict: Created override data
+        """
+        raise NotImplementedError(
+            "Permission overrides not implemented in this backend"
+        )
+
+    async def get_permission_overrides_for_role(
+        self, role_id: str
+    ) -> list[dict[str, Any]]:
+        """Get permission overrides for a role.
+
+        Args:
+            role_id: Role ID
+
+        Returns:
+            list: List of permission overrides
+        """
+        raise NotImplementedError(
+            "Permission overrides not implemented in this backend"
+        )

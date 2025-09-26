@@ -12,8 +12,8 @@ from unittest.mock import MagicMock, patch
 from uuid import uuid4
 
 import pytest
-from fastapi.testclient import TestClient
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 from app.api.pgp_key_routes import router as pgp_router
 from app.api.ssh_key_routes import router as ssh_router
@@ -125,7 +125,9 @@ class TestPGPKeyAPIEndpoints:
         mock_service.generate_pgp_key.assert_called_once()
 
     @patch("app.api.pgp_key_routes.get_current_active_user")
-    def test_generate_pgp_key_unauthorized(self, mock_get_user, client, sample_pgp_key_request):
+    def test_generate_pgp_key_unauthorized(
+        self, mock_get_user, client, sample_pgp_key_request
+    ):
         """Test PGP key generation without authentication."""
         # Setup mock to raise exception
         mock_get_user.side_effect = Exception("Unauthorized")
@@ -208,8 +210,7 @@ class TestPGPKeyAPIEndpoints:
 
         # Make request
         response = client.post(
-            "/pgp-keys/revoke/1234567890ABCDEF",
-            json={"reason": "Test revocation"}
+            "/pgp-keys/revoke/1234567890ABCDEF", json={"reason": "Test revocation"}
         )
 
         # Verify response
@@ -238,8 +239,7 @@ class TestPGPKeyAPIEndpoints:
 
         # Make request
         response = client.post(
-            "/pgp-keys/admin/generate/test_user",
-            json=sample_pgp_key_request
+            "/pgp-keys/admin/generate/test_user", json=sample_pgp_key_request
         )
 
         # Verify response
@@ -370,7 +370,9 @@ class TestSSHKeyAPIEndpoints:
         mock_service.generate_ssh_key.assert_called_once()
 
     @patch("app.api.ssh_key_routes.get_current_active_user")
-    def test_generate_ssh_key_unauthorized(self, mock_get_user, client, sample_ssh_key_request):
+    def test_generate_ssh_key_unauthorized(
+        self, mock_get_user, client, sample_ssh_key_request
+    ):
         """Test SSH key generation without authentication."""
         # Setup mock to raise exception
         mock_get_user.side_effect = Exception("Unauthorized")
@@ -462,7 +464,7 @@ class TestSSHKeyAPIEndpoints:
         # Make request
         response = client.post(
             "/ssh-keys/revoke/ssh-ed25519%20AAAAC3NzaC1lZDI1NTE5AAAAI...",
-            json={"reason": "Test revocation"}
+            json={"reason": "Test revocation"},
         )
 
         # Verify response
@@ -491,8 +493,7 @@ class TestSSHKeyAPIEndpoints:
 
         # Make request
         response = client.post(
-            "/ssh-keys/admin/generate/test_user",
-            json=sample_ssh_key_request
+            "/ssh-keys/admin/generate/test_user", json=sample_ssh_key_request
         )
 
         # Verify response
@@ -577,7 +578,7 @@ class TestSSHKeyAPIEndpoints:
 
         response = client.post(
             "/ssh-keys/regenerate/ssh-ed25519%20AAAAC3NzaC1lZDI1NTE5AAAAI...",
-            json=regenerate_request
+            json=regenerate_request,
         )
 
         # Verify response

@@ -1,0 +1,1030 @@
+{
+  "numTotalTestSuites": 29,
+  "numPassedTestSuites": 0,
+  "numFailedTestSuites": 29,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 81,
+  "numPassedTests": 0,
+  "numFailedTests": 81,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1758903286174,
+  "success": false,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["NoteSharingModal", "Rendering"],
+          "fullName": "NoteSharingModal Rendering should render when open",
+          "status": "failed",
+          "title": "should render when open",
+          "duration": 2.2673580000000584,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:59:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 58, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Rendering"],
+          "fullName": "NoteSharingModal Rendering should not render when closed",
+          "status": "failed",
+          "title": "should not render when closed",
+          "duration": 0.5479470000000219,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:67:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 66, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Rendering"],
+          "fullName": "NoteSharingModal Rendering should display available users in dropdown",
+          "status": "failed",
+          "title": "should display available users in dropdown",
+          "duration": 0.35923800000000483,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:73:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 72, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Rendering"],
+          "fullName": "NoteSharingModal Rendering should display current collaborators",
+          "status": "failed",
+          "title": "should display current collaborators",
+          "duration": 0.46692800000005263,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:84:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 83, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Rendering"],
+          "fullName": "NoteSharingModal Rendering should show no collaborators message when empty",
+          "status": "failed",
+          "title": "should show no collaborators message when empty",
+          "duration": 0.5016869999999471,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:92:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 91, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "User Selection"],
+          "fullName": "NoteSharingModal User Selection should allow selecting a user",
+          "status": "failed",
+          "title": "should allow selecting a user",
+          "duration": 0.5288070000000289,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:100:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 99, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "User Selection"],
+          "fullName": "NoteSharingModal User Selection should filter out existing collaborators from available users",
+          "status": "failed",
+          "title": "should filter out existing collaborators from available users",
+          "duration": 0.47387700000001587,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:124:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 110, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Permission Selection"],
+          "fullName": "NoteSharingModal Permission Selection should allow selecting permission level",
+          "status": "failed",
+          "title": "should allow selecting permission level",
+          "duration": 0.3262879999999768,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:135:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 134, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Permission Selection"],
+          "fullName": "NoteSharingModal Permission Selection should show permission descriptions",
+          "status": "failed",
+          "title": "should show permission descriptions",
+          "duration": 0.2922289999999066,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:146:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 145, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Sharing Functionality"],
+          "fullName": "NoteSharingModal Sharing Functionality should call onShareNote when share button is clicked",
+          "status": "failed",
+          "title": "should call onShareNote when share button is clicked",
+          "duration": 0.5302279999999655,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:156:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 154, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Sharing Functionality"],
+          "fullName": "NoteSharingModal Sharing Functionality should disable share button when no user is selected",
+          "status": "failed",
+          "title": "should disable share button when no user is selected",
+          "duration": 0.3370989999999665,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:172:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 171, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Sharing Functionality"],
+          "fullName": "NoteSharingModal Sharing Functionality should show loading state during share operation",
+          "status": "failed",
+          "title": "should show loading state during share operation",
+          "duration": 0.33869799999990846,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:180:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 178, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Sharing Functionality"],
+          "fullName": "NoteSharingModal Sharing Functionality should show success message after successful share",
+          "status": "failed",
+          "title": "should show success message after successful share",
+          "duration": 0.5947459999999865,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:198:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 196, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Sharing Functionality"],
+          "fullName": "NoteSharingModal Sharing Functionality should show error message on share failure",
+          "status": "failed",
+          "title": "should show error message on share failure",
+          "duration": 0.3994279999999435,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:215:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 213, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Collaborator Management"],
+          "fullName": "NoteSharingModal Collaborator Management should call onUpdatePermission when permission is changed",
+          "status": "failed",
+          "title": "should call onUpdatePermission when permission is changed",
+          "duration": 0.33800800000005893,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:234:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 232, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Collaborator Management"],
+          "fullName": "NoteSharingModal Collaborator Management should call onRevokeAccess when revoke button is clicked",
+          "status": "failed",
+          "title": "should call onRevokeAccess when revoke button is clicked",
+          "duration": 0.3154380000000856,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:246:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 244, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Collaborator Management"],
+          "fullName": "NoteSharingModal Collaborator Management should not show revoke button for current user",
+          "status": "failed",
+          "title": "should not show revoke button for current user",
+          "duration": 0.2576289999999517,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:270:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 256, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Modal Controls"],
+          "fullName": "NoteSharingModal Modal Controls should call onClose when close button is clicked",
+          "status": "failed",
+          "title": "should call onClose when close button is clicked",
+          "duration": 0.2917780000000221,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:279:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 277, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Modal Controls"],
+          "fullName": "NoteSharingModal Modal Controls should reset form when modal is opened",
+          "status": "failed",
+          "title": "should reset form when modal is opened",
+          "duration": 0.25210900000001857,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:288:28\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 287, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Error Handling"],
+          "fullName": "NoteSharingModal Error Handling should handle share note errors gracefully",
+          "status": "failed",
+          "title": "should handle share note errors gracefully",
+          "duration": 0.32819800000004307,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:302:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 300, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Error Handling"],
+          "fullName": "NoteSharingModal Error Handling should handle permission update errors gracefully",
+          "status": "failed",
+          "title": "should handle permission update errors gracefully",
+          "duration": 0.3072979999999461,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:319:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 317, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["NoteSharingModal", "Error Handling"],
+          "fullName": "NoteSharingModal Error Handling should handle revoke access errors gracefully",
+          "status": "failed",
+          "title": "should handle revoke access errors gracefully",
+          "duration": 0.28968799999995554,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx:331:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 329, "column": 5 },
+          "meta": {}
+        }
+      ],
+      "startTime": 1758903287134,
+      "endTime": 1758903287145.2898,
+      "status": "failed",
+      "message": "",
+      "name": "/home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/NoteSharingModal.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["PermissionManagement", "Rendering"],
+          "fullName": "PermissionManagement Rendering should render permission management interface",
+          "status": "failed",
+          "title": "should render permission management interface",
+          "duration": 3.3098919999999907,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:94:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 93, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Rendering"],
+          "fullName": "PermissionManagement Rendering should display current permissions",
+          "status": "failed",
+          "title": "should display current permissions",
+          "duration": 0.5374770000000808,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:103:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 102, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Rendering"],
+          "fullName": "PermissionManagement Rendering should display permission levels with badges",
+          "status": "failed",
+          "title": "should display permission levels with badges",
+          "duration": 0.3929679999999962,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:112:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 111, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Rendering"],
+          "fullName": "PermissionManagement Rendering should display audit log entries",
+          "status": "failed",
+          "title": "should display audit log entries",
+          "duration": 0.4068879999999808,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:119:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 118, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Rendering"],
+          "fullName": "PermissionManagement Rendering should show no permissions message when empty",
+          "status": "failed",
+          "title": "should show no permissions message when empty",
+          "duration": 0.4592770000000428,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:127:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 126, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Rendering"],
+          "fullName": "PermissionManagement Rendering should show no audit log message when empty",
+          "status": "failed",
+          "title": "should show no audit log message when empty",
+          "duration": 0.3659380000000283,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:133:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 132, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Add Permission"],
+          "fullName": "PermissionManagement Add Permission should allow selecting a user to add",
+          "status": "failed",
+          "title": "should allow selecting a user to add",
+          "duration": 0.4359879999999521,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:141:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 140, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Add Permission"],
+          "fullName": "PermissionManagement Add Permission should allow selecting permission level",
+          "status": "failed",
+          "title": "should allow selecting permission level",
+          "duration": 0.32402799999999843,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:152:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 151, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Add Permission"],
+          "fullName": "PermissionManagement Add Permission should filter out users who already have permissions",
+          "status": "failed",
+          "title": "should filter out users who already have permissions",
+          "duration": 0.3161680000000615,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:163:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 162, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Add Permission"],
+          "fullName": "PermissionManagement Add Permission should call onAddPermission when add button is clicked",
+          "status": "failed",
+          "title": "should call onAddPermission when add button is clicked",
+          "duration": 0.39446799999996074,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:177:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 175, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Add Permission"],
+          "fullName": "PermissionManagement Add Permission should disable add button when no user is selected",
+          "status": "failed",
+          "title": "should disable add button when no user is selected",
+          "duration": 0.2998680000000604,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:193:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 192, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Add Permission"],
+          "fullName": "PermissionManagement Add Permission should show loading state during add operation",
+          "status": "failed",
+          "title": "should show loading state during add operation",
+          "duration": 0.31518800000003466,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:201:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 199, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Add Permission"],
+          "fullName": "PermissionManagement Add Permission should reset form after successful add",
+          "status": "failed",
+          "title": "should reset form after successful add",
+          "duration": 0.3431080000000293,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:219:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 217, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Add Permission"],
+          "fullName": "PermissionManagement Add Permission should hide add permission section when user cannot manage permissions",
+          "status": "failed",
+          "title": "should hide add permission section when user cannot manage permissions",
+          "duration": 0.24669900000003508,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:236:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 235, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Update Permission"],
+          "fullName": "PermissionManagement Update Permission should allow updating permission level",
+          "status": "failed",
+          "title": "should allow updating permission level",
+          "duration": 0.38703800000007504,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:245:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 243, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Update Permission"],
+          "fullName": "PermissionManagement Update Permission should show loading state during update",
+          "status": "failed",
+          "title": "should show loading state during update",
+          "duration": 0.36059799999998177,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:258:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 256, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Update Permission"],
+          "fullName": "PermissionManagement Update Permission should hide update controls when user cannot manage permissions",
+          "status": "failed",
+          "title": "should hide update controls when user cannot manage permissions",
+          "duration": 0.34463800000003175,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:271:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 270, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Remove Permission"],
+          "fullName": "PermissionManagement Remove Permission should call onRemovePermission when delete button is clicked",
+          "status": "failed",
+          "title": "should call onRemovePermission when delete button is clicked",
+          "duration": 0.37661800000000767,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:282:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 280, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Remove Permission"],
+          "fullName": "PermissionManagement Remove Permission should show loading state during remove",
+          "status": "failed",
+          "title": "should show loading state during remove",
+          "duration": 0.3331590000000233,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:298:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 296, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Remove Permission"],
+          "fullName": "PermissionManagement Remove Permission should hide remove controls when user cannot manage permissions",
+          "status": "failed",
+          "title": "should hide remove controls when user cannot manage permissions",
+          "duration": 0.25781800000004296,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:314:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 313, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Refresh Functionality"],
+          "fullName": "PermissionManagement Refresh Functionality should call onRefreshPermissions when refresh button is clicked",
+          "status": "failed",
+          "title": "should call onRefreshPermissions when refresh button is clicked",
+          "duration": 0.2813089999999647,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:326:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 324, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Refresh Functionality"],
+          "fullName": "PermissionManagement Refresh Functionality should show loading state when refreshing",
+          "status": "failed",
+          "title": "should show loading state when refreshing",
+          "duration": 0.3388080000000855,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:335:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 334, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Permission Status"],
+          "fullName": "PermissionManagement Permission Status should display active permissions",
+          "status": "failed",
+          "title": "should display active permissions",
+          "duration": 0.3475990000000593,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:344:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 343, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Permission Status"],
+          "fullName": "PermissionManagement Permission Status should display inactive permissions",
+          "status": "failed",
+          "title": "should display inactive permissions",
+          "duration": 0.285788000000025,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:368:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 349, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Audit Log"],
+          "fullName": "PermissionManagement Audit Log should display audit log entries with timestamps",
+          "status": "failed",
+          "title": "should display audit log entries with timestamps",
+          "duration": 0.27326799999991636,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:376:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 375, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Audit Log"],
+          "fullName": "PermissionManagement Audit Log should display audit log actions",
+          "status": "failed",
+          "title": "should display audit log actions",
+          "duration": 0.23521899999991547,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:384:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 383, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Audit Log"],
+          "fullName": "PermissionManagement Audit Log should display audit log details",
+          "status": "failed",
+          "title": "should display audit log details",
+          "duration": 0.23404900000002726,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:391:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 390, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Error Handling"],
+          "fullName": "PermissionManagement Error Handling should handle add permission errors gracefully",
+          "status": "failed",
+          "title": "should handle add permission errors gracefully",
+          "duration": 0.36473800000010215,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:401:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 399, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Error Handling"],
+          "fullName": "PermissionManagement Error Handling should handle update permission errors gracefully",
+          "status": "failed",
+          "title": "should handle update permission errors gracefully",
+          "duration": 0.3018490000000611,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:419:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 417, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["PermissionManagement", "Error Handling"],
+          "fullName": "PermissionManagement Error Handling should handle remove permission errors gracefully",
+          "status": "failed",
+          "title": "should handle remove permission errors gracefully",
+          "duration": 0.41260699999997996,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx:433:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 431, "column": 5 },
+          "meta": {}
+        }
+      ],
+      "startTime": 1758903287130,
+      "endTime": 1758903287144.4126,
+      "status": "failed",
+      "message": "",
+      "name": "/home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/PermissionManagement.test.tsx"
+    },
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Rendering"],
+          "fullName": "RoleBasedVisibility Rendering should render visibility controls",
+          "status": "failed",
+          "title": "should render visibility controls",
+          "duration": 2.2127480000000332,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:72:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 71, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Rendering"],
+          "fullName": "RoleBasedVisibility Rendering should display current visibility settings",
+          "status": "failed",
+          "title": "should display current visibility settings",
+          "duration": 0.6090070000000196,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:82:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 81, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Rendering"],
+          "fullName": "RoleBasedVisibility Rendering should show scope descriptions",
+          "status": "failed",
+          "title": "should show scope descriptions",
+          "duration": 0.35752899999999954,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:101:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 100, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Rendering"],
+          "fullName": "RoleBasedVisibility Rendering should display role levels",
+          "status": "failed",
+          "title": "should display role levels",
+          "duration": 0.3453590000000304,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:107:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 106, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Public Visibility Toggle"],
+          "fullName": "RoleBasedVisibility Public Visibility Toggle should toggle public visibility",
+          "status": "failed",
+          "title": "should toggle public visibility",
+          "duration": 0.3988370000000714,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:117:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 116, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Public Visibility Toggle"],
+          "fullName": "RoleBasedVisibility Public Visibility Toggle should update description when public visibility changes",
+          "status": "failed",
+          "title": "should update description when public visibility changes",
+          "duration": 0.37671799999998257,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:128:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 127, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Public Visibility Toggle"],
+          "fullName": "RoleBasedVisibility Public Visibility Toggle should be disabled when user cannot modify visibility",
+          "status": "failed",
+          "title": "should be disabled when user cannot modify visibility",
+          "duration": 0.37661800000000767,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:139:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 138, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Scope Selection"],
+          "fullName": "RoleBasedVisibility Scope Selection should allow changing scope",
+          "status": "failed",
+          "title": "should allow changing scope",
+          "duration": 0.31057800000007774,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:148:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 147, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Scope Selection"],
+          "fullName": "RoleBasedVisibility Scope Selection should update scope description when changed",
+          "status": "failed",
+          "title": "should update scope description when changed",
+          "duration": 0.31864900000005036,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:159:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 158, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Scope Selection"],
+          "fullName": "RoleBasedVisibility Scope Selection should be disabled when user cannot modify visibility",
+          "status": "failed",
+          "title": "should be disabled when user cannot modify visibility",
+          "duration": 0.30061799999998584,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:170:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 169, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Role-Based Access"],
+          "fullName": "RoleBasedVisibility Role-Based Access should allow toggling role access",
+          "status": "failed",
+          "title": "should allow toggling role access",
+          "duration": 0.27603799999997136,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:179:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 178, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Role-Based Access"],
+          "fullName": "RoleBasedVisibility Role-Based Access should sort roles by level (highest first)",
+          "status": "failed",
+          "title": "should sort roles by level (highest first)",
+          "duration": 0.2762279999999464,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:190:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 189, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Role-Based Access"],
+          "fullName": "RoleBasedVisibility Role-Based Access should show role descriptions",
+          "status": "failed",
+          "title": "should show role descriptions",
+          "duration": 0.24200900000005277,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:201:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 200, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Role-Based Access"],
+          "fullName": "RoleBasedVisibility Role-Based Access should be disabled when user cannot modify visibility",
+          "status": "failed",
+          "title": "should be disabled when user cannot modify visibility",
+          "duration": 0.23977899999999863,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:209:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 208, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "User-Specific Access"],
+          "fullName": "RoleBasedVisibility User-Specific Access should allow toggling user access",
+          "status": "failed",
+          "title": "should allow toggling user access",
+          "duration": 0.24742800000001353,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:224:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 223, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "User-Specific Access"],
+          "fullName": "RoleBasedVisibility User-Specific Access should display user information",
+          "status": "failed",
+          "title": "should display user information",
+          "duration": 0.25775899999996454,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:235:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 234, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "User-Specific Access"],
+          "fullName": "RoleBasedVisibility User-Specific Access should be disabled when user cannot modify visibility",
+          "status": "failed",
+          "title": "should be disabled when user cannot modify visibility",
+          "duration": 0.26338799999996354,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:244:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 243, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Save and Reset Functionality"],
+          "fullName": "RoleBasedVisibility Save and Reset Functionality should show save button when changes are made",
+          "status": "failed",
+          "title": "should show save button when changes are made",
+          "duration": 0.24382900000000518,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:258:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 257, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Save and Reset Functionality"],
+          "fullName": "RoleBasedVisibility Save and Reset Functionality should show reset button when changes are made",
+          "status": "failed",
+          "title": "should show reset button when changes are made",
+          "duration": 0.23636899999996785,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:270:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 269, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Save and Reset Functionality"],
+          "fullName": "RoleBasedVisibility Save and Reset Functionality should call onUpdateVisibility when save is clicked",
+          "status": "failed",
+          "title": "should call onUpdateVisibility when save is clicked",
+          "duration": 0.37329799999997704,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:283:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 281, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Save and Reset Functionality"],
+          "fullName": "RoleBasedVisibility Save and Reset Functionality should reset changes when reset is clicked",
+          "status": "failed",
+          "title": "should reset changes when reset is clicked",
+          "duration": 0.45560699999998633,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:306:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 305, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Save and Reset Functionality"],
+          "fullName": "RoleBasedVisibility Save and Reset Functionality should show loading state during save",
+          "status": "failed",
+          "title": "should show loading state during save",
+          "duration": 0.34986800000001494,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:323:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 321, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Save and Reset Functionality"],
+          "fullName": "RoleBasedVisibility Save and Reset Functionality should hide action buttons when user cannot modify visibility",
+          "status": "failed",
+          "title": "should hide action buttons when user cannot modify visibility",
+          "duration": 0.2663989999999785,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:340:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 339, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Error Handling"],
+          "fullName": "RoleBasedVisibility Error Handling should handle save errors gracefully",
+          "status": "failed",
+          "title": "should handle save errors gracefully",
+          "duration": 0.34770800000001145,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:350:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 348, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Change Detection"],
+          "fullName": "RoleBasedVisibility Change Detection should detect changes in public visibility",
+          "status": "failed",
+          "title": "should detect changes in public visibility",
+          "duration": 0.2559790000000248,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:369:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 368, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Change Detection"],
+          "fullName": "RoleBasedVisibility Change Detection should detect changes in scope",
+          "status": "failed",
+          "title": "should detect changes in scope",
+          "duration": 0.27510799999993196,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:380:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 379, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Change Detection"],
+          "fullName": "RoleBasedVisibility Change Detection should detect changes in role access",
+          "status": "failed",
+          "title": "should detect changes in role access",
+          "duration": 0.25375900000005913,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:391:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 390, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Change Detection"],
+          "fullName": "RoleBasedVisibility Change Detection should detect changes in user access",
+          "status": "failed",
+          "title": "should detect changes in user access",
+          "duration": 0.23983900000007452,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:402:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 401, "column": 5 },
+          "meta": {}
+        },
+        {
+          "ancestorTitles": ["RoleBasedVisibility", "Change Detection"],
+          "fullName": "RoleBasedVisibility Change Detection should not show save button when no changes are made",
+          "status": "failed",
+          "title": "should not show save button when no changes are made",
+          "duration": 0.2759479999999712,
+          "failureMessages": [
+            "Error: Client-only API called on the server side. Run client-only code in onMount, or conditionally run client-only component with <Show>.\n    at notSup (file:///home/kade/runeset/reynard/node_modules/.pnpm/solid-js@1.9.9/node_modules/solid-js/web/dist/server.js:755:9)\n    at render (file:///home/kade/runeset/reynard/node_modules/.pnpm/@solidjs+testing-library@0.8.10_solid-js@1.9.9/node_modules/@solidjs/testing-library/dist/index.js:55:65)\n    at /home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx:413:7\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:155:11\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:752:26\n    at file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1897:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1863:10)\n    at runTest (file:///home/kade/runeset/reynard/node_modules/.pnpm/@vitest+runner@3.2.4/node_modules/@vitest/runner/dist/chunk-hooks.js:1574:12)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)"
+          ],
+          "location": { "line": 412, "column": 5 },
+          "meta": {}
+        }
+      ],
+      "startTime": 1758903287130,
+      "endTime": 1758903287141.276,
+      "status": "failed",
+      "message": "",
+      "name": "/home/kade/runeset/reynard/packages/ui/components-core/src/__tests__/notes/RoleBasedVisibility.test.tsx"
+    }
+  ]
+}

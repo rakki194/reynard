@@ -1,5 +1,4 @@
-"""LIWC (Linguistic Inquiry and Word Count) analysis module.
-"""
+"""LIWC (Linguistic Inquiry and Word Count) analysis module."""
 
 from typing import Any
 
@@ -198,7 +197,8 @@ class LiwcAnalyzer:
         )
 
     def _calculate_linguistic_humility(
-        self, category_ratios: dict[str, float],
+        self,
+        category_ratios: dict[str, float],
     ) -> float:
         """Calculate linguistic humility score based on LIWC ratios."""
         # Higher tentativeness and lower first-person usage indicates more humility

@@ -246,7 +246,9 @@ class CacheProofDemonstrator:
 
         if search_type == "semantic":
             request = SemanticSearchRequest(
-                query=query, max_results=20, similarity_threshold=0.7,
+                query=query,
+                max_results=20,
+                similarity_threshold=0.7,
             )
             return await self.search_service.semantic_search(request)
 
@@ -256,7 +258,9 @@ class CacheProofDemonstrator:
 
         if search_type == "hybrid":
             request = HybridSearchRequest(
-                query=query, max_results=20, similarity_threshold=0.7,
+                query=query,
+                max_results=20,
+                similarity_threshold=0.7,
             )
             return await self.search_service.hybrid_search(request)
 
@@ -464,7 +468,9 @@ class CacheProofDemonstrator:
 
         plt.tight_layout()
         plt.savefig(
-            output_dir / "cache_performance_analysis.png", dpi=300, bbox_inches="tight",
+            output_dir / "cache_performance_analysis.png",
+            dpi=300,
+            bbox_inches="tight",
         )
         plt.close()
 

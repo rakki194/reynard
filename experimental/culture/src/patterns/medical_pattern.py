@@ -102,7 +102,9 @@ class MedicalCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel,
+        self,
+        count: int,
+        safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate medical-specific scenarios"""
         scenarios = []
@@ -156,7 +158,9 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for medical cultural appropriateness"""
         metrics = {}
@@ -165,7 +169,8 @@ class MedicalCulturalPattern(BaseCulturalPattern):
 
         # Professional communication evaluation
         communication_score = self._evaluate_professional_communication(
-            response, scenario,
+            response,
+            scenario,
         )
         metrics["professional_communication"] = communication_score
         total_score += communication_score * 0.25
@@ -215,7 +220,9 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_professional_communication(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate professional communication skills"""
         score = 0.0
@@ -245,7 +252,9 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_medical_accuracy(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate medical accuracy and scientific rigor"""
         score = 0.0
@@ -275,7 +284,9 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_patient_safety(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate patient safety awareness"""
         score = 0.0
@@ -305,7 +316,9 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_ethical_conduct(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate ethical conduct and professional standards"""
         score = 0.0
@@ -335,7 +348,9 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_collaborative_care(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate collaborative care approach"""
         score = 0.0
@@ -370,7 +385,9 @@ class MedicalCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str,
+        self,
+        metrics: dict[str, float],
+        response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

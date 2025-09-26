@@ -44,7 +44,8 @@ class VersionManager:
         match = self.version_pattern.match(version_string)
         if not match:
             self.logger.warning(
-                f"Invalid version format: {version_string}", "version_parse",
+                f"Invalid version format: {version_string}",
+                "version_parse",
             )
             return None
 
@@ -78,7 +79,8 @@ class VersionManager:
 
         if not v1_info or not v2_info:
             self.logger.error(
-                "Invalid version strings for comparison", "version_compare",
+                "Invalid version strings for comparison",
+                "version_compare",
             )
             return 0
 
@@ -303,7 +305,9 @@ class VersionManager:
         }
 
     async def suggest_next_version(
-        self, current_version: str, change_type: str,
+        self,
+        current_version: str,
+        change_type: str,
     ) -> str | None:
         """Suggest next version based on change type.
 
@@ -322,6 +326,7 @@ class VersionManager:
         if change_type == "fix":
             return self.bump_version(current_version, "patch")
         self.logger.warning(
-            f"Unknown change type: {change_type}", "version_suggest",
+            f"Unknown change type: {change_type}",
+            "version_suggest",
         )
         return None

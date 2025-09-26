@@ -41,7 +41,9 @@ def main():
         description="Check CORS headers for permissiveness",
     )
     parser.add_argument(
-        "--path", default="/api/ready", help="Path to send OPTIONS preflight against",
+        "--path",
+        default="/api/ready",
+        help="Path to send OPTIONS preflight against",
     )
     args = parser.parse_args()
 

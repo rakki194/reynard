@@ -3,7 +3,7 @@
  */
 
 import { Component } from "solid-js";
-import { Button, Card } from "reynard-components-core";
+import { Button, Card } from "reynard-primitives";
 import "./QuickActions.css";
 
 const QuickActions: Component = () => {

@@ -89,7 +89,9 @@ class CosplayCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel,
+        self,
+        count: int,
+        safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate cosplay-specific scenarios"""
         scenarios = []
@@ -143,7 +145,9 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for cosplay cultural appropriateness"""
         metrics = {}
@@ -200,7 +204,9 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_character_consistency(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate character consistency in response"""
         score = 0.0
@@ -224,7 +230,9 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_costume_accuracy(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate costume and visual accuracy awareness"""
         score = 0.0
@@ -254,7 +262,9 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_fandom_knowledge(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate fandom knowledge and lore understanding"""
         score = 0.0
@@ -284,7 +294,9 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_community_etiquette(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate community etiquette and respect"""
         score = 0.0
@@ -342,7 +354,9 @@ class CosplayCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str,
+        self,
+        metrics: dict[str, float],
+        response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

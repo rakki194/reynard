@@ -64,7 +64,8 @@ class DiffusionLLMService:
             return False
 
     async def generate_stream(
-        self, params: DiffusionGenerationParams,
+        self,
+        params: DiffusionGenerationParams,
     ) -> AsyncIterable[DiffusionStreamEvent]:
         """Generate text with streaming support."""
         if not self._enabled:
@@ -128,7 +129,8 @@ class DiffusionLLMService:
             )
 
     async def infill_stream(
-        self, params: DiffusionInfillingParams,
+        self,
+        params: DiffusionInfillingParams,
     ) -> AsyncIterable[DiffusionStreamEvent]:
         """Infill text with streaming support."""
         if not self._enabled:

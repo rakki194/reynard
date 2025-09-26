@@ -15,8 +15,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestFuzzingWrappers(FenrirTestBase):
-    """*otter curiosity* Test suite for fuzzing exploit wrappers
-    """
+    """*otter curiosity* Test suite for fuzzing exploit wrappers"""
 
     async def test_modular_fuzzer_wrapper(self):
         """Test that the modular fuzzer wrapper works correctly"""
@@ -32,10 +31,12 @@ class TestFuzzingWrappers(FenrirTestBase):
                     fuzzer.base_url == self.base_url
                 ), "Base URL should be set correctly"
                 assert hasattr(
-                    fuzzer, "fuzz_authentication_endpoints",
+                    fuzzer,
+                    "fuzz_authentication_endpoints",
                 ), "Should have authentication fuzzing method"
                 assert hasattr(
-                    fuzzer, "fuzz_all_specialized_endpoints",
+                    fuzzer,
+                    "fuzz_all_specialized_endpoints",
                 ), "Should have specialized endpoint fuzzing method"
 
             response_time = time.time() - start_time
@@ -81,13 +82,16 @@ class TestFuzzingWrappers(FenrirTestBase):
                 orchestrator.base_url == self.base_url
             ), "Base URL should be set correctly"
             assert hasattr(
-                orchestrator, "register_fuzzer",
+                orchestrator,
+                "register_fuzzer",
             ), "Should have register_fuzzer method"
             assert hasattr(
-                orchestrator, "fuzz_all_categories",
+                orchestrator,
+                "fuzz_all_categories",
             ), "Should have fuzz_all_categories method"
             assert hasattr(
-                orchestrator, "print_comprehensive_report",
+                orchestrator,
+                "print_comprehensive_report",
             ), "Should have print_comprehensive_report method"
 
             response_time = time.time() - start_time

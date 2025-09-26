@@ -61,7 +61,8 @@ class SuccessAdvisorMigration:
                     # Create the agent
                     agent = Agent(
                         agent_id=data.get(
-                            "id", "permanent-release-manager-success-advisor-8",
+                            "id",
+                            "permanent-release-manager-success-advisor-8",
                         ),
                         name=data.get("name", "Success-Advisor-8"),
                         spirit=data.get("spirit", "lion"),
@@ -70,7 +71,8 @@ class SuccessAdvisorMigration:
                         active=True,
                         created_at=datetime.fromisoformat(
                             data.get(
-                                "created_at", datetime.now(UTC).isoformat(),
+                                "created_at",
+                                datetime.now(UTC).isoformat(),
                             ),
                         ),
                         last_activity=datetime.now(UTC),
@@ -139,7 +141,8 @@ class SuccessAdvisorMigration:
 
                 # Add specializations
                 specializations = data.get("knowledge_base", {}).get(
-                    "specializations", [],
+                    "specializations",
+                    [],
                 )
                 for specialization in specializations:
                     spec = AgentSpecialization(
@@ -177,7 +180,8 @@ class SuccessAdvisorMigration:
 
                 # Add workflow preferences
                 workflow_prefs = data.get("knowledge_base", {}).get(
-                    "workflow_preferences", {},
+                    "workflow_preferences",
+                    {},
                 )
                 for pref_name, pref_value in workflow_prefs.items():
                     pref = AgentWorkflowPreference(
@@ -209,7 +213,8 @@ class SuccessAdvisorMigration:
                         metric_value=float(perf_data.get("fitness", 0.0)),
                         timestamp=datetime.fromisoformat(
                             perf_data.get(
-                                "timestamp", datetime.now(UTC).isoformat(),
+                                "timestamp",
+                                datetime.now(UTC).isoformat(),
                             ),
                         ),
                         metadata={
@@ -261,23 +266,35 @@ class SuccessAdvisorMigration:
         results = {}
 
         # Success-Advisor-8 data
-        success_advisor_file = "/home/kade/runeset/reynard/experimental/phoenix/data/agent_state/permanent-release-manager-success-advisor-8.json"
+        from app.core.project_root import get_experimental_dir
+
+        success_advisor_file = str(
+            get_experimental_dir()
+            / "phoenix"
+            / "data"
+            / "agent_state"
+            / "permanent-release-manager-success-advisor-8.json"
+        )
         if Path(success_advisor_file).exists():
             results["success_advisor_8"] = await self.migrate_success_advisor_8(
                 success_advisor_file,
             )
 
         # New agent candidate data
-        new_agent_file = "/home/kade/runeset/reynard/experimental/phoenix/data/agent_state/new_agent_candidate.json"
+        new_agent_file = str(
+            get_experimental_dir()
+            / "phoenix"
+            / "data"
+            / "agent_state"
+            / "new_agent_candidate.json"
+        )
         if Path(new_agent_file).exists():
             results["new_agent_candidate"] = await self.migrate_phoenix_agent_data(
                 new_agent_file,
             )
 
         # Phoenix test generations
-        phoenix_test_dir = Path(
-            "/home/kade/runeset/reynard/experimental/phoenix/data/phoenix_test",
-        )
+        phoenix_test_dir = get_experimental_dir() / "phoenix" / "data" / "phoenix_test"
         if phoenix_test_dir.exists():
             for gen_file in phoenix_test_dir.glob("generation_*.json"):
                 results[f"phoenix_test_{gen_file.stem}"] = (
@@ -304,7 +321,8 @@ class SuccessAdvisorMigration:
                 # Create agent
                 agent = Agent(
                     agent_id=data.get(
-                        "id", f"phoenix-agent-{Path(json_file_path).stem}",
+                        "id",
+                        f"phoenix-agent-{Path(json_file_path).stem}",
                     ),
                     name=data.get("name", "Phoenix Agent"),
                     spirit=data.get("spirit", "phoenix"),

@@ -43,7 +43,6 @@ class ItsDangerousError(Exception):
     """Exception raised for itsdangerous-related errors."""
 
 
-
 class ItsDangerousUtils:
     """Strategic integration of itsdangerous for specific security use cases.
 

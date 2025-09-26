@@ -1,5 +1,4 @@
-"""Main router for Diffusion-Pipe API endpoints.
-"""
+"""Main router for Diffusion-Pipe API endpoints."""
 
 from fastapi import APIRouter
 

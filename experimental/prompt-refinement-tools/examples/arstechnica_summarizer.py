@@ -27,14 +27,14 @@ from services.semantic_search import SemanticSearchService
 from services.web_scraping import WebScrapingService
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
 
 class ArsTechnicaSummarizer:
-    """Specialized summarizer for Ars Technica articles using our experimental tools.
-    """
+    """Specialized summarizer for Ars Technica articles using our experimental tools."""
 
     def __init__(self):
         """Initialize the summarizer with all services."""
@@ -62,7 +62,8 @@ class ArsTechnicaSummarizer:
             return False
 
     async def scrape_arstechnica_articles(
-        self, count: int = 10,
+        self,
+        count: int = 10,
     ) -> list[dict[str, Any]]:
         """Scrape the latest articles from Ars Technica.
 
@@ -292,13 +293,19 @@ class ArsTechnicaSummarizer:
                     "improvement_score": refinement_result.improvement_score,
                     "nlp_insights": {
                         "sentiment": getattr(
-                            article.get("nlp_analysis", {}), "sentiment", {},
+                            article.get("nlp_analysis", {}),
+                            "sentiment",
+                            {},
                         ),
                         "language": getattr(
-                            article.get("nlp_analysis", {}), "language", "en",
+                            article.get("nlp_analysis", {}),
+                            "language",
+                            "en",
                         ),
                         "processing_time": getattr(
-                            article.get("nlp_analysis", {}), "processing_time", 0,
+                            article.get("nlp_analysis", {}),
+                            "processing_time",
+                            0,
                         ),
                     },
                     "analysis_quality": {
@@ -332,7 +339,9 @@ class ArsTechnicaSummarizer:
         return summaries
 
     async def perform_semantic_search(
-        self, query: str, top_k: int = 5,
+        self,
+        query: str,
+        top_k: int = 5,
     ) -> list[dict[str, Any]]:
         """Perform semantic search across the article collection.
 
@@ -343,7 +352,8 @@ class ArsTechnicaSummarizer:
         try:
             # Use our semantic search service
             search_results = await self.semantic_search.semantic_search(
-                query, limit=top_k,
+                query,
+                limit=top_k,
             )
 
             # Format results with article information
@@ -395,7 +405,9 @@ class ArsTechnicaSummarizer:
 
             # Get top concepts
             top_concepts = sorted(
-                concept_frequency.items(), key=lambda x: x[1], reverse=True,
+                concept_frequency.items(),
+                key=lambda x: x[1],
+                reverse=True,
             )[:10]
 
             # Analyze sentiment distribution

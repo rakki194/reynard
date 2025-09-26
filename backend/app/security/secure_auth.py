@@ -62,7 +62,8 @@ class SecureAuthManager:
         except Exception as e:
             logger.error(f"Secure user creation failed: {e}")
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="User creation failed",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User creation failed",
             )
 
     async def authenticate_secure(self, login_data: SecureUserLogin) -> dict[str, Any]:
@@ -88,7 +89,8 @@ class SecureAuthManager:
 
             # Authenticate through the original auth manager
             tokens = await self.auth_manager.authenticate(
-                username=login_data.username, password=login_data.password,
+                username=login_data.username,
+                password=login_data.password,
             )
 
             if not tokens:
@@ -342,7 +344,8 @@ async def get_current_user_secure(
     except Exception as e:
         logger.error(f"Secure user authentication failed: {e}")
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed",
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication failed",
         )
 
 

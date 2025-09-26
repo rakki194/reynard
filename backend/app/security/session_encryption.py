@@ -43,7 +43,6 @@ class SessionEncryptionError(Exception):
     """Exception raised for session encryption-related errors."""
 
 
-
 @dataclass
 class SessionData:
     """Session data structure."""
@@ -106,7 +105,10 @@ class SessionEncryptionManager:
         # Redis client
         if redis_client is None:
             self.redis_client = redis.Redis(
-                host="localhost", port=6379, db=0, decode_responses=True,
+                host="localhost",
+                port=6379,
+                db=0,
+                decode_responses=True,
             )
         else:
             self.redis_client = redis_client
@@ -136,7 +138,9 @@ class SessionEncryptionManager:
             pass
 
     def _generate_session_fingerprint(
-        self, ip_address: str | None, user_agent: str | None,
+        self,
+        ip_address: str | None,
+        user_agent: str | None,
     ) -> str:
         """Generate a session fingerprint for security."""
         fingerprint_data = f"{ip_address or 'unknown'}:{user_agent or 'unknown'}"
@@ -166,7 +170,9 @@ class SessionEncryptionManager:
             raise SessionEncryptionError(f"Session encryption failed: {e}")
 
     def _decrypt_session_data(
-        self, encrypted_data: str, session_id: str,
+        self,
+        encrypted_data: str,
+        session_id: str,
     ) -> SessionData:
         """Decrypt session data from storage."""
         try:
@@ -219,7 +225,8 @@ class SessionEncryptionManager:
 
             # Generate session fingerprint
             session_fingerprint = self._generate_session_fingerprint(
-                ip_address, user_agent,
+                ip_address,
+                user_agent,
             )
 
             # Calculate expiration time
@@ -316,7 +323,8 @@ class SessionEncryptionManager:
 
             # Generate session fingerprint
             session_fingerprint = self._generate_session_fingerprint(
-                ip_address, user_agent,
+                ip_address,
+                user_agent,
             )
 
             # Calculate expiration time
@@ -420,7 +428,9 @@ class SessionEncryptionManager:
             # Store updated session (simplified for hybrid approach)
             session_json = json.dumps(session.to_dict(), default=str)
             self.redis_client.setex(
-                redis_key, self.config.session_timeout_minutes * 60, session_json,
+                redis_key,
+                self.config.session_timeout_minutes * 60,
+                session_json,
             )
 
             return session
@@ -460,7 +470,9 @@ class SessionEncryptionManager:
             # Re-encrypt and store updated session
             encrypted_data = self._encrypt_session_data(session)
             self.redis_client.setex(
-                redis_key, self.config.session_timeout_minutes * 60, encrypted_data,
+                redis_key,
+                self.config.session_timeout_minutes * 60,
+                encrypted_data,
             )
 
             return session
@@ -515,7 +527,9 @@ class SessionEncryptionManager:
             encrypted_data = self._encrypt_session_data(session)
             redis_key = f"session:{session_id}"
             self.redis_client.setex(
-                redis_key, self.config.session_timeout_minutes * 60, encrypted_data,
+                redis_key,
+                self.config.session_timeout_minutes * 60,
+                encrypted_data,
             )
 
             return True
@@ -565,7 +579,10 @@ class SessionEncryptionManager:
             return False
 
     def _validate_session_binding(
-        self, session: SessionData, ip_address: str | None, user_agent: str | None,
+        self,
+        session: SessionData,
+        ip_address: str | None,
+        user_agent: str | None,
     ) -> bool:
         """Validate session binding to IP and user agent."""
         if not self.config.enable_session_binding:
@@ -597,7 +614,8 @@ class SessionEncryptionManager:
 
             # Set expiration for the user sessions set
             self.redis_client.expire(
-                user_sessions_key, self.config.session_timeout_minutes * 60,
+                user_sessions_key,
+                self.config.session_timeout_minutes * 60,
             )
 
             # Check concurrent session limits
@@ -709,7 +727,8 @@ class SessionEncryptionManager:
                     if valid_sessions:
                         self.redis_client.sadd(key, *valid_sessions)
                         self.redis_client.expire(
-                            key, self.config.session_timeout_minutes * 60,
+                            key,
+                            self.config.session_timeout_minutes * 60,
                         )
                     cleaned_count += len(session_ids) - len(valid_sessions)
 
@@ -769,7 +788,10 @@ def create_encrypted_session(
 
     if config.enable_hybrid_sessions:
         return manager.create_hybrid_session(
-            user_id, ip_address, user_agent, session_data,
+            user_id,
+            ip_address,
+            user_agent,
+            session_data,
         )
     return manager.create_session(user_id, ip_address, user_agent, session_data)
 

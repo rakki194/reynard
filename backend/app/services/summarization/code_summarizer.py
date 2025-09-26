@@ -60,7 +60,9 @@ class CodeSummarizer(BaseSummarizer):
             return False
 
     async def summarize(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> SummarizationResult:
         """Summarize code text."""
         if not self._is_available:
@@ -77,7 +79,9 @@ class CodeSummarizer(BaseSummarizer):
 
             # Generate summary
             summary_text = await self._generate_code_summary(
-                text, options, code_analysis,
+                text,
+                options,
+                code_analysis,
             )
 
             processing_time = time.time() - start_time
@@ -111,17 +115,23 @@ class CodeSummarizer(BaseSummarizer):
             # Add optional fields
             if options.include_outline:
                 result.outline = await self._extract_code_outline(
-                    summary_text, functions, classes,
+                    summary_text,
+                    functions,
+                    classes,
                 )
 
             if options.include_highlights:
                 result.highlights = await self._extract_code_highlights(
-                    text, functions, classes,
+                    text,
+                    functions,
+                    classes,
                 )
 
             # Calculate quality score
             result.quality_score = await self._calculate_code_quality(
-                text, summary_text, code_analysis,
+                text,
+                summary_text,
+                code_analysis,
             )
 
             return result
@@ -131,7 +141,9 @@ class CodeSummarizer(BaseSummarizer):
             raise
 
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Stream code summarization progress."""
         if not self._is_available:
@@ -151,7 +163,9 @@ class CodeSummarizer(BaseSummarizer):
             # Stream summary generation
             summary_text = ""
             async for chunk in self._generate_code_summary_stream(
-                text, options, code_analysis,
+                text,
+                options,
+                code_analysis,
             ):
                 if chunk.get("type") == "token":
                     summary_text += chunk.get("data", "")
@@ -335,11 +349,16 @@ class CodeSummarizer(BaseSummarizer):
         return list(set(classes))  # Remove duplicates
 
     async def _generate_code_summary(
-        self, text: str, options: SummarizationOptions, code_analysis: dict[str, Any],
+        self,
+        text: str,
+        options: SummarizationOptions,
+        code_analysis: dict[str, Any],
     ) -> str:
         """Generate code summary using specialized prompts."""
         system_prompt, user_prompt = self._get_code_prompts(
-            text, options, code_analysis,
+            text,
+            options,
+            code_analysis,
         )
 
         model = options.model or self._default_model
@@ -362,11 +381,16 @@ class CodeSummarizer(BaseSummarizer):
         return summary_text.strip()
 
     async def _generate_code_summary_stream(
-        self, text: str, options: SummarizationOptions, code_analysis: dict[str, Any],
+        self,
+        text: str,
+        options: SummarizationOptions,
+        code_analysis: dict[str, Any],
     ) -> AsyncGenerator[dict[str, Any]]:
         """Generate code summary with streaming."""
         system_prompt, user_prompt = self._get_code_prompts(
-            text, options, code_analysis,
+            text,
+            options,
+            code_analysis,
         )
 
         model = options.model or self._default_model
@@ -387,7 +411,10 @@ class CodeSummarizer(BaseSummarizer):
             }
 
     def _get_code_prompts(
-        self, text: str, options: SummarizationOptions, code_analysis: dict[str, Any],
+        self,
+        text: str,
+        options: SummarizationOptions,
+        code_analysis: dict[str, Any],
     ) -> tuple[str, str]:
         """Get specialized prompts for code summarization."""
         # Code-specific system prompt
@@ -463,7 +490,10 @@ Guidelines:
         return system_prompt, user_prompt
 
     async def _extract_code_outline(
-        self, summary: str, functions: list[str], classes: list[str],
+        self,
+        summary: str,
+        functions: list[str],
+        classes: list[str],
     ) -> list[str]:
         """Extract outline points from code summary."""
         outline = []
@@ -499,7 +529,10 @@ Guidelines:
         return outline[:6]  # Limit to 6 points
 
     async def _extract_code_highlights(
-        self, text: str, functions: list[str], classes: list[str],
+        self,
+        text: str,
+        functions: list[str],
+        classes: list[str],
     ) -> list[str]:
         """Extract highlights from code text."""
         highlights = []
@@ -521,7 +554,10 @@ Guidelines:
         return highlights
 
     async def _calculate_code_quality(
-        self, original_text: str, summary: str, code_analysis: dict[str, Any],
+        self,
+        original_text: str,
+        summary: str,
+        code_analysis: dict[str, Any],
     ) -> float:
         """Calculate quality score for code summary."""
         # Enhanced quality scoring for code

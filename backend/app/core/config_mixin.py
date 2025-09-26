@@ -36,8 +36,7 @@ class ConfigChangeNotification:
 
 
 class ConfigEndpointMixin:
-    """Mixin that provides configuration endpoints and management for services.
-    """
+    """Mixin that provides configuration endpoints and management for services."""
 
     def __init__(self):
         self._config: dict[str, Any] = {}
@@ -70,7 +69,9 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to get config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="get_config", error=e, service_name=self.service_name,
+                    operation="get_config",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.put("/config")
@@ -93,7 +94,9 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to update config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="update_config", error=e, service_name=self.service_name,
+                    operation="update_config",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.post("/config/validate")
@@ -121,7 +124,9 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Config validation failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="validate_config", error=e, service_name=self.service_name,
+                    operation="validate_config",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.get("/config/history")
@@ -162,7 +167,9 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to reset config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="reset_config", error=e, service_name=self.service_name,
+                    operation="reset_config",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.post("/config/hot-reload")
@@ -251,7 +258,8 @@ class ConfigEndpointMixin:
             )
 
     def _validate_and_update_config(
-        self, config_data: dict[str, Any],
+        self,
+        config_data: dict[str, Any],
     ) -> dict[str, Any]:
         """Validate and update configuration.
 
@@ -309,7 +317,9 @@ class ConfigEndpointMixin:
             )
 
     def _notify_config_changes(
-        self, old_config: dict[str, Any], new_config: dict[str, Any],
+        self,
+        old_config: dict[str, Any],
+        new_config: dict[str, Any],
     ) -> None:
         """Notify listeners of configuration changes.
 
@@ -339,7 +349,9 @@ class ConfigEndpointMixin:
                 )
 
     def _get_config_changes(
-        self, old_config: dict[str, Any], new_config: dict[str, Any],
+        self,
+        old_config: dict[str, Any],
+        new_config: dict[str, Any],
     ) -> dict[str, Any]:
         """Get configuration changes between old and new configs.
 

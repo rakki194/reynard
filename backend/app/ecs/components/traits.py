@@ -83,7 +83,9 @@ class TraitComponent(Component):
 
         """
         sorted_traits = sorted(
-            self.personality.items(), key=lambda x: x[1], reverse=True,
+            self.personality.items(),
+            key=lambda x: x[1],
+            reverse=True,
         )
         return dict(sorted_traits[:count])
 

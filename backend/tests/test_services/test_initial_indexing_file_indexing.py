@@ -117,7 +117,9 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_with_file_indexing(
-        self, initial_indexing_service, temp_directory_with_files,
+        self,
+        initial_indexing_service,
+        temp_directory_with_files,
     ):
         """Test file discovery using file indexing service."""
         # Update config to use temp directory
@@ -137,7 +139,9 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_performance(
-        self, initial_indexing_service, temp_directory_with_files,
+        self,
+        initial_indexing_service,
+        temp_directory_with_files,
     ):
         """Test file discovery performance using file indexing service."""
         # Update config to use temp directory
@@ -157,7 +161,9 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_fallback(
-        self, initial_indexing_config, temp_directory_with_files,
+        self,
+        initial_indexing_config,
+        temp_directory_with_files,
     ):
         """Test file discovery fallback when file indexing fails."""
         service = InitialIndexingService(initial_indexing_config)
@@ -181,7 +187,8 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_with_nonexistent_directory(
-        self, initial_indexing_service,
+        self,
+        initial_indexing_service,
     ):
         """Test file discovery with non-existent directory."""
         # Set non-existent directory
@@ -212,7 +219,9 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_file_type_filtering(
-        self, initial_indexing_service, temp_directory_with_files,
+        self,
+        initial_indexing_service,
+        temp_directory_with_files,
     ):
         """Test file discovery with different file types."""
         # Update config to use temp directory
@@ -234,7 +243,9 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_discovery_recursive(
-        self, initial_indexing_service, temp_directory_with_files,
+        self,
+        initial_indexing_service,
+        temp_directory_with_files,
     ):
         """Test recursive file discovery in subdirectories."""
         # Update config to use temp directory
@@ -251,7 +262,9 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_file_indexing_service_integration(
-        self, initial_indexing_service, temp_directory_with_files,
+        self,
+        initial_indexing_service,
+        temp_directory_with_files,
     ):
         """Test integration with file indexing service."""
         # Update config to use temp directory
@@ -270,7 +283,9 @@ def sub_function():
 
     @pytest.mark.asyncio
     async def test_concurrent_file_discovery(
-        self, initial_indexing_service, temp_directory_with_files,
+        self,
+        initial_indexing_service,
+        temp_directory_with_files,
     ):
         """Test concurrent file discovery operations."""
         # Update config to use temp directory
@@ -396,7 +411,8 @@ class TestInitialIndexingServiceIntegration:
 
     @pytest.mark.asyncio
     async def test_initial_indexing_service_with_continuous_indexing(
-        self, initial_indexing_config,
+        self,
+        initial_indexing_config,
     ):
         """Test initial indexing service with continuous indexing integration."""
         # Mock continuous indexing service

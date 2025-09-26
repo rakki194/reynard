@@ -27,7 +27,9 @@ class LazyLoadingValidator:
 
         if export is None:
             raise ExportValidationError(
-                "Export is None", package_name, validation_level,
+                "Export is None",
+                package_name,
+                validation_level,
             )
 
         if validation_level in [
@@ -38,7 +40,9 @@ class LazyLoadingValidator:
             # Basic validation - check if export is not None
             if export is None:
                 raise ExportValidationError(
-                    "Export is None", package_name, validation_level,
+                    "Export is None",
+                    package_name,
+                    validation_level,
                 )
 
         if validation_level in [

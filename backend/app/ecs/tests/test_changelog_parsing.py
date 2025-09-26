@@ -1,5 +1,4 @@
-"""Test CHANGELOG parsing and deduplication for Success-Advisor-8 legacy tracking.
-"""
+"""Test CHANGELOG parsing and deduplication for Success-Advisor-8 legacy tracking."""
 
 # Add the parent directory to sys.path for imports
 import sys

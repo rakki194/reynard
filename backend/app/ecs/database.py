@@ -24,15 +24,12 @@ from sqlalchemy import (
     text,
 )
 from sqlalchemy.dialects.postgresql import UUID as PostgresUUID
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, relationship, sessionmaker
 
-from sqlalchemy.ext.declarative import declarative_base
-
-from app.core.debug_logging import (
-    setup_sqlalchemy_debug_logging,
+from app.core.database_logger import (
     setup_connection_pool_logging,
-    log_db_connection_event,
-    debug_log
+    setup_sqlalchemy_logging,
 )
 
 # Create separate ECS Base class to avoid conflicts with main database models
@@ -49,8 +46,8 @@ ECS_DATABASE_URL = os.getenv(
 engine = create_engine(ECS_DATABASE_URL, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Setup debug logging for ECS database
-setup_sqlalchemy_debug_logging(engine, "reynard_ecs")
+# Setup enhanced logging for ECS database
+setup_sqlalchemy_logging(engine, "reynard_ecs")
 setup_connection_pool_logging(engine, "reynard_ecs")
 
 
@@ -67,7 +64,8 @@ class Agent(Base):
     generation = Column(Integer, default=1)
     active = Column(Boolean, default=True, index=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -75,18 +73,25 @@ class Agent(Base):
         onupdate=text("CURRENT_TIMESTAMP"),
     )
     last_activity = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     # Relationships
     personality_traits = relationship(
-        "PersonalityTrait", back_populates="agent", cascade="all, delete-orphan",
+        "PersonalityTrait",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     physical_traits = relationship(
-        "PhysicalTrait", back_populates="agent", cascade="all, delete-orphan",
+        "PhysicalTrait",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     ability_traits = relationship(
-        "AbilityTrait", back_populates="agent", cascade="all, delete-orphan",
+        "AbilityTrait",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     position = relationship(
         "AgentPosition",
@@ -105,22 +110,34 @@ class Agent(Base):
         back_populates="receiver",
     )
     achievements = relationship(
-        "AgentAchievement", back_populates="agent", cascade="all, delete-orphan",
+        "AgentAchievement",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     specializations = relationship(
-        "AgentSpecialization", back_populates="agent", cascade="all, delete-orphan",
+        "AgentSpecialization",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     domain_expertise = relationship(
-        "AgentDomainExpertise", back_populates="agent", cascade="all, delete-orphan",
+        "AgentDomainExpertise",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     workflow_preferences = relationship(
-        "AgentWorkflowPreference", back_populates="agent", cascade="all, delete-orphan",
+        "AgentWorkflowPreference",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     knowledge_base_entries = relationship(
-        "KnowledgeBaseEntry", back_populates="agent", cascade="all, delete-orphan",
+        "KnowledgeBaseEntry",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
     performance_metrics = relationship(
-        "PerformanceMetric", back_populates="agent", cascade="all, delete-orphan",
+        "PerformanceMetric",
+        back_populates="agent",
+        cascade="all, delete-orphan",
     )
 
 
@@ -138,7 +155,8 @@ class PersonalityTrait(Base):
     trait_name = Column(String(100), nullable=False)
     trait_value = Column(Float, nullable=False)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -166,7 +184,8 @@ class PhysicalTrait(Base):
     trait_name = Column(String(100), nullable=False)
     trait_value = Column(Float, nullable=False)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -194,7 +213,8 @@ class AbilityTrait(Base):
     trait_name = Column(String(100), nullable=False)
     trait_value = Column(Float, nullable=False)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -228,7 +248,8 @@ class AgentPosition(Base):
     velocity_y = Column(Float, default=0.0)
     movement_speed = Column(Float, default=1.0)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -259,14 +280,19 @@ class AgentInteraction(Base):
     message = Column(Text)
     energy_level = Column(Float, default=1.0)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     sender = relationship(
-        "Agent", foreign_keys=[sender_id], back_populates="interactions_sent",
+        "Agent",
+        foreign_keys=[sender_id],
+        back_populates="interactions_sent",
     )
     receiver = relationship(
-        "Agent", foreign_keys=[receiver_id], back_populates="interactions_received",
+        "Agent",
+        foreign_keys=[receiver_id],
+        back_populates="interactions_received",
     )
 
 
@@ -284,7 +310,8 @@ class AgentAchievement(Base):
     achievement_name = Column(String(255), nullable=False)
     achievement_description = Column(Text)
     achieved_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     agent = relationship("Agent", back_populates="achievements")
@@ -304,7 +331,8 @@ class AgentSpecialization(Base):
     specialization = Column(String(255), nullable=False)
     proficiency = Column(Float, default=0.5)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     agent = relationship("Agent", back_populates="specializations")
@@ -327,7 +355,8 @@ class AgentDomainExpertise(Base):
     domain = Column(String(255), nullable=False)
     expertise_level = Column(Float, default=0.5)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     agent = relationship("Agent", back_populates="domain_expertise")
@@ -348,7 +377,8 @@ class AgentWorkflowPreference(Base):
     preference_name = Column(String(100), nullable=False)
     preference_value = Column(Boolean, default=False)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -359,7 +389,9 @@ class AgentWorkflowPreference(Base):
     agent = relationship("Agent", back_populates="workflow_preferences")
     __table_args__ = (
         UniqueConstraint(
-            "agent_id", "preference_name", name="uq_agent_workflow_preference",
+            "agent_id",
+            "preference_name",
+            name="uq_agent_workflow_preference",
         ),
     )
 
@@ -372,11 +404,9 @@ class ECSDatabase:
         self.engine = engine
         self.session_local = SessionLocal
 
-    @debug_log("get_ecs_session", logger)
     def get_session(self) -> Session:
         """Get a database session."""
         session = self.session_local()
-        log_db_connection_event("session_created", "reynard_ecs", str(id(session)))
         return session
 
     async def create_tables(self):
@@ -437,10 +467,12 @@ class KnowledgeBaseEntry(Base):
     skill = Column(String(255), nullable=False)
     proficiency_level = Column(Float, nullable=False)
     last_updated = Column(
-        DateTime(timezone=True), default=lambda: datetime.now(UTC),
+        DateTime(timezone=True),
+        default=lambda: datetime.now(UTC),
     )
     created_at = Column(
-        DateTime(timezone=True), default=lambda: datetime.now(UTC),
+        DateTime(timezone=True),
+        default=lambda: datetime.now(UTC),
     )
 
     agent = relationship("Agent", back_populates="knowledge_base_entries")
@@ -476,11 +508,13 @@ class PerformanceMetric(Base):
     metric_name = Column(String(255), nullable=False)
     metric_value = Column(Float, nullable=False)
     timestamp = Column(
-        DateTime(timezone=True), default=lambda: datetime.now(UTC),
+        DateTime(timezone=True),
+        default=lambda: datetime.now(UTC),
     )
     metric_metadata = Column(JSON, nullable=True)
     created_at = Column(
-        DateTime(timezone=True), default=lambda: datetime.now(UTC),
+        DateTime(timezone=True),
+        default=lambda: datetime.now(UTC),
     )
 
     agent = relationship("Agent", back_populates="performance_metrics")
@@ -519,7 +553,8 @@ class NamingSpirit(Base):
     base_names = Column(JSON, nullable=False)
     custom_data = Column(JSON, default={})
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -557,7 +592,8 @@ class NamingComponent(Base):
     weight = Column(Float, default=1.0)
     component_metadata = Column(JSON, default={})
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -567,7 +603,9 @@ class NamingComponent(Base):
 
     __table_args__ = (
         UniqueConstraint(
-            "component_type", "component_name", name="uq_component_type_name",
+            "component_type",
+            "component_name",
+            name="uq_component_type_name",
         ),
     )
 
@@ -597,7 +635,8 @@ class NamingConfig(Base):
     description = Column(Text)
     enabled = Column(Boolean, default=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -644,7 +683,8 @@ class AgentRelationship(Base):
     negative_interactions = Column(Integer, default=0)
     total_time_together = Column(Float, default=0.0)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),
@@ -706,7 +746,8 @@ class AgentLineage(Base):
     lineage_path = Column(Text)  # JSON string of lineage path
     genetic_markers = Column(JSON, default={})
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     agent = relationship("Agent", foreign_keys=[agent_id])
@@ -752,7 +793,8 @@ class BreedingRecord(Base):
     genetic_analysis = Column(JSON, default={})
     breeding_success = Column(Boolean, default=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
 
     parent1 = relationship("Agent", foreign_keys=[parent1_id])
@@ -784,7 +826,8 @@ class WorldConfiguration(Base):
     description = Column(Text)
     enabled = Column(Boolean, default=True)
     created_at = Column(
-        DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP"),
+        DateTime(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP"),
     )
     updated_at = Column(
         DateTime(timezone=True),

@@ -79,7 +79,10 @@ class NotebookUpdateRequest(BaseModel):
     """Request model for updating a notebook."""
 
     title: str | None = Field(
-        None, min_length=1, max_length=255, description="Notebook title",
+        None,
+        min_length=1,
+        max_length=255,
+        description="Notebook title",
     )
     description: str | None = Field(None, description="Notebook description")
     color: str | None = Field(None, description="Hex color code")
@@ -290,7 +293,8 @@ async def get_notebook(
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         # Log performance
@@ -329,7 +333,8 @@ async def update_notebook(
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         # Validate color if provided
@@ -389,7 +394,8 @@ async def delete_notebook(
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         # Delete notebook (cascade will delete notes)
@@ -430,7 +436,8 @@ async def archive_notebook(
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         notebook.is_archived = True
@@ -472,7 +479,8 @@ async def restore_notebook(
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         notebook.is_archived = False
@@ -517,7 +525,8 @@ async def get_notebook_notes(
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         # Get notes
@@ -549,7 +558,8 @@ async def get_notebook_notes(
         raise
     except Exception as e:
         logger.error(
-            f"Failed to get notes for notebook {notebook_id}: {e}", exc_info=True,
+            f"Failed to get notes for notebook {notebook_id}: {e}",
+            exc_info=True,
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -577,7 +587,8 @@ async def get_notebook_stats(
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         # Get notes in notebook
@@ -637,7 +648,8 @@ async def get_notebook_stats(
         raise
     except Exception as e:
         logger.error(
-            f"Failed to get stats for notebook {notebook_id}: {e}", exc_info=True,
+            f"Failed to get stats for notebook {notebook_id}: {e}",
+            exc_info=True,
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

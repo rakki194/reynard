@@ -1,72 +1,69 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
     <title>Mermaid Debug Test</title>
     <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background-color: white;
-        }
-        #container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .mermaid {
-            max-width: 100%;
-            height: auto;
-        }
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background-color: white;
+      }
+      #container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .mermaid {
+        max-width: 100%;
+        height: auto;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="container">
-        <div class="mermaid" id="mermaid-diagram">
-graph TD
-    A[Start] --> B[End]
-        </div>
+      <div class="mermaid" id="mermaid-diagram">graph TD A[Start] --> B[End]</div>
     </div>
-    
+
     <script>
-        // Load mermaid.js from local file
-        // This will be replaced with the actual content
-        console.log('Starting mermaid debug test...');
-        
-        // Simulate the mermaid.js loading
-        setTimeout(function() {
-            console.log('Checking for mermaid object...');
-            console.log('typeof mermaid:', typeof mermaid);
-            console.log('window.mermaid:', window.mermaid);
-            console.log('globalThis.mermaid:', globalThis.mermaid);
-            console.log('globalThis["mermaid"]:', globalThis["mermaid"]);
-            
-            // Check for mermaid in different global locations
-            let mermaidObj = null;
-            if (typeof mermaid !== 'undefined') {
-                mermaidObj = mermaid;
-                console.log('Found mermaid in global scope');
-            } else if (typeof globalThis !== 'undefined' && globalThis.mermaid) {
-                mermaidObj = globalThis.mermaid;
-                console.log('Found mermaid in globalThis.mermaid');
-            } else if (typeof globalThis !== 'undefined' && globalThis["mermaid"]) {
-                mermaidObj = globalThis["mermaid"];
-                console.log('Found mermaid in globalThis["mermaid"]');
-            } else if (typeof window !== 'undefined' && window.mermaid) {
-                mermaidObj = window.mermaid;
-                console.log('Found mermaid in window.mermaid');
-            }
-            
-            if (mermaidObj) {
-                console.log('Mermaid object found, setting ready signal');
-                document.body.setAttribute('data-mermaid-ready', 'true');
-            } else {
-                console.log('No mermaid object found');
-                document.body.setAttribute('data-mermaid-error', 'No mermaid object found');
-            }
-        }, 3000);
+      // Load mermaid.js from local file
+      // This will be replaced with the actual content
+      console.log("Starting mermaid debug test...");
+
+      // Simulate the mermaid.js loading
+      setTimeout(function () {
+        console.log("Checking for mermaid object...");
+        console.log("typeof mermaid:", typeof mermaid);
+        console.log("window.mermaid:", window.mermaid);
+        console.log("globalThis.mermaid:", globalThis.mermaid);
+        console.log('globalThis["mermaid"]:', globalThis["mermaid"]);
+
+        // Check for mermaid in different global locations
+        let mermaidObj = null;
+        if (typeof mermaid !== "undefined") {
+          mermaidObj = mermaid;
+          console.log("Found mermaid in global scope");
+        } else if (typeof globalThis !== "undefined" && globalThis.mermaid) {
+          mermaidObj = globalThis.mermaid;
+          console.log("Found mermaid in globalThis.mermaid");
+        } else if (typeof globalThis !== "undefined" && globalThis["mermaid"]) {
+          mermaidObj = globalThis["mermaid"];
+          console.log('Found mermaid in globalThis["mermaid"]');
+        } else if (typeof window !== "undefined" && window.mermaid) {
+          mermaidObj = window.mermaid;
+          console.log("Found mermaid in window.mermaid");
+        }
+
+        if (mermaidObj) {
+          console.log("Mermaid object found, setting ready signal");
+          document.body.setAttribute("data-mermaid-ready", "true");
+        } else {
+          console.log("No mermaid object found");
+          document.body.setAttribute("data-mermaid-error", "No mermaid object found");
+        }
+      }, 3000);
     </script>
-</body>
+  </body>
 </html>

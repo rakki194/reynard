@@ -4,7 +4,7 @@
  */
 
 import { Component, For } from "solid-js";
-import { Button } from "reynard-components";
+import { Button } from "reynard-primitives";
 import { getIcon } from "reynard-fluent-icons";
 import type { SpellType } from "./SpellEffectTypes";
 import { getSpellPattern } from "./SpellPatterns";

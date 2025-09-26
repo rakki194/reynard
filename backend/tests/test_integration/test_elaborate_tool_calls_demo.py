@@ -514,7 +514,8 @@ class ElaborateToolCallsDemo:
                 )
 
     async def _mock_suggest_tools(
-        self, request: NLWebSuggestionRequest,
+        self,
+        request: NLWebSuggestionRequest,
     ) -> list[dict[str, Any]]:
         """Mock tool suggestions for demo purposes."""
         # This would normally call the actual service

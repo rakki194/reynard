@@ -1,0 +1,89 @@
+# Redis Configuration Template for Production
+# Generated for Reynard ECS System
+# 
+# IMPORTANT: Copy this file to redis.conf and update the sensitive values
+# DO NOT commit redis.conf to version control as it contains passwords
+
+# Network and Security
+bind 127.0.0.1
+port 6380
+protected-mode yes
+requirepass YOUR_SECURE_REDIS_PASSWORD_HERE
+
+# TLS Configuration
+tls-port 6380
+tls-cert-file /etc/redis/tls/redis.crt
+tls-key-file /etc/redis/tls/redis.key
+tls-ca-cert-file /etc/redis/tls/ca.crt
+tls-protocols "TLSv1.2 TLSv1.3"
+tls-ciphersuites "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256"
+tls-prefer-server-ciphers yes
+tls-session-caching yes
+tls-session-cache-size 10000
+tls-session-cache-timeout 60
+
+# Authentication and Security
+rename-command FLUSHDB ""
+rename-command FLUSHALL ""
+rename-command KEYS ""
+rename-command CONFIG ""
+rename-command SHUTDOWN ""
+rename-command DEBUG ""
+rename-command EVAL ""
+rename-command SCRIPT ""
+
+# Memory Management
+maxmemory 2gb
+maxmemory-policy allkeys-lru
+maxmemory-samples 5
+
+# Persistence
+save 900 1
+save 300 10
+save 60 10000
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+dbfilename dump.rdb
+dir /var/lib/redis
+
+# Logging
+loglevel notice
+logfile /var/log/redis/redis-server.log
+syslog-enabled yes
+syslog-ident redis
+
+# Client Management
+timeout 300
+tcp-keepalive 300
+maxclients 10000
+
+# Slow Log
+slowlog-log-slower-than 10000
+slowlog-max-len 128
+
+# Latency Monitoring
+latency-monitor-threshold 100
+
+# Advanced Security
+# Disable dangerous commands
+rename-command PING "PING"
+rename-command INFO "INFO"
+rename-command CLIENT "CLIENT"
+
+# Performance Tuning
+tcp-backlog 511
+databases 16
+
+# Replication Security (if needed)
+# masterauth YOUR_SECURE_REDIS_PASSWORD_HERE
+# replica-serve-stale-data no
+# replica-read-only yes
+
+# Setup Instructions:
+# 1. Copy this file to redis.conf: cp redis.conf.example redis.conf
+# 2. Generate a secure password: python3 -c "import secrets, base64; print(base64.urlsafe_b64encode(secrets.token_bytes(32)).decode())"
+# 3. Replace YOUR_SECURE_REDIS_PASSWORD_HERE with the generated password
+# 4. Update the same password in your .env file under REDIS_PASSWORD
+# 5. Generate TLS certificates using: bash scripts/setup_redis_tls.sh
+# 6. Deploy with: bash scripts/deploy_secure_redis.sh

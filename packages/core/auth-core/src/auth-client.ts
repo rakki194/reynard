@@ -96,7 +96,7 @@ export const createAuthClient = (
         // Trigger callbacks
         callbacks.onLoginSuccess?.(user, { accessToken, refreshToken });
       } else {
-        const errorMessage = response.data?.message || `Login failed with status ${response.status}`;
+        const errorMessage = `Login failed with status ${response.status}`;
         throw new Error(errorMessage);
       }
     } catch (error) {

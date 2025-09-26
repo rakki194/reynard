@@ -58,7 +58,7 @@ describe("CLI", () => {
   describe("Basic functionality", () => {
     it("should generate configuration with default options", () => {
       const result = execSync("node dist/cli.js generate", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -67,7 +67,7 @@ describe("CLI", () => {
 
     it("should generate configuration with custom output path", () => {
       const result = execSync(`node dist/cli.js generate --output ${testOutputPath}`, {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -77,7 +77,7 @@ describe("CLI", () => {
 
     it("should enable verbose output when requested", () => {
       const result = execSync("node dist/cli.js generate --verbose", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -95,7 +95,7 @@ describe("CLI", () => {
   describe("Configuration options", () => {
     it("should handle --include-packages option", () => {
       const result = execSync("node dist/cli.js generate --include-packages", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -104,7 +104,7 @@ describe("CLI", () => {
 
     it("should handle --include-templates option", () => {
       const result = execSync("node dist/cli.js generate --include-templates", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -113,7 +113,7 @@ describe("CLI", () => {
 
     it("should handle --include-scripts option", () => {
       const result = execSync("node dist/cli.js generate --include-scripts", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -122,7 +122,7 @@ describe("CLI", () => {
 
     it("should handle --include-references option", () => {
       const result = execSync("node dist/cli.js generate --include-references", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -131,7 +131,7 @@ describe("CLI", () => {
 
     it("should handle --generate-individual option", () => {
       const result = execSync("node dist/cli.js generate --generate-individual", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -145,7 +145,7 @@ describe("CLI", () => {
       writeFileSync(testOutputPath, JSON.stringify({ test: "config" }, null, 2));
 
       const result = execSync(`node dist/cli.js generate --output ${testOutputPath} --backup`, {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -162,7 +162,7 @@ describe("CLI", () => {
 
     it("should not create backup when file doesn't exist", () => {
       const result = execSync(`node dist/cli.js generate --output ${testOutputPath} --backup`, {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -174,7 +174,7 @@ describe("CLI", () => {
   describe("Validation", () => {
     it("should validate configuration when --validate option is used", () => {
       const result = execSync("node dist/cli.js generate --validate", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -188,7 +188,7 @@ describe("CLI", () => {
       // Test with invalid option
       try {
         execSync("node dist/cli.js --invalid-option", {
-          cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+          cwd: process.cwd(), // Use current working directory instead of hardcoded path
           encoding: "utf8",
         });
       } catch (error: any) {
@@ -201,7 +201,7 @@ describe("CLI", () => {
   describe("Help and version", () => {
     it("should show help when --help is used", () => {
       const result = execSync("node dist/cli.js --help", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 
@@ -212,7 +212,7 @@ describe("CLI", () => {
 
     it("should show version when --version is used", () => {
       const result = execSync("node dist/cli.js --version", {
-        cwd: "/home/kade/runeset/reynard/packages/dev-tools/tsconfig-generator",
+        cwd: process.cwd(), // Use current working directory instead of hardcoded path
         encoding: "utf8",
       });
 

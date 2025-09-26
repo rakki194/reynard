@@ -95,7 +95,10 @@ class TestECSIntegration:
         agents = []
         for i in range(5):
             agent = world.create_agent(
-                f"agent{i}", "fox" if i % 2 == 0 else "wolf", "foundation", f"Agent{i}",
+                f"agent{i}",
+                "fox" if i % 2 == 0 else "wolf",
+                "foundation",
+                f"Agent{i}",
             )
             agents.append(agent)
 

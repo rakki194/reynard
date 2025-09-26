@@ -57,6 +57,14 @@ export type DirectoryCategory =
   | "third-party" // External dependencies and third-party code
   | "cache" // Cache and temporary files for performance
   | "tools" // Development tools and utilities for project management
+  | "backend" // Backend services and API implementations
+  | "frontend" // Frontend applications and UI implementations
+  | "infrastructure" // Infrastructure and deployment configurations
+  | "ai" // AI/ML packages and components
+  | "ui" // User interface packages and components
+  | "media" // Media processing packages and components
+  | "core" // Core framework packages and utilities
+  | "examples" // Example applications and demonstrations
   | "experimental"; // Experimental packages and prototype implementations
 
 /**
@@ -115,8 +123,10 @@ export interface DirectoryDefinition {
   name: string;
   /** Full path from project root */
   path: string;
-  /** Category classification */
+  /** Primary category classification */
   category: DirectoryCategory;
+  /** Additional categories for semantic classification */
+  categories: DirectoryCategory[];
   /** Importance level */
   importance: ImportanceLevel;
   /** Primary file types in this directory */
@@ -332,7 +342,7 @@ export interface DirectoryQueryResult {
 /**
  * Directory metadata for utility functions
  */
-export interface DirectoryMetadata {
+export interface DirectoryUtilityMetadata {
   /** Directory name */
   name: string;
   /** Directory path */

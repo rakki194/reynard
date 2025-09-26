@@ -54,7 +54,8 @@ class StatisticalValidation:
         )
 
     async def analyze_performance(
-        self, generation_results: list[EvolutionStatistics],
+        self,
+        generation_results: list[EvolutionStatistics],
     ) -> StatisticalAnalysisResult:
         """Analyze performance improvements across generations.
 
@@ -92,7 +93,8 @@ class StatisticalValidation:
 
         # Combine results
         combined_result = self._combine_analysis_results(
-            trend_result, improvement_result,
+            trend_result,
+            improvement_result,
         )
 
         self.logger.info(
@@ -103,12 +105,15 @@ class StatisticalValidation:
         return combined_result
 
     async def _analyze_trend(
-        self, generations: list[int], fitness_scores: list[float],
+        self,
+        generations: list[int],
+        fitness_scores: list[float],
     ) -> StatisticalAnalysisResult:
         """Analyze trend in fitness scores over generations."""
         # Linear regression analysis
         slope, intercept, r_value, p_value, std_err = stats.linregress(
-            generations, fitness_scores,
+            generations,
+            fitness_scores,
         )
 
         # Calculate effect size (correlation coefficient)
@@ -148,7 +153,8 @@ class StatisticalValidation:
         )
 
     async def _analyze_improvement(
-        self, generation_results: list[EvolutionStatistics],
+        self,
+        generation_results: list[EvolutionStatistics],
     ) -> StatisticalAnalysisResult:
         """Analyze improvement between first and last generations."""
         if len(generation_results) < 2:
@@ -169,10 +175,12 @@ class StatisticalValidation:
         # Perform t-test for fitness improvement using real data
         # Get real fitness distributions from actual agent data
         first_fitness = await self.fitness_analyzer.get_real_fitness_distribution(
-            first_gen.agents if hasattr(first_gen, "agents") else [], n_samples=100,
+            first_gen.agents if hasattr(first_gen, "agents") else [],
+            n_samples=100,
         )
         last_fitness = await self.fitness_analyzer.get_real_fitness_distribution(
-            last_gen.agents if hasattr(last_gen, "agents") else [], n_samples=100,
+            last_gen.agents if hasattr(last_gen, "agents") else [],
+            n_samples=100,
         )
 
         # If no real data available, create synthetic data based on statistics
@@ -239,7 +247,8 @@ class StatisticalValidation:
 
         # Use the larger effect size
         combined_effect_size = max(
-            trend_result.effect_size, improvement_result.effect_size,
+            trend_result.effect_size,
+            improvement_result.effect_size,
         )
 
         # Combine confidence intervals (use improvement test CI as it's more specific)
@@ -270,7 +279,8 @@ class StatisticalValidation:
         )
 
     async def analyze_convergence(
-        self, generation_results: list[EvolutionStatistics],
+        self,
+        generation_results: list[EvolutionStatistics],
     ) -> StatisticalAnalysisResult:
         """Analyze convergence of the evolutionary process.
 
@@ -302,7 +312,8 @@ class StatisticalValidation:
 
         # Test if variance is decreasing (convergence indicator)
         slope, intercept, r_value, p_value, std_err = stats.linregress(
-            generations, fitness_variances,
+            generations,
+            fitness_variances,
         )
 
         # Calculate effect size
@@ -347,7 +358,8 @@ class StatisticalValidation:
         )
 
     async def analyze_diversity(
-        self, generation_results: list[EvolutionStatistics],
+        self,
+        generation_results: list[EvolutionStatistics],
     ) -> StatisticalAnalysisResult:
         """Analyze population diversity over generations.
 
@@ -379,7 +391,8 @@ class StatisticalValidation:
 
         # Linear regression on diversity
         slope, intercept, r_value, p_value, std_err = stats.linregress(
-            generations, diversity_scores,
+            generations,
+            diversity_scores,
         )
 
         # Calculate effect size
@@ -421,7 +434,9 @@ class StatisticalValidation:
         )
 
     async def power_analysis(
-        self, effect_size: float, sample_size: int,
+        self,
+        effect_size: float,
+        sample_size: int,
     ) -> dict[str, Any]:
         """Perform statistical power analysis.
 
@@ -438,12 +453,16 @@ class StatisticalValidation:
 
         # Calculate minimum detectable effect size
         min_effect_size = stats.power.ttest_solve_power(
-            power=self.power, nobs=sample_size, alpha=self.alpha,
+            power=self.power,
+            nobs=sample_size,
+            alpha=self.alpha,
         )
 
         # Calculate required sample size for desired power
         required_n = stats.power.ttest_solve_power(
-            effect_size=effect_size, power=self.power, alpha=self.alpha,
+            effect_size=effect_size,
+            power=self.power,
+            alpha=self.alpha,
         )
 
         return {
@@ -457,7 +476,9 @@ class StatisticalValidation:
         }
 
     async def calculate_confidence_interval(
-        self, data: list[float], confidence_level: float = 0.95,
+        self,
+        data: list[float],
+        confidence_level: float = 0.95,
     ) -> tuple[float, float]:
         """Calculate confidence interval for a dataset.
 
@@ -486,7 +507,9 @@ class StatisticalValidation:
         return ci
 
     async def effect_size_analysis(
-        self, group1: list[float], group2: list[float],
+        self,
+        group1: list[float],
+        group2: list[float],
     ) -> dict[str, float]:
         """Calculate various effect size measures.
 
@@ -532,7 +555,8 @@ class StatisticalValidation:
         return "large effect"
 
     async def generate_statistical_report(
-        self, generation_results: list[EvolutionStatistics],
+        self,
+        generation_results: list[EvolutionStatistics],
     ) -> dict[str, Any]:
         """Generate comprehensive statistical report.
 
@@ -584,7 +608,8 @@ class StatisticalValidation:
 
             effect_sizes = await self.effect_size_analysis(first_fitness, last_fitness)
             power_analysis = await self.power_analysis(
-                effect_sizes["cohens_d"], len(first_fitness) + len(last_fitness),
+                effect_sizes["cohens_d"],
+                len(first_fitness) + len(last_fitness),
             )
         else:
             effect_sizes = {"cohens_d": 0.0, "interpretation": "insufficient data"}
@@ -641,7 +666,9 @@ class StatisticalValidation:
             "effect_size_analysis": effect_sizes,
             "power_analysis": power_analysis,
             "overall_assessment": self._generate_overall_assessment(
-                performance_analysis, convergence_analysis, diversity_analysis,
+                performance_analysis,
+                convergence_analysis,
+                diversity_analysis,
             ),
         }
 

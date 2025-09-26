@@ -20,6 +20,7 @@ from app.config.continuous_indexing_config import (
     ContinuousIndexingConfig,
     continuous_indexing_config,
 )
+from app.core.project_root import get_project_root
 
 
 class TestContinuousIndexingConfig:
@@ -36,7 +37,7 @@ class TestContinuousIndexingConfig:
         config = ContinuousIndexingConfig()
 
         assert config.enabled is True
-        assert config.watch_root == "/home/kade/runeset/reynard"
+        assert config.watch_root == str(get_project_root())
         assert config.auto_start is True
         assert config.debounce_seconds == 2.0
         assert config.batch_size == 25
@@ -232,14 +233,17 @@ class TestContinuousIndexingConfig:
 
         # Test with mocked method
         with patch.object(
-            config, "should_include_file", side_effect=mock_should_include_file,
+            config,
+            "should_include_file",
+            side_effect=mock_should_include_file,
         ):
             assert config.should_include_file(large_file) is False
 
     def test_get_watch_root_path(self, temp_dir):
         """🐼 Test getting watch root as Path object."""
         with patch.dict(
-            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": str(temp_dir)},
+            os.environ,
+            {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": str(temp_dir)},
         ):
             config = ContinuousIndexingConfig()
             watch_path = config.get_watch_root_path()
@@ -268,7 +272,8 @@ class TestContinuousIndexingConfig:
     def test_validate_configuration_valid(self, temp_dir):
         """🐼 Test configuration validation with valid config."""
         with patch.dict(
-            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": str(temp_dir)},
+            os.environ,
+            {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": str(temp_dir)},
         ):
             config = ContinuousIndexingConfig()
             errors = config.validate()
@@ -278,7 +283,8 @@ class TestContinuousIndexingConfig:
     def test_validate_configuration_invalid_watch_root(self):
         """🐼 Test configuration validation with invalid watch root."""
         with patch.dict(
-            os.environ, {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": "/nonexistent/path"},
+            os.environ,
+            {"RAG_CONTINUOUS_INDEXING_WATCH_ROOT": "/nonexistent/path"},
         ):
             config = ContinuousIndexingConfig()
             errors = config.validate()
@@ -318,7 +324,8 @@ class TestContinuousIndexingConfig:
     def test_validate_configuration_invalid_stats_interval(self):
         """🐼 Test configuration validation with invalid stats interval."""
         with patch.dict(
-            os.environ, {"RAG_CONTINUOUS_INDEXING_STATS_INTERVAL_MINUTES": "0"},
+            os.environ,
+            {"RAG_CONTINUOUS_INDEXING_STATS_INTERVAL_MINUTES": "0"},
         ):
             config = ContinuousIndexingConfig()
             errors = config.validate()
@@ -428,7 +435,7 @@ class TestGlobalContinuousIndexingConfig:
 
         # Test that it has the expected default values
         assert continuous_indexing_config.enabled is True
-        assert continuous_indexing_config.watch_root == "/home/kade/runeset/reynard"
+        assert continuous_indexing_config.watch_root == str(get_project_root())
         assert continuous_indexing_config.auto_start is True
 
     def test_global_config_environment_override(self):
@@ -473,7 +480,8 @@ class PandaConfigTestUtils:
 
     @staticmethod
     def assert_panda_config_valid(
-        config: ContinuousIndexingConfig, message: str = "Panda config not valid",
+        config: ContinuousIndexingConfig,
+        message: str = "Panda config not valid",
     ):
         """Assert configuration validity with panda spirit."""
         errors = config.validate()

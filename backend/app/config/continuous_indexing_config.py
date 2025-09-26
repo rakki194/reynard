@@ -7,6 +7,8 @@ import os
 from pathlib import Path
 from typing import Any
 
+from app.core.project_root import get_project_root
+
 
 class ContinuousIndexingConfig:
     """Configuration for continuous indexing system."""
@@ -15,20 +17,24 @@ class ContinuousIndexingConfig:
         # Core settings
         self.enabled = self._get_bool_env("RAG_CONTINUOUS_INDEXING_ENABLED", True)
         self.watch_root = self._get_env(
-            "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard",
+            "RAG_CONTINUOUS_INDEXING_WATCH_ROOT",
+            str(get_project_root()),
         )
         self.auto_start = self._get_bool_env("RAG_CONTINUOUS_INDEXING_AUTO_START", True)
 
         # Performance settings
         self.debounce_seconds = self._get_float_env(
-            "RAG_CONTINUOUS_INDEXING_DEBOUNCE_SECONDS", 2.0,
+            "RAG_CONTINUOUS_INDEXING_DEBOUNCE_SECONDS",
+            2.0,
         )
         self.batch_size = self._get_int_env("RAG_CONTINUOUS_INDEXING_BATCH_SIZE", 25)
         self.max_queue_size = self._get_int_env(
-            "RAG_CONTINUOUS_INDEXING_MAX_QUEUE_SIZE", 1000,
+            "RAG_CONTINUOUS_INDEXING_MAX_QUEUE_SIZE",
+            1000,
         )
         self.stats_interval_minutes = self._get_int_env(
-            "RAG_CONTINUOUS_INDEXING_STATS_INTERVAL_MINUTES", 5,
+            "RAG_CONTINUOUS_INDEXING_STATS_INTERVAL_MINUTES",
+            5,
         )
 
         # File filtering
@@ -113,7 +119,8 @@ class ContinuousIndexingConfig:
 
         # File size limits
         self.max_file_size_mb = self._get_int_env(
-            "RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB", 2,
+            "RAG_CONTINUOUS_INDEXING_MAX_FILE_SIZE_MB",
+            2,
         )
         self.max_file_size_bytes = self.max_file_size_mb * 1024 * 1024
 

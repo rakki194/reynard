@@ -192,14 +192,18 @@ class SuccessAdvisor8GenomeTracker:
             # Check for Success-Advisor-8 genome-relevant activities
             if self._is_genome_relevant_activity(line):
                 activity = await self._extract_genome_activity(
-                    line, i, current_version, current_date,
+                    line,
+                    i,
+                    current_version,
+                    current_date,
                 )
                 if activity:
                     activities.append(activity)
 
         self.genome_activities.extend(activities)
         logger.info(
-            "Found %d Success-Advisor-8 genome activities in CHANGELOG", len(activities),
+            "Found %d Success-Advisor-8 genome activities in CHANGELOG",
+            len(activities),
         )
         return activities
 
@@ -228,7 +232,11 @@ class SuccessAdvisor8GenomeTracker:
         return True
 
     async def _extract_genome_activity(
-        self, line: str, line_number: int, version: str | None, date: datetime | None,
+        self,
+        line: str,
+        line_number: int,
+        version: str | None,
+        date: datetime | None,
     ) -> GenomeActivity | None:
         """Extract genome activity from changelog line."""
         try:
@@ -263,7 +271,8 @@ class SuccessAdvisor8GenomeTracker:
 
         except Exception:
             logger.exception(
-                "Failed to extract genome activity from line %d", line_number,
+                "Failed to extract genome activity from line %d",
+                line_number,
             )
             return None
 
@@ -552,7 +561,9 @@ class SuccessAdvisor8GenomeTracker:
         """Identify Success-Advisor-8's primary strengths based on activities."""
         trait_frequency = self._calculate_trait_frequency()
         sorted_traits = sorted(
-            trait_frequency.items(), key=lambda x: x[1], reverse=True,
+            trait_frequency.items(),
+            key=lambda x: x[1],
+            reverse=True,
         )
         return [trait for trait, freq in sorted_traits[:5]]
 

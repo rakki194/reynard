@@ -1,15 +1,23 @@
-"""🧪 Test Configuration for Intelligent Reload System
+#!/usr/bin/env python3
+"""Pytest Configuration and Fixtures
 
-This module provides pytest fixtures and configuration for testing
-the intelligent reload system.
+Global pytest configuration and shared fixtures for all test modules.
+
+Author: Reynard Development Team
+Version: 1.0.0
 """
 
 import asyncio
 import os
-from unittest.mock import MagicMock
+import sys
+from pathlib import Path
 
 import pytest
-from fastapi import FastAPI
+import pytest_asyncio
+
+# Add backend to Python path
+backend_root = Path(__file__).parent.parent
+sys.path.insert(0, str(backend_root))
 
 
 @pytest.fixture(scope="session")
@@ -20,176 +28,196 @@ def event_loop():
     loop.close()
 
 
-@pytest.fixture
-def clean_environment():
-    """Clean environment variables for testing."""
+@pytest.fixture(scope="session")
+def test_environment():
+    """Set up test environment variables."""
+    from tests.utils.env_loader import setup_test_environment
+
+    # Load environment variables from .env file
+    env_vars = setup_test_environment()
+
+    # Override with test-specific values
+    test_overrides = {
+        'ENVIRONMENT': 'test',
+        'REDIS_DB': '15',  # Use test database
+    }
+
     # Store original values
-    original_values = {}
-    env_vars = ["INTELLIGENT_RELOAD", "ENVIRONMENT", "DEBUG"]
+    original_env = {}
+    for key, value in test_overrides.items():
+        original_env[key] = os.environ.get(key)
+        os.environ[key] = value
 
-    for var in env_vars:
-        if var in os.environ:
-            original_values[var] = os.environ[var]
-            del os.environ[var]
-
-    yield
+    yield {**env_vars, **test_overrides}
 
     # Restore original values
-    for var, value in original_values.items():
-        os.environ[var] = value
+    for key, original_value in original_env.items():
+        if original_value is not None:
+            os.environ[key] = original_value
+        elif key in os.environ:
+            del os.environ[key]
 
 
 @pytest.fixture
-def mock_fastapi_app():
-    """Create a mock FastAPI app for testing."""
-    return FastAPI()
+def mock_redis():
+    """Mock Redis client for testing."""
+    from unittest.mock import AsyncMock, Mock
+
+    mock_client = AsyncMock()
+    mock_client.ping.return_value = True
+    mock_client.set.return_value = True
+    mock_client.get.return_value = b'test_value'
+    mock_client.hset.return_value = 1
+    mock_client.hget.return_value = b'value1'
+    mock_client.lpush.return_value = 1
+    mock_client.llen.return_value = 3
+    mock_client.delete.return_value = 1
+    mock_client.flushdb.return_value = True
+    mock_client.aclose.return_value = None
+
+    return mock_client
 
 
 @pytest.fixture
-def mock_service_registry():
-    """Create a mock service registry for testing."""
-    registry = MagicMock()
-    registry.shutdown_service = MagicMock()
-    registry.initialize_service = MagicMock()
-    registry.get_service_instance = MagicMock()
-    return registry
+def mock_database_engine():
+    """Mock database engine for testing."""
+    from unittest.mock import MagicMock, Mock
+
+    mock_engine = Mock()
+    mock_conn = MagicMock()
+    mock_engine.connect.return_value.__enter__.return_value = mock_conn
+    mock_conn.execute.return_value.fetchone.return_value = [1]
+    mock_conn.execute.return_value.fetchall.return_value = [['test']]
+
+    return mock_engine, mock_conn
 
 
 @pytest.fixture
-def mock_reload_manager():
-    """Create a mock reload manager for testing."""
-    manager = MagicMock()
-    manager.get_affected_services = MagicMock()
-    manager.reload_services = MagicMock()
-    manager.reload_service = MagicMock()
-    return manager
+def temp_config_file():
+    """Create a temporary configuration file for testing."""
+    import tempfile
+
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.conf', delete=False) as f:
+        f.write(
+            """
+# Test Redis Configuration
+bind 127.0.0.1
+port 6379
+protected-mode yes
+requirepass test_password
+
+# TLS Configuration
+tls-port 6380
+tls-cert-file /tmp/test.crt
+tls-key-file /tmp/test.key
+"""
+        )
+        temp_file = f.name
+
+    yield temp_file
+
+    # Cleanup
+    os.unlink(temp_file)
 
 
 @pytest.fixture
-def sample_file_paths():
-    """Provide sample file paths for testing."""
-    return {
-        "ecs_files": [
-            "app/ecs/world.py",
-            "app/ecs/service.py",
-            "app/ecs/endpoints/agents.py",
-            "app/ecs/database.py",
-            "app/ecs/config.json",
-            "app/ecs/config.yaml",
-        ],
-        "gatekeeper_files": [
-            "gatekeeper/api/routes.py",
-            "app/auth/user_service.py",
-            "app/security/input_validator.py",
-        ],
-        "comfy_files": [
-            "app/api/comfy/generate.py",
-            "app/services/comfy/comfy_service.py",
-        ],
-        "core_files": [
-            "main.py",
-            "app/core/config.py",
-            "app/core/app_factory.py",
-        ],
-        "mixed_files": [
-            "app/ecs/world.py",
-            "gatekeeper/api/routes.py",
-            "app/api/comfy/generate.py",
-            "main.py",
-        ],
-    }
+def temp_env_file():
+    """Create a temporary .env file for testing."""
+    import tempfile
 
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.env', delete=False) as f:
+        f.write(
+            """
+# Test Environment Variables
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASSWORD=test_password
+REDIS_TLS_ENABLED=false
+DATABASE_URL=postgresql://test:test@localhost:5432/test_db
+JWT_SECRET_KEY=test_jwt_secret_key_32_chars_long
+"""
+        )
+        temp_file = f.name
 
-@pytest.fixture
-def expected_service_mappings():
-    """Provide expected service mappings for testing."""
-    return {
-        "ecs_world": [
-            "app/ecs/**/*.py",
-            "app/ecs/**/*.json",
-            "app/ecs/**/*.yaml",
-            "app/ecs/**/*.yml",
-        ],
-        "gatekeeper": [
-            "gatekeeper/**/*.py",
-            "app/auth/**/*.py",
-            "app/security/**/*.py",
-        ],
-        "comfy": [
-            "app/api/comfy/**/*.py",
-            "app/services/comfy/**/*.py",
-        ],
-        "nlweb": [
-            "app/api/nlweb/**/*.py",
-            "app/services/nlweb/**/*.py",
-        ],
-        "rag": [
-            "app/api/rag/**/*.py",
-            "app/services/rag/**/*.py",
-            "app/services/initial_indexing.py",
-            "app/services/continuous_indexing.py",
-        ],
-        "search": [
-            "app/api/search/**/*.py",
-            "app/services/search/**/*.py",
-        ],
-        "ollama": [
-            "app/api/ollama/**/*.py",
-            "app/services/ollama/**/*.py",
-        ],
-        "tts": [
-            "app/api/tts/**/*.py",
-            "app/services/tts/**/*.py",
-        ],
-        "image_processing": [
-            "app/api/image_utils/**/*.py",
-            "app/services/image_processing_service.py",
-        ],
-        "ai_email_response": [
-            "app/services/ai_email_response_service.py",
-            "app/api/agent_email_routes.py",
-        ],
-    }
+    yield temp_file
 
-
-@pytest.fixture
-def expected_priority_order():
-    """Provide expected service priority order for testing."""
-    return [
-        "gatekeeper",  # 100
-        "ecs_world",  # 90
-        "image_processing",  # 75
-        "comfy",  # 50
-        "nlweb",  # 50
-        "rag",  # 25
-        "ollama",  # 25
-        "search",  # 20
-        "ai_email_response",  # 15
-        "tts",  # 10
-    ]
-
-
-@pytest.fixture
-def async_mock():
-    """Create an async mock for testing."""
-    return MagicMock()
+    # Cleanup
+    os.unlink(temp_file)
 
 
 # Pytest configuration
 def pytest_configure(config):
     """Configure pytest with custom markers."""
-    config.addinivalue_line("markers", "asyncio: mark test as async")
+    config.addinivalue_line("markers", "redis: mark test as requiring Redis")
+    config.addinivalue_line("markers", "postgres: mark test as requiring PostgreSQL")
+    config.addinivalue_line("markers", "slow: mark test as slow running")
     config.addinivalue_line("markers", "integration: mark test as integration test")
-    config.addinivalue_line("markers", "unit: mark test as unit test")
 
 
 def pytest_collection_modifyitems(config, items):
-    """Modify test collection to add markers."""
+    """Modify test collection to add markers based on test names."""
     for item in items:
-        # Add asyncio marker to async tests
-        if asyncio.iscoroutinefunction(item.function):
-            item.add_marker(pytest.mark.asyncio)
+        # Add markers based on test file location
+        if 'redis' in str(item.fspath):
+            item.add_marker(pytest.mark.redis)
+        if 'postgres' in str(item.fspath):
+            item.add_marker(pytest.mark.postgres)
+        if 'auto_fix' in str(item.fspath):
+            item.add_marker(pytest.mark.integration)
+        if 'security' in str(item.fspath):
+            item.add_marker(pytest.mark.integration)
 
-        # Add unit marker to non-integration tests
-        if "integration" not in item.name:
-            item.add_marker(pytest.mark.unit)
+        # Add slow marker for performance tests
+        if 'performance' in item.name or 'perf' in item.name:
+            item.add_marker(pytest.mark.slow)
+
+
+# Custom pytest markers for different test types
+pytest_plugins = []
+
+
+# Test discovery configuration
+def pytest_generate_tests(metafunc):
+    """Generate test parameters dynamically."""
+    if 'database_url' in metafunc.fixturenames:
+        databases = ['reynard', 'reynard_ecs', 'reynard_auth', 'reynard_keys']
+        metafunc.parametrize('database_url', databases)
+
+
+# Async test support
+@pytest.fixture
+def async_test():
+    """Decorator for async tests."""
+
+    def decorator(func):
+        return pytest.mark.asyncio(func)
+
+    return decorator
+
+
+# Skip tests if services are not available
+def pytest_runtest_setup(item):
+    """Skip tests if required services are not available."""
+    if item.get_closest_marker('redis'):
+        # Check if Redis is available
+        try:
+            import redis
+
+            client = redis.Redis(host='localhost', port=6379, db=15)
+            client.ping()
+            client.close()
+        except Exception:
+            pytest.skip("Redis not available")
+
+    if item.get_closest_marker('postgres'):
+        # Check if PostgreSQL is available
+        try:
+            from sqlalchemy import create_engine, text
+            from tests.utils.env_loader import get_database_urls
+
+            databases = get_database_urls()
+            engine = create_engine(databases['keys'])
+            with engine.connect() as conn:
+                conn.execute(text('SELECT 1'))
+        except Exception:
+            pytest.skip("PostgreSQL not available")

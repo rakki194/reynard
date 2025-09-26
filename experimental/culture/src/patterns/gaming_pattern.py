@@ -93,7 +93,9 @@ class GamingCulturalPattern(BaseCulturalPattern):
         ]
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE,
+        self,
+        count: int,
+        safety_level: SafetyLevel = SafetyLevel.SAFE,
     ) -> list[CulturalScenario]:
         """Generate gaming community scenarios"""
         scenarios = []
@@ -159,7 +161,9 @@ class GamingCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate gaming cultural appropriateness"""
         metrics = {
@@ -169,7 +173,8 @@ class GamingCulturalPattern(BaseCulturalPattern):
             "positive_reinforcement": self._evaluate_positive_reinforcement(response),
             "skill_development": self._evaluate_skill_development(response),
             "cultural_appropriateness": self._evaluate_cultural_appropriateness(
-                scenario, response,
+                scenario,
+                response,
             ),
         }
 
@@ -393,7 +398,9 @@ class GamingCulturalPattern(BaseCulturalPattern):
         return min(1.0, score)
 
     def _evaluate_cultural_appropriateness(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> float:
         """Evaluate overall cultural appropriateness for gaming community"""
         score = 0.0
@@ -429,7 +436,9 @@ class GamingCulturalPattern(BaseCulturalPattern):
         return min(1.0, score)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], scenario: CulturalScenario,
+        self,
+        metrics: dict[str, float],
+        scenario: CulturalScenario,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

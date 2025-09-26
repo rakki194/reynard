@@ -246,7 +246,9 @@ class KeyCacheService:
             }
 
             self.redis_client.setex(
-                usage_cache_key, self.cache_ttl, json.dumps(usage_data).encode(),
+                usage_cache_key,
+                self.cache_ttl,
+                json.dumps(usage_data).encode(),
             )
 
             return True

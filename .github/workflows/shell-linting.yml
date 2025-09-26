@@ -98,7 +98,7 @@ jobs:
               echo "### Scripts Found ($(echo "$SHELL_FILES" | wc -l) total)"
               echo ""
               echo '```'
-              printf '%s\n' ${SHELL_FILES} | sed 's|^\./||'
+              printf '%s\n' "${SHELL_FILES}" | sed 's|^\./||'
               echo '```'
               echo ""
             } >> shell-linting-report.md

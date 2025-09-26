@@ -75,11 +75,15 @@ class ToolExecutionRequest(BaseModel):
     """Request model for tool execution."""
 
     parameters: dict[str, Any] = Field(
-        default_factory=dict, description="Tool parameters",
+        default_factory=dict,
+        description="Tool parameters",
     )
     dry_run: bool = Field(False, description="Whether to perform a dry run")
     timeout: int | None = Field(
-        None, description="Custom timeout in seconds", ge=1, le=300,
+        None,
+        description="Custom timeout in seconds",
+        ge=1,
+        le=300,
     )
 
 

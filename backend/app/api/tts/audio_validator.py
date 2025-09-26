@@ -127,11 +127,14 @@ class AudioValidator:
     def __init__(self, quality_level: str = "high"):
         self.quality_level = quality_level
         self.thresholds = self.QUALITY_THRESHOLDS.get(
-            quality_level, self.QUALITY_THRESHOLDS["high"],
+            quality_level,
+            self.QUALITY_THRESHOLDS["high"],
         )
 
     async def validate_audio_file(
-        self, file_path: str | Path, validate_content: bool = True,
+        self,
+        file_path: str | Path,
+        validate_content: bool = True,
     ) -> dict[str, Any]:
         """Comprehensive audio file validation.
 
@@ -216,7 +219,10 @@ class AudioValidator:
         }
 
     async def validate_uploaded_audio(
-        self, file_content: bytes, filename: str, validate_content: bool = True,
+        self,
+        file_content: bytes,
+        filename: str,
+        validate_content: bool = True,
     ) -> dict[str, Any]:
         """Validate uploaded audio file content.
 
@@ -234,7 +240,8 @@ class AudioValidator:
 
         # Detect format from content
         format_info = self._detect_audio_format(
-            file_content[:1024], Path(filename).suffix.lower(),
+            file_content[:1024],
+            Path(filename).suffix.lower(),
         )
         if not format_info:
             raise AudioFormatError(
@@ -303,7 +310,9 @@ class AudioValidator:
                 temp_path.unlink(missing_ok=True)
 
     def _detect_audio_format(
-        self, header: bytes, extension: str,
+        self,
+        header: bytes,
+        extension: str,
     ) -> dict[str, Any] | None:
         """Detect audio format from file header and extension."""
         for format_name, format_info in self.AUDIO_FORMATS.items():
@@ -334,7 +343,9 @@ class AudioValidator:
         return False
 
     async def _get_audio_metadata(
-        self, file_path: Path, format_name: str,
+        self,
+        file_path: Path,
+        format_name: str,
     ) -> dict[str, Any]:
         """Get audio metadata based on format."""
         if format_name == "wav":
@@ -354,7 +365,8 @@ class AudioValidator:
 
                 # Parse WAV header
                 riff, file_size, wave, fmt, fmt_size = struct.unpack(
-                    "<4sI4s4sI", header[:20],
+                    "<4sI4s4sI",
+                    header[:20],
                 )
 
                 if riff != b"RIFF" or wave != b"WAVE" or fmt != b"fmt ":
@@ -416,7 +428,9 @@ class AudioValidator:
         }
 
     async def _analyze_audio_quality(
-        self, file_path: Path, metadata: dict[str, Any],
+        self,
+        file_path: Path,
+        metadata: dict[str, Any],
     ) -> dict[str, Any]:
         """Analyze audio quality metrics."""
         try:

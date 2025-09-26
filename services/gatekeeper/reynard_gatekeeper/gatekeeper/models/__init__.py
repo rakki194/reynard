@@ -3,6 +3,20 @@
 This package contains all the data models used throughout the authentication system.
 """
 
+from .rbac import (
+    Operation,
+    Permission,
+    PermissionCreate,
+    PermissionResult,
+    PermissionScope,
+    ResourceAccessControl,
+    ResourcePermissionGrant,
+    ResourceType,
+    Role,
+    RoleCreate,
+    UserRoleAssignment,
+    UserRoleLink,
+)
 from .token import (
     TokenConfig,
     TokenData,
@@ -37,4 +51,17 @@ __all__ = [
     "TokenRefreshResponse",
     "TokenValidationResult",
     "TokenConfig",
+    # RBAC models
+    "Role",
+    "Permission",
+    "UserRoleLink",
+    "ResourceAccessControl",
+    "PermissionResult",
+    "RoleCreate",
+    "PermissionCreate",
+    "UserRoleAssignment",
+    "ResourcePermissionGrant",
+    "PermissionScope",
+    "ResourceType",
+    "Operation",
 ]

@@ -24,6 +24,8 @@ import time
 from pathlib import Path
 from typing import Any
 
+from app.core.project_root import get_project_root
+
 from ...config.continuous_indexing_config import continuous_indexing_config
 from ..email.infrastructure.continuous_indexing import ContinuousIndexingService
 from .file_indexing_service import get_file_indexing_service
@@ -120,7 +122,8 @@ class InitialIndexingService:
         try:
             watch_root = Path(
                 self.config.get(
-                    "rag_continuous_indexing_watch_root", "/home/kade/runeset/reynard",
+                    "rag_continuous_indexing_watch_root",
+                    str(get_project_root()),
                 ),
             )
 
@@ -135,7 +138,8 @@ class InitialIndexingService:
             # Use file indexing service for fast file discovery
             file_types = [".py", ".ts", ".tsx", ".js", ".jsx", ".md", ".txt"]
             result = await self.file_indexing_service.index_files(
-                [str(watch_root)], file_types,
+                [str(watch_root)],
+                file_types,
             )
 
             if result.get("success"):
@@ -182,7 +186,8 @@ class InitialIndexingService:
         }
 
     async def _check_database_and_skip_if_needed(
-        self, force: bool,
+        self,
+        force: bool,
     ) -> dict[str, Any] | None:
         """Check if database is empty and skip if not forced."""
         if not force:
@@ -216,7 +221,10 @@ class InitialIndexingService:
         return files_to_index
 
     async def _process_batch(
-        self, batch: list[Path], batch_num: int, total_batches: int,
+        self,
+        batch: list[Path],
+        batch_num: int,
+        total_batches: int,
     ) -> None:
         """Process a single batch of files."""
         self.current_progress.update(

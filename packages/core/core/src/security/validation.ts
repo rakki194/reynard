@@ -9,15 +9,8 @@ export { validateFileName, validateFileExtension, validateFileSize, getSafeFilen
 // Re-export SQL validation functions
 export { validateSQLInput, sanitizeSQLInput, validateSQLIdentifier, validateSQLParameter } from "./sql-validation.js";
 
-// Re-export general input validation functions
-export {
-  sanitizeHTML,
-  validateURL,
-  validateEmail,
-  validatePhoneNumber,
-  validatePassword,
-  validateInput,
-} from "./input-validation.js";
+// Note: General input validation functions (validateURL, validateEmail, etc.)
+// have been moved to the dedicated reynard-validation package
 
 // Re-export JSON validation functions
 export { validateJSON, sanitizeJSON } from "./json-validation.js";
@@ -37,4 +30,3 @@ export {
 // Legacy exports for backward compatibility
 export { validateFileName as validateFilename } from "./file-validation.js";
 export { validateSQLInput as validateSQL } from "./sql-validation.js";
-export { validateInput as validate } from "./input-validation.js";

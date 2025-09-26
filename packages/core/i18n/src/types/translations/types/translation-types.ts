@@ -13,3 +13,5 @@ export type { ChartTranslations } from "../../../translations/types/chart-transl
 export type { AuthTranslations } from "../../../translations/types/auth-translations";
 export type { ChatTranslations } from "../../../translations/types/chat-translations";
 export type { MonacoTranslations } from "../../../translations/types/monaco-translations";
+export type { NavigationTranslations } from "./navigation-translations";
+export type { UiTranslations } from "./ui-translations";

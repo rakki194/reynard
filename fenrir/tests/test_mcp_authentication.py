@@ -31,6 +31,8 @@ import requests
 from fastapi import HTTPException, status
 from fastapi.testclient import TestClient
 
+from backend.app.api.mcp.bootstrap_endpoints import bootstrap_mcp_authentication
+
 # Import MCP authentication components
 from backend.app.security.mcp_auth import (
     MCPAuthService,
@@ -39,7 +41,6 @@ from backend.app.security.mcp_auth import (
     mcp_auth_service,
     mcp_security,
 )
-from backend.app.api.mcp.bootstrap_endpoints import bootstrap_mcp_authentication
 
 
 class MCPAuthenticationTestSuite:
@@ -48,7 +49,9 @@ class MCPAuthenticationTestSuite:
     def __init__(self):
         """Initialize the test suite with configuration."""
         self.mcp_server_url = os.getenv("MCP_SERVER_URL", "http://localhost:8001")
-        self.fastapi_backend_url = os.getenv("FASTAPI_BACKEND_URL", "http://localhost:8000")
+        self.fastapi_backend_url = os.getenv(
+            "FASTAPI_BACKEND_URL", "http://localhost:8000"
+        )
         self.test_client_id = "test-mcp-client"
         self.test_client_secret = "test-secret-key-2025"
         self.auth_service = MCPAuthService()
@@ -89,8 +92,7 @@ class TestMCPServerSecurity:
         try:
             # Test unauthenticated request to MCP server
             response = requests.get(
-                f"{self.test_suite.mcp_server_url}/tools/list",
-                timeout=5
+                f"{self.test_suite.mcp_server_url}/tools/list", timeout=5
             )
 
             # Should return 401 Unauthorized
@@ -98,7 +100,9 @@ class TestMCPServerSecurity:
                 print("✅ MCP server correctly rejects unauthenticated requests")
                 return True
             else:
-                print(f"❌ MCP server allows unauthenticated access: {response.status_code}")
+                print(
+                    f"❌ MCP server allows unauthenticated access: {response.status_code}"
+                )
                 return False
 
         except requests.exceptions.RequestException as e:
@@ -113,7 +117,7 @@ class TestMCPServerSecurity:
             response = requests.get(
                 f"{self.test_suite.mcp_server_url}/tools/list",
                 headers=headers,
-                timeout=5
+                timeout=5,
             )
 
             # Should return 401 Unauthorized
@@ -138,20 +142,18 @@ class TestMCPServerSecurity:
                 "permissions": ["mcp:read"],
                 "issued_at": time.time() - 86400,  # 24 hours ago
                 "expires_at": time.time() - 3600,  # 1 hour ago
-                "scope": "mcp"
+                "scope": "mcp",
             }
 
             expired_token = jwt.encode(
-                expired_payload,
-                "reynard-mcp-secret-key-2025",
-                algorithm="HS256"
+                expired_payload, "reynard-mcp-secret-key-2025", algorithm="HS256"
             )
 
             headers = {"Authorization": f"Bearer {expired_token}"}
             response = requests.get(
                 f"{self.test_suite.mcp_server_url}/tools/list",
                 headers=headers,
-                timeout=5
+                timeout=5,
             )
 
             # Should return 401 Unauthorized
@@ -176,13 +178,11 @@ class TestMCPServerSecurity:
                 "permissions": ["mcp:read"],  # Only read permission
                 "issued_at": time.time(),
                 "expires_at": time.time() + 3600,
-                "scope": "mcp"
+                "scope": "mcp",
             }
 
             limited_token = jwt.encode(
-                limited_payload,
-                "reynard-mcp-secret-key-2025",
-                algorithm="HS256"
+                limited_payload, "reynard-mcp-secret-key-2025", algorithm="HS256"
             )
 
             headers = {"Authorization": f"Bearer {limited_token}"}
@@ -191,7 +191,7 @@ class TestMCPServerSecurity:
             response = requests.get(
                 f"{self.test_suite.mcp_server_url}/tools/list",
                 headers=headers,
-                timeout=5
+                timeout=5,
             )
 
             if response.status_code == 200:
@@ -202,17 +202,23 @@ class TestMCPServerSecurity:
                     f"{self.test_suite.mcp_server_url}/tools/execute",
                     headers=headers,
                     json={"tool": "test_tool", "params": {}},
-                    timeout=5
+                    timeout=5,
                 )
 
                 if write_response.status_code == 403:
-                    print("✅ MCP server correctly blocks unauthorized write operations")
+                    print(
+                        "✅ MCP server correctly blocks unauthorized write operations"
+                    )
                     return True
                 else:
-                    print(f"❌ MCP server allows unauthorized write operations: {write_response.status_code}")
+                    print(
+                        f"❌ MCP server allows unauthorized write operations: {write_response.status_code}"
+                    )
                     return False
             else:
-                print(f"❌ MCP server blocks permitted read operations: {response.status_code}")
+                print(
+                    f"❌ MCP server blocks permitted read operations: {response.status_code}"
+                )
                 return False
 
         except requests.exceptions.RequestException as e:
@@ -235,13 +241,13 @@ class TestFastAPIBackendIntegration:
                 "client_id": self.test_suite.test_client_id,
                 "client_secret": self.test_suite.test_client_secret,
                 "client_type": "agent",
-                "permissions": ["mcp:read", "mcp:write"]
+                "permissions": ["mcp:read", "mcp:write"],
             }
 
             response = requests.post(
                 f"{self.test_suite.fastapi_backend_url}/api/mcp/bootstrap",
                 json=bootstrap_data,
-                timeout=10
+                timeout=10,
             )
 
             if response.status_code == 200:
@@ -257,20 +263,24 @@ class TestFastAPIBackendIntegration:
                     auth_response = requests.get(
                         f"{self.test_suite.fastapi_backend_url}/api/mcp/status",
                         headers=headers,
-                        timeout=5
+                        timeout=5,
                     )
 
                     if auth_response.status_code == 200:
                         print("✅ FastAPI backend accepts bootstrap-generated tokens")
                         return True
                     else:
-                        print(f"❌ FastAPI backend rejects bootstrap-generated tokens: {auth_response.status_code}")
+                        print(
+                            f"❌ FastAPI backend rejects bootstrap-generated tokens: {auth_response.status_code}"
+                        )
                         return False
                 else:
                     print("❌ FastAPI backend bootstrap response missing access_token")
                     return False
             else:
-                print(f"❌ FastAPI backend bootstrap authentication failed: {response.status_code}")
+                print(
+                    f"❌ FastAPI backend bootstrap authentication failed: {response.status_code}"
+                )
                 return False
 
         except requests.exceptions.RequestException as e:
@@ -285,21 +295,25 @@ class TestFastAPIBackendIntegration:
                 "client_id": "invalid-client",
                 "client_secret": "invalid-secret",
                 "client_type": "agent",
-                "permissions": ["mcp:read"]
+                "permissions": ["mcp:read"],
             }
 
             response = requests.post(
                 f"{self.test_suite.fastapi_backend_url}/api/mcp/bootstrap",
                 json=invalid_data,
-                timeout=5
+                timeout=5,
             )
 
             # Should return 401 Unauthorized
             if response.status_code == 401:
-                print("✅ FastAPI backend correctly rejects invalid bootstrap credentials")
+                print(
+                    "✅ FastAPI backend correctly rejects invalid bootstrap credentials"
+                )
                 return True
             else:
-                print(f"❌ FastAPI backend accepts invalid bootstrap credentials: {response.status_code}")
+                print(
+                    f"❌ FastAPI backend accepts invalid bootstrap credentials: {response.status_code}"
+                )
                 return False
 
         except requests.exceptions.RequestException as e:
@@ -314,13 +328,13 @@ class TestFastAPIBackendIntegration:
                 "client_id": self.test_suite.test_client_id,
                 "client_secret": self.test_suite.test_client_secret,
                 "client_type": "agent",
-                "permissions": ["mcp:read"]
+                "permissions": ["mcp:read"],
             }
 
             response = requests.post(
                 f"{self.test_suite.fastapi_backend_url}/api/mcp/bootstrap",
                 json=bootstrap_data,
-                timeout=5
+                timeout=5,
             )
 
             if response.status_code == 200:
@@ -333,20 +347,24 @@ class TestFastAPIBackendIntegration:
                     refresh_response = requests.post(
                         f"{self.test_suite.fastapi_backend_url}/api/mcp/refresh",
                         json=refresh_data,
-                        timeout=5
+                        timeout=5,
                     )
 
                     if refresh_response.status_code == 200:
                         print("✅ FastAPI backend token refresh mechanism works")
                         return True
                     else:
-                        print(f"❌ FastAPI backend token refresh failed: {refresh_response.status_code}")
+                        print(
+                            f"❌ FastAPI backend token refresh failed: {refresh_response.status_code}"
+                        )
                         return False
                 else:
                     print("❌ FastAPI backend bootstrap response missing refresh_token")
                     return False
             else:
-                print(f"❌ Could not get initial token for refresh test: {response.status_code}")
+                print(
+                    f"❌ Could not get initial token for refresh test: {response.status_code}"
+                )
                 return False
 
         except requests.exceptions.RequestException as e:
@@ -371,13 +389,13 @@ class TestRateLimitingAndAbusePrevention:
                     "client_id": f"test-client-{i}",
                     "client_secret": "invalid-secret",
                     "client_type": "agent",
-                    "permissions": ["mcp:read"]
+                    "permissions": ["mcp:read"],
                 }
 
                 response = requests.post(
                     f"{self.test_suite.fastapi_backend_url}/api/mcp/bootstrap",
                     json=invalid_data,
-                    timeout=2
+                    timeout=2,
                 )
 
                 if response.status_code == 429:  # Too Many Requests
@@ -407,13 +425,13 @@ class TestRateLimitingAndAbusePrevention:
                     "client_id": self.test_suite.test_client_id,
                     "client_secret": "wrong-password",
                     "client_type": "agent",
-                    "permissions": ["mcp:read"]
+                    "permissions": ["mcp:read"],
                 }
 
                 response = requests.post(
                     f"{self.test_suite.fastapi_backend_url}/api/mcp/bootstrap",
                     json=invalid_data,
-                    timeout=5
+                    timeout=5,
                 )
 
                 if response.status_code in [429, 423]:  # Rate limited or locked
@@ -422,7 +440,9 @@ class TestRateLimitingAndAbusePrevention:
                 await asyncio.sleep(0.5)
 
             if blocked_attempts > 0:
-                print(f"✅ Brute force protection active: {blocked_attempts}/5 attempts blocked")
+                print(
+                    f"✅ Brute force protection active: {blocked_attempts}/5 attempts blocked"
+                )
                 return True
             else:
                 print("⚠️  No brute force protection detected")
@@ -448,17 +468,19 @@ class TestEndToEndAuthenticationFlow:
                 "client_id": self.test_suite.test_client_id,
                 "client_secret": self.test_suite.test_client_secret,
                 "client_type": "agent",
-                "permissions": ["mcp:read", "mcp:write", "mcp:admin"]
+                "permissions": ["mcp:read", "mcp:write", "mcp:admin"],
             }
 
             bootstrap_response = requests.post(
                 f"{self.test_suite.fastapi_backend_url}/api/mcp/bootstrap",
                 json=bootstrap_data,
-                timeout=10
+                timeout=10,
             )
 
             if bootstrap_response.status_code != 200:
-                print(f"❌ Bootstrap authentication failed: {bootstrap_response.status_code}")
+                print(
+                    f"❌ Bootstrap authentication failed: {bootstrap_response.status_code}"
+                )
                 return False
 
             bootstrap_result = bootstrap_response.json()
@@ -471,7 +493,7 @@ class TestEndToEndAuthenticationFlow:
             mcp_response = requests.get(
                 f"{self.test_suite.mcp_server_url}/tools/list",
                 headers=mcp_headers,
-                timeout=5
+                timeout=5,
             )
 
             if mcp_response.status_code != 200:
@@ -485,11 +507,13 @@ class TestEndToEndAuthenticationFlow:
             backend_response = requests.get(
                 f"{self.test_suite.fastapi_backend_url}/api/mcp/status",
                 headers=backend_headers,
-                timeout=5
+                timeout=5,
             )
 
             if backend_response.status_code != 200:
-                print(f"❌ FastAPI backend access failed: {backend_response.status_code}")
+                print(
+                    f"❌ FastAPI backend access failed: {backend_response.status_code}"
+                )
                 return False
 
             print("✅ Step 3: FastAPI backend access successful")
@@ -502,13 +526,11 @@ class TestEndToEndAuthenticationFlow:
                 "permissions": ["mcp:read"],
                 "issued_at": time.time(),
                 "expires_at": time.time() + 1,  # Expires in 1 second
-                "scope": "mcp"
+                "scope": "mcp",
             }
 
             expiring_token = jwt.encode(
-                expiring_payload,
-                "reynard-mcp-secret-key-2025",
-                algorithm="HS256"
+                expiring_payload, "reynard-mcp-secret-key-2025", algorithm="HS256"
             )
 
             # Wait for token to expire
@@ -519,7 +541,7 @@ class TestEndToEndAuthenticationFlow:
             expired_response = requests.get(
                 f"{self.test_suite.mcp_server_url}/tools/list",
                 headers=expired_headers,
-                timeout=5
+                timeout=5,
             )
 
             if expired_response.status_code == 401:
@@ -541,17 +563,19 @@ class TestEndToEndAuthenticationFlow:
                 "client_id": self.test_suite.test_client_id,
                 "client_secret": self.test_suite.test_client_secret,
                 "client_type": "agent",
-                "permissions": ["mcp:read", "mcp:write"]
+                "permissions": ["mcp:read", "mcp:write"],
             }
 
             response = requests.post(
                 f"{self.test_suite.fastapi_backend_url}/api/mcp/bootstrap",
                 json=bootstrap_data,
-                timeout=5
+                timeout=5,
             )
 
             if response.status_code != 200:
-                print(f"❌ Could not get token for cross-service test: {response.status_code}")
+                print(
+                    f"❌ Could not get token for cross-service test: {response.status_code}"
+                )
                 return False
 
             token = response.json()["access_token"]
@@ -561,20 +585,22 @@ class TestEndToEndAuthenticationFlow:
             mcp_result = requests.get(
                 f"{self.test_suite.mcp_server_url}/tools/list",
                 headers=headers,
-                timeout=5
+                timeout=5,
             )
 
             backend_result = requests.get(
                 f"{self.test_suite.fastapi_backend_url}/api/mcp/status",
                 headers=headers,
-                timeout=5
+                timeout=5,
             )
 
             if mcp_result.status_code == 200 and backend_result.status_code == 200:
                 print("✅ Cross-service token validation successful")
                 return True
             else:
-                print(f"❌ Cross-service token validation failed: MCP={mcp_result.status_code}, Backend={backend_result.status_code}")
+                print(
+                    f"❌ Cross-service token validation failed: MCP={mcp_result.status_code}, Backend={backend_result.status_code}"
+                )
                 return False
 
         except requests.exceptions.RequestException as e:
@@ -601,7 +627,7 @@ async def run_fenrir_authentication_tests() -> Dict[str, Any]:
     results = {
         "timestamp": datetime.now().isoformat(),
         "test_suite": "Fenrir MCP Authentication Security",
-        "tests": {}
+        "tests": {},
     }
 
     # MCP Server Security Tests
@@ -648,7 +674,7 @@ async def run_fenrir_authentication_tests() -> Dict[str, Any]:
         "passed_tests": passed_tests,
         "failed_tests": total_tests - passed_tests,
         "success_rate": (passed_tests / total_tests) * 100 if total_tests > 0 else 0,
-        "overall_status": "PASS" if passed_tests == total_tests else "FAIL"
+        "overall_status": "PASS" if passed_tests == total_tests else "FAIL",
     }
 
     # Cleanup

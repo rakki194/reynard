@@ -4,7 +4,7 @@
  */
 
 import { Component, onMount } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-primitives";
 
 interface Phyllotactic3DCanvasProps {
   currentPoints: () => any[];

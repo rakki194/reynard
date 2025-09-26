@@ -55,8 +55,7 @@ class CaptionGeneratorMixin:
         """
 
     async def unload(self) -> None:
-        """Unload the model from memory.
-        """
+        """Unload the model from memory."""
 
     def get_info(self) -> dict[str, Any]:
         """Get comprehensive information about this generator.

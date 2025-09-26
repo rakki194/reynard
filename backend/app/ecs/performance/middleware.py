@@ -105,7 +105,10 @@ class PerformanceTracker:
         self._active_requests: dict[str, PerformanceMetrics] = {}
 
     def start_request(
-        self, request_id: str, endpoint: str, method: str,
+        self,
+        request_id: str,
+        endpoint: str,
+        method: str,
     ) -> PerformanceMetrics:
         """Start tracking a request."""
         with self._lock:
@@ -285,7 +288,9 @@ class PerformanceMiddleware(BaseHTTPMiddleware):
             tracemalloc.start()
 
     async def dispatch(
-        self, request: Request, call_next: RequestResponseEndpoint,
+        self,
+        request: Request,
+        call_next: RequestResponseEndpoint,
     ) -> Response:
         """Process request with performance tracking."""
         request_id = f"{request.client.host}:{request.client.port}:{time.time()}"
@@ -316,7 +321,9 @@ class PerformanceMiddleware(BaseHTTPMiddleware):
         finally:
             # End tracking
             performance_tracker.end_request(
-                request_id, metrics.status_code, metrics.error_message,
+                request_id,
+                metrics.status_code,
+                metrics.error_message,
             )
 
 
@@ -354,7 +361,10 @@ def track_db_query(
                     result = await func(*args, **kwargs)
                     duration = time.time() - start_time
                     performance_tracker.add_db_query(
-                        query, duration, parameters, rows_affected,
+                        query,
+                        duration,
+                        parameters,
+                        rows_affected,
                     )
                     return result
                 except Exception:
@@ -370,7 +380,10 @@ def track_db_query(
                 result = func(*args, **kwargs)
                 duration = time.time() - start_time
                 performance_tracker.add_db_query(
-                    query, duration, parameters, rows_affected,
+                    query,
+                    duration,
+                    parameters,
+                    rows_affected,
                 )
                 return result
             except Exception:

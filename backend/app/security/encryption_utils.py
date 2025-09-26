@@ -34,10 +34,8 @@ class EncryptionError(Exception):
     """Exception raised for encryption-related errors."""
 
 
-
 class DecryptionError(Exception):
     """Exception raised for decryption-related errors."""
-
 
 
 class EncryptionUtils:
@@ -107,7 +105,9 @@ class EncryptionUtils:
 
     @staticmethod
     def encrypt_aes_gcm(
-        data: bytes, key: bytes, associated_data: bytes | None = None,
+        data: bytes,
+        key: bytes,
+        associated_data: bytes | None = None,
     ) -> tuple[bytes, bytes]:
         """Encrypt data using AES-256-GCM.
 
@@ -164,7 +164,9 @@ class EncryptionUtils:
         try:
             # Create cipher
             cipher = Cipher(
-                algorithms.AES(key), modes.GCM(iv), backend=default_backend(),
+                algorithms.AES(key),
+                modes.GCM(iv),
+                backend=default_backend(),
             )
             decryptor = cipher.decryptor()
 
@@ -182,7 +184,9 @@ class EncryptionUtils:
 
     @staticmethod
     def encrypt_aes_cbc(
-        data: bytes, key: bytes, iv: bytes | None = None,
+        data: bytes,
+        key: bytes,
+        iv: bytes | None = None,
     ) -> tuple[bytes, bytes]:
         """Encrypt data using AES-256-CBC.
 
@@ -234,7 +238,9 @@ class EncryptionUtils:
         try:
             # Create cipher
             cipher = Cipher(
-                algorithms.AES(key), modes.CBC(iv), backend=default_backend(),
+                algorithms.AES(key),
+                modes.CBC(iv),
+                backend=default_backend(),
             )
             decryptor = cipher.decryptor()
 
@@ -253,7 +259,9 @@ class EncryptionUtils:
 
     @staticmethod
     def encrypt_rsa(
-        data: bytes, public_key: rsa.RSAPublicKey, padding_algorithm: str = "oaep",
+        data: bytes,
+        public_key: rsa.RSAPublicKey,
+        padding_algorithm: str = "oaep",
     ) -> bytes:
         """Encrypt data using RSA.
 
@@ -315,7 +323,9 @@ class EncryptionUtils:
 
     @staticmethod
     def sign_rsa(
-        data: bytes, private_key: rsa.RSAPrivateKey, hash_algorithm: str = "sha256",
+        data: bytes,
+        private_key: rsa.RSAPrivateKey,
+        hash_algorithm: str = "sha256",
     ) -> bytes:
         """Sign data using RSA.
 
@@ -341,7 +351,8 @@ class EncryptionUtils:
             return private_key.sign(
                 data,
                 padding.PSS(
-                    mgf=padding.MGF1(hash_algo), salt_length=padding.PSS.MAX_LENGTH,
+                    mgf=padding.MGF1(hash_algo),
+                    salt_length=padding.PSS.MAX_LENGTH,
                 ),
                 hash_algo,
             )
@@ -382,7 +393,8 @@ class EncryptionUtils:
                 signature,
                 data,
                 padding.PSS(
-                    mgf=padding.MGF1(hash_algo), salt_length=padding.PSS.MAX_LENGTH,
+                    mgf=padding.MGF1(hash_algo),
+                    salt_length=padding.PSS.MAX_LENGTH,
                 ),
                 hash_algo,
             )
@@ -393,7 +405,9 @@ class EncryptionUtils:
 
     @staticmethod
     def hash_data(
-        data: bytes, algorithm: str = "sha256", salt: bytes | None = None,
+        data: bytes,
+        algorithm: str = "sha256",
+        salt: bytes | None = None,
     ) -> bytes:
         """Hash data using specified algorithm.
 
@@ -426,7 +440,9 @@ class EncryptionUtils:
 
     @staticmethod
     def secure_hash_password(
-        password: str, salt: bytes | None = None, iterations: int = 100000,
+        password: str,
+        salt: bytes | None = None,
+        iterations: int = 100000,
     ) -> tuple[bytes, bytes]:
         """Securely hash a password using PBKDF2.
 
@@ -457,7 +473,10 @@ class EncryptionUtils:
 
     @staticmethod
     def verify_password(
-        password: str, password_hash: bytes, salt: bytes, iterations: int = 100000,
+        password: str,
+        password_hash: bytes,
+        salt: bytes,
+        iterations: int = 100000,
     ) -> bool:
         """Verify a password against its hash.
 
@@ -473,7 +492,9 @@ class EncryptionUtils:
         """
         try:
             computed_hash, _ = EncryptionUtils.secure_hash_password(
-                password, salt, iterations,
+                password,
+                salt,
+                iterations,
             )
             return secrets.compare_digest(password_hash, computed_hash)
         except Exception:
@@ -533,7 +554,10 @@ class EncryptionUtils:
 
             # Decrypt data
             decrypted_data = EncryptionUtils.decrypt_aes_gcm(
-                encrypted, key, iv, associated_data,
+                encrypted,
+                key,
+                iv,
+                associated_data,
             )
 
             return decrypted_data.decode("utf-8")

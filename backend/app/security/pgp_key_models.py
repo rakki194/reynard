@@ -26,7 +26,9 @@ from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
-    Enum as SQLEnum,
+)
+from sqlalchemy import Enum as SQLEnum
+from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
@@ -53,7 +55,7 @@ AuthBase = declarative_base()
 
 class PGPKeyStatus(str, Enum):
     """PGP key status enumeration."""
-    
+
     ACTIVE = "active"
     INACTIVE = "inactive"
     REVOKED = "revoked"
@@ -63,7 +65,7 @@ class PGPKeyStatus(str, Enum):
 
 class PGPKeyType(str, Enum):
     """PGP key type enumeration."""
-    
+
     RSA = "rsa"
     DSA = "dsa"
     ELGAMAL = "elgamal"
@@ -77,27 +79,27 @@ class PGPKey(AuthBase):
     __tablename__ = "pgp_keys"
 
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
-    
+
     # Key identification
     key_id = Column(String(16), unique=True, nullable=False, index=True)
     fingerprint = Column(String(40), unique=True, nullable=False, index=True)
     short_fingerprint = Column(String(8), nullable=False, index=True)
-    
+
     # Key details
     key_type = Column(SQLEnum(PGPKeyType), nullable=False)
     key_length = Column(Integer, nullable=False)
     algorithm = Column(String(50), nullable=False)
-    
+
     # User association (references Gatekeeper user)
     user_id = Column(String(255), nullable=False, index=True)  # Gatekeeper user ID
     email = Column(String(255), nullable=False, index=True)
     name = Column(String(255), nullable=False)
-    
+
     # Key data (encrypted)
     public_key_armored = Column(Text, nullable=False)
     private_key_armored = Column(Text, nullable=True)  # Encrypted private key
     passphrase_hash = Column(String(255), nullable=True)  # Hash of passphrase
-    
+
     # Key metadata
     status = Column(SQLEnum(PGPKeyStatus), nullable=False, default=PGPKeyStatus.ACTIVE)
     created_at = Column(
@@ -108,23 +110,23 @@ class PGPKey(AuthBase):
     expires_at = Column(DateTime(timezone=True), nullable=True)
     last_used = Column(DateTime(timezone=True), nullable=True)
     usage_count = Column(Integer, default=0)
-    
+
     # Admin controls
     is_primary = Column(Boolean, default=False, index=True)  # Primary key for user
     auto_rotate = Column(Boolean, default=False)  # Auto-rotation enabled
     rotation_schedule_days = Column(Integer, default=365)  # Rotation schedule
-    
+
     # Security metadata
     trust_level = Column(Integer, default=0)  # 0-5 trust level
     is_revoked = Column(Boolean, default=False, index=True)
     revocation_reason = Column(Text, nullable=True)
     revoked_at = Column(DateTime(timezone=True), nullable=True)
     revoked_by = Column(String(255), nullable=True)  # Admin who revoked
-    
+
     # Additional metadata
     key_metadata = Column(Text, nullable=True)  # JSON metadata
     notes = Column(Text, nullable=True)  # Admin notes
-    
+
     # Timestamps
     updated_at = Column(
         DateTime(timezone=True),
@@ -174,24 +176,24 @@ class PGPKeyAccessLog(AuthBase):
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
     key_id = Column(String(16), nullable=False, index=True)
     user_id = Column(String(255), nullable=False, index=True)
-    
+
     # Operation details
     operation = Column(
         String(100), nullable=False, index=True
     )  # 'generate', 'regenerate', 'revoke', 'export', 'import', 'use'
     success = Column(Boolean, nullable=False, index=True)
     error_message = Column(Text, nullable=True)
-    
+
     # Request context
     ip_address = Column(String(45), nullable=True)  # IPv4 or IPv6
     user_agent = Column(Text, nullable=True)
     request_id = Column(String(255), nullable=True)  # For tracing
-    
+
     # Additional context
     admin_action = Column(Boolean, default=False)  # Was this an admin action?
     admin_user_id = Column(String(255), nullable=True)  # Admin who performed action
     target_user_id = Column(String(255), nullable=True)  # User whose key was affected
-    
+
     # Timestamp
     created_at = Column(
         DateTime(timezone=True),
@@ -209,24 +211,24 @@ class PGPKeyRotationLog(AuthBase):
     __tablename__ = "pgp_key_rotation_logs"
 
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
-    
+
     # Key references
     old_key_id = Column(String(16), nullable=True, index=True)  # Previous key
     new_key_id = Column(String(16), nullable=False, index=True)  # New key
     user_id = Column(String(255), nullable=False, index=True)
-    
+
     # Rotation details
     rotation_type = Column(
         String(50), nullable=False
     )  # 'manual', 'automatic', 'scheduled', 'emergency'
     reason = Column(Text, nullable=True)  # Reason for rotation
     initiated_by = Column(String(255), nullable=False)  # User or system who initiated
-    
+
     # Rotation metadata
     old_key_expired = Column(Boolean, default=False)
     old_key_revoked = Column(Boolean, default=False)
     migration_completed = Column(Boolean, default=False)
-    
+
     # Timestamps
     started_at = Column(
         DateTime(timezone=True),
@@ -234,7 +236,7 @@ class PGPKeyRotationLog(AuthBase):
         nullable=False,
     )
     completed_at = Column(DateTime(timezone=True), nullable=True)
-    
+
     # Additional metadata
     rotation_metadata = Column(Text, nullable=True)  # JSON metadata
 

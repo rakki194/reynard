@@ -53,7 +53,9 @@ class MermaidTools:
             }
 
     def render_mermaid_to_svg(
-        self, diagram_content: str, output_path: str = None,
+        self,
+        diagram_content: str,
+        output_path: str = None,
     ) -> dict[str, Any]:
         """Render a Mermaid diagram to SVG format.
 
@@ -100,7 +102,9 @@ class MermaidTools:
             }
 
     def render_mermaid_to_png(
-        self, diagram_content: str, output_path: str = None,
+        self,
+        diagram_content: str,
+        output_path: str = None,
     ) -> dict[str, Any]:
         """Render a Mermaid diagram to PNG format.
 

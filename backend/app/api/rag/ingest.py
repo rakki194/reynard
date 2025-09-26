@@ -20,7 +20,8 @@ router = APIRouter(tags=["rag"])
 
 @router.post("/ingest", response_model=RAGIngestResponse)
 async def ingest_documents(
-    request: RAGIngestRequest, mcp_client: MCPTokenData = Depends(require_rag_ingest),
+    request: RAGIngestRequest,
+    mcp_client: MCPTokenData = Depends(require_rag_ingest),
 ):
     """Ingest documents into the RAG system."""
     try:
@@ -42,7 +43,8 @@ async def ingest_documents(
 
 @router.post("/ingest/stream")
 async def ingest_documents_stream(
-    request: RAGIngestRequest, mcp_client: MCPTokenData = Depends(require_rag_ingest),
+    request: RAGIngestRequest,
+    mcp_client: MCPTokenData = Depends(require_rag_ingest),
 ):
     """Stream document ingestion progress."""
     try:

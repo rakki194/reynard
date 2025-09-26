@@ -125,6 +125,17 @@ class ServiceConfigManager:
     def _load_default_configurations(self) -> None:
         """Load default configurations for all services."""
         default_configs = {
+            "database": {
+                "enabled": True,
+                "database_url": os.getenv("DATABASE_URL"),
+                "database_name": "main",
+                "pool_size": int(os.getenv("DATABASE_POOL_SIZE", "20")),
+                "max_overflow": int(os.getenv("DATABASE_MAX_OVERFLOW", "30")),
+                "pool_timeout": int(os.getenv("DATABASE_POOL_TIMEOUT", "30")),
+                "pool_recycle": int(os.getenv("DATABASE_POOL_RECYCLE", "3600")),
+                "enable_logging": os.getenv("DEBUG_SQL_QUERIES", "false").lower()
+                == "true",
+            },
             "gatekeeper": {
                 "enabled": True,
                 "jwt_secret": os.getenv("JWT_SECRET", "default-secret"),
@@ -149,7 +160,9 @@ class ServiceConfigManager:
             "rag": {
                 "rag_enabled": os.getenv("RAG_ENABLED", "true").lower() == "true",
                 "rag_database_url": os.getenv("RAG_DATABASE_URL"),
-                "ollama_base_url": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+                "ollama_base_url": os.getenv(
+                    "OLLAMA_BASE_URL", "http://localhost:11434"
+                ),
                 "embedding_model": "embeddinggemma:latest",
                 "chunk_size": 1000,
                 "chunk_overlap": 200,
@@ -165,7 +178,9 @@ class ServiceConfigManager:
                 "providers": {
                     "ollama": {
                         "enabled": True,
-                        "base_url": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
+                        "base_url": os.getenv(
+                            "OLLAMA_BASE_URL", "http://localhost:11434"
+                        ),
                         "timeout": 30.0,
                     },
                     "vllm": {
@@ -174,13 +189,19 @@ class ServiceConfigManager:
                         "timeout": 30.0,
                     },
                     "sglang": {
-                        "enabled": os.getenv("SGLANG_ENABLED", "false").lower() == "true",
-                        "base_url": os.getenv("SGLANG_BASE_URL", "http://localhost:30000"),
+                        "enabled": os.getenv("SGLANG_ENABLED", "false").lower()
+                        == "true",
+                        "base_url": os.getenv(
+                            "SGLANG_BASE_URL", "http://localhost:30000"
+                        ),
                         "timeout": 30.0,
                     },
                     "llamacpp": {
-                        "enabled": os.getenv("LLAMACPP_ENABLED", "false").lower() == "true",
-                        "base_url": os.getenv("LLAMACPP_BASE_URL", "http://localhost:8080"),
+                        "enabled": os.getenv("LLAMACPP_ENABLED", "false").lower()
+                        == "true",
+                        "base_url": os.getenv(
+                            "LLAMACPP_BASE_URL", "http://localhost:8080"
+                        ),
                         "timeout": 30.0,
                     },
                 },
@@ -199,27 +220,67 @@ class ServiceConfigManager:
                 "max_results": 100,
             },
             "diffusion_pipe": {
-                "enabled": os.getenv("DIFFUSION_PIPE_ENABLED", "true").lower() == "true",
-                "path": os.getenv("DIFFUSION_PIPE_PATH", "/home/kade/runeset/diffusion-pipe"),
+                "enabled": os.getenv("DIFFUSION_PIPE_ENABLED", "true").lower()
+                == "true",
+                "path": os.getenv(
+                    "DIFFUSION_PIPE_PATH", "/home/kade/runeset/diffusion-pipe"
+                ),
                 "debug": os.getenv("DIFFUSION_PIPE_DEBUG", "false").lower() == "true",
                 "timeout": float(os.getenv("DIFFUSION_PIPE_TIMEOUT", "300.0")),
-                "max_concurrent_trainings": int(os.getenv("DIFFUSION_PIPE_MAX_CONCURRENT_TRAININGS", "2")),
-                "default_output_dir": os.getenv("DIFFUSION_PIPE_DEFAULT_OUTPUT_DIR", "/home/kade/runeset/diffusion-pipe/output"),
-                "default_dataset_dir": os.getenv("DIFFUSION_PIPE_DEFAULT_DATASET_DIR", "/home/kade/datasets"),
-                "default_model_dir": os.getenv("DIFFUSION_PIPE_DEFAULT_MODEL_DIR", "/home/kade/runeset/wolfy/models"),
-                "gpu_memory_threshold": float(os.getenv("DIFFUSION_PIPE_GPU_MEMORY_THRESHOLD", "0.8")),
-                "max_gpu_memory_gb": int(os.getenv("DIFFUSION_PIPE_MAX_GPU_MEMORY_GB", "24")),
-                "enable_gpu_monitoring": os.getenv("DIFFUSION_PIPE_ENABLE_GPU_MONITORING", "true").lower() == "true",
-                "process_timeout": int(os.getenv("DIFFUSION_PIPE_PROCESS_TIMEOUT", "3600")),
-                "enable_checkpointing": os.getenv("DIFFUSION_PIPE_ENABLE_CHECKPOINTING", "true").lower() == "true",
-                "checkpoint_interval": int(os.getenv("DIFFUSION_PIPE_CHECKPOINT_INTERVAL", "100")),
-            "enable_wandb": os.getenv("DIFFUSION_PIPE_ENABLE_WANDB", "true").lower() == "true",
-            "wandb_api_key": os.getenv("DIFFUSION_PIPE_WANDB_API_KEY", ""),
-            "log_level": os.getenv("DIFFUSION_PIPE_LOG_LEVEL", "INFO"),
-            "enable_metrics": os.getenv("DIFFUSION_PIPE_ENABLE_METRICS", "true").lower() == "true",
-                "enable_security_scanning": os.getenv("DIFFUSION_PIPE_ENABLE_SECURITY_SCANNING", "true").lower() == "true",
-                "validate_paths": os.getenv("DIFFUSION_PIPE_VALIDATE_PATHS", "true").lower() == "true",
-                "sanitize_inputs": os.getenv("DIFFUSION_PIPE_SANITIZE_INPUTS", "true").lower() == "true",
+                "max_concurrent_trainings": int(
+                    os.getenv("DIFFUSION_PIPE_MAX_CONCURRENT_TRAININGS", "2")
+                ),
+                "default_output_dir": os.getenv(
+                    "DIFFUSION_PIPE_DEFAULT_OUTPUT_DIR",
+                    "/home/kade/runeset/diffusion-pipe/output",
+                ),
+                "default_dataset_dir": os.getenv(
+                    "DIFFUSION_PIPE_DEFAULT_DATASET_DIR", "/home/kade/datasets"
+                ),
+                "default_model_dir": os.getenv(
+                    "DIFFUSION_PIPE_DEFAULT_MODEL_DIR",
+                    "/home/kade/runeset/wolfy/models",
+                ),
+                "gpu_memory_threshold": float(
+                    os.getenv("DIFFUSION_PIPE_GPU_MEMORY_THRESHOLD", "0.8")
+                ),
+                "max_gpu_memory_gb": int(
+                    os.getenv("DIFFUSION_PIPE_MAX_GPU_MEMORY_GB", "24")
+                ),
+                "enable_gpu_monitoring": os.getenv(
+                    "DIFFUSION_PIPE_ENABLE_GPU_MONITORING", "true"
+                ).lower()
+                == "true",
+                "process_timeout": int(
+                    os.getenv("DIFFUSION_PIPE_PROCESS_TIMEOUT", "3600")
+                ),
+                "enable_checkpointing": os.getenv(
+                    "DIFFUSION_PIPE_ENABLE_CHECKPOINTING", "true"
+                ).lower()
+                == "true",
+                "checkpoint_interval": int(
+                    os.getenv("DIFFUSION_PIPE_CHECKPOINT_INTERVAL", "100")
+                ),
+                "enable_wandb": os.getenv("DIFFUSION_PIPE_ENABLE_WANDB", "true").lower()
+                == "true",
+                "wandb_api_key": os.getenv("DIFFUSION_PIPE_WANDB_API_KEY", ""),
+                "log_level": os.getenv("DIFFUSION_PIPE_LOG_LEVEL", "INFO"),
+                "enable_metrics": os.getenv(
+                    "DIFFUSION_PIPE_ENABLE_METRICS", "true"
+                ).lower()
+                == "true",
+                "enable_security_scanning": os.getenv(
+                    "DIFFUSION_PIPE_ENABLE_SECURITY_SCANNING", "true"
+                ).lower()
+                == "true",
+                "validate_paths": os.getenv(
+                    "DIFFUSION_PIPE_VALIDATE_PATHS", "true"
+                ).lower()
+                == "true",
+                "sanitize_inputs": os.getenv(
+                    "DIFFUSION_PIPE_SANITIZE_INPUTS", "true"
+                ).lower()
+                == "true",
             },
         }
 
@@ -231,7 +292,9 @@ class ServiceConfigManager:
             )
 
     def register_service_schema(
-        self, service_name: str, schema: ServiceConfigSchema,
+        self,
+        service_name: str,
+        schema: ServiceConfigSchema,
     ) -> None:
         """Register a configuration schema for a service."""
         self._schemas[service_name] = schema
@@ -288,7 +351,9 @@ class ServiceConfigManager:
             return {}
 
     def _apply_environment_overrides(
-        self, service_name: str, config: dict[str, Any],
+        self,
+        service_name: str,
+        config: dict[str, Any],
     ) -> dict[str, Any]:
         """Apply environment variable overrides to configuration."""
         env_prefix = f"{service_name.upper()}_"
@@ -316,7 +381,9 @@ class ServiceConfigManager:
         return config
 
     def _validate_configuration(
-        self, service_name: str, config: dict[str, Any],
+        self,
+        service_name: str,
+        config: dict[str, Any],
     ) -> dict[str, Any]:
         """Validate configuration against schema."""
         if service_name not in self._schemas:
@@ -325,7 +392,9 @@ class ServiceConfigManager:
         return self._validate_with_schema(service_name, config)
 
     def _validate_with_base_model(
-        self, service_name: str, config: dict[str, Any],
+        self,
+        service_name: str,
+        config: dict[str, Any],
     ) -> dict[str, Any]:
         """Validate configuration using base model."""
         try:
@@ -336,12 +405,16 @@ class ServiceConfigManager:
                 raise
             if self.config_validation_level == ConfigValidationLevel.WARN:
                 logger.warning(
-                    "Configuration validation warning for %s: %s", service_name, e,
+                    "Configuration validation warning for %s: %s",
+                    service_name,
+                    e,
                 )
             return config
 
     def _validate_with_schema(
-        self, service_name: str, config: dict[str, Any],
+        self,
+        service_name: str,
+        config: dict[str, Any],
     ) -> dict[str, Any]:
         """Validate configuration using service schema."""
         schema = self._schemas[service_name]
@@ -360,7 +433,10 @@ class ServiceConfigManager:
         return validated_config
 
     def _validate_required_fields(
-        self, service_name: str, config: dict[str, Any], schema: ServiceConfigSchema,
+        self,
+        service_name: str,
+        config: dict[str, Any],
+        schema: ServiceConfigSchema,
     ) -> dict[str, Any]:
         """Validate required fields."""
         validated = {}
@@ -376,19 +452,28 @@ class ServiceConfigManager:
                 validated[field] = schema.field_defaults.get(field)
             else:
                 validated[field] = self._validate_field(
-                    service_name, field, config[field], schema,
+                    service_name,
+                    field,
+                    config[field],
+                    schema,
                 )
         return validated
 
     def _validate_optional_fields(
-        self, service_name: str, config: dict[str, Any], schema: ServiceConfigSchema,
+        self,
+        service_name: str,
+        config: dict[str, Any],
+        schema: ServiceConfigSchema,
     ) -> dict[str, Any]:
         """Validate optional fields."""
         validated = {}
         for field in schema.optional_fields:
             if field in config:
                 validated[field] = self._validate_field(
-                    service_name, field, config[field], schema,
+                    service_name,
+                    field,
+                    config[field],
+                    schema,
                 )
             elif field in schema.field_defaults:
                 validated[field] = schema.field_defaults[field]
@@ -418,7 +503,10 @@ class ServiceConfigManager:
         rules = schema.validation_rules.get(field_name, {})
         for rule_name, rule_value in rules.items():
             if not self._apply_validation_rule(
-                field_name, value, rule_name, rule_value,
+                field_name,
+                value,
+                rule_name,
+                rule_value,
             ):
                 error_msg = f"Validation rule '{rule_name}' failed for field '{field_name}' in service '{service_name}'"
                 if self.config_validation_level == ConfigValidationLevel.STRICT:
@@ -429,7 +517,11 @@ class ServiceConfigManager:
         return value
 
     def _apply_validation_rule(
-        self, field_name: str, value: Any, rule_name: str, rule_value: Any,
+        self,
+        field_name: str,
+        value: Any,
+        rule_name: str,
+        rule_value: Any,
     ) -> bool:
         """Apply a validation rule to a field value."""
         if rule_name == "min" and isinstance(value, (int, float)):
@@ -454,7 +546,10 @@ class ServiceConfigManager:
         return self._configurations.get(service_name, {})
 
     def update_service_config(
-        self, service_name: str, updates: dict[str, Any], validate: bool = True,
+        self,
+        service_name: str,
+        updates: dict[str, Any],
+        validate: bool = True,
     ) -> bool:
         """Update configuration for a service."""
         if service_name not in self._configurations:
@@ -469,7 +564,8 @@ class ServiceConfigManager:
             # Validate if requested
             if validate:
                 current_config = self._validate_configuration(
-                    service_name, current_config,
+                    service_name,
+                    current_config,
                 )
 
             # Update configuration
@@ -491,7 +587,9 @@ class ServiceConfigManager:
             return False
 
     def save_service_config(
-        self, service_name: str, config_file: str | None = None,
+        self,
+        service_name: str,
+        config_file: str | None = None,
     ) -> bool:
         """Save service configuration to file."""
         if service_name not in self._configurations:
@@ -533,7 +631,9 @@ class ServiceConfigManager:
                 pass
 
     def _notify_config_watchers(
-        self, service_name: str, config: dict[str, Any],
+        self,
+        service_name: str,
+        config: dict[str, Any],
     ) -> None:
         """Notify configuration watchers of changes."""
         if service_name in self._watchers:

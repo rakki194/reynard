@@ -78,7 +78,8 @@ class TodoCreateRequest(BaseModel):
     title: str = Field(..., min_length=1, max_length=255, description="Todo title")
     description: str | None = Field(None, description="Todo description")
     priority: str = Field(
-        default="medium", description="Priority level (low, medium, high, urgent)",
+        default="medium",
+        description="Priority level (low, medium, high, urgent)",
     )
     due_date: datetime | None = Field(None, description="Due date and time")
     tags: list[str] = Field(default=[], description="List of tag names")
@@ -88,7 +89,10 @@ class TodoUpdateRequest(BaseModel):
     """Request model for updating a todo."""
 
     title: str | None = Field(
-        None, min_length=1, max_length=255, description="Todo title",
+        None,
+        min_length=1,
+        max_length=255,
+        description="Todo title",
     )
     description: str | None = Field(None, description="Todo description")
     priority: str | None = Field(None, description="Priority level")
@@ -129,10 +133,12 @@ class TodoBatchRequest(BaseModel):
 
     todo_ids: list[UUID] = Field(..., description="List of todo IDs")
     operation: str = Field(
-        ..., description="Operation to perform (complete, incomplete, delete)",
+        ...,
+        description="Operation to perform (complete, incomplete, delete)",
     )
     priority: str | None = Field(
-        None, description="Priority to set (for complete/incomplete operations)",
+        None,
+        description="Priority to set (for complete/incomplete operations)",
     )
 
 
@@ -140,7 +146,8 @@ class AIPrioritizeRequest(BaseModel):
     """Request model for AI prioritization."""
 
     context: str | None = Field(
-        None, description="Additional context for prioritization",
+        None,
+        description="Additional context for prioritization",
     )
 
 
@@ -148,7 +155,10 @@ class AIBreakdownRequest(BaseModel):
     """Request model for AI task breakdown."""
 
     max_subtasks: int = Field(
-        default=5, ge=1, le=10, description="Maximum number of subtasks",
+        default=5,
+        ge=1,
+        le=10,
+        description="Maximum number of subtasks",
     )
 
 
@@ -192,7 +202,9 @@ def get_or_create_tags(db: Session, tag_names: list[str], agent_id: UUID) -> lis
 
         if not tag:
             tag = Tag(
-                name=tag_name, agent_id=agent_id, color="#6b7280",  # Default gray color
+                name=tag_name,
+                agent_id=agent_id,
+                color="#6b7280",  # Default gray color
             )
             db.add(tag)
             db.flush()  # Flush to get the ID
@@ -360,7 +372,8 @@ async def get_todo(
 
         if not todo:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Todo not found",
             )
 
         # Log performance
@@ -397,13 +410,15 @@ async def update_todo(
 
         if not todo:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Todo not found",
             )
 
         # Validate priority if provided
         if request.priority and not validate_priority(request.priority):
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid priority level",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid priority level",
             )
 
         # Update todo fields
@@ -462,7 +477,8 @@ async def delete_todo(
 
         if not todo:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Todo not found",
             )
 
         db.delete(todo)
@@ -500,7 +516,8 @@ async def complete_todo(
 
         if not todo:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Todo not found",
             )
 
         todo.mark_completed()
@@ -540,7 +557,8 @@ async def incomplete_todo(
 
         if not todo:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Todo not found",
             )
 
         todo.mark_incomplete()
@@ -651,7 +669,8 @@ async def ai_prioritize_todo(
 
         if not todo:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Todo not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Todo not found",
             )
 
         # TODO: Integrate with existing AI services for prioritization
@@ -706,7 +725,8 @@ async def ai_prioritize_todo(
 
 @router.get("/analytics", response_model=TodoAnalyticsResponse)
 async def get_todo_analytics(
-    current_user: User = Depends(require_active_user), db: Session = Depends(get_db),
+    current_user: User = Depends(require_active_user),
+    db: Session = Depends(get_db),
 ):
     """Get productivity analytics for todos."""
     start_time = time.time()
@@ -752,7 +772,8 @@ async def get_todo_analytics(
 
         # Calculate productivity score (0-100)
         productivity_score = min(
-            100, completion_rate + (10 if overdue_todos == 0 else 0),
+            100,
+            completion_rate + (10 if overdue_todos == 0 else 0),
         )
 
         # Log performance

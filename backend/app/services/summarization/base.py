@@ -155,7 +155,9 @@ class BaseSummarizer(ABC):
 
     @abstractmethod
     async def summarize(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> SummarizationResult:
         """Summarize the given text.
 
@@ -174,7 +176,9 @@ class BaseSummarizer(ABC):
 
     @abstractmethod
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Stream summarization progress and results.
 
@@ -221,7 +225,8 @@ class BaseSummarizer(ABC):
         return content_type in self.supported_content_types
 
     async def get_quality_metrics(
-        self, result: SummarizationResult,
+        self,
+        result: SummarizationResult,
     ) -> dict[str, float]:
         """Calculate quality metrics for a summarization result.
 

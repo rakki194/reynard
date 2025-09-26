@@ -72,7 +72,8 @@ class WebScrapingService:
             # Initialize playwright browser
             playwright = await async_playwright().start()
             self.browser = await playwright.chromium.launch(
-                headless=True, args=["--no-sandbox", "--disable-dev-shm-usage"],
+                headless=True,
+                args=["--no-sandbox", "--disable-dev-shm-usage"],
             )
             self.page = await self.browser.new_page()
             await self.page.set_extra_http_headers({"User-Agent": self.user_agent})
@@ -86,7 +87,9 @@ class WebScrapingService:
             return False
 
     async def research_query_topic(
-        self, query: str, key_concepts: list[str] = None,
+        self,
+        query: str,
+        key_concepts: list[str] = None,
     ) -> dict[str, Any]:
         """Research a query topic using multiple sources and methods.
 
@@ -121,7 +124,9 @@ class WebScrapingService:
         }
 
     def _generate_search_queries(
-        self, query: str, key_concepts: list[str],
+        self,
+        query: str,
+        key_concepts: list[str],
     ) -> list[str]:
         """Generate diverse search queries for comprehensive research."""
         queries = [query]  # Original query
@@ -161,7 +166,10 @@ class WebScrapingService:
         for query in queries:
             for engine_name, engine_url in self.search_engines.items():
                 task = self._search_with_semaphore(
-                    semaphore, engine_name, engine_url, query,
+                    semaphore,
+                    engine_name,
+                    engine_url,
+                    query,
                 )
                 tasks.append(task)
 
@@ -187,7 +195,10 @@ class WebScrapingService:
             return await self._search_engine(engine_name, engine_url, query)
 
     async def _search_engine(
-        self, engine_name: str, engine_url: str, query: str,
+        self,
+        engine_name: str,
+        engine_url: str,
+        query: str,
     ) -> dict[str, Any]:
         """Search a specific search engine."""
         try:
@@ -196,10 +207,14 @@ class WebScrapingService:
             # Use playwright for JavaScript-heavy sites
             if engine_name == "google":
                 return await self._search_with_playwright(
-                    engine_name, search_url, query,
+                    engine_name,
+                    search_url,
+                    query,
                 )
             return await self._search_with_requests_html(
-                engine_name, search_url, query,
+                engine_name,
+                search_url,
+                query,
             )
 
         except Exception as e:
@@ -212,7 +227,10 @@ class WebScrapingService:
             }
 
     async def _search_with_playwright(
-        self, engine_name: str, url: str, query: str,
+        self,
+        engine_name: str,
+        url: str,
+        query: str,
     ) -> dict[str, Any]:
         """Search using playwright for JavaScript-heavy sites."""
         try:
@@ -257,7 +275,10 @@ class WebScrapingService:
             }
 
     async def _search_with_requests_html(
-        self, engine_name: str, url: str, query: str,
+        self,
+        engine_name: str,
+        url: str,
+        query: str,
     ) -> dict[str, Any]:
         """Search using requests-html for simpler sites."""
         try:
@@ -336,7 +357,8 @@ class WebScrapingService:
         return results
 
     async def _extract_content(
-        self, search_results: list[dict[str, Any]],
+        self,
+        search_results: list[dict[str, Any]],
     ) -> list[ScrapingResult]:
         """Extract content from search result URLs."""
         content_results = []
@@ -362,7 +384,9 @@ class WebScrapingService:
         return content_results
 
     async def _extract_url_content(
-        self, semaphore: asyncio.Semaphore, result: dict[str, str],
+        self,
+        semaphore: asyncio.Semaphore,
+        result: dict[str, str],
     ) -> ScrapingResult | None:
         """Extract content from a single URL."""
         async with semaphore:
@@ -595,12 +619,15 @@ class WebScrapingService:
         return "general"
 
     async def _analyze_content(
-        self, content_results: list[ScrapingResult],
+        self,
+        content_results: list[ScrapingResult],
     ) -> list[ScrapingResult]:
         """Analyze and score content results."""
         # Sort by quality score
         analyzed_results = sorted(
-            content_results, key=lambda x: x.quality_score, reverse=True,
+            content_results,
+            key=lambda x: x.quality_score,
+            reverse=True,
         )
 
         # Filter out low-quality results
@@ -611,7 +638,8 @@ class WebScrapingService:
         return filtered_results[:20]  # Limit to top 20 results
 
     def _extract_sources(
-        self, analyzed_results: list[ScrapingResult],
+        self,
+        analyzed_results: list[ScrapingResult],
     ) -> list[dict[str, Any]]:
         """Extract source information from analyzed results."""
         sources = []
@@ -680,14 +708,17 @@ class WebScrapingService:
 
         # Get trending keywords
         trending_keywords = sorted(
-            keyword_freq.items(), key=lambda x: x[1], reverse=True,
+            keyword_freq.items(),
+            key=lambda x: x[1],
+            reverse=True,
         )
         trends = [keyword for keyword, freq in trending_keywords[:5] if freq > 1]
 
         return trends
 
     def _identify_related_topics(
-        self, analyzed_results: list[ScrapingResult],
+        self,
+        analyzed_results: list[ScrapingResult],
     ) -> list[str]:
         """Identify related topics from analyzed results."""
         topics = set()
@@ -722,7 +753,9 @@ class WebScrapingService:
             return False
 
     async def research_query_topic_enhanced(
-        self, query: str, key_concepts: list[str] = None,
+        self,
+        query: str,
+        key_concepts: list[str] = None,
     ) -> dict[str, Any]:
         """Research a query topic with key concepts.
 

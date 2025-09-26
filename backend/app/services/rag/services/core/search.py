@@ -34,24 +34,25 @@ class KeywordIndex:
         self.documents[doc_id] = {
             "text": text,
             "metadata": metadata,
-            "tokens": self._tokenize(text)
+            "tokens": self._tokenize(text),
         }
-        
+
         # Update inverted index
         for token in self.documents[doc_id]["tokens"]:
             if token not in self.inverted_index:
                 self.inverted_index[token] = {}
-            
+
             # Calculate TF-IDF score
             tf = self.documents[doc_id]["tokens"].count(token)
             self.inverted_index[token][doc_id] = tf
-        
+
         self.total_documents = len(self.documents)
         self._update_document_frequencies()
 
     def _tokenize(self, text: str) -> List[str]:
         """Simple tokenization."""
         import re
+
         # Convert to lowercase and split on non-alphanumeric characters
         tokens = re.findall(r'\b\w+\b', text.lower())
         return tokens
@@ -66,32 +67,36 @@ class KeywordIndex:
         """Search using keyword matching."""
         query_tokens = self._tokenize(query)
         scores: Dict[str, float] = {}
-        
+
         for token in query_tokens:
             if token in self.inverted_index:
                 # Calculate TF-IDF score
-                idf = 1.0 + (self.total_documents / (1.0 + self.document_frequencies[token]))
-                
+                idf = 1.0 + (
+                    self.total_documents / (1.0 + self.document_frequencies[token])
+                )
+
                 for doc_id, tf in self.inverted_index[token].items():
                     if doc_id not in scores:
                         scores[doc_id] = 0.0
                     scores[doc_id] += tf * idf
-        
+
         # Sort by score and return results
         sorted_docs = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-        
+
         results = []
         for doc_id, score in sorted_docs[:limit]:
             if doc_id in self.documents:
                 doc = self.documents[doc_id]
-                results.append(SearchResult(
-                    id=doc_id,
-                    text=doc["text"],
-                    score=score,
-                    metadata=doc["metadata"],
-                    search_type=SearchType.KEYWORD
-                ))
-        
+                results.append(
+                    SearchResult(
+                        id=doc_id,
+                        text=doc["text"],
+                        score=score,
+                        metadata=doc["metadata"],
+                        search_type=SearchType.KEYWORD,
+                    )
+                )
+
         return results
 
 
@@ -100,17 +105,17 @@ class HybridSearchEngine(BaseService, SearchProvider):
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         super().__init__("hybrid-search-engine", config)
-        
+
         # Search configuration
         self.semantic_weight = self.config.get("semantic_weight", 0.7)
         self.keyword_weight = self.config.get("keyword_weight", 0.3)
         self.default_limit = self.config.get("default_limit", 10)
-        
+
         # Components
         self.keyword_index = KeywordIndex()
         self.embedding_provider = None
         self.vector_store = None
-        
+
         # Metrics
         self.metrics = {
             "searches_performed": 0,
@@ -124,12 +129,16 @@ class HybridSearchEngine(BaseService, SearchProvider):
     async def initialize(self) -> bool:
         """Initialize the hybrid search engine."""
         try:
-            self.update_status(ServiceStatus.INITIALIZING, "Initializing hybrid search engine")
-            
+            self.update_status(
+                ServiceStatus.INITIALIZING, "Initializing hybrid search engine"
+            )
+
             # Dependencies will be injected by the main service
-            self.update_status(ServiceStatus.HEALTHY, "Hybrid search engine initialized")
+            self.update_status(
+                ServiceStatus.HEALTHY, "Hybrid search engine initialized"
+            )
             return True
-            
+
         except Exception as e:
             self.logger.error(f"Failed to initialize hybrid search engine: {e}")
             self.update_status(ServiceStatus.ERROR, f"Initialization failed: {e}")
@@ -138,13 +147,17 @@ class HybridSearchEngine(BaseService, SearchProvider):
     async def shutdown(self) -> None:
         """Shutdown the hybrid search engine."""
         try:
-            self.update_status(ServiceStatus.SHUTTING_DOWN, "Shutting down hybrid search engine")
-            
+            self.update_status(
+                ServiceStatus.SHUTTING_DOWN, "Shutting down hybrid search engine"
+            )
+
             # Clear keyword index
             self.keyword_index = KeywordIndex()
-            
-            self.update_status(ServiceStatus.SHUTDOWN, "Hybrid search engine shutdown complete")
-            
+
+            self.update_status(
+                ServiceStatus.SHUTDOWN, "Hybrid search engine shutdown complete"
+            )
+
         except Exception as e:
             self.logger.error(f"Error during shutdown: {e}")
 
@@ -157,12 +170,14 @@ class HybridSearchEngine(BaseService, SearchProvider):
                 dependencies_healthy = False
             if self.vector_store and not self.vector_store.is_healthy():
                 dependencies_healthy = False
-            
+
             if dependencies_healthy:
                 self.update_status(ServiceStatus.HEALTHY, "Service is healthy")
             else:
-                self.update_status(ServiceStatus.DEGRADED, "Some dependencies are unhealthy")
-            
+                self.update_status(
+                    ServiceStatus.DEGRADED, "Some dependencies are unhealthy"
+                )
+
             return {
                 "status": self.status.value,
                 "message": self.health.message,
@@ -170,7 +185,7 @@ class HybridSearchEngine(BaseService, SearchProvider):
                 "metrics": self.metrics,
                 "dependencies": self.get_dependency_status(),
             }
-            
+
         except Exception as e:
             self.logger.error(f"Health check failed: {e}")
             self.update_status(ServiceStatus.ERROR, f"Health check failed: {e}")
@@ -186,7 +201,7 @@ class HybridSearchEngine(BaseService, SearchProvider):
         """Set service dependencies."""
         self.embedding_provider = embedding_provider
         self.vector_store = vector_store
-        
+
         if embedding_provider:
             self.add_dependency("embedding_provider", embedding_provider)
         if vector_store:
@@ -198,48 +213,59 @@ class HybridSearchEngine(BaseService, SearchProvider):
         search_type: SearchType = SearchType.HYBRID,
         limit: int = 10,
         filters: Optional[Dict[str, Any]] = None,
-        **kwargs
+        **kwargs,
     ) -> List[SearchResult]:
         """Perform search with specified type."""
         if DEBUG_RAG_OPERATIONS:
-            logger.info(f"🦊 [SEARCH] Starting {search_type.value} search for query: '{query[:50]}...'")
-        
+            logger.info(
+                f"🦊 [SEARCH] Starting {search_type.value} search for query: '{query[:50]}...'"
+            )
+
         if not self.is_healthy():
             logger.error("🚨 [SEARCH] Service is not healthy")
             raise RuntimeError("Search engine is not healthy")
-        
+
         start_time = time.time()
-        
+
         try:
             if search_type == SearchType.SEMANTIC:
                 if DEBUG_RAG_OPERATIONS:
                     logger.info(f"🦊 [SEARCH] Performing semantic search")
-                results = await self.semantic_search(query, limit, filters=filters, **kwargs)
+                results = await self.semantic_search(
+                    query, limit, filters=filters, **kwargs
+                )
             elif search_type == SearchType.KEYWORD:
                 if DEBUG_RAG_OPERATIONS:
                     logger.info(f"🦊 [SEARCH] Performing keyword search")
-                results = await self.keyword_search(query, limit, filters=filters, **kwargs)
+                results = await self.keyword_search(
+                    query, limit, filters=filters, **kwargs
+                )
             elif search_type == SearchType.HYBRID:
                 if DEBUG_RAG_OPERATIONS:
                     logger.info(f"🦊 [SEARCH] Performing hybrid search")
-                results = await self.hybrid_search(query, limit, filters=filters, **kwargs)
+                results = await self.hybrid_search(
+                    query, limit, filters=filters, **kwargs
+                )
             else:
                 logger.error(f"🚨 [SEARCH] Unsupported search type: {search_type}")
                 raise ValueError(f"Unsupported search type: {search_type}")
-            
+
             # Update metrics
             search_time = (time.time() - start_time) * 1000
             self.metrics["searches_performed"] += 1
             self.metrics["total_search_time_ms"] += search_time
             self.metrics["average_search_time_ms"] = (
-                self.metrics["total_search_time_ms"] / self.metrics["searches_performed"]
+                self.metrics["total_search_time_ms"]
+                / self.metrics["searches_performed"]
             )
-            
+
             if DEBUG_RAG_OPERATIONS:
-                logger.info(f"🦊 [SEARCH] Search completed in {search_time:.2f}ms, found {len(results)} results")
-            
+                logger.info(
+                    f"🦊 [SEARCH] Search completed in {search_time:.2f}ms, found {len(results)} results"
+                )
+
             return results
-            
+
         except Exception as e:
             logger.error(f"🚨 [SEARCH] Search failed: {e}")
             raise RuntimeError(f"Search failed: {e}")
@@ -250,39 +276,43 @@ class HybridSearchEngine(BaseService, SearchProvider):
         limit: int = 10,
         similarity_threshold: float = 0.0,
         filters: Optional[Dict[str, Any]] = None,
-        **kwargs
+        **kwargs,
     ) -> List[SearchResult]:
         """Perform semantic similarity search."""
         if not self.embedding_provider or not self.vector_store:
-            raise RuntimeError("Embedding provider and vector store are required for semantic search")
-        
+            raise RuntimeError(
+                "Embedding provider and vector store are required for semantic search"
+            )
+
         try:
             # Generate query embedding
             embedding_result = await self.embedding_provider.embed_text(query)
             query_embedding = embedding_result.embedding
-            
+
             # Search vector store
             vector_results = await self.vector_store.similarity_search(
                 query_embedding,
                 limit=limit,
                 similarity_threshold=similarity_threshold,
-                filters=filters
+                filters=filters,
             )
-            
+
             # Convert to search results
             results = []
             for vector_result in vector_results:
-                results.append(SearchResult(
-                    id=vector_result.id,
-                    text=vector_result.metadata.get("text", ""),
-                    score=vector_result.similarity_score,
-                    metadata=vector_result.metadata,
-                    search_type=SearchType.SEMANTIC
-                ))
-            
+                results.append(
+                    SearchResult(
+                        id=vector_result.id,
+                        text=vector_result.metadata.get("text", ""),
+                        score=vector_result.similarity_score,
+                        metadata=vector_result.metadata,
+                        search_type=SearchType.SEMANTIC,
+                    )
+                )
+
             self.metrics["semantic_searches"] += 1
             return results
-            
+
         except Exception as e:
             self.logger.error(f"Semantic search failed: {e}")
             raise RuntimeError(f"Semantic search failed: {e}")
@@ -293,13 +323,13 @@ class HybridSearchEngine(BaseService, SearchProvider):
         limit: int = 10,
         use_bm25: bool = True,
         filters: Optional[Dict[str, Any]] = None,
-        **kwargs
+        **kwargs,
     ) -> List[SearchResult]:
         """Perform keyword-based search."""
         try:
             # Perform keyword search
             results = self.keyword_index.search_keywords(query, limit)
-            
+
             # Apply filters if provided
             if filters:
                 filtered_results = []
@@ -312,10 +342,10 @@ class HybridSearchEngine(BaseService, SearchProvider):
                     if match:
                         filtered_results.append(result)
                 results = filtered_results
-            
+
             self.metrics["keyword_searches"] += 1
             return results
-            
+
         except Exception as e:
             self.logger.error(f"Keyword search failed: {e}")
             raise RuntimeError(f"Keyword search failed: {e}")
@@ -327,28 +357,32 @@ class HybridSearchEngine(BaseService, SearchProvider):
         semantic_weight: float = 0.7,
         keyword_weight: float = 0.3,
         filters: Optional[Dict[str, Any]] = None,
-        **kwargs
+        **kwargs,
     ) -> List[SearchResult]:
         """Perform hybrid search combining semantic and keyword."""
         try:
             # Get semantic results
-            semantic_results = await self.semantic_search(query, limit * 2, filters=filters)
-            
+            semantic_results = await self.semantic_search(
+                query, limit * 2, filters=filters
+            )
+
             # Get keyword results
-            keyword_results = await self.keyword_search(query, limit * 2, filters=filters)
-            
+            keyword_results = await self.keyword_search(
+                query, limit * 2, filters=filters
+            )
+
             # Combine results using reciprocal rank fusion
             combined_results = self._reciprocal_rank_fusion(
                 semantic_results,
                 keyword_results,
                 semantic_weight,
                 keyword_weight,
-                limit
+                limit,
             )
-            
+
             self.metrics["hybrid_searches"] += 1
             return combined_results
-            
+
         except Exception as e:
             self.logger.error(f"Hybrid search failed: {e}")
             raise RuntimeError(f"Hybrid search failed: {e}")
@@ -359,28 +393,28 @@ class HybridSearchEngine(BaseService, SearchProvider):
         keyword_results: List[SearchResult],
         semantic_weight: float,
         keyword_weight: float,
-        limit: int
+        limit: int,
     ) -> List[SearchResult]:
         """Combine results using reciprocal rank fusion."""
         scores: Dict[str, float] = {}
-        
+
         # Add semantic scores
         for i, result in enumerate(semantic_results):
             doc_id = result.id
             if doc_id not in scores:
                 scores[doc_id] = 0.0
             scores[doc_id] += semantic_weight * (1.0 / (i + 1))
-        
+
         # Add keyword scores
         for i, result in enumerate(keyword_results):
             doc_id = result.id
             if doc_id not in scores:
                 scores[doc_id] = 0.0
             scores[doc_id] += keyword_weight * (1.0 / (i + 1))
-        
+
         # Sort by combined score
         sorted_docs = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-        
+
         # Create combined results
         combined_results = []
         for doc_id, score in sorted_docs[:limit]:
@@ -390,77 +424,72 @@ class HybridSearchEngine(BaseService, SearchProvider):
                 if r.id == doc_id:
                     result = r
                     break
-            
+
             if result:
                 # Create new result with combined score
-                combined_results.append(SearchResult(
-                    id=result.id,
-                    text=result.text,
-                    score=score,
-                    metadata=result.metadata,
-                    search_type=SearchType.HYBRID
-                ))
-        
+                combined_results.append(
+                    SearchResult(
+                        id=result.id,
+                        text=result.text,
+                        score=score,
+                        metadata=result.metadata,
+                        search_type=SearchType.HYBRID,
+                    )
+                )
+
         return combined_results
 
     async def index_documents(
-        self, 
-        documents: List[Dict[str, Any]],
-        **kwargs
+        self, documents: List[Dict[str, Any]], **kwargs
     ) -> Dict[str, Any]:
         """Index documents for search."""
         if not documents:
             return {"indexed": 0, "errors": 0}
-        
+
         indexed_count = 0
         error_count = 0
-        
+
         try:
             for doc in documents:
                 try:
                     # Add to keyword index
                     self.keyword_index.add_document(
-                        doc["id"],
-                        doc["text"],
-                        doc.get("metadata", {})
+                        doc["id"], doc["text"], doc.get("metadata", {})
                     )
                     indexed_count += 1
-                    
+
                 except Exception as e:
-                    self.logger.error(f"Failed to index document {doc.get('id', 'unknown')}: {e}")
+                    self.logger.error(
+                        f"Failed to index document {doc.get('id', 'unknown')}: {e}"
+                    )
                     error_count += 1
-            
+
             return {
                 "indexed": indexed_count,
                 "errors": error_count,
-                "total": len(documents)
+                "total": len(documents),
             }
-            
+
         except Exception as e:
             self.logger.error(f"Failed to index documents: {e}")
             raise RuntimeError(f"Failed to index documents: {e}")
 
     async def update_document(
-        self, 
-        id: str, 
-        document: Dict[str, Any],
-        **kwargs
+        self, id: str, document: Dict[str, Any], **kwargs
     ) -> bool:
         """Update an indexed document."""
         try:
             # Remove from keyword index
             if id in self.keyword_index.documents:
                 del self.keyword_index.documents[id]
-            
+
             # Add updated document
             self.keyword_index.add_document(
-                id,
-                document["text"],
-                document.get("metadata", {})
+                id, document["text"], document.get("metadata", {})
             )
-            
+
             return True
-            
+
         except Exception as e:
             self.logger.error(f"Failed to update document {id}: {e}")
             return False
@@ -472,7 +501,7 @@ class HybridSearchEngine(BaseService, SearchProvider):
                 del self.keyword_index.documents[id]
                 return True
             return False
-            
+
         except Exception as e:
             self.logger.error(f"Failed to delete document {id}: {e}")
             return False
@@ -497,7 +526,7 @@ class HybridSearchEngine(BaseService, SearchProvider):
             # Rebuild keyword index
             self.keyword_index._update_document_frequencies()
             return True
-            
+
         except Exception as e:
             self.logger.error(f"Failed to optimize index: {e}")
             return False
@@ -507,7 +536,7 @@ class HybridSearchEngine(BaseService, SearchProvider):
         try:
             self.keyword_index = KeywordIndex()
             return True
-            
+
         except Exception as e:
             self.logger.error(f"Failed to clear index: {e}")
             return False
@@ -523,6 +552,33 @@ class HybridSearchEngine(BaseService, SearchProvider):
             self.logger.error(f"Failed to remove documents: {e}")
             return False
 
+    async def populate_from_vector_store(self) -> None:
+        """Populate the keyword index with documents from the vector store."""
+        try:
+            if not self.vector_store:
+                self.logger.warning("Vector store not available for population")
+                return
+
+            # Get all documents from the vector store
+            documents = await self.vector_store.get_all_documents()
+
+            # Index each document in the keyword search
+            for doc in documents:
+                if doc.get("text") and doc.get("id"):
+                    self.add_document(
+                        doc_id=doc["id"],
+                        text=doc["text"],
+                        metadata=doc.get("metadata", {}),
+                    )
+
+            self.logger.info(
+                f"Populated keyword index with {len(documents)} documents from vector store"
+            )
+
+        except Exception as e:
+            self.logger.error(f"Failed to populate from vector store: {e}")
+            raise
+
     async def get_stats(self) -> Dict[str, Any]:
         """Get service statistics."""
         try:
@@ -534,7 +590,9 @@ class HybridSearchEngine(BaseService, SearchProvider):
                 "index_size_mb": stats.get("index_size_mb", 0),
                 "uptime_seconds": time.time() - (self.startup_time or time.time()),
                 "status": self.status.value,
-                "last_updated": self.health.last_updated.isoformat() if self.health else None
+                "last_updated": (
+                    self.health.last_updated.isoformat() if self.health else None
+                ),
             }
         except Exception as e:
             self.logger.error(f"Failed to get stats: {e}")

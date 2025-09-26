@@ -66,7 +66,7 @@ export default defineConfig({
     timeout: 30 * 1000,
   },
 
-  outputDir: "../results/penetration-results/",
+  outputDir: resultsPaths.artifactsDir,
 
   // Global setup for penetration testing
   globalSetup: "../core/setup/global-penetration-setup.ts",

@@ -297,7 +297,8 @@ class AudioQualityAnalyzer:
         return min(score, 1.0)
 
     async def _calculate_intelligibility_score(
-        self, metrics: AudioQualityMetrics,
+        self,
+        metrics: AudioQualityMetrics,
     ) -> float:
         """Calculate speech intelligibility score."""
         score = 0.0
@@ -353,7 +354,8 @@ class AudioQualityAnalyzer:
         return 0.0
 
     async def _calculate_frequency_response_score(
-        self, metrics: AudioQualityMetrics,
+        self,
+        metrics: AudioQualityMetrics,
     ) -> float:
         """Calculate frequency response quality score."""
         score = 0.0
@@ -438,7 +440,8 @@ class AudioQualityAnalyzer:
             "default": 0.8,
         }
         return intelligibility_scores.get(
-            backend.lower(), intelligibility_scores["default"],
+            backend.lower(),
+            intelligibility_scores["default"],
         )
 
     async def _get_backend_frequency_response(self, backend: str) -> float:
@@ -520,7 +523,8 @@ class AudioQualityAnalyzer:
         return issues
 
     async def _generate_recommendations(
-        self, metrics: AudioQualityMetrics,
+        self,
+        metrics: AudioQualityMetrics,
     ) -> list[str]:
         """Generate optimization recommendations."""
         recommendations = []
@@ -579,7 +583,8 @@ class AudioQualityAnalyzer:
                     collection[key] = values[-self.max_history_size :]
 
     async def get_quality_trends(
-        self, time_window: str = "24h",
+        self,
+        time_window: str = "24h",
     ) -> dict[str, QualityTrend]:
         """Get quality trends for different categories."""
         trends = {}
@@ -698,7 +703,8 @@ class AudioQualityAnalyzer:
         }
 
     def _get_quality_distribution(
-        self, metrics: list[AudioQualityMetrics],
+        self,
+        metrics: list[AudioQualityMetrics],
     ) -> dict[str, int]:
         """Get distribution of quality levels."""
         distribution = {"excellent": 0, "good": 0, "acceptable": 0, "poor": 0}

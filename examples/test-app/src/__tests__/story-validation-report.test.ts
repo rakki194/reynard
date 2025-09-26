@@ -62,7 +62,7 @@ vi.mock("../ReynardAdventure", () => ({
           type: "code",
           title: "Button Component",
           language: "tsx",
-          content: 'import { Button } from "reynard-components";\n// ...',
+          content: 'import { Button } from "reynard-primitives";\n// ...',
         },
       ],
     },

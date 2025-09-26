@@ -17,7 +17,7 @@ from .base import BaseService
 @dataclass
 class Document:
     """Document to be processed."""
-    
+
     id: str
     content: str
     file_path: str
@@ -29,7 +29,7 @@ class Document:
 @dataclass
 class DocumentChunk:
     """Chunk of a document."""
-    
+
     id: str
     content: str
     start_line: int
@@ -41,7 +41,7 @@ class DocumentChunk:
 @dataclass
 class ChunkMetadata:
     """Metadata for document chunks."""
-    
+
     file_path: str
     language: str
     chunk_type: str
@@ -57,7 +57,8 @@ class IDocumentIndexer(BaseService, ABC):
 
     @abstractmethod
     async def index_documents(
-        self, documents: List[Dict[str, Any]],
+        self,
+        documents: List[Dict[str, Any]],
     ) -> AsyncGenerator[Dict[str, Any], None]:
         """Index documents with streaming progress."""
         pass
@@ -88,7 +89,8 @@ class DocumentProcessor(ABC):
 
     @abstractmethod
     async def process_document(
-        self, document: Document,
+        self,
+        document: Document,
     ) -> List[DocumentChunk]:
         """Process a document into chunks."""
         pass

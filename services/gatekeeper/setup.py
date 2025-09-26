@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Setup script for reynard-gatekeeper service.
-"""
+"""Setup script for reynard-gatekeeper service."""
 
 from setuptools import find_packages, setup
 

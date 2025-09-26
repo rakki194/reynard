@@ -17,7 +17,7 @@ from .base import BaseService
 
 class AlertSeverity(Enum):
     """Severity levels for alerts."""
-    
+
     INFO = "info"
     WARNING = "warning"
     CRITICAL = "critical"
@@ -26,7 +26,7 @@ class AlertSeverity(Enum):
 @dataclass
 class Metric:
     """Performance metric."""
-    
+
     name: str
     value: float
     timestamp: datetime
@@ -37,7 +37,7 @@ class Metric:
 @dataclass
 class Alert:
     """Performance alert."""
-    
+
     id: str
     name: str
     severity: AlertSeverity

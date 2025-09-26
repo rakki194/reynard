@@ -89,13 +89,15 @@ async def get_security_metrics(hours: int = 24) -> SecurityMetricsResponse:
             active_clients=rate_limiter_metrics.get("active_clients", 0),
             system_load=rate_limiter_metrics.get("system_load", 0.0),
             threat_detection_success_rate=error_handler_metrics.get(
-                "threat_detection_success_rate", 0.0,
+                "threat_detection_success_rate",
+                0.0,
             ),
         )
     except Exception as e:
         logger.error(f"Failed to get security metrics: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to retrieve security metrics",
+            status_code=500,
+            detail="Failed to retrieve security metrics",
         )
 
 
@@ -117,7 +119,8 @@ async def get_threat_analysis(hours: int = 24) -> ThreatAnalysisResponse:
     except Exception as e:
         logger.error(f"Failed to get threat analysis: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to retrieve threat analysis",
+            status_code=500,
+            detail="Failed to retrieve threat analysis",
         )
 
 
@@ -156,7 +159,8 @@ async def get_security_config() -> SecurityConfigResponse:
     except Exception as e:
         logger.error(f"Failed to get security configuration: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to retrieve security configuration",
+            status_code=500,
+            detail="Failed to retrieve security configuration",
         )
 
 
@@ -175,7 +179,8 @@ async def update_security_config(updates: dict[str, Any]) -> dict[str, Any]:
     except Exception as e:
         logger.error(f"Failed to update security configuration: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to update security configuration",
+            status_code=500,
+            detail="Failed to update security configuration",
         )
 
 
@@ -228,13 +233,15 @@ async def reset_client_profile(client_id: str) -> dict[str, Any]:
 
 @router.get("/export-events")
 async def export_security_events(
-    hours: int = 24, format: str = "json",
+    hours: int = 24,
+    format: str = "json",
 ) -> dict[str, Any]:
     """Export security events in the specified format."""
     try:
         if format not in ["json", "csv"]:
             raise HTTPException(
-                status_code=400, detail="Format must be 'json' or 'csv'",
+                status_code=400,
+                detail="Format must be 'json' or 'csv'",
             )
 
         exported_data = security_analytics.export_events(hours, format)
@@ -311,7 +318,8 @@ async def get_security_dashboard(hours: int = 24) -> dict[str, Any]:
     except Exception as e:
         logger.error(f"Failed to get security dashboard: {e}")
         raise HTTPException(
-            status_code=500, detail="Failed to retrieve security dashboard",
+            status_code=500,
+            detail="Failed to retrieve security dashboard",
         )
 
 

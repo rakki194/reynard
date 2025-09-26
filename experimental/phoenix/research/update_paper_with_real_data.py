@@ -16,8 +16,7 @@ from typing import Any
 
 
 class PhoenixPaperUpdater:
-    """Updates the Phoenix LaTeX paper with real experimental data.
-    """
+    """Updates the Phoenix LaTeX paper with real experimental data."""
 
     def __init__(self, paper_path: str, results_path: str):
         """Initialize the paper updater."""
@@ -85,7 +84,8 @@ class PhoenixPaperUpdater:
             )
             metrics["trait_accuracy"] = knowledge_dist.get("trait_accuracy", 0.0) * 100
             metrics["knowledge_transfer_rate"] = knowledge_dist.get(
-                "knowledge_transfer_rate", 0.0,
+                "knowledge_transfer_rate",
+                0.0,
             )
 
             # Evolutionary operations metrics
@@ -199,7 +199,10 @@ Statistical analysis based on actual experimental data:
         # Find and replace the table
         if re.search(table_pattern, paper_content, re.DOTALL):
             paper_content = re.sub(
-                table_pattern, new_table, paper_content, flags=re.DOTALL,
+                table_pattern,
+                new_table,
+                paper_content,
+                flags=re.DOTALL,
             )
             print("✅ Updated results table with real data")
         else:
@@ -211,7 +214,10 @@ Statistical analysis based on actual experimental data:
 
         if re.search(stats_pattern, paper_content, re.DOTALL):
             paper_content = re.sub(
-                stats_pattern, new_stats, paper_content, flags=re.DOTALL,
+                stats_pattern,
+                new_stats,
+                paper_content,
+                flags=re.DOTALL,
             )
             print("✅ Updated statistical analysis with real data")
         else:
@@ -238,7 +244,9 @@ This research paper has been updated to reflect actual experimental results rath
         results_pattern = r"(\\section\{Results and Analysis\})"
         if re.search(results_pattern, paper_content):
             paper_content = re.sub(
-                results_pattern, integrity_note + r"\1", paper_content,
+                results_pattern,
+                integrity_note + r"\1",
+                paper_content,
             )
             print("✅ Added data integrity section")
 

@@ -112,7 +112,8 @@ class HealthCheckRouter(BaseServiceRouter):
             )
 
         @self.router.get(
-            "/dependencies/{service_name}", summary="Service Dependencies Health",
+            "/dependencies/{service_name}",
+            summary="Service Dependencies Health",
         )
         async def service_dependencies_health(service_name: str) -> dict[str, Any]:
             """Get health status of service dependencies."""
@@ -336,7 +337,8 @@ def get_health_check_router() -> HealthCheckRouter:
 
 
 def create_health_check_router(
-    prefix: str = "/health", tags: list[str] | None = None,
+    prefix: str = "/health",
+    tags: list[str] | None = None,
 ) -> HealthCheckRouter:
     """Create a new health check router instance."""
     return HealthCheckRouter(prefix=prefix, tags=tags)

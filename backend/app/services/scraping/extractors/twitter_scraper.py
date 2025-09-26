@@ -1,5 +1,4 @@
-"""Specialized Twitter/X scraper for handling Twitter's dynamic content and rate limiting.
-"""
+"""Specialized Twitter/X scraper for handling Twitter's dynamic content and rate limiting."""
 
 import logging
 import os
@@ -276,7 +275,9 @@ class TwitterScraper(BaseScraper):
             )
 
     async def scrape_user_timeline(
-        self, username: str, limit: int = 20,
+        self,
+        username: str,
+        limit: int = 20,
     ) -> list[ScrapingResult]:
         """Scrape a user's timeline.
 
@@ -446,7 +447,9 @@ class TwitterScraper(BaseScraper):
         return score
 
     async def download_media(
-        self, url: str, output_dir: str = "downloads",
+        self,
+        url: str,
+        output_dir: str = "downloads",
     ) -> list[str]:
         """Download media from a Twitter URL using gallery-dl.
 

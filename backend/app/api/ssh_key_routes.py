@@ -32,48 +32,96 @@ router = APIRouter(prefix="/ssh-keys", tags=["SSH Key Management"])
 # Request/Response Models
 class GenerateSSHKeyRequest(BaseModel):
     """Request model for generating a new SSH key."""
+
     name: str = Field(..., min_length=1, max_length=255, description="Name for the key")
     email: str = Field(..., min_length=1, max_length=255, description="Email address")
-    key_type: str = Field("ed25519", pattern="^(ed25519|rsa|ecdsa)$", description="SSH key type")
+    key_type: str = Field(
+        "ed25519", pattern="^(ed25519|rsa|ecdsa)$", description="SSH key type"
+    )
     key_length: int = Field(256, ge=256, le=4096, description="Key length in bits")
     comment: str = Field("", max_length=255, description="Optional comment for the key")
-    passphrase: Optional[str] = Field(None, min_length=8, max_length=128, description="Optional passphrase for the key")
-    usage: str = Field("authentication", pattern="^(authentication|signing|encryption|multipurpose)$", description="Key usage type")
-    is_primary: bool = Field(False, description="Whether this should be the user's primary key")
+    passphrase: Optional[str] = Field(
+        None,
+        min_length=8,
+        max_length=128,
+        description="Optional passphrase for the key",
+    )
+    usage: str = Field(
+        "authentication",
+        pattern="^(authentication|signing|encryption|multipurpose)$",
+        description="Key usage type",
+    )
+    is_primary: bool = Field(
+        False, description="Whether this should be the user's primary key"
+    )
     auto_rotate: bool = Field(False, description="Enable automatic key rotation")
-    rotation_schedule_days: int = Field(365, ge=30, le=3650, description="Days between automatic rotations")
-    allowed_hosts: Optional[list[str]] = Field(None, description="List of allowed host patterns")
-    allowed_commands: Optional[list[str]] = Field(None, description="List of allowed commands")
-    source_restrictions: Optional[list[str]] = Field(None, description="Source IP restrictions")
-    force_command: Optional[str] = Field(None, max_length=255, description="Force command execution")
+    rotation_schedule_days: int = Field(
+        365, ge=30, le=3650, description="Days between automatic rotations"
+    )
+    allowed_hosts: Optional[list[str]] = Field(
+        None, description="List of allowed host patterns"
+    )
+    allowed_commands: Optional[list[str]] = Field(
+        None, description="List of allowed commands"
+    )
+    source_restrictions: Optional[list[str]] = Field(
+        None, description="Source IP restrictions"
+    )
+    force_command: Optional[str] = Field(
+        None, max_length=255, description="Force command execution"
+    )
 
 
 class ImportSSHKeyRequest(BaseModel):
     """Request model for importing an existing SSH key."""
+
     name: str = Field(..., min_length=1, max_length=255, description="Name for the key")
     email: str = Field(..., min_length=1, max_length=255, description="Email address")
-    public_key: str = Field(..., min_length=1, description="SSH public key in OpenSSH format")
+    public_key: str = Field(
+        ..., min_length=1, description="SSH public key in OpenSSH format"
+    )
     private_key: Optional[str] = Field(None, description="SSH private key (optional)")
-    passphrase: Optional[str] = Field(None, min_length=8, max_length=128, description="Passphrase for private key")
-    usage: str = Field("authentication", pattern="^(authentication|signing|encryption|multipurpose)$", description="Key usage type")
-    is_primary: bool = Field(False, description="Whether this should be the user's primary key")
+    passphrase: Optional[str] = Field(
+        None, min_length=8, max_length=128, description="Passphrase for private key"
+    )
+    usage: str = Field(
+        "authentication",
+        pattern="^(authentication|signing|encryption|multipurpose)$",
+        description="Key usage type",
+    )
+    is_primary: bool = Field(
+        False, description="Whether this should be the user's primary key"
+    )
 
 
 class RegenerateSSHKeyRequest(BaseModel):
     """Request model for regenerating an SSH key."""
-    key_type: Optional[str] = Field(None, pattern="^(ed25519|rsa|ecdsa)$", description="New key type")
-    key_length: Optional[int] = Field(None, ge=256, le=4096, description="New key length in bits")
-    comment: Optional[str] = Field(None, max_length=255, description="New comment for the key")
-    passphrase: Optional[str] = Field(None, min_length=8, max_length=128, description="New passphrase for the key")
+
+    key_type: Optional[str] = Field(
+        None, pattern="^(ed25519|rsa|ecdsa)$", description="New key type"
+    )
+    key_length: Optional[int] = Field(
+        None, ge=256, le=4096, description="New key length in bits"
+    )
+    comment: Optional[str] = Field(
+        None, max_length=255, description="New comment for the key"
+    )
+    passphrase: Optional[str] = Field(
+        None, min_length=8, max_length=128, description="New passphrase for the key"
+    )
 
 
 class RevokeSSHKeyRequest(BaseModel):
     """Request model for revoking an SSH key."""
-    reason: str = Field(..., min_length=1, max_length=500, description="Reason for revocation")
+
+    reason: str = Field(
+        ..., min_length=1, max_length=500, description="Reason for revocation"
+    )
 
 
 class SSHKeyResponse(BaseModel):
     """Response model for SSH key operations."""
+
     key_id: str
     fingerprint: str
     public_key_hash: str
@@ -130,7 +178,11 @@ async def generate_ssh_key(
             force_command=request.force_command,
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         return SSHKeyResponse(**key_data)
@@ -161,7 +213,11 @@ async def import_ssh_key(
             is_primary=request.is_primary,
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         return SSHKeyResponse(**key_data)
@@ -191,7 +247,11 @@ async def regenerate_ssh_key(
             passphrase=request.passphrase,
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         return SSHKeyResponse(**key_data)
@@ -216,7 +276,11 @@ async def get_user_ssh_keys(
             include_revoked=include_revoked,
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         return [SSHKeyResponse(**key) for key in keys]
@@ -241,7 +305,11 @@ async def get_ssh_key_by_fingerprint(
             user_id=current_user["username"],
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         if not key:
@@ -271,7 +339,11 @@ async def revoke_ssh_key(
             reason=request.reason,
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         return SSHKeyResponse(**key_data)
@@ -299,7 +371,11 @@ async def get_user_ssh_keys_admin(
             admin_user_id=current_admin["username"],
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         return [SSHKeyResponse(**key) for key in keys]
@@ -324,7 +400,11 @@ async def get_ssh_key_by_fingerprint_admin(
             admin_user_id=current_admin["username"],
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         if not key:
@@ -355,7 +435,11 @@ async def revoke_ssh_key_admin(
             admin_user_id=current_admin["username"],
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         return SSHKeyResponse(**key_data)
@@ -395,7 +479,11 @@ async def generate_ssh_key_admin(
             admin_user_id=current_admin["username"],
             ip_address=http_request.client.host if http_request else None,
             user_agent=http_request.headers.get("user-agent") if http_request else None,
-            request_id=str(http_request.headers.get("x-request-id", "")) if http_request else None,
+            request_id=(
+                str(http_request.headers.get("x-request-id", ""))
+                if http_request
+                else None
+            ),
         )
 
         return SSHKeyResponse(**key_data)

@@ -65,7 +65,9 @@ class ClientBehaviorProfile:
         self._update_trust_score()
 
     def add_security_violation(
-        self, threat_level: SecurityThreatLevel, timestamp: float = None,
+        self,
+        threat_level: SecurityThreatLevel,
+        timestamp: float = None,
     ) -> None:
         """Add a security violation to the profile."""
         if timestamp is None:
@@ -159,8 +161,7 @@ class ClientBehaviorProfile:
 
 
 class AdaptiveRateLimiter:
-    """Adaptive rate limiter that adjusts limits based on client behavior and threat levels.
-    """
+    """Adaptive rate limiter that adjusts limits based on client behavior and threat levels."""
 
     def __init__(self):
         self.client_profiles: dict[str, ClientBehaviorProfile] = {}
@@ -287,7 +288,10 @@ class AdaptiveRateLimiter:
         logger.warning(f"Error recorded for client {client_id}: {error_type}")
 
     def record_security_violation(
-        self, request: Request, threat_level: SecurityThreatLevel, violation_type: str,
+        self,
+        request: Request,
+        threat_level: SecurityThreatLevel,
+        violation_type: str,
     ) -> None:
         """Record a security violation for a client."""
         client_id = self._get_client_identifier(request)

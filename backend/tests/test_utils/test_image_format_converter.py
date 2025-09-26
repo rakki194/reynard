@@ -147,7 +147,11 @@ class TestImageFormatConverter:
 
         # Needs both alpha and animation
         optimal = converter.get_optimal_format(
-            {"needs_alpha": True, "needs_animation": True, "quality_priority": "medium"},
+            {
+                "needs_alpha": True,
+                "needs_animation": True,
+                "quality_priority": "medium",
+            },
         )
         assert optimal == "webp"
 
@@ -309,7 +313,11 @@ class TestFormatConversionScenarios:
         """Test photo optimization scenario."""
         # High quality photo with alpha support
         optimal = converter.get_optimal_format(
-            {"needs_alpha": True, "quality_priority": "high", "size_priority": "medium"},
+            {
+                "needs_alpha": True,
+                "quality_priority": "high",
+                "size_priority": "medium",
+            },
         )
         assert optimal == "png"
 

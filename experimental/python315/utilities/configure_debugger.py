@@ -4,6 +4,7 @@ Configure and test the new remote debugging capabilities
 """
 
 import os
+from pathlib import Path
 
 
 def check_debugger_availability():
@@ -142,7 +143,12 @@ export PATH="/home/kade/source/repos/python-dev-install/bin:$PATH"
 exec /home/kade/source/repos/python-dev-install/bin/python3.15 "$@"
 """
 
-    launcher_path = "/home/kade/runeset/reynard/experimental/launch_python315_debug.sh"
+    # Get project root for launcher path
+    current_file = Path(__file__)
+    project_root = (
+        current_file.parent.parent.parent.parent
+    )  # experimental/python315/utilities -> experimental/python315 -> experimental -> project root
+    launcher_path = str(project_root / "experimental" / "launch_python315_debug.sh")
 
     try:
         with open(launcher_path, "w") as f:

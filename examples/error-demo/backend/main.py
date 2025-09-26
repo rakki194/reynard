@@ -258,7 +258,9 @@ async def fallback_ui(request: RecoveryRequest):
     await asyncio.sleep(0.2)
 
     return RecoveryResponse(
-        success=True, message="Fallback UI activated", data={"fallback_mode": True},
+        success=True,
+        message="Fallback UI activated",
+        data={"fallback_mode": True},
     )
 
 
@@ -286,7 +288,9 @@ async def reload_application(request: RecoveryRequest):
     await asyncio.sleep(0.5)
 
     return RecoveryResponse(
-        success=True, message="Application reloaded", data={"reload_time": time.time()},
+        success=True,
+        message="Application reloaded",
+        data={"reload_time": time.time()},
     )
 
 

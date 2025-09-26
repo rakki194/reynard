@@ -122,7 +122,9 @@ class VulnerabilityAnalyzer:
         ]
 
     def analyze_response(
-        self, response: httpx.Response, payload: str,
+        self,
+        response: httpx.Response,
+        payload: str,
     ) -> tuple[bool, str | None]:
         """Analyze HTTP response for potential vulnerabilities.
 
@@ -189,7 +191,10 @@ class VulnerabilityAnalyzer:
         return False, None
 
     def analyze_websocket_response(
-        self, response: str, payload: str, attack_type: str,
+        self,
+        response: str,
+        payload: str,
+        attack_type: str,
     ) -> tuple[bool, str | None]:
         """Analyze WebSocket response for vulnerabilities.
 
@@ -268,7 +273,10 @@ class VulnerabilityAnalyzer:
         return False, None
 
     def analyze_auth_bypass(
-        self, response: httpx.Response, payload: dict[str, Any], attack_type: str,
+        self,
+        response: httpx.Response,
+        payload: dict[str, Any],
+        attack_type: str,
     ) -> tuple[bool, str | None]:
         """Analyze authentication bypass attempt.
 
@@ -304,7 +312,10 @@ class VulnerabilityAnalyzer:
         return False, None
 
     def detect_resource_exhaustion(
-        self, response_time: float, model_response: dict[str, Any], attack_type: str,
+        self,
+        response_time: float,
+        model_response: dict[str, Any],
+        attack_type: str,
     ) -> bool:
         """Detect resource exhaustion attacks.
 

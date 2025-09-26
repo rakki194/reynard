@@ -78,7 +78,8 @@ class TestServiceReloadManager:
         )
         assert (
             reload_manager.should_reload_service(
-                "app/ecs/endpoints/agents.py", "ecs_world",
+                "app/ecs/endpoints/agents.py",
+                "ecs_world",
             )
             is True
         )
@@ -94,7 +95,8 @@ class TestServiceReloadManager:
         )
         assert (
             reload_manager.should_reload_service(
-                "app/ecs/data/agents.json", "ecs_world",
+                "app/ecs/data/agents.json",
+                "ecs_world",
             )
             is True
         )
@@ -121,7 +123,8 @@ class TestServiceReloadManager:
         # Test gatekeeper files
         assert (
             reload_manager.should_reload_service(
-                "gatekeeper/api/routes.py", "gatekeeper",
+                "gatekeeper/api/routes.py",
+                "gatekeeper",
             )
             is True
         )
@@ -133,13 +136,15 @@ class TestServiceReloadManager:
         # Test auth files
         assert (
             reload_manager.should_reload_service(
-                "app/auth/user_service.py", "gatekeeper",
+                "app/auth/user_service.py",
+                "gatekeeper",
             )
             is True
         )
         assert (
             reload_manager.should_reload_service(
-                "app/auth/password_utils.py", "gatekeeper",
+                "app/auth/password_utils.py",
+                "gatekeeper",
             )
             is True
         )
@@ -147,13 +152,15 @@ class TestServiceReloadManager:
         # Test security files
         assert (
             reload_manager.should_reload_service(
-                "app/security/input_validator.py", "gatekeeper",
+                "app/security/input_validator.py",
+                "gatekeeper",
             )
             is True
         )
         assert (
             reload_manager.should_reload_service(
-                "app/security/security_config.py", "gatekeeper",
+                "app/security/security_config.py",
+                "gatekeeper",
             )
             is True
         )
@@ -180,13 +187,15 @@ class TestServiceReloadManager:
         # Test ComfyUI service files
         assert (
             reload_manager.should_reload_service(
-                "app/services/comfy/comfy_service.py", "comfy",
+                "app/services/comfy/comfy_service.py",
+                "comfy",
             )
             is True
         )
         assert (
             reload_manager.should_reload_service(
-                "app/services/comfy/workflow.py", "comfy",
+                "app/services/comfy/workflow.py",
+                "comfy",
             )
             is True
         )

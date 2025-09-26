@@ -160,7 +160,9 @@ class ModelEvaluator:
         )
 
     def generate_sample_responses(
-        self, prompts: list[str], max_length: int = 100,
+        self,
+        prompts: list[str],
+        max_length: int = 100,
     ) -> list[str]:
         """Generate sample responses for evaluation."""
         if self.model is None or self.tokenizer is None:
@@ -192,7 +194,8 @@ class ModelEvaluator:
 
                 # Decode response
                 response = self.tokenizer.decode(
-                    outputs[0][inputs["input_ids"].shape[1] :], skip_special_tokens=True,
+                    outputs[0][inputs["input_ids"].shape[1] :],
+                    skip_special_tokens=True,
                 )
 
                 responses.append(response)
@@ -200,7 +203,9 @@ class ModelEvaluator:
         return responses
 
     def compare_models(
-        self, model_paths: list[str], eval_dataset: Dataset,
+        self,
+        model_paths: list[str],
+        eval_dataset: Dataset,
     ) -> dict[str, dict[str, float]]:
         """Compare multiple models on the same evaluation dataset."""
         results = {}

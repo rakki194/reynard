@@ -157,7 +157,8 @@ class LearningOpportunity:
         # Higher score for easier, shorter, more valuable opportunities
         difficulty_factor = 1.0 - self.estimated_difficulty
         duration_factor = max(
-            0.1, 1.0 - (self.estimated_duration / 3600.0),
+            0.1,
+            1.0 - (self.estimated_duration / 3600.0),
         )  # Normalize to hours
         potential_factor = self.learning_potential
 
@@ -185,7 +186,9 @@ class KnowledgeComponent(Component):
         self.teaching_effectiveness = 1.0
         self.total_knowledge_acquired = 0
         self.total_knowledge_taught = 0
-        self.learning_preferences: dict[LearningMethod, float] = dict.fromkeys(LearningMethod, 1.0)
+        self.learning_preferences: dict[LearningMethod, float] = dict.fromkeys(
+            LearningMethod, 1.0
+        )
 
     def acquire_knowledge(
         self,
@@ -428,25 +431,33 @@ class KnowledgeComponent(Component):
         }
 
     def get_knowledge_by_type(
-        self, knowledge_type: KnowledgeType, limit: int = 10,
+        self,
+        knowledge_type: KnowledgeType,
+        limit: int = 10,
     ) -> list[Knowledge]:
         """Get knowledge of a specific type."""
         return self.search_knowledge(knowledge_type=knowledge_type, limit=limit)
 
     def get_expertise_areas(
-        self, min_proficiency: float = 0.7, limit: int = 10,
+        self,
+        min_proficiency: float = 0.7,
+        limit: int = 10,
     ) -> list[Knowledge]:
         """Get areas where the agent has high proficiency."""
         return self.search_knowledge(min_proficiency=min_proficiency, limit=limit)
 
     def get_learning_opportunities(
-        self, max_proficiency: float = 0.3, limit: int = 10,
+        self,
+        max_proficiency: float = 0.3,
+        limit: int = 10,
     ) -> list[Knowledge]:
         """Get knowledge areas that need improvement."""
         return self.search_knowledge(max_proficiency=max_proficiency, limit=limit)
 
     def update_learning_preference(
-        self, method: LearningMethod, preference: float,
+        self,
+        method: LearningMethod,
+        preference: float,
     ) -> None:
         """Update learning preference for a specific method.
 
@@ -468,7 +479,8 @@ class KnowledgeComponent(Component):
 
         # Find knowledge with lowest importance and proficiency
         least_important = min(
-            self.knowledge.values(), key=lambda k: (k.importance, k.proficiency),
+            self.knowledge.values(),
+            key=lambda k: (k.importance, k.proficiency),
         )
 
         del self.knowledge[least_important.id]

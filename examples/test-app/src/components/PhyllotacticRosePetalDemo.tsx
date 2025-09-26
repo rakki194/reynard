@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, onMount, onCleanup } from "solid-js";
-import { Card, Button } from "reynard-components";
+import { Card, Button } from "reynard-primitives";
 import { RosePetalGrowthSystem, RosePetalRenderer, type RosePetal } from "../utils/phyllotactic";
 import "./PhyllotacticRosePetalDemo.css";
 

@@ -58,7 +58,9 @@ class DocumentSummarizer(BaseSummarizer):
             return False
 
     async def summarize(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> SummarizationResult:
         """Summarize document text."""
         if not self._is_available:
@@ -75,7 +77,8 @@ class DocumentSummarizer(BaseSummarizer):
 
             # Generate summary
             summary_text = await self._generate_document_summary(
-                processed_text, options,
+                processed_text,
+                options,
             )
 
             processing_time = time.time() - start_time
@@ -108,7 +111,8 @@ class DocumentSummarizer(BaseSummarizer):
             # Add optional fields
             if options.include_outline:
                 result.outline = await self._extract_document_outline(
-                    summary_text, sections,
+                    summary_text,
+                    sections,
                 )
 
             if options.include_highlights:
@@ -118,7 +122,8 @@ class DocumentSummarizer(BaseSummarizer):
 
             # Calculate quality score
             result.quality_score = await self._calculate_document_quality(
-                text, summary_text,
+                text,
+                summary_text,
             )
 
             return result
@@ -128,7 +133,9 @@ class DocumentSummarizer(BaseSummarizer):
             raise
 
     async def summarize_stream(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Stream document summarization progress."""
         if not self._is_available:
@@ -151,7 +158,8 @@ class DocumentSummarizer(BaseSummarizer):
             # Stream summary generation
             summary_text = ""
             async for chunk in self._generate_document_summary_stream(
-                processed_text, options,
+                processed_text,
+                options,
             ):
                 if chunk.get("type") == "token":
                     summary_text += chunk.get("data", "")
@@ -271,7 +279,9 @@ class DocumentSummarizer(BaseSummarizer):
         return "general"
 
     async def _generate_document_summary(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> str:
         """Generate document summary using specialized prompts."""
         system_prompt, user_prompt = self._get_document_prompts(text, options)
@@ -296,7 +306,9 @@ class DocumentSummarizer(BaseSummarizer):
         return summary_text.strip()
 
     async def _generate_document_summary_stream(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> AsyncGenerator[dict[str, Any]]:
         """Generate document summary with streaming."""
         system_prompt, user_prompt = self._get_document_prompts(text, options)
@@ -319,7 +331,9 @@ class DocumentSummarizer(BaseSummarizer):
             }
 
     def _get_document_prompts(
-        self, text: str, options: SummarizationOptions,
+        self,
+        text: str,
+        options: SummarizationOptions,
     ) -> tuple[str, str]:
         """Get specialized prompts for document summarization."""
         # Document-specific system prompt
@@ -377,7 +391,9 @@ Guidelines:
         return system_prompt, user_prompt
 
     async def _extract_document_outline(
-        self, summary: str, sections: list[str],
+        self,
+        summary: str,
+        sections: list[str],
     ) -> list[str]:
         """Extract outline points from document summary."""
         outline = []
@@ -430,7 +446,9 @@ Guidelines:
         return highlights[:4]  # Limit to 4 highlights
 
     async def _calculate_document_quality(
-        self, original_text: str, summary: str,
+        self,
+        original_text: str,
+        summary: str,
     ) -> float:
         """Calculate quality score for document summary."""
         # Enhanced quality scoring for documents

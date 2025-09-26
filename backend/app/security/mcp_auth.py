@@ -66,7 +66,8 @@ class MCPTokenData(BaseModel):
     client_id: str = Field(..., description="MCP client identifier")
     client_type: str = Field(..., description="Type of MCP client (agent, tool, user)")
     permissions: list[str] = Field(
-        default_factory=list, description="List of granted permissions",
+        default_factory=list,
+        description="List of granted permissions",
     )
     issued_at: float = Field(..., description="Token issuance timestamp")
     expires_at: float = Field(..., description="Token expiration timestamp")
@@ -80,7 +81,8 @@ class MCPClient(BaseModel):
     client_type: str = Field(..., description="Client type (agent, tool, user)")
     name: str = Field(..., description="Human-readable client name")
     permissions: list[str] = Field(
-        default_factory=list, description="Granted permissions",
+        default_factory=list,
+        description="Granted permissions",
     )
     is_active: bool = Field(True, description="Whether client is active")
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
@@ -141,7 +143,9 @@ class MCPAuthService:
         logger.info(f"Initialized {len(default_clients)} default MCP clients")
 
     def generate_mcp_token(
-        self, client_id: str, additional_permissions: list[str] = None,
+        self,
+        client_id: str,
+        additional_permissions: list[str] = None,
     ) -> str:
         """Generate a JWT token for MCP client authentication.
 
@@ -189,7 +193,9 @@ class MCPAuthService:
 
         # Generate JWT token
         token = jwt.encode(
-            token_data.model_dump(), MCP_TOKEN_SECRET, algorithm=MCP_TOKEN_ALGORITHM,
+            token_data.model_dump(),
+            MCP_TOKEN_SECRET,
+            algorithm=MCP_TOKEN_ALGORITHM,
         )
 
         # Update last used timestamp
@@ -216,7 +222,9 @@ class MCPAuthService:
         try:
             # Decode JWT token
             payload = jwt.decode(
-                token, MCP_TOKEN_SECRET, algorithms=[MCP_TOKEN_ALGORITHM],
+                token,
+                MCP_TOKEN_SECRET,
+                algorithms=[MCP_TOKEN_ALGORITHM],
             )
 
             # Create token data object
@@ -247,11 +255,13 @@ class MCPAuthService:
 
         except jwt.ExpiredSignatureError:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="MCP token has expired",
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="MCP token has expired",
             )
         except jwt.InvalidTokenError:
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid MCP token",
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid MCP token",
             )
         except Exception as e:
             logger.error(f"MCP token validation failed: {e}")
@@ -261,7 +271,9 @@ class MCPAuthService:
             )
 
     def check_permission(
-        self, token_data: MCPTokenData, required_permission: str,
+        self,
+        token_data: MCPTokenData,
+        required_permission: str,
     ) -> bool:
         """Check if token has required permission.
 

@@ -1,5 +1,4 @@
-"""Mock memory backend.
-"""
+"""Mock memory backend."""
 
 from typing import Any
 

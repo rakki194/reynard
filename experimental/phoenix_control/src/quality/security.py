@@ -80,7 +80,8 @@ class SecurityScanner:
                 self.logger.error("Security scan found issues", "security_scan")
             else:
                 self.logger.success(
-                    "Security scan passed - no issues found", "security_scan",
+                    "Security scan passed - no issues found",
+                    "security_scan",
                 )
 
         except Exception as e:
@@ -131,7 +132,8 @@ class SecurityScanner:
             result = subprocess.run(
                 ["npm", "audit", "--audit-level=moderate", "--json"],
                 capture_output=True,
-                text=True, check=False,
+                text=True,
+                check=False,
             )
 
             vulnerabilities = []
@@ -149,7 +151,8 @@ class SecurityScanner:
                                     "id": vuln_id,
                                     "severity": vuln_data.get("severity", "unknown"),
                                     "title": vuln_data.get(
-                                        "title", "Unknown vulnerability",
+                                        "title",
+                                        "Unknown vulnerability",
                                     ),
                                     "description": vuln_data.get("description", ""),
                                     "package": vuln_data.get("name", "unknown"),
@@ -186,7 +189,10 @@ class SecurityScanner:
 
             # Try to run safety check
             result = subprocess.run(
-                ["safety", "check", "--json"], capture_output=True, text=True, check=False,
+                ["safety", "check", "--json"],
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if result.returncode == 0:
@@ -260,7 +266,9 @@ class SecurityScanner:
 
                     try:
                         with open(
-                            file_path, encoding="utf-8", errors="ignore",
+                            file_path,
+                            encoding="utf-8",
+                            errors="ignore",
                         ) as f:
                             content = f.read()
 

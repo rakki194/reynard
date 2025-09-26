@@ -164,7 +164,9 @@ class ServiceLoadBalancer:
                 break
 
     def get_service_instance(
-        self, service_name: str, session_id: str | None = None,
+        self,
+        service_name: str,
+        session_id: str | None = None,
     ) -> ServiceInstance | None:
         """Get a service instance using the configured load balancing strategy."""
         if service_name not in self.service_instances:
@@ -200,7 +202,9 @@ class ServiceLoadBalancer:
 
         # Select instance based on strategy
         selected_instance = self._select_instance(
-            service_name, healthy_instances, session_id,
+            service_name,
+            healthy_instances,
+            session_id,
         )
 
         if selected_instance:
@@ -241,7 +245,9 @@ class ServiceLoadBalancer:
         return self._round_robin_selection(service_name, instances)
 
     def _round_robin_selection(
-        self, service_name: str, instances: list[ServiceInstance],
+        self,
+        service_name: str,
+        instances: list[ServiceInstance],
     ) -> ServiceInstance:
         """Round-robin selection strategy."""
         current_idx = self.current_index[service_name]
@@ -250,7 +256,9 @@ class ServiceLoadBalancer:
         return selected_instance
 
     def _weighted_round_robin_selection(
-        self, service_name: str, instances: list[ServiceInstance],
+        self,
+        service_name: str,
+        instances: list[ServiceInstance],
     ) -> ServiceInstance:
         """Weighted round-robin selection strategy."""
         # This is a simplified implementation
@@ -268,13 +276,15 @@ class ServiceLoadBalancer:
         return selected_instance
 
     def _least_connections_selection(
-        self, instances: list[ServiceInstance],
+        self,
+        instances: list[ServiceInstance],
     ) -> ServiceInstance:
         """Least connections selection strategy."""
         return min(instances, key=lambda x: x.active_connections)
 
     def _health_based_selection(
-        self, instances: list[ServiceInstance],
+        self,
+        instances: list[ServiceInstance],
     ) -> ServiceInstance:
         """Health-based selection strategy."""
         # Prefer healthy instances over degraded ones
@@ -291,7 +301,9 @@ class ServiceLoadBalancer:
         return random.choice(instances)
 
     def _ip_hash_selection(
-        self, instances: list[ServiceInstance], session_id: str | None = None,
+        self,
+        instances: list[ServiceInstance],
+        session_id: str | None = None,
     ) -> ServiceInstance:
         """IP hash selection strategy."""
         if not session_id:
@@ -372,7 +384,11 @@ class ServiceLoadBalancer:
                 break
 
     def record_request_result(
-        self, service_name: str, instance_id: str, success: bool, response_time: float,
+        self,
+        service_name: str,
+        instance_id: str,
+        success: bool,
+        response_time: float,
     ) -> None:
         """Record the result of a request."""
         if service_name not in self.service_instances:
@@ -451,7 +467,8 @@ class ServiceLoadBalancer:
         # Wait for tasks to complete
         if self.health_check_tasks:
             await asyncio.gather(
-                *self.health_check_tasks.values(), return_exceptions=True,
+                *self.health_check_tasks.values(),
+                return_exceptions=True,
             )
 
         self.health_check_tasks.clear()

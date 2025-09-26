@@ -84,4 +84,4 @@ Special recognition to the TaarofBench research team (Gohari Sadr et al.) for th
 
 ---
 
-*The CULTURE framework represents the next frontier in AI development - creating systems that truly understand and respect the rich diversity of human communication patterns. By bridging the cultural competence gap, we can build AI systems that serve all of humanity, not just those who speak the dominant cultural languages of the digital age.* 🦊🌍
+_The CULTURE framework represents the next frontier in AI development - creating systems that truly understand and respect the rich diversity of human communication patterns. By bridging the cultural competence gap, we can build AI systems that serve all of humanity, not just those who speak the dominant cultural languages of the digital age._ 🦊🌍

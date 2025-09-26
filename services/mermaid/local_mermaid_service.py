@@ -32,9 +32,16 @@ class LocalMermaidService:
         """
         self.port = port
         self.base_url = f"http://localhost:{port}"
-        self.mermaid_ink_path = (
-            mermaid_ink_path or "/home/kade/runeset/reynard/third_party/mermaid.ink"
-        )
+        # Get default mermaid.ink path relative to project root
+        if mermaid_ink_path:
+            self.mermaid_ink_path = mermaid_ink_path
+        else:
+            # Walk up from current file to find project root
+            current_file = Path(__file__)
+            project_root = (
+                current_file.parent.parent.parent
+            )  # services/mermaid -> services -> project root
+            self.mermaid_ink_path = str(project_root / "third_party" / "mermaid.ink")
         self.server_process = None
         self.server_ready = False
         self._start_server()

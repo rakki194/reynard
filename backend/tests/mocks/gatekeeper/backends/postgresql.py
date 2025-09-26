@@ -1,5 +1,4 @@
-"""Mock PostgreSQL backend.
-"""
+"""Mock PostgreSQL backend."""
 
 from .memory import MockMemoryBackend
 

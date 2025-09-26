@@ -39,7 +39,10 @@ def main():
         description="Run security tests for API endpoints.",
     )
     parser.add_argument(
-        "--url", type=str, required=True, help="The URL of the API endpoint to test.",
+        "--url",
+        type=str,
+        required=True,
+        help="The URL of the API endpoint to test.",
     )
     parser.add_argument(
         "--method",

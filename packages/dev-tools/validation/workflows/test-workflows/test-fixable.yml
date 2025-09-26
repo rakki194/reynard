@@ -6,7 +6,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Run tests with fixable issues
         run: |
           if [ $VAR ]; then
@@ -14,9 +14,8 @@ jobs:
           fi
           echo "Hello World"
           ls -la
-      
+
       - name: Run clean script
         run: |
           echo "This script is clean"
           echo "No issues here"
-

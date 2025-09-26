@@ -34,9 +34,7 @@ class DiffusionServiceManager:
         try:
             service = self.get_service()
             await service.initialize(config)
-        except (
-            Exception
-        ) as e:
+        except Exception as e:
             logger.exception(
                 "Failed to initialize Diffusion service",
                 extra={

@@ -18,8 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 class ConfigEndpointMixin:
-    """Mixin that provides configuration endpoints for services.
-    """
+    """Mixin that provides configuration endpoints for services."""
 
     def setup_config_endpoints(self, config_model: type[BaseModel]) -> None:
         """Setup configuration endpoints for the service.
@@ -44,7 +43,9 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to get config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="get_config", error=e, service_name=self.service_name,
+                    operation="get_config",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.put("/config")
@@ -66,7 +67,9 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Failed to update config for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="update_config", error=e, service_name=self.service_name,
+                    operation="update_config",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.post("/config/validate")
@@ -78,7 +81,9 @@ class ConfigEndpointMixin:
             except Exception as e:
                 logger.error(f"Config validation failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="validate_config", error=e, service_name=self.service_name,
+                    operation="validate_config",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
 
@@ -87,8 +92,7 @@ StreamingResponseMixin = EnhancedStreamingResponseMixin
 
 
 class FileUploadMixin:
-    """Mixin that provides file upload capabilities.
-    """
+    """Mixin that provides file upload capabilities."""
 
     def setup_file_upload_endpoints(self) -> None:
         """Setup file upload endpoints."""
@@ -106,12 +110,15 @@ class FileUploadMixin:
                         "result": result,
                     }
                 raise HTTPException(
-                    status_code=501, detail="File upload not supported by this service",
+                    status_code=501,
+                    detail="File upload not supported by this service",
                 )
             except Exception as e:
                 logger.error(f"File upload failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="upload_file", error=e, service_name=self.service_name,
+                    operation="upload_file",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.post("/upload/batch")
@@ -133,7 +140,9 @@ class FileUploadMixin:
             except Exception as e:
                 logger.error(f"Batch file upload failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="upload_files", error=e, service_name=self.service_name,
+                    operation="upload_files",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
     def validate_file_type(self, file: UploadFile, allowed_types: list[str]) -> bool:
@@ -183,8 +192,7 @@ class FileUploadMixin:
 
 
 class MetricsMixin:
-    """Mixin that provides metrics collection capabilities.
-    """
+    """Mixin that provides metrics collection capabilities."""
 
     def __init__(self):
         self._metrics: dict[str, Any] = {
@@ -211,7 +219,9 @@ class MetricsMixin:
             except Exception as e:
                 logger.error(f"Failed to get metrics for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="get_metrics", error=e, service_name=self.service_name,
+                    operation="get_metrics",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.get("/metrics/reset")
@@ -223,7 +233,9 @@ class MetricsMixin:
             except Exception as e:
                 logger.error(f"Failed to reset metrics for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="reset_metrics", error=e, service_name=self.service_name,
+                    operation="reset_metrics",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
     def record_request(self, endpoint: str, response_time: float) -> None:
@@ -278,8 +290,7 @@ class MetricsMixin:
 
 
 class RateLimitingMixin:
-    """Mixin that provides rate limiting capabilities.
-    """
+    """Mixin that provides rate limiting capabilities."""
 
     def __init__(self):
         self._rate_limits: dict[str, dict[str, Any]] = {}
@@ -299,7 +310,9 @@ class RateLimitingMixin:
             except Exception as e:
                 logger.error(f"Failed to get rate limits for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="get_rate_limits", error=e, service_name=self.service_name,
+                    operation="get_rate_limits",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
     def set_rate_limit(self, endpoint: str, requests_per_minute: int) -> None:
@@ -361,11 +374,12 @@ class RateLimitingMixin:
 
 
 class ValidationMixin:
-    """Mixin that provides input validation capabilities.
-    """
+    """Mixin that provides input validation capabilities."""
 
     def validate_request(
-        self, request_model: type[BaseModel], data: dict[str, Any],
+        self,
+        request_model: type[BaseModel],
+        data: dict[str, Any],
     ) -> BaseModel:
         """Validate request data against a model.
 
@@ -389,7 +403,9 @@ class ValidationMixin:
             )
 
     def validate_query_params(
-        self, params: dict[str, Any], required_params: list[str],
+        self,
+        params: dict[str, Any],
+        required_params: list[str],
     ) -> None:
         """Validate query parameters.
 

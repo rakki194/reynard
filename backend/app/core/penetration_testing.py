@@ -46,7 +46,9 @@ class PenetrationTestingCoordinator:
         self.uvicorn_server = None
 
     def activate_penetration_testing(
-        self, session_id: str, timeout_minutes: int = 30,
+        self,
+        session_id: str,
+        timeout_minutes: int = 30,
     ) -> bool:
         """Activate penetration testing mode.
 
@@ -271,7 +273,8 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
             timeout_minutes = data.get("timeout_minutes", 30)
 
             success = self.coordinator.activate_penetration_testing(
-                session_id, timeout_minutes,
+                session_id,
+                timeout_minutes,
             )
 
             if success:
@@ -284,7 +287,8 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
 
         except Exception as e:
             return Response(
-                f"Error activating penetration testing: {e!s}", status_code=500,
+                f"Error activating penetration testing: {e!s}",
+                status_code=500,
             )
 
     async def _handle_deactivate(self, request: Request) -> Response:
@@ -310,7 +314,8 @@ class PenetrationTestingMiddleware(BaseHTTPMiddleware):
 
         except Exception as e:
             return Response(
-                f"Error deactivating penetration testing: {e!s}", status_code=500,
+                f"Error deactivating penetration testing: {e!s}",
+                status_code=500,
             )
 
     async def _handle_status(self, request: Request) -> Response:

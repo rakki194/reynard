@@ -4,8 +4,7 @@
  */
 
 import { existsSync } from "fs";
-import { join } from "path";
-import { runI18nTests, type I18nTestConfig, type I18nTestResult } from "./i18n-testing";
+import { runI18nTests, type I18nTestConfig } from "./i18n-testing";
 import { defaultI18nTestingConfig, getEnabledPackages, type PackageI18nConfig } from "../config/i18n-testing-config";
 import type { PackageI18nTestResult, GlobalI18nTestResult } from "./i18n-orchestrator-types";
 import { generateSummary, generateGlobalReport } from "./i18n-orchestrator-summary";

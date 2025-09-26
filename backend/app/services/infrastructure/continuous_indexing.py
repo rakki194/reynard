@@ -285,7 +285,8 @@ class ContinuousIndexingService:
                 self.search_index = index.open_dir(str(self.index_dir))
             else:
                 self.search_index = index.create_in(
-                    str(self.index_dir), self.index_schema,
+                    str(self.index_dir),
+                    self.index_schema,
                 )
 
             logger.info("Search index initialized")
@@ -357,7 +358,9 @@ class ContinuousIndexingService:
                 except ClassNotFound:
                     try:
                         with open(
-                            file_path, encoding="utf-8", errors="ignore",
+                            file_path,
+                            encoding="utf-8",
+                            errors="ignore",
                         ) as f:
                             content = f.read(1024)  # Read first 1KB
                         lexer = guess_lexer_for_filename(file_path, content)
@@ -454,7 +457,8 @@ class ContinuousIndexingService:
 
             # Tokenize content
             tokens = self._tokenize_content(
-                content, metadata.get("language", "unknown"),
+                content,
+                metadata.get("language", "unknown"),
             )
 
             # Create indexed file

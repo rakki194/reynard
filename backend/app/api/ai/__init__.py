@@ -15,7 +15,7 @@ Author: Reynard Development Team
 Version: 3.0.0 - AI service with multi-provider support
 """
 
-from .endpoints import router, ai_router
+from .endpoints import ai_router, router
 from .models import (
     AIAssistantRequest,
     AIAssistantResponse,

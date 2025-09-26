@@ -224,7 +224,9 @@ class SubliminalTraitExtractor:
         }
 
     def extract_traits_from_output(
-        self, agent_output: str, agent_state: AgentState,
+        self,
+        agent_output: str,
+        agent_state: AgentState,
     ) -> list[SubliminalTrait]:
         """Extract subliminal traits from agent output using multi-modal analysis.
 
@@ -252,10 +254,13 @@ class SubliminalTraitExtractor:
                     strength=trait_score,
                     category=pattern_data["category"],
                     manifestation=self._extract_manifestation(
-                        agent_output, pattern_data,
+                        agent_output,
+                        pattern_data,
                     ),
                     confidence=self._calculate_confidence(
-                        agent_output, pattern_data, trait_score,
+                        agent_output,
+                        pattern_data,
+                        trait_score,
                     ),
                 )
                 extracted_traits.append(trait)
@@ -269,25 +274,29 @@ class SubliminalTraitExtractor:
 
         # Lexical analysis
         lexical_score = self._analyze_lexical_patterns(
-            text, pattern_data["lexical_patterns"],
+            text,
+            pattern_data["lexical_patterns"],
         )
         scores["lexical"] = lexical_score
 
         # Syntactic analysis
         syntactic_score = self._analyze_syntactic_patterns(
-            text, pattern_data["syntactic_patterns"],
+            text,
+            pattern_data["syntactic_patterns"],
         )
         scores["syntactic"] = syntactic_score
 
         # Semantic analysis
         semantic_score = self._analyze_semantic_indicators(
-            text, pattern_data["semantic_indicators"],
+            text,
+            pattern_data["semantic_indicators"],
         )
         scores["semantic"] = semantic_score
 
         # Contextual analysis
         contextual_score = self._analyze_contextual_cues(
-            text, pattern_data["contextual_cues"],
+            text,
+            pattern_data["contextual_cues"],
         )
         scores["contextual"] = contextual_score
 
@@ -298,7 +307,8 @@ class SubliminalTraitExtractor:
 
         # Apply confidence boosters
         confidence_boost = self._calculate_confidence_boost(
-            text, pattern_data["confidence_boosters"],
+            text,
+            pattern_data["confidence_boosters"],
         )
         total_score *= 1 + confidence_boost
 
@@ -356,7 +366,10 @@ class SubliminalTraitExtractor:
         return "; ".join(manifestations[:3])  # Limit to 3 total manifestations
 
     def _calculate_confidence(
-        self, text: str, pattern_data: dict[str, Any], trait_score: float,
+        self,
+        text: str,
+        pattern_data: dict[str, Any],
+        trait_score: float,
     ) -> float:
         """Calculate confidence in trait extraction."""
         base_confidence = trait_score
@@ -381,7 +394,8 @@ class SubliminalTraitExtractor:
         return min(1.0, base_confidence + confidence_boost)
 
     def analyze_trait_correlations(
-        self, traits: list[SubliminalTrait],
+        self,
+        traits: list[SubliminalTrait],
     ) -> dict[str, float]:
         """Analyze correlations between extracted traits."""
         if len(traits) < 2:
@@ -441,7 +455,9 @@ class SubliminalTraitExtractor:
         return max(0.0, consistency_score)
 
     def _are_contradictory(
-        self, trait1: SubliminalTrait, trait2: SubliminalTrait,
+        self,
+        trait1: SubliminalTrait,
+        trait2: SubliminalTrait,
     ) -> bool:
         """Check if two traits are contradictory."""
         # Define contradictory trait pairs

@@ -128,7 +128,9 @@ async def test_change_password(auth_manager, sample_user_data):
 
     # Change password
     success = await auth_manager.change_password(
-        "testuser", "TestPassword123!", "NewPassword456!",
+        "testuser",
+        "TestPassword123!",
+        "NewPassword456!",
     )
     assert success is True
 
@@ -147,7 +149,9 @@ async def test_change_password_wrong_current_password(auth_manager, sample_user_
     await auth_manager.create_user(sample_user_data)
 
     success = await auth_manager.change_password(
-        "testuser", "WrongPassword123!", "NewPassword456!",
+        "testuser",
+        "WrongPassword123!",
+        "NewPassword456!",
     )
     assert success is False
 

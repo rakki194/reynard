@@ -214,7 +214,9 @@ class TestAuthManager:
     async def test_create_user_duplicate_username(self, auth_manager):
         """Test creating user with duplicate username."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
@@ -233,7 +235,9 @@ class TestAuthManager:
     async def test_authenticate_success(self, auth_manager):
         """Test successful authentication."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
@@ -248,7 +252,9 @@ class TestAuthManager:
     async def test_authenticate_wrong_password(self, auth_manager):
         """Test authentication with wrong password."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
@@ -266,7 +272,9 @@ class TestAuthManager:
     async def test_get_current_user_success(self, auth_manager):
         """Test getting current user from valid token."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
@@ -287,13 +295,17 @@ class TestAuthManager:
     async def test_change_password_success(self, auth_manager):
         """Test successful password change."""
         user_data = UserCreate(
-            username="testuser", password="OldPassword123!", email="test@example.com",
+            username="testuser",
+            password="OldPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
 
         success = await auth_manager.change_password(
-            "testuser", "OldPassword123!", "NewPassword456!",
+            "testuser",
+            "OldPassword123!",
+            "NewPassword456!",
         )
 
         assert success is True
@@ -310,13 +322,17 @@ class TestAuthManager:
     async def test_change_password_wrong_current(self, auth_manager):
         """Test password change with wrong current password."""
         user_data = UserCreate(
-            username="testuser", password="OldPassword123!", email="test@example.com",
+            username="testuser",
+            password="OldPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
 
         success = await auth_manager.change_password(
-            "testuser", "WrongPassword123!", "NewPassword456!",
+            "testuser",
+            "WrongPassword123!",
+            "NewPassword456!",
         )
 
         assert success is False
@@ -325,7 +341,9 @@ class TestAuthManager:
     async def test_update_user_success(self, auth_manager):
         """Test successful user update."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
@@ -351,7 +369,9 @@ class TestAuthManager:
     async def test_delete_user_success(self, auth_manager):
         """Test successful user deletion."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
@@ -378,7 +398,9 @@ class TestAuthManager:
     async def test_get_user_by_username_success(self, auth_manager):
         """Test getting user by username."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
@@ -400,10 +422,14 @@ class TestAuthManager:
         """Test searching users."""
         # Create multiple users
         user1 = UserCreate(
-            username="john_doe", password="TestPass123!", email="john@example.com",
+            username="john_doe",
+            password="TestPass123!",
+            email="john@example.com",
         )
         user2 = UserCreate(
-            username="jane_smith", password="TestPass123!", email="jane@example.com",
+            username="jane_smith",
+            password="TestPass123!",
+            email="jane@example.com",
         )
 
         await auth_manager.create_user(user1)
@@ -442,7 +468,9 @@ class TestAuthManager:
     async def test_refresh_token_success(self, auth_manager):
         """Test successful token refresh."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)
@@ -464,7 +492,9 @@ class TestAuthManager:
     async def test_verify_token_valid(self, auth_manager):
         """Test verifying valid token."""
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
 
         await auth_manager.create_user(user_data)

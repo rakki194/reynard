@@ -58,15 +58,18 @@ class ModularLegacyTrackingService:
 
         # Initialize specialized trackers
         self.genome_tracker = SuccessAdvisor8GenomeTracker(
-            tracker_codebase_path, "CHANGELOG.md",
+            tracker_codebase_path,
+            "CHANGELOG.md",
         )
         self.phoenix_tracker = PhoenixProjectTracker(
-            tracker_codebase_path, "CHANGELOG.md",
+            tracker_codebase_path,
+            "CHANGELOG.md",
         )
 
         # Initialize general legacy tracking (existing functionality)
         self.legacy_tracker = SuccessAdvisor8LegacyTracker(
-            tracker_codebase_path, "CHANGELOG.md",
+            tracker_codebase_path,
+            "CHANGELOG.md",
         )
         self.changelog_parser = UnifiedChangelogParser(changelog_parser_path)
         self.git_tag_tracker = GitTagTracker(git_tracker_path)
@@ -290,13 +293,17 @@ class ModularLegacyTrackingService:
                 "ecs_integration": ecs_agent_data,
                 "cross_analysis": {
                     "genome_vs_legacy_overlap": self._analyze_genome_legacy_overlap(
-                        genome_summary, legacy_activities,
+                        genome_summary,
+                        legacy_activities,
                     ),
                     "phoenix_vs_genome_relationship": self._analyze_phoenix_genome_relationship(
-                        phoenix_summary, genome_summary,
+                        phoenix_summary,
+                        genome_summary,
                     ),
                     "overall_activity_trends": self._analyze_overall_trends(
-                        genome_summary, phoenix_summary, legacy_activities,
+                        genome_summary,
+                        phoenix_summary,
+                        legacy_activities,
                     ),
                 },
             }
@@ -306,7 +313,9 @@ class ModularLegacyTrackingService:
             return {"error": str(e), "generated_at": datetime.now().isoformat()}
 
     def _analyze_genome_legacy_overlap(
-        self, genome_summary: dict[str, Any], legacy_activities: list[dict[str, Any]],
+        self,
+        genome_summary: dict[str, Any],
+        legacy_activities: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Analyze overlap between genome activities and general legacy activities."""
         genome_activities = genome_summary.get("genome_activities", [])
@@ -325,14 +334,18 @@ class ModularLegacyTrackingService:
         }
 
     def _analyze_phoenix_genome_relationship(
-        self, phoenix_summary: dict[str, Any], genome_summary: dict[str, Any],
+        self,
+        phoenix_summary: dict[str, Any],
+        genome_summary: dict[str, Any],
     ) -> dict[str, Any]:
         """Analyze relationship between PHEONIX projects and Success-Advisor-8 genome."""
         phoenix_activities = phoenix_summary.get("project_metrics", {}).get(
-            "total_phoenix_activities", 0,
+            "total_phoenix_activities",
+            0,
         )
         genome_activities = genome_summary.get("genome_metrics", {}).get(
-            "total_genome_activities", 0,
+            "total_genome_activities",
+            0,
         )
 
         return {
@@ -358,7 +371,8 @@ class ModularLegacyTrackingService:
         total_activities = (
             genome_summary.get("genome_metrics", {}).get("total_genome_activities", 0)
             + phoenix_summary.get("project_metrics", {}).get(
-                "total_phoenix_activities", 0,
+                "total_phoenix_activities",
+                0,
             )
             + len(legacy_activities)
         )
@@ -367,10 +381,12 @@ class ModularLegacyTrackingService:
             "total_activities_across_systems": total_activities,
             "system_distribution": {
                 "genome_tracking": genome_summary.get("genome_metrics", {}).get(
-                    "total_genome_activities", 0,
+                    "total_genome_activities",
+                    0,
                 ),
                 "phoenix_tracking": phoenix_summary.get("project_metrics", {}).get(
-                    "total_phoenix_activities", 0,
+                    "total_phoenix_activities",
+                    0,
                 ),
                 "legacy_tracking": len(legacy_activities),
             },

@@ -29,8 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 class CodeTokenizer:
-    """Advanced tokenizer for programming languages with Tree-sitter support.
-    """
+    """Advanced tokenizer for programming languages with Tree-sitter support."""
 
     def __init__(self):
         self.parsers: dict[str, Any] = {}
@@ -210,7 +209,11 @@ class CodeTokenizer:
             return self._fallback_tokenize(code, language)
 
     def _extract_tokens_from_ast(
-        self, node, code: str, tokens: list[str], language: str,
+        self,
+        node,
+        code: str,
+        tokens: list[str],
+        language: str,
     ) -> None:
         """Extract meaningful tokens from AST nodes."""
         # Get the text content of this node

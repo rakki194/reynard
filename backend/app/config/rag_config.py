@@ -11,6 +11,13 @@ from typing import Any
 from app.config.embedding_backend_config import EmbeddingBackendsConfig
 
 
+def _get_default_papers_directory() -> str:
+    """Get default papers directory without circular import."""
+    from app.core.project_root import get_papers_directory
+
+    return str(get_papers_directory())
+
+
 @dataclass
 class RAGConfig:
     """Configuration class for RAG service."""
@@ -77,24 +84,35 @@ class RAGConfig:
         default_factory=lambda: int(os.getenv("RAG_QUERY_RATE_LIMIT_PER_MINUTE", "60")),
     )
     ingest_rate_limit_per_minute: int = field(
-        default_factory=lambda: int(os.getenv("RAG_INGEST_RATE_LIMIT_PER_MINUTE", "10")),
+        default_factory=lambda: int(
+            os.getenv("RAG_INGEST_RATE_LIMIT_PER_MINUTE", "10")
+        ),
     )
 
     # Document categorization configuration
     document_categorization_enabled: bool = field(
-        default_factory=lambda: os.getenv("DOCUMENT_CATEGORIZATION_ENABLED", "true").lower() == "true",
+        default_factory=lambda: os.getenv(
+            "DOCUMENT_CATEGORIZATION_ENABLED", "true"
+        ).lower()
+        == "true",
     )
     auto_categorize_papers: bool = field(
-        default_factory=lambda: os.getenv("AUTO_CATEGORIZE_PAPERS", "true").lower() == "true",
+        default_factory=lambda: os.getenv("AUTO_CATEGORIZE_PAPERS", "true").lower()
+        == "true",
     )
     categorization_cache_enabled: bool = field(
-        default_factory=lambda: os.getenv("CATEGORIZATION_CACHE_ENABLED", "true").lower() == "true",
+        default_factory=lambda: os.getenv(
+            "CATEGORIZATION_CACHE_ENABLED", "true"
+        ).lower()
+        == "true",
     )
     min_confidence_threshold: float = field(
         default_factory=lambda: float(os.getenv("MIN_CONFIDENCE_THRESHOLD", "0.3")),
     )
     papers_directory: str = field(
-        default_factory=lambda: os.getenv("PAPERS_DIRECTORY", "/home/kade/runeset/reynard/backend/data/papers"),
+        default_factory=lambda: os.getenv(
+            "PAPERS_DIRECTORY", _get_default_papers_directory()
+        ),
     )
 
     # Embedding backend configuration
@@ -138,7 +156,10 @@ class RAGConfig:
 
         # Only enforce secure password in production
         if not is_development:
-            if not self.rag_database_url or "CHANGE_THIS_PASSWORD" in self.rag_database_url:
+            if (
+                not self.rag_database_url
+                or "CHANGE_THIS_PASSWORD" in self.rag_database_url
+            ):
                 raise ValueError(
                     "RAG configuration error: RAG_DATABASE_URL must be set with a secure password. "
                     "Please set the RAG_DATABASE_URL environment variable with your actual database credentials.",

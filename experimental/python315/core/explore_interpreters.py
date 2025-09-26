@@ -1,6 +1,5 @@
 #!/usr/bin/env python3.15
-"""Explore the actual concurrent.interpreters API
-"""
+"""Explore the actual concurrent.interpreters API"""
 
 from concurrent import interpreters
 

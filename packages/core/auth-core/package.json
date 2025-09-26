@@ -14,7 +14,7 @@
   "files": ["dist", "README.md"],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "tsc && rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --emitDeclarationOnly",
+    "build": "rm -f tsconfig.tsbuildinfo && tsc -p tsconfig.json --declaration --noEmit false",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly",
     "test": "source ../../../vitest.env.global && VITEST_AGENT_ID=auth-core-package ../../../scripts/testing/vitest-global-queue.sh run auth-core-package",
     "test:coverage": "vitest run --coverage",

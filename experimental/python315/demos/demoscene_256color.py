@@ -289,16 +289,16 @@ def mandelbrot_fractal():
             line = ""
             for x in range(width):
                 # Map screen coordinates to complex plane
-                cx = (x - width/2) * zoom / width + offset_x
-                cy = (y - height/2) * zoom / height + offset_y
+                cx = (x - width / 2) * zoom / width + offset_x
+                cy = (y - height / 2) * zoom / height + offset_y
 
                 # Mandelbrot calculation
                 zx, zy = 0, 0
                 iterations = 0
                 max_iter = 50
 
-                while zx*zx + zy*zy < 4 and iterations < max_iter:
-                    zx, zy = zx*zx - zy*zy + cx, 2*zx*zy + cy
+                while zx * zx + zy * zy < 4 and iterations < max_iter:
+                    zx, zy = zx * zx - zy * zy + cx, 2 * zx * zy + cy
                     iterations += 1
 
                 # Color based on iterations
@@ -307,7 +307,7 @@ def mandelbrot_fractal():
                     color = Colors256.BLACK
                 else:
                     intensity = int(iterations * 255 / max_iter)
-                    color = get_color_256(intensity, intensity//2, 255-intensity)
+                    color = get_color_256(intensity, intensity // 2, 255 - intensity)
                     chars = [" ", "░", "▒", "▓", "█"]
                     char = chars[min(iterations // 10, 4)]
 
@@ -346,7 +346,7 @@ def spiral_animation():
                 center_x, center_y = width // 2, height // 2
                 dx = x - center_x
                 dy = y - center_y
-                distance = math.sqrt(dx*dx + dy*dy)
+                distance = math.sqrt(dx * dx + dy * dy)
 
                 # Calculate angle
                 angle = math.atan2(dy, dx)
@@ -361,15 +361,15 @@ def spiral_animation():
                 # Color and character based on spiral value
                 if abs(spiral_value) > 0.7:
                     intensity = int((spiral_value + 1) * 127.5)
-                    color = get_color_256(intensity, 255-intensity, intensity//2)
+                    color = get_color_256(intensity, 255 - intensity, intensity // 2)
                     char = "█"
                 elif abs(spiral_value) > 0.4:
                     intensity = int((spiral_value + 1) * 127.5)
-                    color = get_color_256(intensity//2, intensity, intensity//2)
+                    color = get_color_256(intensity // 2, intensity, intensity // 2)
                     char = "▓"
                 elif abs(spiral_value) > 0.1:
                     intensity = int((spiral_value + 1) * 127.5)
-                    color = get_color_256(intensity//3, intensity//3, intensity)
+                    color = get_color_256(intensity // 3, intensity // 3, intensity)
                     char = "▒"
                 else:
                     char = " "
@@ -397,25 +397,22 @@ def fire_effect():
         hide_cursor()
 
         print(
-            Colors256.BRIGHT_RED
-            + Colors256.BOLD
-            + "🔥 FIRE EFFECT"
-            + Colors256.RESET,
+            Colors256.BRIGHT_RED + Colors256.BOLD + "🔥 FIRE EFFECT" + Colors256.RESET,
         )
         print(Colors256.RED + "=" * 50 + Colors256.RESET)
         print()
 
         # Generate fire at bottom
         for x in range(width):
-            fire_buffer[height-1][x] = random.randint(0, 255)
+            fire_buffer[height - 1][x] = random.randint(0, 255)
 
         # Propagate fire upward
-        for y in range(height-2, -1, -1):
+        for y in range(height - 2, -1, -1):
             for x in range(width):
                 # Average with neighbors and add randomness
-                left = fire_buffer[y+1][max(0, x-1)]
-                center = fire_buffer[y+1][x]
-                right = fire_buffer[y+1][min(width-1, x+1)]
+                left = fire_buffer[y + 1][max(0, x - 1)]
+                center = fire_buffer[y + 1][x]
+                right = fire_buffer[y + 1][min(width - 1, x + 1)]
 
                 avg = (left + center + right) // 3
                 fire_buffer[y][x] = max(0, avg - random.randint(0, 20))
@@ -586,7 +583,7 @@ def bouncing_balls():
             'vx': random.uniform(-2, 2),
             'vy': random.uniform(-2, 2),
             'color': random.choice(Colors256.RAINBOW),
-            'size': random.randint(1, 3)
+            'size': random.randint(1, 3),
         }
         balls.append(ball)
 
@@ -631,7 +628,7 @@ def bouncing_balls():
             for dy in range(-size, size + 1):
                 for dx in range(-size, size + 1):
                     if 0 <= x + dx < width and 0 <= y + dy < height:
-                        if dx*dx + dy*dy <= size*size:
+                        if dx * dx + dy * dy <= size * size:
                             screen[y + dy][x + dx] = '●'
 
         # Render screen
@@ -643,7 +640,9 @@ def bouncing_balls():
                     for ball in balls:
                         bx, by = int(ball['x']), int(ball['y'])
                         if abs(x - bx) <= ball['size'] and abs(y - by) <= ball['size']:
-                            if (x - bx)*(x - bx) + (y - by)*(y - by) <= ball['size']*ball['size']:
+                            if (x - bx) * (x - bx) + (y - by) * (y - by) <= ball[
+                                'size'
+                            ] * ball['size']:
                                 line += ball['color'] + '●' + Colors256.RESET
                                 break
                     else:

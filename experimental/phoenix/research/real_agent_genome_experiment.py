@@ -30,7 +30,8 @@ except ImportError as e:
 
     result = subprocess.run(
         [sys.executable, "standalone_genome_experiment.py"] + sys.argv[1:],
-        cwd=Path(__file__).parent, check=False,
+        cwd=Path(__file__).parent,
+        check=False,
     )
     sys.exit(result.returncode)
 
@@ -265,10 +266,16 @@ async def main():
     """Main function."""
     parser = argparse.ArgumentParser(description="Run Real Agent Genome Experiment")
     parser.add_argument(
-        "--trials", type=int, default=10, help="Number of trials to run",
+        "--trials",
+        type=int,
+        default=10,
+        help="Number of trials to run",
     )
     parser.add_argument(
-        "--model", type=str, default="qwen2.5:7b", help="Ollama model to use",
+        "--model",
+        type=str,
+        default="qwen2.5:7b",
+        help="Ollama model to use",
     )
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging")
 
@@ -277,7 +284,8 @@ async def main():
     # Setup logging
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(
-        level=log_level, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        level=log_level,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )
 
     try:

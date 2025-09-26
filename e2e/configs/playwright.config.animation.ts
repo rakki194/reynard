@@ -5,6 +5,17 @@
  */
 
 import { defineConfig, devices } from "@playwright/test";
+import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
+
+// Initialize results manager for animation tests
+const resultsManager = createResultsManager(TEST_TYPES.COMPONENTS, {
+  environment: process.env.NODE_ENV || "development",
+  branch: process.env.GIT_BRANCH || "unknown",
+  commit: process.env.GIT_COMMIT || "unknown",
+});
+
+// Create directories and get paths
+const resultsPaths = resultsManager.createDirectories();
 
 export default defineConfig({
   testDir: "../suites/animation",
@@ -12,10 +23,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [
-    ["json", { outputFile: "../test-results/animation-results.json" }],
-    ["junit", { outputFile: "../test-results/animation-results.xml" }],
-  ],
+  reporter: resultsManager.getReporterConfig(),
   use: {
     baseURL: "http://localhost:3005",
     trace: "on-first-retry",
@@ -88,10 +96,14 @@ export default defineConfig({
     // Allow for slight timing differences in animations
     timeout: 5000,
     // Visual comparison settings
-    threshold: 0.2,
-    // Animation frame comparison
-    animation: "disabled", // Disable Playwright's animation waiting for our custom tests
+    toHaveScreenshot: {
+      threshold: 0.2,
+      animations: "disabled", // Disable Playwright's animation waiting for our custom tests
+    },
   },
+  // Output directory for test artifacts
+  outputDir: resultsPaths.artifactsDir,
+
   // Global setup for animation tests (disabled for debugging)
   // globalSetup: '../core/setup/animation-global-setup.ts',
   // globalTeardown: '../core/setup/animation-global-teardown.ts',

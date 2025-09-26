@@ -35,7 +35,10 @@ class PenetrationTestingClient:
 
         # Set fenrir user agent for bypass detection
         self.session.headers.update(
-            {"User-Agent": "BlackHat Exploit Suite", "Content-Type": "application/json"},
+            {
+                "User-Agent": "BlackHat Exploit Suite",
+                "Content-Type": "application/json",
+            },
         )
 
         # Register cleanup on exit
@@ -125,7 +128,8 @@ class PenetrationTestingClient:
         """
         try:
             response = self.session.get(
-                f"{self.base_url}/api/penetration-testing/status", timeout=10,
+                f"{self.base_url}/api/penetration-testing/status",
+                timeout=10,
             )
 
             if response.status_code == 200:

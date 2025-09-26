@@ -37,8 +37,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestExecutionCoverage(FenrirTestBase):
-    """*otter curiosity* Test suite focused on calling execution methods for maximum coverage
-    """
+    """*otter curiosity* Test suite focused on calling execution methods for maximum coverage"""
 
     async def test_cors_exploit_execution(self) -> None:
         """Test CORS exploit execution for coverage"""

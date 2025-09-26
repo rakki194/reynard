@@ -109,7 +109,9 @@ class CalendarIntegrationService:
     """Service for calendar integration and meeting scheduling."""
 
     def __init__(
-        self, config: CalendarConfig | None = None, data_dir: str = "data/calendar",
+        self,
+        config: CalendarConfig | None = None,
+        data_dir: str = "data/calendar",
     ):
         self.config = config or CalendarConfig()
         self.data_dir = Path(data_dir)
@@ -414,7 +416,9 @@ class CalendarIntegrationService:
         try:
             # Get existing events in the time range
             existing_events = await self._get_events_in_range(
-                start_date, end_date, calendar_id,
+                start_date,
+                end_date,
+                calendar_id,
             )
 
             # Generate possible time slots
@@ -424,7 +428,9 @@ class CalendarIntegrationService:
             while current_time + timedelta(minutes=duration_minutes) <= end_date:
                 # Check if this time slot is available
                 if self._is_time_slot_available(
-                    current_time, duration_minutes, existing_events,
+                    current_time,
+                    duration_minutes,
+                    existing_events,
                 ):
                     # Check if it's within working hours
                     if self._is_within_working_hours(current_time):
@@ -449,7 +455,9 @@ class CalendarIntegrationService:
             return []
 
     async def get_upcoming_meetings(
-        self, user_email: str, days_ahead: int = 7,
+        self,
+        user_email: str,
+        days_ahead: int = 7,
     ) -> list[CalendarEvent]:
         """Get upcoming meetings for a user.
 
@@ -700,7 +708,10 @@ class CalendarIntegrationService:
         return None
 
     async def _get_events_in_range(
-        self, start_date: datetime, end_date: datetime, calendar_id: str,
+        self,
+        start_date: datetime,
+        end_date: datetime,
+        calendar_id: str,
     ) -> list[CalendarEvent]:
         """Get events in a time range."""
         events = []

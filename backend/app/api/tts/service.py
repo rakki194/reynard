@@ -36,9 +36,7 @@ class TTSServiceManager:
         try:
             service = self.get_service()
             result = await service.initialize(config)
-        except (
-            Exception
-        ) as e:
+        except Exception as e:
             logger.exception(
                 "Failed to initialize TTS service",
                 extra={

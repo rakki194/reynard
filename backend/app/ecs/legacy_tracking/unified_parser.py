@@ -134,7 +134,10 @@ class ChangelogParser:
             # Check for Success-Advisor-8 references
             if self.success_advisor_pattern.search(line):
                 activity = self._extract_activity_from_line(
-                    line, i, current_version, current_date,
+                    line,
+                    i,
+                    current_version,
+                    current_date,
                 )
                 if activity:
                     activities.append(activity)
@@ -145,7 +148,8 @@ class ChangelogParser:
         return activities
 
     def _convert_contribution_to_activity(
-        self, contribution: AgentContribution,
+        self,
+        contribution: AgentContribution,
     ) -> SuccessAdvisor8Activity:
         """Convert existing AgentContribution to Success-Advisor-8 activity."""
         return SuccessAdvisor8Activity(
@@ -211,9 +215,7 @@ class ChangelogParser:
             for keyword in ["refactor", "restructure", "reorganize"]
         ):
             return "refactor"
-        if any(
-            keyword in line_lower for keyword in ["doc", "documentation", "guide"]
-        ):
+        if any(keyword in line_lower for keyword in ["doc", "documentation", "guide"]):
             return "documentation"
         return "other"
 
@@ -370,7 +372,8 @@ class ChangelogParser:
             return {"valid": False, "error": f"Failed to validate CHANGELOG: {e}"}
 
     def _convert_to_success_advisor_activity(
-        self, contribution,
+        self,
+        contribution,
     ) -> SuccessAdvisor8Activity:
         """Convert an existing AgentContribution to a SuccessAdvisor8Activity."""
         activity_type = self._classify_activity_type(contribution.description)
@@ -389,8 +392,7 @@ class ChangelogParser:
 
 
 class SuccessAdvisor8ChangelogAnalyzer:
-    """Advanced analyzer for Success-Advisor-8 changelog activities.
-    """
+    """Advanced analyzer for Success-Advisor-8 changelog activities."""
 
     def __init__(self, parser: ChangelogParser):
         """Initialize the analyzer.

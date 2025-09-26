@@ -137,4 +137,4 @@ When contributing to this project, please follow these guidelines:
 
 ---
 
-*This changelog is maintained by the PHOENIX Control system and Success-Advisor-8 agent.*
+_This changelog is maintained by the PHOENIX Control system and Success-Advisor-8 agent._

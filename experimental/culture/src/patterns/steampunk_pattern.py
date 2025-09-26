@@ -105,7 +105,9 @@ class SteampunkCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel,
+        self,
+        count: int,
+        safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate steampunk-specific scenarios"""
         scenarios = []
@@ -159,7 +161,9 @@ class SteampunkCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for steampunk cultural appropriateness"""
         metrics = {}
@@ -216,7 +220,9 @@ class SteampunkCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_aesthetic_appreciation(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate appreciation for steampunk aesthetics"""
         score = 0.0
@@ -246,7 +252,9 @@ class SteampunkCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_inventiveness(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate creative problem-solving and mechanical innovation"""
         score = 0.0
@@ -276,7 +284,9 @@ class SteampunkCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_historical_awareness(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate understanding of Victorian era and industrial revolution"""
         score = 0.0
@@ -306,7 +316,9 @@ class SteampunkCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_community_etiquette(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate community etiquette and respect"""
         score = 0.0
@@ -364,7 +376,9 @@ class SteampunkCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str,
+        self,
+        metrics: dict[str, float],
+        response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

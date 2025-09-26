@@ -130,7 +130,9 @@ class SemanticSearchEnhancer:
         }
 
     async def enhance_query(
-        self, query: str, context: SearchContext | None = None,
+        self,
+        query: str,
+        context: SearchContext | None = None,
     ) -> tuple[str, QueryIntent, dict[str, Any]]:
         """Enhance query with semantic processing and intent detection.
 
@@ -334,7 +336,9 @@ class SemanticSearchEnhancer:
         return " ".join(enhanced_parts)
 
     async def _enhance_documentation_query(
-        self, query: str, intent: QueryIntent,
+        self,
+        query: str,
+        intent: QueryIntent,
     ) -> str:
         """Enhance documentation search queries."""
         enhanced_parts = [query]
@@ -348,7 +352,9 @@ class SemanticSearchEnhancer:
         return " ".join(enhanced_parts)
 
     async def _enhance_troubleshooting_query(
-        self, query: str, intent: QueryIntent,
+        self,
+        query: str,
+        intent: QueryIntent,
     ) -> str:
         """Enhance troubleshooting queries."""
         enhanced_parts = [query]
@@ -420,7 +426,11 @@ class SemanticSearchEnhancer:
 
             for i, result in enumerate(results):
                 enhanced_result = await self._enhance_single_result(
-                    result, query, intent, context, i,
+                    result,
+                    query,
+                    intent,
+                    context,
+                    i,
                 )
                 enhanced_results.append(enhanced_result)
 
@@ -487,7 +497,9 @@ class SemanticSearchEnhancer:
 
         # Calculate enhanced score
         enhanced_score = await self._calculate_enhanced_score(
-            base_score, relevance_factors, original_rank,
+            base_score,
+            relevance_factors,
+            original_rank,
         )
 
         # Determine rerank reason
@@ -530,7 +542,9 @@ class SemanticSearchEnhancer:
         return min(quality_score, 1.0)
 
     async def _calculate_intent_alignment(
-        self, result: dict[str, Any], intent: QueryIntent,
+        self,
+        result: dict[str, Any],
+        intent: QueryIntent,
     ) -> float:
         """Calculate how well a result aligns with the detected intent."""
         alignment_score = 0.5  # Base score
@@ -596,7 +610,9 @@ class SemanticSearchEnhancer:
         return 0.5
 
     async def _calculate_context_relevance(
-        self, result: dict[str, Any], context: SearchContext,
+        self,
+        result: dict[str, Any],
+        context: SearchContext,
     ) -> dict[str, Any]:
         """Calculate context relevance for a result."""
         relevance_score = 0.0
@@ -625,7 +641,9 @@ class SemanticSearchEnhancer:
         return {"score": min(relevance_score, 1.0), "matches": matches}
 
     async def _calculate_semantic_enhancement(
-        self, result: dict[str, Any], query: str,
+        self,
+        result: dict[str, Any],
+        query: str,
     ) -> float:
         """Calculate semantic enhancement factor."""
         # This would typically use more sophisticated semantic analysis
@@ -647,7 +665,9 @@ class SemanticSearchEnhancer:
         return min(enhancement_score, 1.0)
 
     async def _generate_semantic_tags(
-        self, result: dict[str, Any], intent: QueryIntent,
+        self,
+        result: dict[str, Any],
+        intent: QueryIntent,
     ) -> list[str]:
         """Generate semantic tags for a result."""
         tags = []
@@ -679,7 +699,10 @@ class SemanticSearchEnhancer:
         return tags
 
     async def _calculate_enhanced_score(
-        self, base_score: float, relevance_factors: dict[str, float], original_rank: int,
+        self,
+        base_score: float,
+        relevance_factors: dict[str, float],
+        original_rank: int,
     ) -> float:
         """Calculate enhanced score using multiple factors."""
         # Weighted combination of factors
@@ -751,7 +774,10 @@ class SemanticSearchEnhancer:
         }
 
     async def optimize_search_parameters(
-        self, query: str, intent: QueryIntent, context: SearchContext | None = None,
+        self,
+        query: str,
+        intent: QueryIntent,
+        context: SearchContext | None = None,
     ) -> dict[str, Any]:
         """Optimize search parameters based on query analysis."""
         optimized_params = {

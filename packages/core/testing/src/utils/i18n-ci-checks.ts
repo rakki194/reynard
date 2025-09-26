@@ -4,8 +4,7 @@
  */
 
 import { execSync } from "child_process";
-import { readFileSync, existsSync } from "fs";
-import { join } from "path";
+import { existsSync } from "fs";
 
 export interface I18nCIConfig {
   /** Packages to check */
@@ -157,7 +156,7 @@ async function checkHardcodedStrings(packages: string[]): Promise<{ count: numbe
 /**
  * Validate translations using the i18n package
  */
-async function validateTranslations(locales: string[]): Promise<{ missingCount: number; details: string[] }> {
+async function validateTranslations(_locales: string[]): Promise<{ missingCount: number; details: string[] }> {
   try {
     // This would integrate with the actual i18n validation
     const command = `npx vitest run packages/core/i18n/src/__tests__/translation-validation.test.ts --reporter=json`;

@@ -19,8 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class RealPerformanceAnalyzer:
-    """Real performance analyzer that evaluates agent outputs using actual algorithmic analysis.
-    """
+    """Real performance analyzer that evaluates agent outputs using actual algorithmic analysis."""
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -86,10 +85,11 @@ class RealPerformanceAnalyzer:
         }
 
     async def analyze_agent_output(
-        self, agent: AgentState, output: str,
+        self,
+        agent: AgentState,
+        output: str,
     ) -> PerformanceMetrics:
-        """Analyze real agent output to generate performance metrics.
-        """
+        """Analyze real agent output to generate performance metrics."""
         self.logger.info(f"🔍 Analyzing real output for agent {agent.name}")
 
         # Analyze different aspects of the output
@@ -317,7 +317,8 @@ class RealPerformanceAnalyzer:
 
         output_parts.append(
             spirit_intro.get(
-                agent.spirit.value, f"As a {agent.spirit.value}, I approach this task:",
+                agent.spirit.value,
+                f"As a {agent.spirit.value}, I approach this task:",
             ),
         )
 

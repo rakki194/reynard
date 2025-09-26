@@ -214,7 +214,7 @@ export const LoginForm: Component<LoginFormProps> = props => {
                 <Toggle
                   size="sm"
                   checked={rememberMe()}
-                  onChange={checked => setRememberMe(checked)}
+                  onChange={(checked: boolean) => setRememberMe(checked)}
                   disabled={local.loading}
                 />
                 <span class="login-form__checkbox-mark"></span>

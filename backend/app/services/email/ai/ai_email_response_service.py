@@ -147,7 +147,7 @@ class AIEmailResponseService:
 
     async def initialize(self) -> bool:
         """Initialize the AI email response service.
-        
+
         Returns:
             True if initialization successful, False otherwise
         """
@@ -155,16 +155,17 @@ class AIEmailResponseService:
             if not self.ai_service:
                 # Get AI service from global registry
                 from ...ai import get_ai_service
+
                 self.ai_service = get_ai_service()
-            
+
             if not self.ai_service:
                 logger.error("No AI service available for email response generation")
                 return False
-            
+
             self._initialized = True
             logger.info("✅ AI Email Response Service initialized successfully")
             return True
-            
+
         except Exception as e:
             logger.error(f"❌ Failed to initialize AI Email Response Service: {e}")
             return False
@@ -267,7 +268,8 @@ class AIEmailResponseService:
             body = email_data.get("body", "")
             sender_email = email_data.get("sender_email", email_data.get("sender", ""))
             recipient_email = email_data.get(
-                "recipient_email", email_data.get("recipient", ""),
+                "recipient_email",
+                email_data.get("recipient", ""),
             )
 
             # Analyze email type
@@ -345,7 +347,7 @@ class AIEmailResponseService:
         try:
             if not self._initialized:
                 await self.initialize()
-            
+
             if not self.ai_service:
                 raise ValueError("AI service not available")
 
@@ -402,7 +404,9 @@ class AIEmailResponseService:
             raise
 
     async def generate_auto_reply(
-        self, email_context: EmailContext, agent_config: dict[str, Any],
+        self,
+        email_context: EmailContext,
+        agent_config: dict[str, Any],
     ) -> AIResponse:
         """Generate automatic reply for agent emails.
 
@@ -438,7 +442,9 @@ class AIEmailResponseService:
             raise
 
     async def suggest_response_improvements(
-        self, response: AIResponse, email_context: EmailContext,
+        self,
+        response: AIResponse,
+        email_context: EmailContext,
     ) -> list[str]:
         """Suggest improvements for an AI-generated response.
 
@@ -485,7 +491,9 @@ class AIEmailResponseService:
             return []
 
     async def get_response_history(
-        self, email_address: str, limit: int = 10,
+        self,
+        email_address: str,
+        limit: int = 10,
     ) -> list[AIResponse]:
         """Get response history for an email address.
 
@@ -527,9 +535,7 @@ class AIEmailResponseService:
             for word in ["question", "?", "how", "what", "when", "where", "why"]
         ):
             return "question"
-        if any(
-            word in text for word in ["request", "please", "can you", "could you"]
-        ):
+        if any(word in text for word in ["request", "please", "can you", "could you"]):
             return "request"
         if any(
             word in text for word in ["complaint", "problem", "issue", "error", "bug"]
@@ -537,9 +543,7 @@ class AIEmailResponseService:
             return "complaint"
         if any(word in text for word in ["thank", "thanks", "appreciate"]):
             return "gratitude"
-        if any(
-            word in text for word in ["urgent", "asap", "immediately", "critical"]
-        ):
+        if any(word in text for word in ["urgent", "asap", "immediately", "critical"]):
             return "urgent"
         return "general"
 
@@ -603,9 +607,7 @@ class AIEmailResponseService:
             return "en"
         if any(word in text_lower for word in ["el", "la", "de", "que", "y", "en"]):
             return "es"
-        if any(
-            word in text_lower for word in ["le", "la", "de", "et", "est", "dans"]
-        ):
+        if any(word in text_lower for word in ["le", "la", "de", "et", "est", "dans"]):
             return "fr"
         if any(
             word in text_lower for word in ["der", "die", "das", "und", "ist", "sind"]
@@ -646,12 +648,12 @@ class AIEmailResponseService:
         custom_instructions: str | None,
     ) -> tuple[str, str]:
         """Build system and user prompts for email response generation.
-        
+
         Args:
             email_context: Email context for response generation
             response_type: Type of response to generate
             custom_instructions: Custom instructions for the AI
-            
+
         Returns:
             Tuple of (system_prompt, user_prompt)
         """
@@ -692,55 +694,62 @@ class AIEmailResponseService:
 
     def _generate_html_body(self, text_body: str) -> str:
         """Generate HTML version of the email body.
-        
+
         Args:
             text_body: Plain text email body
-            
+
         Returns:
             HTML formatted email body
         """
         # Simple HTML conversion - convert line breaks to <br> tags
         html_body = text_body.replace('\n', '<br>\n')
-        
+
         # Add basic HTML structure
         html_body = f"""<html>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         {html_body}
         </body>
         </html>"""
-        
+
         return html_body
 
-    def _calculate_confidence_score(self, email_context: EmailContext, response_body: str) -> float:
+    def _calculate_confidence_score(
+        self, email_context: EmailContext, response_body: str
+    ) -> float:
         """Calculate confidence score for the generated response.
-        
+
         Args:
             email_context: Original email context
             response_body: Generated response body
-            
+
         Returns:
             Confidence score between 0.0 and 1.0
         """
         score = 0.5  # Base score
-        
+
         # Length appropriateness
         if 50 <= len(response_body) <= self.config.max_response_length:
             score += 0.2
-        
+
         # Tone appropriateness
         if email_context.sentiment == "negative" and "sorry" in response_body.lower():
             score += 0.1
-        elif email_context.sentiment == "positive" and any(word in response_body.lower() for word in ["thank", "appreciate", "glad"]):
+        elif email_context.sentiment == "positive" and any(
+            word in response_body.lower() for word in ["thank", "appreciate", "glad"]
+        ):
             score += 0.1
-        
+
         # Question addressing
         if email_context.email_type == "question" and "?" in response_body:
             score += 0.1
-        
+
         # Professional closing
-        if any(word in response_body.lower() for word in ["regards", "sincerely", "best", "thanks"]):
+        if any(
+            word in response_body.lower()
+            for word in ["regards", "sincerely", "best", "thanks"]
+        ):
             score += 0.1
-        
+
         return min(1.0, max(0.0, score))
 
     def _parse_response_text(self, response_text: str) -> tuple[str, str]:
@@ -782,9 +791,7 @@ class AIEmailResponseService:
             word in text_lower for word in ["hi", "hey", "hello", "thanks", "cheers"]
         ):
             return "friendly"
-        if any(
-            word in text_lower for word in ["sincerely", "respectfully", "regards"]
-        ):
+        if any(word in text_lower for word in ["sincerely", "respectfully", "regards"]):
             return "formal"
         if any(word in text_lower for word in ["yo", "sup", "lol", "haha"]):
             return "casual"
@@ -804,7 +811,6 @@ class AIEmailResponseService:
             actions.append("Attach document")
 
         return actions
-
 
 
 # Global AI response service instance - will be initialized lazily
@@ -844,8 +850,7 @@ async def initialize_ai_email_response_service() -> bool:
 
 
 async def shutdown_ai_email_response_service() -> None:
-    """Shutdown the AI email response service.
-    """
+    """Shutdown the AI email response service."""
     try:
         global ai_email_response_service
         if ai_email_response_service is not None:
@@ -871,14 +876,17 @@ async def health_check_ai_email_response_service() -> bool:
         # Check if the service is initialized and AI service is available
         if not ai_email_response_service._initialized:
             return False
-        
+
         if not ai_email_response_service.ai_service:
             return False
-        
+
         # Check AI service health
         health_status = ai_email_response_service.ai_service.get_health_status()
-        return health_status["service_initialized"] and health_status["healthy_providers"] > 0
-        
+        return (
+            health_status["service_initialized"]
+            and health_status["healthy_providers"] > 0
+        )
+
     except Exception as e:
         logger.error(f"❌ AI email response service health check error: {e}")
         return False

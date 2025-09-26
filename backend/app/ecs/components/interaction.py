@@ -104,13 +104,16 @@ class Relationship:
 
         # Update relationship metrics based on interaction impact
         self.strength = max(
-            0.0, min(1.0, self.strength + interaction.relationship_impact * 0.1),
+            0.0,
+            min(1.0, self.strength + interaction.relationship_impact * 0.1),
         )
         self.trust_level = max(
-            0.0, min(1.0, self.trust_level + interaction.relationship_impact * 0.05),
+            0.0,
+            min(1.0, self.trust_level + interaction.relationship_impact * 0.05),
         )
         self.familiarity = max(
-            0.0, min(1.0, self.familiarity + 0.01),
+            0.0,
+            min(1.0, self.familiarity + 0.01),
         )  # Always increase familiarity
 
     def get_relationship_quality(self) -> float:
@@ -377,7 +380,8 @@ class InteractionComponent(Component):
         """
         energy_recovery = self.energy_recovery_rate * delta_time
         self.social_energy = min(
-            self.max_social_energy, self.social_energy + energy_recovery,
+            self.max_social_energy,
+            self.social_energy + energy_recovery,
         )
 
     def can_interact(self) -> bool:
@@ -422,7 +426,9 @@ class InteractionComponent(Component):
         self.social_confidence = max(0.0, min(1.0, confidence))
 
     def _update_relationship_from_interaction(
-        self, agent_id: str, interaction: Interaction,
+        self,
+        agent_id: str,
+        interaction: Interaction,
     ) -> None:
         """Update relationship based on interaction."""
         if agent_id not in self.relationships:
@@ -452,7 +458,9 @@ class InteractionComponent(Component):
         return self.interactions[-limit:] if self.interactions else []
 
     def get_interactions_with_agent(
-        self, agent_id: str, limit: int = 10,
+        self,
+        agent_id: str,
+        limit: int = 10,
     ) -> list[Interaction]:
         """Get interactions with a specific agent."""
         agent_interactions = [
@@ -463,7 +471,9 @@ class InteractionComponent(Component):
         return agent_interactions[-limit:] if agent_interactions else []
 
     def get_interactions_by_type(
-        self, interaction_type: InteractionType, limit: int = 10,
+        self,
+        interaction_type: InteractionType,
+        limit: int = 10,
     ) -> list[Interaction]:
         """Get interactions of a specific type."""
         type_interactions = [

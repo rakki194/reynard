@@ -116,7 +116,9 @@ class ECSBottleneckAnalyzer:
         for i in range(15):
             request_id = f"compatibility-{i}"
             self.tracker.start_request(
-                request_id, "/agents/agent1/compatibility/agent2", "GET",
+                request_id,
+                "/agents/agent1/compatibility/agent2",
+                "GET",
             )
 
             # Simulate complex database queries
@@ -169,7 +171,8 @@ class ECSBottleneckAnalyzer:
 
             # Simulate database queries for mate finding
             self.tracker.add_db_query(
-                "SELECT agent_id, traits FROM agent_traits WHERE agent_id != ?", 0.06,
+                "SELECT agent_id, traits FROM agent_traits WHERE agent_id != ?",
+                0.06,
             )
 
             self.tracker.end_request(request_id)
@@ -264,7 +267,8 @@ class ECSBottleneckAnalyzer:
 
                 # Simulate database query that might fail
                 self.tracker.add_db_query(
-                    f"SELECT * FROM {endpoint.split('/')[-1]} WHERE id = ?", 0.03,
+                    f"SELECT * FROM {endpoint.split('/')[-1]} WHERE id = ?",
+                    0.03,
                 )
 
                 # Determine if this request should fail
@@ -277,7 +281,10 @@ class ECSBottleneckAnalyzer:
         print("   ✅ Error-prone endpoints tested")
 
     def _generate_ecs_analysis(
-        self, bottlenecks: list, trends: list, report: dict,
+        self,
+        bottlenecks: list,
+        trends: list,
+        report: dict,
     ) -> dict[str, Any]:
         """Generate ECS-specific performance analysis."""
         # Categorize bottlenecks by ECS component
@@ -403,7 +410,8 @@ class ECSBottleneckAnalyzer:
                     [k for k, v in ecs_bottlenecks.items() if v],
                 ),
                 "optimization_score": report.get("optimization_score", {}).get(
-                    "score", 0,
+                    "score",
+                    0,
                 ),
             },
         }

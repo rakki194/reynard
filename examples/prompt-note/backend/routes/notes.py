@@ -6,10 +6,9 @@ from datetime import datetime
 
 from database import DatabaseService
 from fastapi import APIRouter, Depends, HTTPException, status
+from models import Note, Notebook, User
 from pydantic import BaseModel
 from sqlalchemy import select
-
-from models import Note, Notebook, User
 
 router = APIRouter()
 
@@ -58,7 +57,8 @@ async def get_current_user(db: DatabaseService = Depends(get_database_service)) 
     user = result.scalar_one_or_none()
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
         )
     return user
 
@@ -76,14 +76,16 @@ async def get_notes(
         # Verify notebook ownership
         notebook_result = await db.execute(
             select(Notebook).where(
-                Notebook.id == notebook_id, Notebook.user_id == current_user.id,
+                Notebook.id == notebook_id,
+                Notebook.user_id == current_user.id,
             ),
         )
         notebook = notebook_result.scalar_one_or_none()
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         query = query.where(Note.notebook_id == notebook_id)
@@ -118,14 +120,16 @@ async def create_note(
     # Verify notebook ownership
     notebook_result = await db.execute(
         select(Notebook).where(
-            Notebook.id == note_data.notebook_id, Notebook.user_id == current_user.id,
+            Notebook.id == note_data.notebook_id,
+            Notebook.user_id == current_user.id,
         ),
     )
     notebook = notebook_result.scalar_one_or_none()
 
     if not notebook:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Notebook not found",
         )
 
     note = Note(
@@ -166,7 +170,8 @@ async def get_note(
 
     if not note:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found",
         )
 
     return NoteResponse(
@@ -196,7 +201,8 @@ async def update_note(
 
     if not note:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found",
         )
 
     # Update fields if provided
@@ -240,7 +246,8 @@ async def delete_note(
 
     if not note:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found",
         )
 
     await db.delete(note)
@@ -291,7 +298,8 @@ async def toggle_favorite(
 
     if not note:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Note not found",
         )
 
     note.is_favorite = not note.is_favorite

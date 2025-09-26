@@ -213,7 +213,8 @@ class DistillationLoader:
         return genetic_materials
 
     async def reconstruct_agent_from_genetic_material(
-        self, genetic_material: AgentGeneticMaterial,
+        self,
+        genetic_material: AgentGeneticMaterial,
     ) -> AgentState:
         """Reconstruct an agent state from genetic material.
 
@@ -248,10 +249,12 @@ class DistillationLoader:
         physical_traits = {
             "intelligence": genetic_material.fitness_score,
             "endurance": genetic_material.generation_context.performance_metrics.get(
-                "efficiency", 0.8,
+                "efficiency",
+                0.8,
             ),
             "precision": genetic_material.generation_context.performance_metrics.get(
-                "accuracy", 0.8,
+                "accuracy",
+                0.8,
             ),
             "adaptability": 0.9,  # Inferred from high performance across domains
             "presence": 0.95,  # Inferred from leadership traits
@@ -261,18 +264,22 @@ class DistillationLoader:
         # Create performance metrics
         performance_metrics = PerformanceMetrics(
             accuracy=genetic_material.generation_context.performance_metrics.get(
-                "accuracy", 0.9,
+                "accuracy",
+                0.9,
             ),
             response_time=1.0
             - genetic_material.generation_context.performance_metrics.get(
-                "efficiency", 0.8,
+                "efficiency",
+                0.8,
             ),
             efficiency=genetic_material.generation_context.performance_metrics.get(
-                "efficiency", 0.8,
+                "efficiency",
+                0.8,
             ),
             generalization=0.9,  # Inferred from multi-domain knowledge
             creativity=genetic_material.generation_context.performance_metrics.get(
-                "innovation", 0.9,
+                "innovation",
+                0.9,
             ),
             consistency=0.95,  # Inferred from high fitness score
             fitness=genetic_material.fitness_score,
@@ -346,8 +353,7 @@ class DistillationLoader:
         original_genetic_material: AgentGeneticMaterial,
         reconstructed_agent: AgentState,
     ) -> dict[str, Any]:
-        """Validate that the reconstructed agent accurately represents the original genetic material.
-        """
+        """Validate that the reconstructed agent accurately represents the original genetic material."""
         print("🔍 Validating reconstruction accuracy...")
 
         validation_results = {
@@ -434,8 +440,7 @@ class DistillationLoader:
         return validation_results
 
     async def demonstrate_distillation_loading(self):
-        """Demonstrate the complete distillation loading process.
-        """
+        """Demonstrate the complete distillation loading process."""
         print("🦁 PHOENIX Knowledge Distillation Loading Demo")
         print("=" * 80)
         print(
@@ -457,7 +462,8 @@ class DistillationLoader:
         # Step 3: Validate reconstruction
         print("\n🔍 Step 3: Validating reconstruction accuracy...")
         validation_results = await self.validate_reconstruction(
-            source_genetic_material, reconstructed_agent,
+            source_genetic_material,
+            reconstructed_agent,
         )
 
         # Step 4: Demonstrate knowledge distillation
@@ -486,7 +492,8 @@ class DistillationLoader:
 
         # Apply knowledge distillation
         distilled_agent = await self.apply_knowledge_distillation(
-            [source_genetic_material], target_agent,
+            [source_genetic_material],
+            target_agent,
         )
 
         # Step 5: Save reconstructed agent
@@ -518,7 +525,8 @@ async def main():
 
     # Setup logging
     logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s",
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
     )
 
     # Initialize and run demo

@@ -3,15 +3,16 @@
 This module provides common fixtures and configuration for all middleware tests.
 """
 
-import pytest
 from unittest.mock import Mock
+
+import pytest
 from fastapi import FastAPI, Request, Response
 from fastapi.testclient import TestClient
 
 from app.middleware.cors.config import CORSConfig
-from app.middleware.security.headers import SecurityHeadersMiddleware
-from app.middleware.rate_limiting.simple import SimpleRateLimiter
 from app.middleware.development.bypass import DevelopmentBypassMiddleware
+from app.middleware.rate_limiting.simple import SimpleRateLimiter
+from app.middleware.security.headers import SecurityHeadersMiddleware
 
 
 @pytest.fixture
@@ -57,8 +58,10 @@ def mock_response():
 @pytest.fixture
 def mock_call_next(mock_response):
     """Create a mock call_next function."""
+
     async def call_next(request):
         return mock_response
+
     return call_next
 
 
@@ -69,7 +72,7 @@ def cors_config():
         allowed_origins=["http://localhost:3000"],
         allow_credentials=True,
         allowed_methods=["GET", "POST"],
-        allowed_headers=["Content-Type", "Authorization"]
+        allowed_headers=["Content-Type", "Authorization"],
     )
 
 
@@ -81,7 +84,7 @@ def cors_config_development():
         allowed_origins=["*"],
         allow_credentials=False,
         allowed_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allowed_headers=["*"]
+        allowed_headers=["*"],
     )
 
 
@@ -93,7 +96,7 @@ def cors_config_production():
         allowed_origins=["https://example.com"],
         allow_credentials=True,
         allowed_methods=["GET", "POST"],
-        allowed_headers=["Content-Type", "Authorization"]
+        allowed_headers=["Content-Type", "Authorization"],
     )
 
 
@@ -144,7 +147,7 @@ def preflight_request(mock_request):
     mock_request.headers = {
         "Origin": "http://localhost:3000",
         "Access-Control-Request-Method": "POST",
-        "Access-Control-Request-Headers": "Content-Type"
+        "Access-Control-Request-Headers": "Content-Type",
     }
     return mock_request
 
@@ -168,16 +171,20 @@ def malicious_request(mock_request):
 @pytest.fixture
 def test_endpoint():
     """Create a test endpoint function."""
+
     async def endpoint():
         return {"message": "test"}
+
     return endpoint
 
 
 @pytest.fixture
 def error_endpoint():
     """Create an error endpoint function."""
+
     async def endpoint():
         raise Exception("Test error")
+
     return endpoint
 
 
@@ -205,7 +212,7 @@ def security_headers_response(mock_response):
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "DENY",
         "X-XSS-Protection": "1; mode=block",
-        "Referrer-Policy": "strict-origin-when-cross-origin"
+        "Referrer-Policy": "strict-origin-when-cross-origin",
     }
     return mock_response
 
@@ -217,7 +224,7 @@ def cors_response(mock_response):
         "Access-Control-Allow-Origin": "http://localhost:3000",
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Methods": "GET, POST",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization"
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
     }
     return mock_response
 
@@ -230,7 +237,7 @@ def rate_limit_response(mock_response):
         "Retry-After": "60",
         "X-RateLimit-Limit": "100",
         "X-RateLimit-Remaining": "0",
-        "X-RateLimit-Reset": "60"
+        "X-RateLimit-Reset": "60",
     }
     mock_response.body = b'{"error": "Rate limit exceeded", "type": "rate_limit_error"}'
     return mock_response
@@ -247,7 +254,7 @@ def development_environment():
         "rate_window": 60,
         "security_headers_enabled": True,
         "csp_enabled": True,
-        "hsts_enabled": False
+        "hsts_enabled": False,
     }
 
 
@@ -262,7 +269,7 @@ def production_environment():
         "rate_window": 60,
         "security_headers_enabled": True,
         "csp_enabled": True,
-        "hsts_enabled": True
+        "hsts_enabled": True,
     }
 
 
@@ -277,7 +284,7 @@ def testing_environment():
         "rate_window": 60,
         "security_headers_enabled": True,
         "csp_enabled": False,
-        "hsts_enabled": False
+        "hsts_enabled": False,
     }
 
 
@@ -285,24 +292,24 @@ def testing_environment():
 def middleware_test_app():
     """Create a FastAPI app with all middleware for testing."""
     app = FastAPI()
-    
+
     # Add all middleware
     app.add_middleware(DevelopmentBypassMiddleware, environment="development")
     app.add_middleware(SecurityHeadersMiddleware, environment="development")
     app.add_middleware(SimpleRateLimiter, default_limit=100, window_seconds=60)
-    
+
     @app.get("/test")
     async def test_endpoint():
         return {"message": "test"}
-    
+
     @app.get("/error")
     async def error_endpoint():
         raise Exception("Test error")
-    
+
     @app.post("/test")
     async def test_post_endpoint():
         return {"message": "test post"}
-    
+
     return app
 
 

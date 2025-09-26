@@ -61,6 +61,7 @@ from sqlalchemy.orm import Session
 
 from app.ecs.database import SessionLocal
 from app.models.content.notes import AIMetadata, Note, Notebook, NoteVersion, Tag
+from app.services.notes.rbac_note_service import RBACNoteService
 from gatekeeper.api.dependencies import require_active_user
 from gatekeeper.models.user import User
 
@@ -77,7 +78,8 @@ class NoteCreateRequest(BaseModel):
     title: str = Field(..., min_length=1, max_length=255, description="Note title")
     content: str = Field(default="", description="Note content")
     content_type: str = Field(
-        default="markdown", description="Content type (markdown, rich-text, code)",
+        default="markdown",
+        description="Content type (markdown, rich-text, code)",
     )
     notebook_id: UUID = Field(..., description="ID of the notebook to add the note to")
     tags: list[str] = Field(default=[], description="List of tag names")
@@ -87,7 +89,10 @@ class NoteUpdateRequest(BaseModel):
     """Request model for updating a note."""
 
     title: str | None = Field(
-        None, min_length=1, max_length=255, description="Note title",
+        None,
+        min_length=1,
+        max_length=255,
+        description="Note title",
     )
     content: str | None = Field(None, description="Note content")
     content_type: str | None = Field(None, description="Content type")
@@ -126,11 +131,12 @@ class NoteListResponse(BaseModel):
 
 
 class NoteShareRequest(BaseModel):
-    """Request model for sharing a note."""
+    """Request model for sharing a note with RBAC."""
 
     collaborator_id: UUID = Field(..., description="ID of the collaborator")
-    permission: str = Field(
-        default="read", description="Permission level (read, write, admin)",
+    permission_level: str = Field(
+        default="viewer",
+        description="Permission level (viewer, editor, owner)",
     )
 
 
@@ -138,7 +144,10 @@ class AISummarizeRequest(BaseModel):
     """Request model for AI summarization."""
 
     max_length: int = Field(
-        default=200, ge=50, le=1000, description="Maximum summary length",
+        default=200,
+        ge=50,
+        le=1000,
+        description="Maximum summary length",
     )
 
 
@@ -158,6 +167,12 @@ def get_db() -> Session:
         db.close()
 
 
+# RBAC service dependency
+def get_rbac_note_service() -> RBACNoteService:
+    """Get RBAC note service."""
+    return RBACNoteService()
+
+
 # Helper functions
 def get_agent_id_from_user(user: User) -> UUID:
     """Get agent ID from user. For now, we'll use the user ID as agent ID."""
@@ -175,7 +190,9 @@ def get_or_create_tags(db: Session, tag_names: list[str], agent_id: UUID) -> lis
 
         if not tag:
             tag = Tag(
-                name=tag_name, agent_id=agent_id, color="#6b7280",  # Default gray color
+                name=tag_name,
+                agent_id=agent_id,
+                color="#6b7280",  # Default gray color
             )
             db.add(tag)
             db.flush()  # Flush to get the ID
@@ -206,7 +223,8 @@ async def create_note(
 
         if not notebook:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Notebook not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Notebook not found",
             )
 
         # Create note
@@ -315,19 +333,31 @@ async def get_note(
     note_id: UUID,
     current_user: User = Depends(require_active_user),
     db: Session = Depends(get_db),
+    rbac_service: RBACNoteService = Depends(get_rbac_note_service),
 ):
-    """Get a specific note by ID."""
+    """Get a specific note by ID with RBAC permission checking."""
     start_time = time.time()
     agent_id = get_agent_id_from_user(current_user)
 
     try:
-        note = (
-            db.query(Note).filter(Note.id == note_id, Note.agent_id == agent_id).first()
+        # Check RBAC permission first
+        can_access = await rbac_service.can_user_access_note(
+            str(agent_id), str(note_id), "read"
         )
+
+        if not can_access:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied: insufficient permissions",
+            )
+
+        # Get the note (now that we know the user has permission)
+        note = db.query(Note).filter(Note.id == note_id).first()
 
         if not note:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Note not found",
             )
 
         # Log performance
@@ -352,19 +382,31 @@ async def update_note(
     request: NoteUpdateRequest,
     current_user: User = Depends(require_active_user),
     db: Session = Depends(get_db),
+    rbac_service: RBACNoteService = Depends(get_rbac_note_service),
 ):
-    """Update a note."""
+    """Update a note with RBAC permission checking."""
     start_time = time.time()
     agent_id = get_agent_id_from_user(current_user)
 
     try:
-        note = (
-            db.query(Note).filter(Note.id == note_id, Note.agent_id == agent_id).first()
+        # Check RBAC permission first
+        can_update = await rbac_service.can_user_access_note(
+            str(agent_id), str(note_id), "update"
         )
+
+        if not can_update:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied: insufficient permissions to update note",
+            )
+
+        # Get the note (now that we know the user has permission)
+        note = db.query(Note).filter(Note.id == note_id).first()
 
         if not note:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Note not found",
             )
 
         # Create version before updating
@@ -420,19 +462,31 @@ async def delete_note(
     note_id: UUID,
     current_user: User = Depends(require_active_user),
     db: Session = Depends(get_db),
+    rbac_service: RBACNoteService = Depends(get_rbac_note_service),
 ):
-    """Delete a note."""
+    """Delete a note with RBAC permission checking."""
     start_time = time.time()
     agent_id = get_agent_id_from_user(current_user)
 
     try:
-        note = (
-            db.query(Note).filter(Note.id == note_id, Note.agent_id == agent_id).first()
+        # Check RBAC permission first
+        can_delete = await rbac_service.can_user_access_note(
+            str(agent_id), str(note_id), "delete"
         )
+
+        if not can_delete:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied: insufficient permissions to delete note",
+            )
+
+        # Get the note (now that we know the user has permission)
+        note = db.query(Note).filter(Note.id == note_id).first()
 
         if not note:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Note not found",
             )
 
         db.delete(note)
@@ -450,6 +504,104 @@ async def delete_note(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to delete note",
+        )
+
+
+@router.post("/{note_id}/share")
+async def share_note(
+    note_id: UUID,
+    request: NoteShareRequest,
+    current_user: User = Depends(require_active_user),
+    db: Session = Depends(get_db),
+    rbac_service: RBACNoteService = Depends(get_rbac_note_service),
+):
+    """Share a note with a user using RBAC."""
+    start_time = time.time()
+    agent_id = get_agent_id_from_user(current_user)
+
+    try:
+        # Check RBAC permission first
+        can_share = await rbac_service.can_user_access_note(
+            str(agent_id), str(note_id), "share"
+        )
+
+        if not can_share:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied: insufficient permissions to share note",
+            )
+
+        # Share the note using RBAC service
+        success = await rbac_service.share_note_with_user(
+            str(note_id),
+            str(agent_id),
+            str(request.collaborator_id),
+            request.permission_level,
+        )
+
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to share note"
+            )
+
+        # Log performance
+        processing_time = time.time() - start_time
+        logger.info(f"Shared note {note_id} in {processing_time:.3f}s")
+
+        return {
+            "message": "Note shared successfully",
+            "note_id": str(note_id),
+            "collaborator_id": str(request.collaborator_id),
+            "permission_level": request.permission_level,
+            "processing_time": processing_time,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to share note {note_id}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to share note",
+        )
+
+
+@router.get("/{note_id}/collaborators")
+async def get_note_collaborators(
+    note_id: UUID,
+    current_user: User = Depends(require_active_user),
+    rbac_service: RBACNoteService = Depends(get_rbac_note_service),
+):
+    """Get list of collaborators for a note using RBAC."""
+    start_time = time.time()
+    agent_id = get_agent_id_from_user(current_user)
+
+    try:
+        # Get collaborators using RBAC service
+        collaborators = await rbac_service.get_note_collaborators(
+            str(note_id), str(agent_id)
+        )
+
+        # Log performance
+        processing_time = time.time() - start_time
+        logger.info(
+            f"Retrieved collaborators for note {note_id} in {processing_time:.3f}s"
+        )
+
+        return {
+            "note_id": str(note_id),
+            "collaborators": collaborators,
+            "total_collaborators": len(collaborators),
+            "processing_time": processing_time,
+        }
+
+    except Exception as e:
+        logger.error(
+            f"Failed to get collaborators for note {note_id}: {e}", exc_info=True
+        )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get note collaborators",
         )
 
 
@@ -471,7 +623,8 @@ async def ai_summarize_note(
 
         if not note:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Note not found",
             )
 
         # TODO: Integrate with existing Ollama service for summarization
@@ -509,7 +662,8 @@ async def ai_summarize_note(
     except Exception as e:
         db.rollback()
         logger.error(
-            f"Failed to generate AI summary for note {note_id}: {e}", exc_info=True,
+            f"Failed to generate AI summary for note {note_id}: {e}",
+            exc_info=True,
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -535,7 +689,8 @@ async def get_note_versions(
 
         if not note:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="Note not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Note not found",
             )
 
         # Get versions

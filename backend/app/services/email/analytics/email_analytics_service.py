@@ -113,7 +113,9 @@ class EmailAnalyticsService:
         try:
             # Get email data
             emails_data = await self._get_emails_data(
-                period_start, period_end, agent_id,
+                period_start,
+                period_end,
+                agent_id,
             )
 
             if not emails_data:
@@ -121,7 +123,9 @@ class EmailAnalyticsService:
 
             # Calculate metrics
             metrics = await self._calculate_metrics(
-                emails_data, period_start, period_end,
+                emails_data,
+                period_start,
+                period_end,
             )
 
             # Cache results
@@ -154,7 +158,9 @@ class EmailAnalyticsService:
         """
         try:
             emails_data = await self._get_emails_data(
-                period_start, period_end, agent_id,
+                period_start,
+                period_end,
+                agent_id,
             )
             if not emails_data:
                 return []
@@ -220,7 +226,9 @@ class EmailAnalyticsService:
 
             # Generate charts data
             charts_data = await self._generate_charts_data(
-                period_start, period_end, agent_id,
+                period_start,
+                period_end,
+                agent_id,
             )
 
             # Create report
@@ -264,7 +272,9 @@ class EmailAnalyticsService:
         """
         try:
             emails_data = await self._get_emails_data(
-                period_start, period_end, agent_id,
+                period_start,
+                period_end,
+                agent_id,
             )
             if not emails_data:
                 return {}
@@ -633,7 +643,9 @@ class EmailAnalyticsService:
         )
 
     def _get_common_phrases(
-        self, texts: list[str], min_length: int = 3,
+        self,
+        texts: list[str],
+        min_length: int = 3,
     ) -> list[dict[str, Any]]:
         """Extract common phrases from text list."""
         if not texts:
@@ -669,7 +681,8 @@ class EmailAnalyticsService:
         return start_date, end_date
 
     async def _analyze_volume_trends(
-        self, emails_data: list[dict[str, Any]],
+        self,
+        emails_data: list[dict[str, Any]],
     ) -> list[EmailInsight]:
         """Analyze email volume trends."""
         insights = []
@@ -712,7 +725,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _analyze_response_times(
-        self, emails_data: list[dict[str, Any]],
+        self,
+        emails_data: list[dict[str, Any]],
     ) -> list[EmailInsight]:
         """Analyze email response times."""
         insights = []
@@ -748,7 +762,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _analyze_content_patterns(
-        self, emails_data: list[dict[str, Any]],
+        self,
+        emails_data: list[dict[str, Any]],
     ) -> list[EmailInsight]:
         """Analyze email content patterns."""
         insights = []
@@ -780,7 +795,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _analyze_agent_activity(
-        self, emails_data: list[dict[str, Any]],
+        self,
+        emails_data: list[dict[str, Any]],
     ) -> list[EmailInsight]:
         """Analyze agent activity patterns."""
         insights = []
@@ -813,7 +829,8 @@ class EmailAnalyticsService:
         return insights
 
     async def _detect_anomalies(
-        self, emails_data: list[dict[str, Any]],
+        self,
+        emails_data: list[dict[str, Any]],
     ) -> list[EmailInsight]:
         """Detect anomalies in email patterns."""
         insights = []
@@ -857,7 +874,9 @@ class EmailAnalyticsService:
         return insights
 
     async def _generate_recommendations(
-        self, metrics: EmailMetrics, insights: list[EmailInsight],
+        self,
+        metrics: EmailMetrics,
+        insights: list[EmailInsight],
     ) -> list[str]:
         """Generate actionable recommendations."""
         recommendations = []
@@ -886,12 +905,17 @@ class EmailAnalyticsService:
         return list(set(recommendations))  # Remove duplicates
 
     async def _generate_charts_data(
-        self, period_start: datetime, period_end: datetime, agent_id: str | None,
+        self,
+        period_start: datetime,
+        period_end: datetime,
+        agent_id: str | None,
     ) -> dict[str, Any]:
         """Generate data for charts and visualizations."""
         try:
             emails_data = await self._get_emails_data(
-                period_start, period_end, agent_id,
+                period_start,
+                period_end,
+                agent_id,
             )
 
             # Volume over time
@@ -930,7 +954,9 @@ class EmailAnalyticsService:
             agent_chart = [
                 {"agent": agent, "count": count}
                 for agent, count in sorted(
-                    agent_activity.items(), key=lambda x: x[1], reverse=True,
+                    agent_activity.items(),
+                    key=lambda x: x[1],
+                    reverse=True,
                 )
             ]
 

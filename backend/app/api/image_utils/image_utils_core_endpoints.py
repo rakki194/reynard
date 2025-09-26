@@ -93,7 +93,8 @@ async def validate_image_path(request: ImageValidationRequest):
     try:
         valid = ImageUtils.validate_image_path(request.file_path)
         return ValidationResponse(
-            valid=valid, message="Valid image path" if valid else "Invalid image path",
+            valid=valid,
+            message="Valid image path" if valid else "Invalid image path",
         )
 
     except Exception as e:
@@ -110,7 +111,8 @@ async def validate_dimensions(request: ImageDimensionsRequest):
     try:
         valid = ImageUtils.validate_dimensions(request.width, request.height)
         return ValidationResponse(
-            valid=valid, message="Valid dimensions" if valid else "Invalid dimensions",
+            valid=valid,
+            message="Valid dimensions" if valid else "Invalid dimensions",
         )
 
     except Exception as e:

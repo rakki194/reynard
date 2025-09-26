@@ -207,7 +207,8 @@ class ReloadTester:
             for i in range(total_requests):
                 try:
                     response = requests.get(
-                        f"{self.base_url}/api/health/simple", timeout=2,
+                        f"{self.base_url}/api/health/simple",
+                        timeout=2,
                     )
                     if response.status_code == 200:
                         success_count += 1

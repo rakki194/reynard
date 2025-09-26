@@ -1,5 +1,4 @@
-"""Mock gatekeeper API dependencies.
-"""
+"""Mock gatekeeper API dependencies."""
 
 from fastapi import Depends
 

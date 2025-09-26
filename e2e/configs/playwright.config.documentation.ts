@@ -6,6 +6,17 @@
  */
 
 import { defineConfig, devices } from "@playwright/test";
+import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
+
+// Initialize results manager for documentation tests
+const resultsManager = createResultsManager(TEST_TYPES.COMPONENTS, {
+  environment: process.env.NODE_ENV || "development",
+  branch: process.env.GIT_BRANCH || "unknown",
+  commit: process.env.GIT_COMMIT || "unknown",
+});
+
+// Create directories and get paths
+const resultsPaths = resultsManager.createDirectories();
 
 export default defineConfig({
   testDir: "../suites/documentation",
@@ -13,11 +24,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: 1, // Single worker to avoid conflicts with temp directories
-  reporter: [
-    ["html", { outputFolder: "../results/documentation-validation-results/" }],
-    ["json", { outputFile: "../results/documentation-validation-results/results.json" }],
-    ["junit", { outputFile: "../results/documentation-validation-results/results.xml" }],
-  ],
+  reporter: resultsManager.getReporterConfig(),
   use: {
     headless: true, // Run in headless mode to avoid empty browser windows
     trace: "on",
@@ -35,6 +42,10 @@ export default defineConfig({
       testMatch: "**/documentation-validation.spec.ts",
     },
   ],
+
+  // Output directory for test artifacts
+  outputDir: resultsPaths.artifactsDir,
+
   // webServer: {
   //   command: "echo 'Documentation validation tests do not require a web server'",
   //   port: 3000,

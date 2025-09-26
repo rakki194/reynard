@@ -28,21 +28,27 @@ RAG_ENABLED = os.getenv("RAG_ENABLED", "true").lower() == "true"
 
 if RAG_ENABLED:
     # Core services
-    from .services.core import EmbeddingService, VectorStoreService, DocumentIndexer, SearchEngine
+    # Main service orchestrator
+    from .rag_service import RAGService
+    from .services.core import (
+        DocumentIndexer,
+        EmbeddingService,
+        SearchEngine,
+        VectorStoreService,
+    )
+    from .services.documentation.auto_documentation import AutoDocumentationService
+    from .services.evaluation.model_evaluation import ModelEvaluationService
+    from .services.improvement.continuous_improvement import (
+        ContinuousImprovementService,
+    )
 
     # Advanced services
     from .services.monitoring.prometheus_monitoring import PrometheusMonitoringService
-    from .services.security.access_control_security import AccessControlSecurityService
-    from .services.evaluation.model_evaluation import ModelEvaluationService
-    from .services.improvement.continuous_improvement import ContinuousImprovementService
-    from .services.documentation.auto_documentation import AutoDocumentationService
-
-    # Main service orchestrator
-    from .rag_service import RAGService
+    from .services.rbac.rbac_rag_service import RBACRAGService
 
     # Legacy aliases for backward compatibility
     PerformanceMonitor = PrometheusMonitoringService
-    SecurityService = AccessControlSecurityService
+    SecurityService = RBACRAGService
     ContinuousImprovement = ContinuousImprovementService
     DocumentationService = AutoDocumentationService
     ModelEvaluator = ModelEvaluationService
@@ -50,28 +56,37 @@ else:
     # Create placeholder classes when RAG is disabled
     class EmbeddingService:
         pass
+
     class VectorStoreService:
         pass
+
     class DocumentIndexer:
         pass
+
     class SearchEngine:
         pass
+
     class PrometheusMonitoringService:
         pass
-    class AccessControlSecurityService:
+
+    class RBACRAGService:
         pass
+
     class ModelEvaluationService:
         pass
+
     class ContinuousImprovementService:
         pass
+
     class AutoDocumentationService:
         pass
+
     class RAGService:
         pass
 
     # Legacy aliases
     PerformanceMonitor = PrometheusMonitoringService
-    SecurityService = AccessControlSecurityService
+    SecurityService = RBACRAGService
     ContinuousImprovement = ContinuousImprovementService
     DocumentationService = AutoDocumentationService
     ModelEvaluator = ModelEvaluationService

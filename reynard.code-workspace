@@ -65,6 +65,10 @@
       "path": "./packages/ai/ai-shared",
     },
     {
+      "name": "🧱 Primitives",
+      "path": "./packages/ui/primitives",
+    },
+    {
       "name": "🎨 Components Core",
       "path": "./packages/ui/components-core",
     },
@@ -243,6 +247,10 @@
     {
       "name": "🎨 Components Themes",
       "path": "./packages/ui/components-themes",
+    },
+    {
+      "name": "🎨 Components Diffusion Pipe",
+      "path": "./packages/ui/components-diffusion-pipe",
     },
     {
       "name": "🔧 Composables",

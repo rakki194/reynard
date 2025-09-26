@@ -470,13 +470,21 @@ class EmbeddingVisualizationService:
                 if not MATPLOTLIB_AVAILABLE:
                     raise RuntimeError("matplotlib not available")
                 return await self._create_matplotlib_visualization(
-                    dataset, coordinates, labels, cluster_ids, config,
+                    dataset,
+                    coordinates,
+                    labels,
+                    cluster_ids,
+                    config,
                 )
             if backend == "plotly":
                 if not PLOTLY_AVAILABLE:
                     raise RuntimeError("plotly not available")
                 return await self._create_plotly_visualization(
-                    dataset, coordinates, labels, cluster_ids, config,
+                    dataset,
+                    coordinates,
+                    labels,
+                    cluster_ids,
+                    config,
                 )
             raise ValueError(f"Unknown visualization backend: {backend}")
 
@@ -812,7 +820,9 @@ class EmbeddingVisualizationService:
                         dist = math.sqrt(
                             sum(
                                 (a - b) ** 2
-                                for a, b in zip(coordinates[i], coordinates[j], strict=False)
+                                for a, b in zip(
+                                    coordinates[i], coordinates[j], strict=False
+                                )
                             ),
                         )
                         distances.append(dist)

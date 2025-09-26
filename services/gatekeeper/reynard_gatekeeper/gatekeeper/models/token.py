@@ -33,7 +33,8 @@ class TokenData(BaseModel):
     iat: datetime | None = Field(default=None, description="Issued at time")
     jti: str | None = Field(default=None, description="JWT ID for token uniqueness")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata",
+        default_factory=dict,
+        description="Additional metadata",
     )
 
     @property
@@ -65,7 +66,8 @@ class TokenResponse(BaseModel):
     token_type: str = Field(default="bearer", description="Token type")
     expires_in: int = Field(..., description="Access token expiration time in seconds")
     refresh_expires_in: int = Field(
-        ..., description="Refresh token expiration time in seconds",
+        ...,
+        description="Refresh token expiration time in seconds",
     )
 
 
@@ -113,12 +115,14 @@ class TokenValidationResult(BaseModel):
 
     is_valid: bool = Field(..., description="Whether the token is valid")
     payload: TokenData | None = Field(
-        default=None, description="Token payload if valid",
+        default=None,
+        description="Token payload if valid",
     )
     error: str | None = Field(default=None, description="Error message if invalid")
     is_expired: bool = Field(default=False, description="Whether the token is expired")
     is_refresh_token: bool = Field(
-        default=False, description="Whether this is a refresh token",
+        default=False,
+        description="Whether this is a refresh token",
     )
 
 
@@ -140,10 +144,12 @@ class TokenConfig(BaseModel):
     secret_key: str = Field(..., description="Secret key for JWT signing")
     algorithm: str = Field(default="HS256", description="JWT algorithm")
     access_token_expire_minutes: int = Field(
-        default=30, description="Access token expiration time in minutes",
+        default=30,
+        description="Access token expiration time in minutes",
     )
     refresh_token_expire_days: int = Field(
-        default=7, description="Refresh token expiration time in days",
+        default=7,
+        description="Refresh token expiration time in days",
     )
     issuer: str | None = Field(default=None, description="Token issuer")
     audience: str | None = Field(default=None, description="Token audience")

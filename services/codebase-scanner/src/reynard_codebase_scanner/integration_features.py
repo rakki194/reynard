@@ -14,8 +14,14 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Set
 
 try:
+    from watchdog.events import (
+        FileCreatedEvent,
+        FileDeletedEvent,
+        FileModifiedEvent,
+        FileSystemEventHandler,
+    )
     from watchdog.observers import Observer
-    from watchdog.events import FileSystemEventHandler, FileModifiedEvent, FileCreatedEvent, FileDeletedEvent
+
     WATCHDOG_AVAILABLE = True
 except ImportError:
     WATCHDOG_AVAILABLE = False
@@ -54,11 +60,11 @@ class CodebaseChangeHandler(FileSystemEventHandler):
         """Handle file changes with debouncing."""
         current_time = time.time()
         last_time = self.last_modified.get(file_path, 0)
-        
+
         # Debounce rapid changes
         if current_time - last_time < self.debounce_time:
             return
-        
+
         self.last_modified[file_path] = current_time
         self.callback(file_path, change_type)
 
@@ -94,11 +100,11 @@ class RealTimeMonitor:
             'relative_path': str(Path(file_path).relative_to(self.root_path)),
         }
         self.change_history.append(change_record)
-        
+
         # Keep only last 1000 changes
         if len(self.change_history) > 1000:
             self.change_history = self.change_history[-1000:]
-        
+
         # Notify callbacks
         for callback in self.change_callbacks:
             try:
@@ -106,9 +112,11 @@ class RealTimeMonitor:
             except Exception as e:
                 logger.error(f"Error in change callback: {e}")
 
-    def start_monitoring(self, 
-                        include_patterns: Optional[List[str]] = None,
-                        exclude_patterns: Optional[List[str]] = None) -> bool:
+    def start_monitoring(
+        self,
+        include_patterns: Optional[List[str]] = None,
+        exclude_patterns: Optional[List[str]] = None,
+    ) -> bool:
         """
         Start real-time monitoring.
 
@@ -122,25 +130,25 @@ class RealTimeMonitor:
         if not self.watchdog_available:
             logger.error("Watchdog not available for real-time monitoring")
             return False
-        
+
         if self.is_monitoring:
             logger.warning("Monitoring is already active")
             return True
-        
+
         try:
             self.observer = Observer()
             handler = CodebaseChangeHandler(self._handle_change)
-            
+
             # Add watch for root directory
             self.observer.schedule(handler, str(self.root_path), recursive=True)
-            
+
             # Start observer
             self.observer.start()
             self.is_monitoring = True
-            
+
             logger.info(f"Started real-time monitoring for {self.root_path}")
             return True
-            
+
         except Exception as e:
             logger.error(f"Failed to start monitoring: {e}")
             return False
@@ -153,9 +161,9 @@ class RealTimeMonitor:
             self.is_monitoring = False
             logger.info("Stopped real-time monitoring")
 
-    def get_change_history(self, 
-                          limit: Optional[int] = None,
-                          since: Optional[datetime] = None) -> List[Dict[str, Any]]:
+    def get_change_history(
+        self, limit: Optional[int] = None, since: Optional[datetime] = None
+    ) -> List[Dict[str, Any]]:
         """
         Get change history.
 
@@ -167,14 +175,14 @@ class RealTimeMonitor:
             List of change records
         """
         history = self.change_history
-        
+
         if since:
             since_iso = since.isoformat()
             history = [change for change in history if change['timestamp'] >= since_iso]
-        
+
         if limit:
             history = history[-limit:]
-        
+
         return history
 
     def get_monitoring_status(self) -> Dict[str, Any]:
@@ -209,18 +217,18 @@ class ExportManager:
         """Export data to CSV format."""
         try:
             import csv
-            
+
             # Flatten data for CSV export
             flattened_data = self._flatten_data(data)
-            
+
             if not flattened_data:
                 return False
-            
+
             with open(output_path, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.DictWriter(f, fieldnames=flattened_data[0].keys())
                 writer.writeheader()
                 writer.writerows(flattened_data)
-            
+
             return True
         except Exception as e:
             logger.error(f"Failed to export to CSV: {e}")
@@ -230,7 +238,7 @@ class ExportManager:
         """Export data to YAML format."""
         try:
             import yaml
-            
+
             with open(output_path, 'w', encoding='utf-8') as f:
                 yaml.dump(data, f, default_flow_style=False, allow_unicode=True)
             return True
@@ -242,7 +250,7 @@ class ExportManager:
         """Export data to HTML format."""
         try:
             html_content = self._generate_html_report(data)
-            
+
             with open(output_path, 'w', encoding='utf-8') as f:
                 f.write(html_content)
             return True
@@ -254,10 +262,10 @@ class ExportManager:
         """Export data to XML format."""
         try:
             import xml.etree.ElementTree as ET
-            
+
             root = ET.Element('codebase_analysis')
             self._dict_to_xml(data, root)
-            
+
             tree = ET.ElementTree(root)
             tree.write(output_path, encoding='utf-8', xml_declaration=True)
             return True
@@ -265,13 +273,15 @@ class ExportManager:
             logger.error(f"Failed to export to XML: {e}")
             return False
 
-    def _flatten_data(self, data: Dict[str, Any], parent_key: str = '', sep: str = '_') -> List[Dict[str, Any]]:
+    def _flatten_data(
+        self, data: Dict[str, Any], parent_key: str = '', sep: str = '_'
+    ) -> List[Dict[str, Any]]:
         """Flatten nested dictionary for CSV export."""
         items = []
-        
+
         for key, value in data.items():
             new_key = f"{parent_key}{sep}{key}" if parent_key else key
-            
+
             if isinstance(value, dict):
                 items.extend(self._flatten_data(value, new_key, sep))
             elif isinstance(value, list):
@@ -282,7 +292,7 @@ class ExportManager:
                         items.append({new_key: item})
             else:
                 items.append({new_key: value})
-        
+
         return items
 
     def _generate_html_report(self, data: Dict[str, Any]) -> str:
@@ -314,7 +324,7 @@ class ExportManager:
         <p>Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
     </div>
 """
-        
+
         # Add metadata section
         if 'metadata' in data:
             metadata = data['metadata']
@@ -326,7 +336,7 @@ class ExportManager:
         <div class="metric">Total Size: {metadata.get('total_size_bytes', 0)} bytes</div>
     </div>
 """
-        
+
         # Add language statistics
         if 'language_statistics' in data:
             html += """
@@ -345,7 +355,7 @@ class ExportManager:
             </tr>
 """
             html += "        </table>\n    </div>\n"
-        
+
         # Add insights if available
         if 'insights' in data:
             insights = data['insights']
@@ -361,7 +371,7 @@ class ExportManager:
         <div class="metric">Medium Priority: {summary.get('medium_priority_issues', 0)}</div>
         <div class="metric">Low Priority: {summary.get('low_priority_issues', 0)}</div>
 """
-            
+
             if 'recommendations' in insights:
                 html += "<h3>Recommendations</h3>\n"
                 for rec in insights['recommendations']:
@@ -373,7 +383,7 @@ class ExportManager:
         </div>
 """
             html += "    </div>\n"
-        
+
         html += """
 </body>
 </html>
@@ -385,7 +395,7 @@ class ExportManager:
         for key, value in data.items():
             # Clean key name for XML
             clean_key = key.replace(' ', '_').replace('-', '_')
-            
+
             if isinstance(value, dict):
                 child = parent.makeelement(clean_key)
                 self._dict_to_xml(value, child)
@@ -432,11 +442,11 @@ class MCPIntegration:
         """Call an MCP tool."""
         if tool_name not in self.available_tools:
             raise ValueError(f"Tool {tool_name} not available")
-        
+
         callback = self.tool_callbacks.get(tool_name)
         if not callback:
             raise ValueError(f"No callback registered for tool {tool_name}")
-        
+
         try:
             return callback(*args, **kwargs)
         except Exception as e:
@@ -451,7 +461,7 @@ class MCPIntegration:
         """Get information about an MCP tool."""
         if tool_name not in self.available_tools:
             return {'error': f'Tool {tool_name} not available'}
-        
+
         callback = self.tool_callbacks.get(tool_name)
         return {
             'name': tool_name,

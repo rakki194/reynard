@@ -4,7 +4,7 @@
  */
 
 import { Component } from "solid-js";
-import { Card } from "reynard-components";
+import { Card } from "reynard-primitives";
 
 export const Phyllotactic3DInfoPanel: Component = () => {
   return (

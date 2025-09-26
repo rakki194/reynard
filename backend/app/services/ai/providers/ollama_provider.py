@@ -40,7 +40,7 @@ from ..interfaces.model_provider import (
 
 class OllamaConfig(ModelProviderConfig):
     """Configuration for Ollama provider."""
-    
+
     provider_type: ProviderType = ProviderType.OLLAMA
     base_url: str = "http://localhost:11434"
     assistant_enabled: bool = True
@@ -58,7 +58,7 @@ class OllamaConfig(ModelProviderConfig):
 
 class OllamaStreamEvent(BaseModel):
     """Event model for streaming Ollama responses."""
-    
+
     type: str  # "token", "tool_call", "complete", "error"
     data: str = ""
     timestamp: float
@@ -67,10 +67,10 @@ class OllamaStreamEvent(BaseModel):
 
 class OllamaProvider(ModelProvider):
     """Ollama model provider for local LLM serving."""
-    
+
     def __init__(self, config: OllamaConfig):
         """Initialize Ollama provider.
-        
+
         Args:
             config: Ollama-specific configuration
         """
@@ -81,7 +81,7 @@ class OllamaProvider(ModelProvider):
         self._assistant_enabled = config.assistant_enabled
         self._tools_enabled = config.tools_enabled
         self._context_awareness = config.context_awareness
-    
+
     async def initialize(self) -> bool:
         """Initialize Ollama provider."""
         try:
@@ -95,54 +95,54 @@ class OllamaProvider(ModelProvider):
                     limit_per_host=self.config.max_concurrent_requests,
                 ),
             )
-            
+
             # Test connection and get available models
             await self._load_available_models()
-            
+
             self._initialized = True
             self._health_status = "healthy"
             self._last_health_check = time.time()
-            
+
             return True
-            
+
         except Exception as e:
             self._health_status = "unhealthy"
             self._last_health_check = time.time()
             raise RuntimeError(f"Failed to initialize Ollama provider: {e}")
-    
+
     async def shutdown(self) -> None:
         """Shutdown Ollama provider."""
         if self.client and not self.client.closed:
             await self.client.close()
             self.client = None
         self._initialized = False
-    
+
     async def health_check(self) -> bool:
         """Check Ollama provider health."""
         try:
             if not self.client or self.client.closed:
                 return False
-            
+
             async with self.client.get("/api/tags") as response:
                 is_healthy = response.status == 200
-                
+
                 self._health_status = "healthy" if is_healthy else "unhealthy"
                 self._last_health_check = time.time()
-                
+
                 return is_healthy
-                
+
         except Exception:
             self._health_status = "unhealthy"
             self._last_health_check = time.time()
             return False
-    
+
     async def _load_available_models(self) -> None:
         """Load available models from Ollama server."""
         try:
             async with self.client.get("/api/tags") as response:
                 response.raise_for_status()
                 models_data = await response.json()
-                
+
                 self._available_models = []
                 for model_data in models_data.get("models", []):
                     model_info = ModelInfo(
@@ -165,7 +165,7 @@ class OllamaProvider(ModelProvider):
                         },
                     )
                     self._available_models.append(model_info)
-                    
+
         except Exception as e:
             # If we can't load models, create a default one
             default_model = ModelInfo(
@@ -184,29 +184,29 @@ class OllamaProvider(ModelProvider):
                 metadata={},
             )
             self._available_models = [default_model]
-    
+
     async def get_available_models(self) -> List[ModelInfo]:
         """Get available models."""
         return self._available_models.copy()
-    
+
     async def generate_completion(
         self,
         prompt: str,
         model: Optional[str] = None,
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
-        **kwargs
+        **kwargs,
     ) -> GenerationResult:
         """Generate text completion using Ollama."""
         if not self.client:
             raise RuntimeError("Ollama provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         start_time = time.time()
-        
+
         # Prepare request payload
         payload = {
             "model": model,
@@ -224,24 +224,24 @@ class OllamaProvider(ModelProvider):
             "keep_alive": self.config.keep_alive,
             **kwargs,
         }
-        
+
         try:
             async with self.client.post("/api/generate", json=payload) as response:
                 response.raise_for_status()
                 result_data = await response.json()
-                
+
                 completion = result_data.get("response", "")
                 processing_time = (time.time() - start_time) * 1000
-                
+
                 # Estimate tokens (Ollama doesn't always provide exact count)
                 tokens_generated = len(completion.split()) * 1.3  # Rough estimation
-                
+
                 # Update metrics
                 self._metrics["requests_total"] += 1
                 self._metrics["requests_successful"] += 1
                 self._metrics["total_tokens_generated"] += int(tokens_generated)
                 self._update_average_latency(processing_time)
-                
+
                 return GenerationResult(
                     text=completion,
                     tokens_generated=int(tokens_generated),
@@ -251,12 +251,12 @@ class OllamaProvider(ModelProvider):
                     metadata=result_data,
                     finish_reason=result_data.get("done_reason"),
                 )
-                
+
         except Exception as e:
             self._metrics["requests_total"] += 1
             self._metrics["requests_failed"] += 1
             raise RuntimeError(f"Ollama completion failed: {e}")
-    
+
     async def generate_chat_completion(
         self,
         messages: List[ChatMessage],
@@ -264,18 +264,18 @@ class OllamaProvider(ModelProvider):
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        **kwargs,
     ) -> ChatResult:
         """Generate chat completion using Ollama."""
         if not self.client:
             raise RuntimeError("Ollama provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         start_time = time.time()
-        
+
         # Convert messages to Ollama format
         ollama_messages = []
         for msg in messages:
@@ -283,7 +283,7 @@ class OllamaProvider(ModelProvider):
             if msg.name:
                 ollama_msg["name"] = msg.name
             ollama_messages.append(ollama_msg)
-        
+
         # Prepare request payload
         payload = {
             "model": model,
@@ -301,34 +301,34 @@ class OllamaProvider(ModelProvider):
             "keep_alive": self.config.keep_alive,
             **kwargs,
         }
-        
+
         # Add tools if supported
         if tools and self._tools_enabled:
             payload["tools"] = tools
-        
+
         try:
             async with self.client.post("/api/chat", json=payload) as response:
                 response.raise_for_status()
                 result_data = await response.json()
-                
+
                 message_data = result_data.get("message", {})
                 response_message = ChatMessage(
                     role=message_data.get("role", "assistant"),
                     content=message_data.get("content", ""),
                     tool_calls=message_data.get("tool_calls"),
                 )
-                
+
                 processing_time = (time.time() - start_time) * 1000
-                
+
                 # Estimate tokens
                 tokens_generated = len(response_message.content.split()) * 1.3
-                
+
                 # Update metrics
                 self._metrics["requests_total"] += 1
                 self._metrics["requests_successful"] += 1
                 self._metrics["total_tokens_generated"] += int(tokens_generated)
                 self._update_average_latency(processing_time)
-                
+
                 return ChatResult(
                     message=response_message,
                     tokens_generated=int(tokens_generated),
@@ -338,28 +338,28 @@ class OllamaProvider(ModelProvider):
                     metadata=result_data,
                     finish_reason=result_data.get("done_reason"),
                 )
-                
+
         except Exception as e:
             self._metrics["requests_total"] += 1
             self._metrics["requests_failed"] += 1
             raise RuntimeError(f"Ollama chat completion failed: {e}")
-    
+
     async def stream_completion(
         self,
         prompt: str,
         model: Optional[str] = None,
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncGenerator[str, None]:
         """Stream text completion using Ollama."""
         if not self.client:
             raise RuntimeError("Ollama provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         # Prepare request payload
         payload = {
             "model": model,
@@ -377,11 +377,11 @@ class OllamaProvider(ModelProvider):
             "keep_alive": self.config.keep_alive,
             **kwargs,
         }
-        
+
         try:
             async with self.client.post("/api/generate", json=payload) as response:
                 response.raise_for_status()
-                
+
                 async for line in response.content:
                     if line:
                         try:
@@ -392,12 +392,12 @@ class OllamaProvider(ModelProvider):
                                 break
                         except json.JSONDecodeError:
                             continue
-                            
+
         except Exception as e:
             self._metrics["requests_total"] += 1
             self._metrics["requests_failed"] += 1
             raise RuntimeError(f"Ollama streaming completion failed: {e}")
-    
+
     async def stream_chat_completion(
         self,
         messages: List[ChatMessage],
@@ -405,16 +405,16 @@ class OllamaProvider(ModelProvider):
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncGenerator[ChatMessage, None]:
         """Stream chat completion using Ollama."""
         if not self.client:
             raise RuntimeError("Ollama provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         # Convert messages to Ollama format
         ollama_messages = []
         for msg in messages:
@@ -422,7 +422,7 @@ class OllamaProvider(ModelProvider):
             if msg.name:
                 ollama_msg["name"] = msg.name
             ollama_messages.append(ollama_msg)
-        
+
         # Prepare request payload
         payload = {
             "model": model,
@@ -440,15 +440,15 @@ class OllamaProvider(ModelProvider):
             "keep_alive": self.config.keep_alive,
             **kwargs,
         }
-        
+
         # Add tools if supported
         if tools and self._tools_enabled:
             payload["tools"] = tools
-        
+
         try:
             async with self.client.post("/api/chat", json=payload) as response:
                 response.raise_for_status()
-                
+
                 async for line in response.content:
                     if line:
                         try:
@@ -466,12 +466,12 @@ class OllamaProvider(ModelProvider):
                                 break
                         except json.JSONDecodeError:
                             continue
-                            
+
         except Exception as e:
             self._metrics["requests_total"] += 1
             self._metrics["requests_failed"] += 1
             raise RuntimeError(f"Ollama streaming chat completion failed: {e}")
-    
+
     async def generate_assistant_response(
         self,
         message: str,
@@ -480,7 +480,7 @@ class OllamaProvider(ModelProvider):
         temperature: Optional[float] = None,
         max_tokens: Optional[int] = None,
         tools_enabled: bool = True,
-        **kwargs
+        **kwargs,
     ) -> ChatResult:
         """Generate response using ReynardAssistant with specialized prompts."""
         if not self._assistant_enabled:
@@ -489,23 +489,27 @@ class OllamaProvider(ModelProvider):
             return await self.generate_chat_completion(
                 messages, model, max_tokens, temperature, **kwargs
             )
-        
+
         # Create system prompt based on assistant type
         system_prompt = self._get_system_prompt(assistant_type)
-        
+
         # Get available tools if enabled
-        tools = self._get_available_tools() if tools_enabled and self._tools_enabled else None
-        
+        tools = (
+            self._get_available_tools()
+            if tools_enabled and self._tools_enabled
+            else None
+        )
+
         # Create messages with system prompt
         messages = [
             ChatMessage(role="system", content=system_prompt),
             ChatMessage(role="user", content=message),
         ]
-        
+
         return await self.generate_chat_completion(
             messages, model, max_tokens, temperature, tools, **kwargs
         )
-    
+
     def _get_system_prompt(self, assistant_type: str) -> str:
         """Get system prompt based on assistant type."""
         prompts = {
@@ -514,7 +518,7 @@ class OllamaProvider(ModelProvider):
             "default": "You are a helpful AI assistant with access to tools and context awareness.",
         }
         return prompts.get(assistant_type, prompts["default"])
-    
+
     def _get_available_tools(self) -> List[Dict[str, Any]]:
         """Get available tools for the assistant."""
         return [
@@ -528,16 +532,16 @@ class OllamaProvider(ModelProvider):
                         "properties": {
                             "query": {
                                 "type": "string",
-                                "description": "Search query for code patterns"
+                                "description": "Search query for code patterns",
                             },
                             "file_type": {
                                 "type": "string",
-                                "description": "File type to search in (optional)"
-                            }
+                                "description": "File type to search in (optional)",
+                            },
                         },
-                        "required": ["query"]
-                    }
-                }
+                        "required": ["query"],
+                    },
+                },
             },
             {
                 "type": "function",
@@ -549,34 +553,33 @@ class OllamaProvider(ModelProvider):
                         "properties": {
                             "file_path": {
                                 "type": "string",
-                                "description": "Path to the file to analyze"
+                                "description": "Path to the file to analyze",
                             }
                         },
-                        "required": ["file_path"]
-                    }
-                }
+                        "required": ["file_path"],
+                    },
+                },
             },
             {
                 "type": "function",
                 "function": {
                     "name": "get_project_info",
                     "description": "Get information about the current project structure and configuration",
-                    "parameters": {
-                        "type": "object",
-                        "properties": {}
-                    }
-                }
-            }
+                    "parameters": {"type": "object", "properties": {}},
+                },
+            },
         ]
-    
+
     def _update_average_latency(self, latency_ms: float) -> None:
         """Update average latency metric."""
         current_avg = self._metrics["average_latency_ms"]
         total_requests = self._metrics["requests_successful"]
-        
+
         if total_requests == 1:
             self._metrics["average_latency_ms"] = latency_ms
         else:
             # Calculate running average
-            new_avg = ((current_avg * (total_requests - 1)) + latency_ms) / total_requests
+            new_avg = (
+                (current_avg * (total_requests - 1)) + latency_ms
+            ) / total_requests
             self._metrics["average_latency_ms"] = new_avg

@@ -155,7 +155,8 @@ class CacheMetricsLogger:
                 cache_misses=search_metrics.get("cache_misses", 0),
                 cache_hit_rate=search_metrics.get("cache_hit_rate", 0.0),
                 average_search_time_ms=search_metrics.get(
-                    "average_search_time_ms", 0.0,
+                    "average_search_time_ms",
+                    0.0,
                 ),
                 total_search_time_ms=search_metrics.get("total_search_time_ms", 0.0),
                 redis_available=cache_status.get("redis_available", False),
@@ -492,7 +493,8 @@ class CacheMetricsLogger:
                     import requests
 
                     response = requests.get(
-                        "http://localhost:8000/api/search/performance", timeout=5,
+                        "http://localhost:8000/api/search/performance",
+                        timeout=5,
                     )
                     if response.status_code == 200:
                         metrics_data = response.json()

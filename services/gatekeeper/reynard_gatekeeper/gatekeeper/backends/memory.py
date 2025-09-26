@@ -313,7 +313,9 @@ class MemoryBackend(UserBackend):
         return True
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None,
+        self,
+        username: str,
+        profile_picture_url: str | None,
     ) -> bool:
         """Update a user's profile picture URL.
 
@@ -339,7 +341,9 @@ class MemoryBackend(UserBackend):
         return True
 
     async def update_user_metadata(
-        self, username: str, metadata: dict[str, Any],
+        self,
+        username: str,
+        metadata: dict[str, Any],
     ) -> bool:
         """Update a user's metadata.
 
@@ -365,7 +369,10 @@ class MemoryBackend(UserBackend):
         return True
 
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100,
+        self,
+        query: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Search for users by username or email.
 
@@ -398,7 +405,10 @@ class MemoryBackend(UserBackend):
         return [UserPublic.from_user(user) for user in paginated_users]
 
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100,
+        self,
+        role: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Get users by role.
 
@@ -477,7 +487,9 @@ class MemoryBackend(UserBackend):
         return self._settings.get(user.id, {})
 
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any],
+        self,
+        username: str,
+        settings: dict[str, Any],
     ) -> bool:
         """Update user settings.
 
@@ -605,8 +617,7 @@ class MemoryBackend(UserBackend):
         return True
 
     async def close(self) -> None:
-        """Close the in-memory backend and clean up resources.
-        """
+        """Close the in-memory backend and clean up resources."""
         self._users.clear()
         self._usernames.clear()
         self._emails.clear()

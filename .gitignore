@@ -220,3 +220,13 @@ backend/coverage/
 backend/htmlcov/
 backend/.benchmarks/
 backend/unsloth_compiled_cache/
+
+# Redis configuration files with sensitive credentials
+backend/redis.conf
+backend/redis-*.conf
+backend/redis-secure.conf
+
+# Systemd service files with hardcoded passwords
+backend/scripts/redis-secure.service
+backend/scripts/*-secure.service
+backend/scripts/*.service

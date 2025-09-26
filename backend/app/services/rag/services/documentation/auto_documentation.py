@@ -22,13 +22,13 @@ class AutoDocumentationService(BaseService):
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         super().__init__("auto-documentation", config)
-        
+
         # Documentation configuration
         self.docs_output_dir = self.config.get("docs_output_dir", "docs")
         self.include_api_docs = self.config.get("include_api_docs", True)
         self.include_user_guides = self.config.get("include_user_guides", True)
         self.include_dev_guides = self.config.get("include_dev_guides", True)
-        
+
         # Documentation templates
         self.documentation_templates = {
             "user_guide": self._get_user_guide_template(),
@@ -36,7 +36,7 @@ class AutoDocumentationService(BaseService):
             "developer_guide": self._get_developer_guide_template(),
             "changelog": self._get_changelog_template(),
         }
-        
+
         # Metrics
         self.metrics = {
             "docs_generated": 0,
@@ -48,14 +48,18 @@ class AutoDocumentationService(BaseService):
     async def initialize(self) -> bool:
         """Initialize the auto documentation service."""
         try:
-            self.update_status(ServiceStatus.INITIALIZING, "Initializing auto documentation service")
-            
+            self.update_status(
+                ServiceStatus.INITIALIZING, "Initializing auto documentation service"
+            )
+
             # Create output directory
             os.makedirs(self.docs_output_dir, exist_ok=True)
-            
-            self.update_status(ServiceStatus.HEALTHY, "Auto documentation service initialized")
+
+            self.update_status(
+                ServiceStatus.HEALTHY, "Auto documentation service initialized"
+            )
             return True
-            
+
         except Exception as e:
             self.logger.error(f"Failed to initialize auto documentation service: {e}")
             self.update_status(ServiceStatus.ERROR, f"Initialization failed: {e}")
@@ -64,9 +68,13 @@ class AutoDocumentationService(BaseService):
     async def shutdown(self) -> None:
         """Shutdown the auto documentation service."""
         try:
-            self.update_status(ServiceStatus.SHUTTING_DOWN, "Shutting down auto documentation service")
-            self.update_status(ServiceStatus.SHUTDOWN, "Auto documentation service shutdown complete")
-            
+            self.update_status(
+                ServiceStatus.SHUTTING_DOWN, "Shutting down auto documentation service"
+            )
+            self.update_status(
+                ServiceStatus.SHUTDOWN, "Auto documentation service shutdown complete"
+            )
+
         except Exception as e:
             self.logger.error(f"Error during shutdown: {e}")
 
@@ -75,12 +83,14 @@ class AutoDocumentationService(BaseService):
         try:
             # Check if output directory is writable
             docs_dir_healthy = os.access(self.docs_output_dir, os.W_OK)
-            
+
             if docs_dir_healthy:
                 self.update_status(ServiceStatus.HEALTHY, "Service is healthy")
             else:
-                self.update_status(ServiceStatus.DEGRADED, "Documentation directory not writable")
-            
+                self.update_status(
+                    ServiceStatus.DEGRADED, "Documentation directory not writable"
+                )
+
             return {
                 "status": self.status.value,
                 "message": self.health.message,
@@ -92,7 +102,7 @@ class AutoDocumentationService(BaseService):
                 "metrics": self.metrics,
                 "dependencies": self.get_dependency_status(),
             }
-            
+
         except Exception as e:
             self.logger.error(f"Health check failed: {e}")
             self.update_status(ServiceStatus.ERROR, f"Health check failed: {e}")
@@ -103,159 +113,148 @@ class AutoDocumentationService(BaseService):
                 "dependencies": self.get_dependency_status(),
             }
 
-    async def generate_user_guide(
-        self,
-        **kwargs
-    ) -> str:
+    async def generate_user_guide(self, **kwargs) -> str:
         """Generate comprehensive user guide."""
         try:
             template = self.documentation_templates["user_guide"]
-            
+
             # Customize template with current information
             content = template.format(
                 generation_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 version="1.0.0",
             )
-            
+
             # Write to file
             output_path = os.path.join(self.docs_output_dir, "user_guide.md")
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(content)
-            
+
             self.metrics["user_guides_created"] += 1
             self.metrics["docs_generated"] += 1
-            
+
             self.logger.info(f"Generated user guide: {output_path}")
             return output_path
-            
+
         except Exception as e:
             self.logger.error(f"Failed to generate user guide: {e}")
             raise RuntimeError(f"Failed to generate user guide: {e}")
 
     async def generate_api_reference(
-        self,
-        api_endpoints: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        self, api_endpoints: Optional[List[Dict[str, Any]]] = None, **kwargs
     ) -> str:
         """Generate API reference documentation."""
         try:
             template = self.documentation_templates["api_reference"]
-            
+
             # Default API endpoints if none provided
             if not api_endpoints:
                 api_endpoints = self._get_default_api_endpoints()
-            
+
             # Generate API documentation
             api_docs = self._generate_api_docs_content(api_endpoints)
-            
+
             content = template.format(
                 generation_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 version="1.0.0",
                 api_docs=api_docs,
             )
-            
+
             # Write to file
             output_path = os.path.join(self.docs_output_dir, "api_reference.md")
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(content)
-            
+
             self.metrics["api_endpoints_documented"] += len(api_endpoints)
             self.metrics["docs_generated"] += 1
-            
+
             self.logger.info(f"Generated API reference: {output_path}")
             return output_path
-            
+
         except Exception as e:
             self.logger.error(f"Failed to generate API reference: {e}")
             raise RuntimeError(f"Failed to generate API reference: {e}")
 
-    async def generate_developer_guide(
-        self,
-        **kwargs
-    ) -> str:
+    async def generate_developer_guide(self, **kwargs) -> str:
         """Generate developer guide."""
         try:
             template = self.documentation_templates["developer_guide"]
-            
+
             content = template.format(
                 generation_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 version="1.0.0",
             )
-            
+
             # Write to file
             output_path = os.path.join(self.docs_output_dir, "developer_guide.md")
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(content)
-            
+
             self.metrics["dev_guides_created"] += 1
             self.metrics["docs_generated"] += 1
-            
+
             self.logger.info(f"Generated developer guide: {output_path}")
             return output_path
-            
+
         except Exception as e:
             self.logger.error(f"Failed to generate developer guide: {e}")
             raise RuntimeError(f"Failed to generate developer guide: {e}")
 
     async def generate_changelog(
-        self,
-        changes: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        self, changes: Optional[List[Dict[str, Any]]] = None, **kwargs
     ) -> str:
         """Generate changelog documentation."""
         try:
             template = self.documentation_templates["changelog"]
-            
+
             # Default changes if none provided
             if not changes:
                 changes = self._get_default_changes()
-            
+
             # Generate changelog content
             changelog_content = self._generate_changelog_content(changes)
-            
+
             content = template.format(
                 generation_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 version="1.0.0",
                 changelog_content=changelog_content,
             )
-            
+
             # Write to file
             output_path = os.path.join(self.docs_output_dir, "CHANGELOG.md")
             with open(output_path, "w", encoding="utf-8") as f:
                 f.write(content)
-            
+
             self.metrics["docs_generated"] += 1
-            
+
             self.logger.info(f"Generated changelog: {output_path}")
             return output_path
-            
+
         except Exception as e:
             self.logger.error(f"Failed to generate changelog: {e}")
             raise RuntimeError(f"Failed to generate changelog: {e}")
 
-    async def generate_all_documentation(
-        self,
-        **kwargs
-    ) -> Dict[str, str]:
+    async def generate_all_documentation(self, **kwargs) -> Dict[str, str]:
         """Generate all documentation types."""
         try:
             generated_docs = {}
-            
+
             if self.include_user_guides:
                 generated_docs["user_guide"] = await self.generate_user_guide()
-            
+
             if self.include_api_docs:
                 generated_docs["api_reference"] = await self.generate_api_reference()
-            
+
             if self.include_dev_guides:
-                generated_docs["developer_guide"] = await self.generate_developer_guide()
-            
+                generated_docs["developer_guide"] = (
+                    await self.generate_developer_guide()
+                )
+
             # Always generate changelog
             generated_docs["changelog"] = await self.generate_changelog()
-            
+
             self.logger.info(f"Generated {len(generated_docs)} documentation files")
             return generated_docs
-            
+
         except Exception as e:
             self.logger.error(f"Failed to generate all documentation: {e}")
             raise RuntimeError(f"Failed to generate all documentation: {e}")
@@ -783,9 +782,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 "path": "/search",
                 "description": "Perform semantic search",
                 "parameters": {
-                    "query": {"type": "string", "required": True, "description": "Search query"},
-                    "limit": {"type": "integer", "required": False, "default": 20, "description": "Maximum number of results"},
-                    "filters": {"type": "object", "required": False, "description": "Search filters"},
+                    "query": {
+                        "type": "string",
+                        "required": True,
+                        "description": "Search query",
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "required": False,
+                        "default": 20,
+                        "description": "Maximum number of results",
+                    },
+                    "filters": {
+                        "type": "object",
+                        "required": False,
+                        "description": "Search filters",
+                    },
                 },
                 "response": {
                     "type": "array",
@@ -795,24 +807,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                             "text": {"type": "string"},
                             "score": {"type": "number"},
                             "metadata": {"type": "object"},
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
             {
                 "method": "POST",
                 "path": "/index",
                 "description": "Index documents",
                 "parameters": {
-                    "documents": {"type": "array", "required": True, "description": "Documents to index"},
+                    "documents": {
+                        "type": "array",
+                        "required": True,
+                        "description": "Documents to index",
+                    },
                 },
                 "response": {
                     "type": "object",
                     "properties": {
                         "indexed_count": {"type": "integer"},
                         "status": {"type": "string"},
-                    }
-                }
+                    },
+                },
             },
             {
                 "method": "GET",
@@ -825,8 +841,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                         "status": {"type": "string"},
                         "indexed_documents": {"type": "integer"},
                         "uptime": {"type": "string"},
-                    }
-                }
+                    },
+                },
             },
         ]
 
@@ -850,28 +866,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                     "removed": [],
                     "fixed": [],
                     "security": [],
-                }
+                },
             }
         ]
 
     def _generate_api_docs_content(self, api_endpoints: List[Dict[str, Any]]) -> str:
         """Generate API documentation content."""
         docs = []
-        
+
         for endpoint in api_endpoints:
             docs.append(f"### {endpoint['method']} {endpoint['path']}")
             docs.append("")
             docs.append(endpoint['description'])
             docs.append("")
-            
+
             if endpoint.get('parameters'):
                 docs.append("**Parameters:**")
                 docs.append("")
                 for param_name, param_info in endpoint['parameters'].items():
                     required = " (required)" if param_info.get('required') else ""
-                    docs.append(f"- `{param_name}` ({param_info['type']}){required}: {param_info['description']}")
+                    docs.append(
+                        f"- `{param_name}` ({param_info['type']}){required}: {param_info['description']}"
+                    )
                 docs.append("")
-            
+
             if endpoint.get('response'):
                 docs.append("**Response:**")
                 docs.append("")
@@ -884,17 +902,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                 docs.append('}')
                 docs.append("```")
                 docs.append("")
-        
+
         return "\n".join(docs)
 
     def _generate_changelog_content(self, changes: List[Dict[str, Any]]) -> str:
         """Generate changelog content."""
         content = []
-        
+
         for change in changes:
             content.append(f"## [{change['version']}] - {change['date']}")
             content.append("")
-            
+
             for change_type, items in change['changes'].items():
                 if items:
                     content.append(f"### {change_type.title()}")
@@ -902,7 +920,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
                     for item in items:
                         content.append(f"- {item}")
                     content.append("")
-        
+
         return "\n".join(content)
 
     async def get_documentation_stats(self) -> Dict[str, Any]:
@@ -917,3 +935,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
             "templates_available": len(self.documentation_templates),
             "metrics": self.metrics,
         }
+
+    async def get_stats(self) -> Dict[str, Any]:
+        """Get service statistics."""
+        try:
+            # Get documentation stats
+            doc_stats = await self.get_documentation_stats()
+
+            # Add additional service-level stats
+            stats = {
+                **doc_stats,
+                "uptime_seconds": time.time() - (self.startup_time or time.time()),
+                "last_updated": (
+                    self.health.last_updated.isoformat() if self.health else None
+                ),
+                "memory_usage_mb": self.metrics.get("memory_usage_mb", 0),
+                "cpu_usage_percent": self.metrics.get("cpu_usage_percent", 0),
+                "total_documents_generated": self.metrics.get(
+                    "total_documents_generated", 0
+                ),
+                "last_generation_time": self.metrics.get("last_generation_time", 0),
+            }
+
+            return stats
+        except Exception as e:
+            self.logger.error(f"Failed to get stats: {e}")
+            return {"error": str(e), "status": self.status.value}

@@ -1,7 +1,7 @@
 import { NotificationsProvider, createNotifications } from "reynard-core";
 import { ReynardProvider } from "reynard-themes";
 import "reynard-themes/themes.css";
-import { Tabs, TabPanel } from "reynard-components";
+import { Tabs, TabPanel } from "reynard-primitives";
 import { getIcon } from "reynard-fluent-icons";
 import { createSignal } from "solid-js";
 import { ThemeDemo } from "./components/ThemeDemo";
@@ -19,7 +19,7 @@ import { AdvancedPatternDemo } from "./components/AdvancedPatternDemo";
 import { Phyllotactic3DDemo } from "./components/Phyllotactic3DDemo";
 import { PhyllotacticRosePetalDemo } from "./components/PhyllotacticRosePetalDemo";
 import { PerformanceDemo } from "./components/PerformanceDemo";
-import { EnhancedIntegrationDemo } from "./components/EnhancedIntegrationDemo";
+import { IntegrationDemo } from "./components/IntegrationDemo";
 import { DataVisualizationDemo } from "./components/visualization/DataVisualizationDemo";
 import { ChartsI18nDemo } from "./pages/ChartsI18nDemo";
 import ReynardTutorial from "./components/ReynardAdventure";
@@ -30,9 +30,9 @@ import "./components/spell-effects/SpellCaster.css";
 import "./components/visualization/VisualizationStyles.css";
 import "./styles/charts-i18n-demo.css";
 // Import Reynard component styles
-import "reynard-components/styles";
+import "reynard-primitives/styles";
 // Import Reynard games styles
-import "reynard-games/dist/index.css";
+// import "reynard-games/dist/index.css";
 
 function App() {
   console.log("App: Creating modules");
@@ -77,7 +77,7 @@ function App() {
     { id: "performance", label: "Performance Demo", icon: getIcon("sparkle") },
     {
       id: "enhanced-integration",
-      label: "Enhanced Integration",
+      label: "Integration",
       icon: getIcon("sparkle"),
     },
     { id: "data-viz", label: "Data Visualization", icon: getIcon("chart") },
@@ -165,7 +165,7 @@ function App() {
                   </TabPanel>
 
                   <TabPanel tabId="enhanced-integration" activeTab={activeTab()}>
-                    <EnhancedIntegrationDemo />
+                    <IntegrationDemo />
                   </TabPanel>
 
                   <TabPanel tabId="data-viz" activeTab={activeTab()}>

@@ -12,20 +12,21 @@ Tests:
 """
 
 import asyncio
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import pytest
+
+from app.core.health_checks import (
+    health_check_ai_service,
+    health_check_rag,
+    health_check_tts_service,
+)
 from app.core.lifespan_manager import lifespan
 from app.core.service_registry import get_service_registry
 from app.core.service_shutdown import (
-    shutdown_rag_service,
     shutdown_ai_service,
+    shutdown_rag_service,
     shutdown_tts_service,
-)
-from app.core.health_checks import (
-    health_check_rag,
-    health_check_ai_service,
-    health_check_tts_service,
 )
 
 
@@ -36,6 +37,7 @@ class TestServiceLifecycle:
     async def mock_app(self):
         """Create a mock FastAPI app for testing."""
         from fastapi import FastAPI
+
         app = FastAPI()
         return app
 
@@ -77,14 +79,18 @@ class TestServiceLifecycle:
     @pytest.mark.asyncio
     async def test_ai_service_lifecycle(self):
         """Test AI service complete lifecycle."""
-        with patch("app.core.ai_service_initializer.health_check_ai_service") as mock_health:
+        with patch(
+            "app.core.ai_service_initializer.health_check_ai_service"
+        ) as mock_health:
             mock_health.return_value = True
 
             # Test health check
             health_status = await health_check_ai_service()
             assert health_status is True
 
-        with patch("app.core.ai_service_initializer.shutdown_ai_service") as mock_shutdown:
+        with patch(
+            "app.core.ai_service_initializer.shutdown_ai_service"
+        ) as mock_shutdown:
             mock_shutdown.return_value = None
 
             # Test shutdown
@@ -118,14 +124,18 @@ class TestServiceLifecycle:
         # Test RAG service health check with error
         with patch("app.core.service_registry.get_service_registry") as mock_registry:
             mock_registry_instance = MagicMock()
-            mock_registry_instance.get_service_instance.side_effect = Exception("Service not found")
+            mock_registry_instance.get_service_instance.side_effect = Exception(
+                "Service not found"
+            )
             mock_registry.return_value = mock_registry_instance
 
             health_status = await health_check_rag()
             assert health_status is False
 
         # Test AI service health check with error
-        with patch("app.core.ai_service_initializer.health_check_ai_service") as mock_health:
+        with patch(
+            "app.core.ai_service_initializer.health_check_ai_service"
+        ) as mock_health:
             mock_health.side_effect = Exception("Health check failed")
 
             health_status = await health_check_ai_service()
@@ -134,7 +144,9 @@ class TestServiceLifecycle:
         # Test TTS service shutdown with error
         with patch("app.core.service_registry.get_service_registry") as mock_registry:
             mock_registry_instance = MagicMock()
-            mock_registry_instance.get_service_instance.side_effect = Exception("Service not found")
+            mock_registry_instance.get_service_instance.side_effect = Exception(
+                "Service not found"
+            )
             mock_registry.return_value = mock_registry_instance
 
             # Should not raise exception, just log error
@@ -144,10 +156,10 @@ class TestServiceLifecycle:
     async def test_service_registry_integration(self):
         """Test service registry integration with lifecycle functions."""
         registry = get_service_registry()
-        
+
         # Verify registry is properly initialized
         assert registry is not None
-        
+
         # Test that services can be registered (this would be done in lifespan)
         # We're just verifying the registry structure is correct
         assert hasattr(registry, "register_service")

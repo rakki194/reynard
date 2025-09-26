@@ -1,5 +1,4 @@
-"""Additional tests to improve analyzer coverage.
-"""
+"""Additional tests to improve analyzer coverage."""
 
 import sys
 from pathlib import Path
@@ -17,7 +16,6 @@ from analyzers import (
     SentimentAnalyzer,
     TransformerAnalyzer,
 )
-
 from core import ConfidenceLevel, DetectionCategory, HumilityConfig
 
 
@@ -151,7 +149,8 @@ class TestHexacoAnalyzerCoverage:
 
         humble_score = analyzer._calculate_hexaco_score(humble_text, "honesty_humility")
         arrogant_score = analyzer._calculate_hexaco_score(
-            arrogant_text, "honesty_humility",
+            arrogant_text,
+            "honesty_humility",
         )
 
         assert humble_score > arrogant_score

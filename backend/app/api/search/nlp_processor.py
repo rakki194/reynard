@@ -290,7 +290,9 @@ class NaturalLanguageProcessor:
         return expanded[:5]  # Limit to top 5 expansions
 
     def _determine_search_strategy(
-        self, intent: str, entities: list[dict[str, Any]],
+        self,
+        intent: str,
+        entities: list[dict[str, Any]],
     ) -> str:
         """Determine the best search strategy based on intent and entities."""
         # If we have specific code patterns, use hybrid search
@@ -305,7 +307,9 @@ class NaturalLanguageProcessor:
         return "semantic"
 
     def _generate_code_patterns(
-        self, intent: str, entities: list[dict[str, Any]],
+        self,
+        intent: str,
+        entities: list[dict[str, Any]],
     ) -> list[str]:
         """Generate code patterns based on intent and entities."""
         patterns = []
@@ -348,7 +352,9 @@ class NaturalLanguageProcessor:
         return patterns
 
     def _determine_file_filters(
-        self, intent: str, entities: list[dict[str, Any]],
+        self,
+        intent: str,
+        entities: list[dict[str, Any]],
     ) -> dict[str, Any]:
         """Determine file type and directory filters."""
         file_types = self._get_file_types_from_entities(entities)
@@ -360,7 +366,8 @@ class NaturalLanguageProcessor:
         }
 
     def _get_file_types_from_entities(
-        self, entities: list[dict[str, Any]],
+        self,
+        entities: list[dict[str, Any]],
     ) -> list[str] | None:
         """Get file types based on programming language entities."""
         for entity in entities:
@@ -379,7 +386,9 @@ class NaturalLanguageProcessor:
         return None
 
     def _get_directories_from_intent(
-        self, intent: str, entities: list[dict[str, Any]],
+        self,
+        intent: str,
+        entities: list[dict[str, Any]],
     ) -> list[str] | None:
         """Get directories based on intent and entities."""
         # Determine directories based on intent
@@ -402,7 +411,9 @@ class NaturalLanguageProcessor:
         return None
 
     def _calculate_confidence(
-        self, intent: str, entities: list[dict[str, Any]],
+        self,
+        intent: str,
+        entities: list[dict[str, Any]],
     ) -> float:
         """Calculate confidence score for the processed query."""
         confidence = 0.5  # Base confidence

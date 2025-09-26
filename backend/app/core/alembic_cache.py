@@ -20,7 +20,9 @@ class AlembicCacheManager:
     """Cache manager specifically for Alembic operations."""
 
     def __init__(
-        self, redis_enabled: bool = None, fallback_cache: dict | None = None,
+        self,
+        redis_enabled: bool = None,
+        fallback_cache: dict | None = None,
     ):
         """Initialize the Alembic cache manager.
 
@@ -76,7 +78,9 @@ class AlembicCacheManager:
         return f"{self.namespace}:{key_type}:{identifier}"
 
     async def cache_migration_metadata(
-        self, revision: str, metadata: dict[str, Any],
+        self,
+        revision: str,
+        metadata: dict[str, Any],
     ) -> None:
         """Cache migration metadata.
 
@@ -90,7 +94,10 @@ class AlembicCacheManager:
         try:
             if self.cache_manager:
                 await self.cache_manager.set(
-                    cache_key, metadata, self.namespace, self.migration_metadata_ttl,
+                    cache_key,
+                    metadata,
+                    self.namespace,
+                    self.migration_metadata_ttl,
                 )
                 logger.debug(f"Cached migration metadata for revision {revision}")
             else:
@@ -104,7 +111,8 @@ class AlembicCacheManager:
             logger.error(f"Failed to cache migration metadata for {revision}: {e}")
 
     async def get_cached_migration_metadata(
-        self, revision: str,
+        self,
+        revision: str,
     ) -> dict[str, Any] | None:
         """Get cached migration metadata.
 
@@ -133,7 +141,9 @@ class AlembicCacheManager:
             return None
 
     async def cache_migration_data(
-        self, revision: str, data: list[dict[str, Any]],
+        self,
+        revision: str,
+        data: list[dict[str, Any]],
     ) -> None:
         """Cache migration data to avoid re-parsing.
 
@@ -147,7 +157,10 @@ class AlembicCacheManager:
         try:
             if self.cache_manager:
                 await self.cache_manager.set(
-                    cache_key, data, self.namespace, self.migration_data_ttl,
+                    cache_key,
+                    data,
+                    self.namespace,
+                    self.migration_data_ttl,
                 )
                 logger.debug(f"Cached migration data for revision {revision}")
             else:
@@ -161,7 +174,8 @@ class AlembicCacheManager:
             logger.error(f"Failed to cache migration data for {revision}: {e}")
 
     async def get_cached_migration_data(
-        self, revision: str,
+        self,
+        revision: str,
     ) -> list[dict[str, Any]] | None:
         """Get cached migration data.
 
@@ -190,7 +204,9 @@ class AlembicCacheManager:
             return None
 
     async def cache_schema_info(
-        self, table_name: str, schema_info: dict[str, Any],
+        self,
+        table_name: str,
+        schema_info: dict[str, Any],
     ) -> None:
         """Cache database schema information.
 
@@ -204,7 +220,10 @@ class AlembicCacheManager:
         try:
             if self.cache_manager:
                 await self.cache_manager.set(
-                    cache_key, schema_info, self.namespace, self.schema_cache_ttl,
+                    cache_key,
+                    schema_info,
+                    self.namespace,
+                    self.schema_cache_ttl,
                 )
                 logger.debug(f"Cached schema info for table {table_name}")
             else:

@@ -22,14 +22,20 @@ class MermaidRenderer:
         """Initialize the Mermaid renderer."""
         self.browser_service = MermaidBrowserService()
         self.mermaid_version = "11.0.2"  # Latest stable version
-        
+
         # Get the path to the local mermaid.js file
         current_file = Path(__file__).resolve()
         self.mermaid_js_path = current_file.parent / "assets" / "mermaid.js"
-        
+
         # Available themes
         self.available_themes = [
-            "default", "neutral", "dark", "forest", "base", "autumn", "winter"
+            "default",
+            "neutral",
+            "dark",
+            "forest",
+            "base",
+            "autumn",
+            "winter",
         ]
 
     def _get_mermaid_js_content(self) -> str:
@@ -39,7 +45,9 @@ class MermaidRenderer:
                 return f.read()
         except FileNotFoundError:
             # Fallback to CDN if local file not found
-            logger.warning(f"Mermaid.js file not found at {self.mermaid_js_path}, using CDN")
+            logger.warning(
+                f"Mermaid.js file not found at {self.mermaid_js_path}, using CDN"
+            )
             return f"""
             const script = document.createElement('script');
             script.src = 'https://cdn.jsdelivr.net/npm/mermaid@{self.mermaid_version}/dist/mermaid.min.js';
@@ -63,7 +71,7 @@ class MermaidRenderer:
         """Create HTML content for Mermaid rendering with enhanced configuration."""
         # Clean the diagram content
         clean_diagram = diagram.strip()
-        
+
         # Validate theme
         if theme not in self.available_themes:
             theme = "default"
@@ -80,25 +88,15 @@ class MermaidRenderer:
                 "htmlLabels": True,
                 "nodeSpacing": 50,
                 "rankSpacing": 50,
-                "curve": "basis"
+                "curve": "basis",
             },
-            "sequence": {
-                "useMaxWidth": True
-            },
-            "gantt": {
-                "useMaxWidth": True
-            },
-            "gitgraph": {
-                "useMaxWidth": True
-            },
-            "pie": {
-                "useMaxWidth": True
-            },
-            "journey": {
-                "useMaxWidth": True
-            }
+            "sequence": {"useMaxWidth": True},
+            "gantt": {"useMaxWidth": True},
+            "gitgraph": {"useMaxWidth": True},
+            "pie": {"useMaxWidth": True},
+            "journey": {"useMaxWidth": True},
         }
-        
+
         # Merge with custom config
         if config:
             default_config.update(config)
@@ -262,18 +260,20 @@ class MermaidRenderer:
             html_content = self._create_mermaid_html(
                 diagram, theme, bg_color, width, height, config
             )
-            
-            success, output_path, error = self.browser_service.render_mermaid_to_png_sync(
-                html_content, quality=quality
+
+            success, output_path, error = (
+                self.browser_service.render_mermaid_to_png_sync(
+                    html_content, quality=quality
+                )
             )
-            
+
             if not success:
                 return False, b"", error
-            
+
             # Read the PNG file
             with open(output_path, "rb") as f:
                 png_data = f.read()
-            
+
             return True, png_data, ""
         except Exception as e:
             return False, b"", f"PNG rendering error: {e}"
@@ -293,18 +293,20 @@ class MermaidRenderer:
             html_content = self._create_mermaid_html(
                 diagram, theme, bg_color, width, height, config
             )
-            
-            success, output_path, error = self.browser_service.render_mermaid_to_pdf_sync(
-                html_content, pdf_options=pdf_options
+
+            success, output_path, error = (
+                self.browser_service.render_mermaid_to_pdf_sync(
+                    html_content, pdf_options=pdf_options
+                )
             )
-            
+
             if not success:
                 return False, b"", error
-            
+
             # Read the PDF file
             with open(output_path, "rb") as f:
                 pdf_data = f.read()
-            
+
             return True, pdf_data, ""
         except Exception as e:
             return False, b"", f"PDF rendering error: {e}"
@@ -415,7 +417,7 @@ class MermaidRenderer:
             # Basic stats
             lines = diagram.splitlines()
             non_empty_lines = [line for line in lines if line.strip()]
-            
+
             # Try to render to get size information
             success_svg, svg_content, svg_error = self.render_to_svg(diagram)
             success_png, png_data, png_error = self.render_to_png(diagram)

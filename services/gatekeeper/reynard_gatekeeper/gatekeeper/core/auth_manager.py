@@ -10,8 +10,20 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from ..backends.base import UserAlreadyExistsError, UserBackend, UserNotFoundError
+from ..models.rbac import (
+    Permission,
+    PermissionCreate,
+    PermissionResult,
+    ResourceAccessControl,
+    ResourcePermissionGrant,
+    Role,
+    RoleCreate,
+    UserRoleAssignment,
+    UserRoleLink,
+)
 from ..models.token import TokenConfig, TokenResponse
 from ..models.user import User, UserCreate, UserPublic, UserUpdate
+from .audit_service import AuditEventType, audit_service
 from .password_manager import PasswordManager, SecurityLevel
 from .token_manager import TokenManager
 
@@ -74,7 +86,10 @@ class AuthManager:
         return created_user
 
     async def authenticate(
-        self, username: str, password: str, client_ip: str | None = None,
+        self,
+        username: str,
+        password: str,
+        client_ip: str | None = None,
     ) -> TokenResponse | None:
         """Authenticate a user with username and password.
 
@@ -105,7 +120,8 @@ class AuthManager:
 
         # Verify password
         is_valid, updated_hash = self.password_manager.verify_and_update_password(
-            password, user.password_hash,
+            password,
+            user.password_hash,
         )
 
         if not is_valid:
@@ -125,7 +141,40 @@ class AuthManager:
             "role": user.role.value,
             "permissions": user.permissions or [],
             "user_id": str(user.id),
+            "rbac_enabled": user.rbac_enabled,
+            "default_role": user.default_role,
         }
+
+        # Add RBAC data if enabled
+        if user.rbac_enabled:
+            try:
+                # Get user roles
+                user_roles = await self.get_user_roles(username)
+                token_data["rbac_roles"] = [
+                    {
+                        "role_name": role["role_name"],
+                        "role_level": role["role_level"],
+                        "context_type": role["context_type"],
+                        "context_id": role["context_id"],
+                        "expires_at": (
+                            role["expires_at"].isoformat()
+                            if role["expires_at"]
+                            else None
+                        ),
+                    }
+                    for role in user_roles
+                ]
+
+                # Get user permissions (simplified for token)
+                token_data["rbac_permissions"] = []
+                for role in user_roles:
+                    # This is a simplified approach - in production you might want to cache this
+                    # or include more detailed permission information
+                    token_data["rbac_permissions"].append(f"{role['role_name']}:*")
+
+            except Exception as e:
+                logger.warning(f"Failed to load RBAC data for user {username}: {e}")
+                # Continue without RBAC data rather than failing authentication
 
         tokens = self.token_manager.create_tokens(token_data)
 
@@ -135,7 +184,9 @@ class AuthManager:
         return tokens
 
     async def authenticate_by_email(
-        self, email: str, password: str,
+        self,
+        email: str,
+        password: str,
     ) -> TokenResponse | None:
         """Authenticate a user with email and password.
 
@@ -165,7 +216,8 @@ class AuthManager:
 
             # Verify password
             is_valid, updated_hash = self.password_manager.verify_and_update_password(
-                password, user.password_hash,
+                password,
+                user.password_hash,
             )
 
             if not is_valid:
@@ -185,7 +237,43 @@ class AuthManager:
                 "role": user.role.value,
                 "permissions": user.permissions or [],
                 "user_id": str(user.id),
+                "rbac_enabled": user.rbac_enabled,
+                "default_role": user.default_role,
             }
+
+            # Add RBAC data if enabled
+            if user.rbac_enabled:
+                try:
+                    # Get user roles
+                    user_roles = await self.get_user_roles(user.username)
+                    token_data["rbac_roles"] = [
+                        {
+                            "role_name": role["role_name"],
+                            "role_level": role["role_level"],
+                            "context_type": role["context_type"],
+                            "context_id": role["context_id"],
+                            "expires_at": (
+                                role["expires_at"].isoformat()
+                                if role["expires_at"]
+                                else None
+                            ),
+                        }
+                        for role in user_roles
+                    ]
+
+                    # Get user permissions (simplified for token)
+                    token_data["rbac_permissions"] = []
+                    for role in user_roles:
+                        # This is a simplified approach - in production you might want to cache this
+                        # or include more detailed permission information
+                        token_data["rbac_permissions"].append(f"{role['role_name']}:*")
+
+                except Exception as e:
+                    logger.warning(
+                        f"Failed to load RBAC data for user {user.username}: {e}"
+                    )
+                    # Continue without RBAC data rather than failing authentication
+
             tokens = self.token_manager.create_tokens(token_data)
 
             logger.info(f"User with email '{email}' authenticated successfully")
@@ -196,7 +284,9 @@ class AuthManager:
             return None
 
     async def refresh_tokens(
-        self, refresh_token: str, client_ip: str | None = None,
+        self,
+        refresh_token: str,
+        client_ip: str | None = None,
     ) -> TokenResponse | None:
         """Refresh access token using a valid refresh token.
 
@@ -334,7 +424,9 @@ class AuthManager:
         return user
 
     async def validate_token(
-        self, token: str, required_role: str | None = None,
+        self,
+        token: str,
+        required_role: str | None = None,
     ) -> bool:
         """Validate a token and optionally check role requirements.
 
@@ -373,7 +465,10 @@ class AuthManager:
         self.token_manager.cleanup_expired_blacklist()
 
     async def change_password(
-        self, username: str, current_password: str, new_password: str,
+        self,
+        username: str,
+        current_password: str,
+        new_password: str,
     ) -> bool:
         """Change a user's password.
 
@@ -393,7 +488,8 @@ class AuthManager:
 
         # Verify current password
         is_valid, _ = self.password_manager.verify_and_update_password(
-            current_password, user.password_hash,
+            current_password,
+            user.password_hash,
         )
 
         if not is_valid:
@@ -472,7 +568,10 @@ class AuthManager:
         return await self.backend.get_user_by_username(username)
 
     async def search_users(
-        self, query: str, skip: int = 0, limit: int = 100,
+        self,
+        query: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Search for users.
 
@@ -488,7 +587,10 @@ class AuthManager:
         return await self.backend.search_users(query, skip=skip, limit=limit)
 
     async def get_users_by_role(
-        self, role: str, skip: int = 0, limit: int = 100,
+        self,
+        role: str,
+        skip: int = 0,
+        limit: int = 100,
     ) -> list[UserPublic]:
         """Get users by role.
 
@@ -522,7 +624,9 @@ class AuthManager:
         return success
 
     async def update_user_profile_picture(
-        self, username: str, profile_picture_url: str | None,
+        self,
+        username: str,
+        profile_picture_url: str | None,
     ) -> bool:
         """Update a user's profile picture.
 
@@ -535,7 +639,8 @@ class AuthManager:
 
         """
         return await self.backend.update_user_profile_picture(
-            username, profile_picture_url,
+            username,
+            profile_picture_url,
         )
 
     async def get_user_settings(self, username: str) -> dict[str, Any]:
@@ -551,7 +656,9 @@ class AuthManager:
         return await self.backend.get_user_settings(username)
 
     async def update_user_settings(
-        self, username: str, settings: dict[str, Any],
+        self,
+        username: str,
+        settings: dict[str, Any],
     ) -> bool:
         """Update user settings.
 
@@ -733,7 +840,9 @@ class AuthManager:
             return None
 
     async def reset_password_with_token(
-        self, reset_token: str, new_password: str,
+        self,
+        reset_token: str,
+        new_password: str,
     ) -> bool:
         """Reset a user's password using a valid reset token.
 
@@ -808,7 +917,8 @@ class AuthManager:
 
             # Update the password
             success = await self.backend.update_user_password(
-                user.username, new_password_hash,
+                user.username,
+                new_password_hash,
             )
             if not success:
                 logger.error(f"Failed to update password for user: {user.username}")
@@ -828,9 +938,342 @@ class AuthManager:
             logger.error(f"Error resetting password with token: {e}")
             return False
 
-    async def close(self) -> None:
-        """Close the authentication manager and clean up resources.
+    # RBAC Methods
+
+    async def create_role(self, role_data: RoleCreate) -> Role:
+        """Create a new role.
+
+        Args:
+            role_data: Role creation data
+
+        Returns:
+            Role: Created role
+
+        Raises:
+            BackendError: If role creation fails
         """
+        try:
+            role_dict = await self.backend.create_role(role_data.model_dump())
+            return Role(**role_dict)
+        except Exception as e:
+            logger.error(f"Failed to create role: {e}")
+            raise
+
+    async def get_role_by_name(self, name: str) -> Role | None:
+        """Get a role by name.
+
+        Args:
+            name: Role name
+
+        Returns:
+            Role: Role if found, None otherwise
+        """
+        try:
+            role_dict = await self.backend.get_role_by_name(name)
+            if role_dict:
+                return Role(**role_dict)
+            return None
+        except Exception as e:
+            logger.error(f"Failed to get role by name: {e}")
+            return None
+
+    async def create_permission(self, permission_data: PermissionCreate) -> Permission:
+        """Create a new permission.
+
+        Args:
+            permission_data: Permission creation data
+
+        Returns:
+            Permission: Created permission
+
+        Raises:
+            BackendError: If permission creation fails
+        """
+        try:
+            permission_dict = await self.backend.create_permission(
+                permission_data.model_dump()
+            )
+            return Permission(**permission_dict)
+        except Exception as e:
+            logger.error(f"Failed to create permission: {e}")
+            raise
+
+    async def assign_role_to_user(
+        self, username: str, role_name: str, context: dict[str, Any] | None = None
+    ) -> bool:
+        """Assign a role to a user.
+
+        Args:
+            username: Username of the user
+            role_name: Name of the role to assign
+            context: Optional context for the role assignment
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        try:
+            # Get user
+            user = await self.get_user_by_username(username)
+            if not user:
+                logger.error(f"User {username} not found")
+                return False
+
+            # Get role
+            role = await self.get_role_by_name(role_name)
+            if not role:
+                logger.error(f"Role {role_name} not found")
+                return False
+
+            # Assign role
+            success = await self.backend.assign_role_to_user(user.id, role.id, context)
+
+            # Log audit event
+            await audit_service.log_rbac_operation(
+                event_type=AuditEventType.ROLE_ASSIGNED,
+                username=username,
+                user_id=user.id,
+                role_name=role_name,
+                success=success,
+                context=context,
+            )
+
+            if success:
+                logger.info(f"Assigned role {role_name} to user {username}")
+            else:
+                logger.error(f"Failed to assign role {role_name} to user {username}")
+
+            return success
+
+        except Exception as e:
+            logger.error(f"Failed to assign role to user: {e}")
+            return False
+
+    async def remove_role_from_user(
+        self, username: str, role_name: str, context: dict[str, Any] | None = None
+    ) -> bool:
+        """Remove a role from a user.
+
+        Args:
+            username: Username of the user
+            role_name: Name of the role to remove
+            context: Optional context for the role removal
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        try:
+            # Get user
+            user = await self.get_user_by_username(username)
+            if not user:
+                logger.error(f"User {username} not found")
+                return False
+
+            # Get role
+            role = await self.get_role_by_name(role_name)
+            if not role:
+                logger.error(f"Role {role_name} not found")
+                return False
+
+            # Remove role
+            success = await self.backend.remove_role_from_user(
+                user.id, role.id, context
+            )
+
+            # Log audit event
+            await audit_service.log_rbac_operation(
+                event_type=AuditEventType.ROLE_REMOVED,
+                username=username,
+                user_id=user.id,
+                role_name=role_name,
+                success=success,
+                context=context,
+            )
+
+            if success:
+                logger.info(f"Removed role {role_name} from user {username}")
+            else:
+                logger.error(f"Failed to remove role {role_name} from user {username}")
+
+            return success
+
+        except Exception as e:
+            logger.error(f"Failed to remove role from user: {e}")
+            return False
+
+    async def get_user_roles(
+        self, username: str, context: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
+        """Get all roles for a user.
+
+        Args:
+            username: Username of the user
+            context: Optional context filter
+
+        Returns:
+            list[dict[str, Any]]: List of user roles
+        """
+        try:
+            user = await self.get_user_by_username(username)
+            if not user:
+                logger.error(f"User {username} not found")
+                return []
+
+            return await self.backend.get_user_roles(user.id, context)
+
+        except Exception as e:
+            logger.error(f"Failed to get user roles: {e}")
+            return []
+
+    async def check_permission(
+        self, username: str, resource_type: str, resource_id: str, operation: str
+    ) -> PermissionResult:
+        """Check if a user has permission for a resource/operation.
+
+        Args:
+            username: Username of the user
+            resource_type: Type of resource
+            resource_id: ID of the resource
+            operation: Operation to check
+
+        Returns:
+            PermissionResult: Permission check result
+        """
+        try:
+            user = await self.get_user_by_username(username)
+            if not user:
+                return PermissionResult(granted=False, reason="User not found")
+
+            # Check if user has RBAC enabled
+            if not user.rbac_enabled:
+                return PermissionResult(
+                    granted=False, reason="RBAC not enabled for user"
+                )
+
+            # Check permission
+            result = await self.backend.check_permission(
+                user.id, resource_type, resource_id, operation
+            )
+
+            # Log audit event
+            await audit_service.log_rbac_operation(
+                event_type=(
+                    AuditEventType.PERMISSION_GRANTED
+                    if result.get("granted")
+                    else AuditEventType.PERMISSION_DENIED
+                ),
+                username=username,
+                user_id=user.id,
+                resource_type=resource_type,
+                resource_id=resource_id,
+                operation=operation,
+                success=result.get("granted", False),
+                error_message=(
+                    result.get("reason") if not result.get("granted") else None
+                ),
+            )
+
+            return PermissionResult(**result)
+
+        except Exception as e:
+            logger.error(f"Failed to check permission: {e}")
+            return PermissionResult(
+                granted=False, reason=f"Permission check failed: {e}"
+            )
+
+    async def enable_rbac_for_user(
+        self, username: str, default_role: str | None = None
+    ) -> bool:
+        """Enable RBAC for a user.
+
+        Args:
+            username: Username of the user
+            default_role: Optional default role to assign
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        try:
+            user = await self.get_user_by_username(username)
+            if not user:
+                logger.error(f"User {username} not found")
+                return False
+
+            # Update user to enable RBAC
+            user_update = UserUpdate(
+                rbac_enabled=True,
+                default_role=default_role,
+                last_rbac_sync=datetime.now(UTC),
+            )
+
+            updated_user = await self.update_user(username, user_update)
+            if not updated_user:
+                return False
+
+            # Assign default role if specified
+            if default_role:
+                success = await self.assign_role_to_user(username, default_role)
+                if not success:
+                    logger.warning(
+                        f"Failed to assign default role {default_role} to user {username}"
+                    )
+
+            # Log audit event
+            await audit_service.log_rbac_operation(
+                event_type=AuditEventType.RBAC_ENABLED,
+                username=username,
+                user_id=user.id,
+                success=True,
+                context={"default_role": default_role},
+            )
+
+            logger.info(f"Enabled RBAC for user {username}")
+            return True
+
+        except Exception as e:
+            logger.error(f"Failed to enable RBAC for user: {e}")
+            return False
+
+    async def disable_rbac_for_user(self, username: str) -> bool:
+        """Disable RBAC for a user.
+
+        Args:
+            username: Username of the user
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        try:
+            user = await self.get_user_by_username(username)
+            if not user:
+                logger.error(f"User {username} not found")
+                return False
+
+            # Update user to disable RBAC
+            user_update = UserUpdate(
+                rbac_enabled=False, default_role=None, last_rbac_sync=datetime.now(UTC)
+            )
+
+            updated_user = await self.update_user(username, user_update)
+            if not updated_user:
+                return False
+
+            # Log audit event
+            await audit_service.log_rbac_operation(
+                event_type=AuditEventType.RBAC_DISABLED,
+                username=username,
+                user_id=user.id,
+                success=True,
+            )
+
+            logger.info(f"Disabled RBAC for user {username}")
+            return True
+
+        except Exception as e:
+            logger.error(f"Failed to disable RBAC for user: {e}")
+            return False
+
+    async def close(self) -> None:
+        """Close the authentication manager and clean up resources."""
         await self.backend.close()
         logger.info("Authentication manager closed")
 

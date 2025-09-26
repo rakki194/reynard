@@ -146,7 +146,8 @@ async def test_ollama_integration():
         async with httpx.AsyncClient() as client:
             try:
                 response = await client.get(
-                    "http://localhost:11434/api/tags", timeout=5.0,
+                    "http://localhost:11434/api/tags",
+                    timeout=5.0,
                 )
                 if response.status_code == 200:
                     models = response.json()

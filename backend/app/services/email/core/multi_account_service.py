@@ -81,28 +81,8 @@ class AccountUsage:
     last_api_call: datetime | None = None
 
 
-@dataclass
-class AccountPermissions:
-    """Account permissions and access control."""
-
-    account_id: str
-    can_send_emails: bool = True
-    can_receive_emails: bool = True
-    can_use_encryption: bool = True
-    can_schedule_meetings: bool = True
-    can_use_ai_responses: bool = True
-    can_access_analytics: bool = True
-    can_manage_other_accounts: bool = False
-    max_emails_per_day: int = 1000
-    max_storage_mb: int = 1000
-    allowed_domains: list[str] = None
-    blocked_domains: list[str] = None
-
-    def __post_init__(self):
-        if self.allowed_domains is None:
-            self.allowed_domains = []
-        if self.blocked_domains is None:
-            self.blocked_domains = []
+# AccountPermissions dataclass removed - now using RBAC system
+# All permission checking is handled by RBACEmailService
 
 
 @dataclass
@@ -149,13 +129,10 @@ class MultiAccountService:
         self.accounts_dir.mkdir(exist_ok=True)
         self.usage_dir = self.data_dir / "usage"
         self.usage_dir.mkdir(exist_ok=True)
-        self.permissions_dir = self.data_dir / "permissions"
-        self.permissions_dir.mkdir(exist_ok=True)
 
         # Load existing data
         self._load_accounts()
         self._load_usage_stats()
-        self._load_permissions()
 
     def _load_accounts(self) -> None:
         """Load existing account configurations."""
@@ -191,22 +168,7 @@ class MultiAccountService:
             logger.error(f"Failed to load usage stats: {e}")
             self.usage_stats = {}
 
-    def _load_permissions(self) -> None:
-        """Load account permissions."""
-        try:
-            permissions_file = self.data_dir / "permissions.json"
-            if permissions_file.exists():
-                with open(permissions_file, encoding="utf-8") as f:
-                    permissions_data = json.load(f)
-                    self.permissions = {
-                        account_id: AccountPermissions(**perm_data)
-                        for account_id, perm_data in permissions_data.items()
-                    }
-            else:
-                self.permissions = {}
-        except Exception as e:
-            logger.error(f"Failed to load permissions: {e}")
-            self.permissions = {}
+    # _load_permissions method removed - now using RBAC system
 
     def _save_accounts(self) -> None:
         """Save account configurations."""
@@ -250,20 +212,7 @@ class MultiAccountService:
         except Exception as e:
             logger.error(f"Failed to save usage stats: {e}")
 
-    def _save_permissions(self) -> None:
-        """Save account permissions."""
-        try:
-            permissions_file = self.data_dir / "permissions.json"
-            permissions_data = {
-                account_id: asdict(permissions)
-                for account_id, permissions in self.permissions.items()
-            }
-
-            with open(permissions_file, "w", encoding="utf-8") as f:
-                json.dump(permissions_data, f, indent=2)
-
-        except Exception as e:
-            logger.error(f"Failed to save permissions: {e}")
+    # _save_permissions method removed - now using RBAC system
 
     async def create_account(
         self,
@@ -338,13 +287,9 @@ class MultiAccountService:
             # Create default usage stats
             self.usage_stats[account_id] = AccountUsage(account_id=account_id)
 
-            # Create default permissions
-            self.permissions[account_id] = AccountPermissions(account_id=account_id)
-
             # Save all data
             self._save_accounts()
             self._save_usage_stats()
-            self._save_permissions()
 
             logger.info(f"Created account: {account_id} ({email_address})")
             return account
@@ -396,7 +341,9 @@ class MultiAccountService:
         return None
 
     async def list_accounts(
-        self, account_type: str | None = None, active_only: bool = True,
+        self,
+        account_type: str | None = None,
+        active_only: bool = True,
     ) -> list[AccountConfig]:
         """List all accounts with optional filtering.
 
@@ -445,7 +392,8 @@ class MultiAccountService:
             # Handle primary account changes
             if updates.get("is_primary", False):
                 await self._unset_primary_accounts(
-                    account.account_type, exclude=account_id,
+                    account.account_type,
+                    exclude=account_id,
                 )
 
             self._save_accounts()
@@ -475,13 +423,10 @@ class MultiAccountService:
             del self.accounts[account_id]
             if account_id in self.usage_stats:
                 del self.usage_stats[account_id]
-            if account_id in self.permissions:
-                del self.permissions[account_id]
 
             # Save changes
             self._save_accounts()
             self._save_usage_stats()
-            self._save_permissions()
 
             logger.info(f"Deleted account: {account_id}")
             return True
@@ -554,103 +499,6 @@ class MultiAccountService:
             logger.error(f"Failed to update usage stats: {e}")
             return False
 
-    async def get_permissions(self, account_id: str) -> AccountPermissions | None:
-        """Get permissions for an account.
-
-        Args:
-            account_id: Account ID
-
-        Returns:
-            AccountPermissions object or None if not found
-
-        """
-        return self.permissions.get(account_id)
-
-    async def update_permissions(
-        self, account_id: str, permissions: dict[str, Any],
-    ) -> bool:
-        """Update permissions for an account.
-
-        Args:
-            account_id: Account ID
-            permissions: Dictionary of permission updates
-
-        Returns:
-            True if successful
-
-        """
-        try:
-            if account_id not in self.permissions:
-                self.permissions[account_id] = AccountPermissions(account_id=account_id)
-
-            perm_obj = self.permissions[account_id]
-
-            # Update permissions
-            for key, value in permissions.items():
-                if hasattr(perm_obj, key):
-                    setattr(perm_obj, key, value)
-
-            self._save_permissions()
-
-            logger.info(f"Updated permissions for account: {account_id}")
-            return True
-
-        except Exception as e:
-            logger.error(f"Failed to update permissions: {e}")
-            return False
-
-    async def check_permission(
-        self, account_id: str, permission: str, context: dict[str, Any] | None = None,
-    ) -> bool:
-        """Check if an account has a specific permission.
-
-        Args:
-            account_id: Account ID
-            permission: Permission to check
-            context: Additional context for permission check
-
-        Returns:
-            True if permission is granted
-
-        """
-        try:
-            if account_id not in self.permissions:
-                return False
-
-            perm_obj = self.permissions[account_id]
-
-            # Check basic permission
-            if not hasattr(perm_obj, permission):
-                return False
-
-            if not getattr(perm_obj, permission):
-                return False
-
-            # Check domain restrictions if context provided
-            if context and "email_address" in context:
-                email = context["email_address"]
-                domain = email.split("@")[1] if "@" in email else ""
-
-                # Check allowed domains
-                if perm_obj.allowed_domains and domain not in perm_obj.allowed_domains:
-                    return False
-
-                # Check blocked domains
-                if domain in perm_obj.blocked_domains:
-                    return False
-
-            # Check rate limits
-            if permission == "can_send_emails" and context:
-                usage = self.usage_stats.get(account_id)
-                if usage and usage.emails_sent >= perm_obj.max_emails_per_day:
-                    return False
-
-            return True
-
-        except Exception as e:
-            logger.error(f"Failed to check permission: {e}")
-            return False
-
     async def get_account_summary(self, account_id: str) -> AccountSummary:
         """Get comprehensive account summary.
 
@@ -667,7 +515,8 @@ class MultiAccountService:
                 raise ValueError("Account not found")
 
             usage = self.usage_stats.get(
-                account_id, AccountUsage(account_id=account_id),
+                account_id,
+                AccountUsage(account_id=account_id),
             )
 
             return AccountSummary(
@@ -757,7 +606,9 @@ class MultiAccountService:
         return False
 
     async def _unset_primary_accounts(
-        self, account_type: str, exclude: str | None = None,
+        self,
+        account_type: str,
+        exclude: str | None = None,
     ) -> None:
         """Unset primary flag for all accounts of a type."""
         for account_id, account in self.accounts.items():

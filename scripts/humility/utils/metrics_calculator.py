@@ -1,6 +1,4 @@
-"""Metrics calculation utilities for humility detection.
-"""
-
+"""Metrics calculation utilities for humility detection."""
 
 from core.models import DetectionMetrics, HumilityFinding
 

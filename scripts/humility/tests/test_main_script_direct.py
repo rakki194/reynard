@@ -1,5 +1,4 @@
-"""Direct tests for the main humility detector script functionality.
-"""
+"""Direct tests for the main humility detector script functionality."""
 
 import os
 import subprocess
@@ -19,7 +18,8 @@ class TestMainScriptDirect:
             [sys.executable, "humility-detector.py", "--help"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent, check=False,
+            cwd=Path(__file__).parent.parent,
+            check=False,
         )
 
         assert result.returncode == 0
@@ -33,7 +33,8 @@ class TestMainScriptDirect:
             [sys.executable, "humility-detector.py", "--help"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent, check=False,
+            cwd=Path(__file__).parent.parent,
+            check=False,
         )
 
         assert result.returncode == 0
@@ -50,7 +51,8 @@ class TestMainScriptDirect:
                 [sys.executable, "humility-detector.py", temp_file],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find issues and return 1
@@ -72,7 +74,8 @@ class TestMainScriptDirect:
                 [sys.executable, "humility-detector.py", temp_file],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find no issues and return 0
@@ -88,7 +91,9 @@ class TestMainScriptDirect:
             temp_file = f.name
 
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False,
+            mode="w",
+            suffix=".json",
+            delete=False,
         ) as output_file:
             output_path = output_file.name
 
@@ -105,7 +110,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find issues (but might return 0 if no issues found)
@@ -131,7 +137,9 @@ class TestMainScriptDirect:
             temp_file = f.name
 
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".html", delete=False,
+            mode="w",
+            suffix=".html",
+            delete=False,
         ) as output_file:
             output_path = output_file.name
 
@@ -148,7 +156,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find issues (but might return 0 if no issues found)
@@ -171,7 +180,9 @@ class TestMainScriptDirect:
             temp_file = f.name
 
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".csv", delete=False,
+            mode="w",
+            suffix=".csv",
+            delete=False,
         ) as output_file:
             output_path = output_file.name
 
@@ -188,7 +199,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find issues (but might return 0 if no issues found)
@@ -221,7 +233,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find some issues
@@ -246,7 +259,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find some issues
@@ -273,7 +287,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find some issues
@@ -298,7 +313,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find issues (but might return 0 if no issues found)
@@ -323,7 +339,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find issues (but might return 0 if no issues found)
@@ -343,7 +360,8 @@ class TestMainScriptDirect:
                 [sys.executable, "humility-detector.py", temp_file, "--verbose"],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find issues (but might return 0 if no issues found)
@@ -359,7 +377,8 @@ class TestMainScriptDirect:
             [sys.executable, "humility-detector.py", ".", "--clear-cache"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent, check=False,
+            cwd=Path(__file__).parent.parent,
+            check=False,
         )
 
         assert result.returncode == 0
@@ -368,7 +387,9 @@ class TestMainScriptDirect:
     def test_script_with_save_config(self):
         """Test script with configuration saving."""
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False,
+            mode="w",
+            suffix=".json",
+            delete=False,
         ) as config_file:
             config_path = config_file.name
 
@@ -383,7 +404,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode == 0
@@ -399,7 +421,9 @@ class TestMainScriptDirect:
         """Test script with configuration loading."""
         # First create a config file
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False,
+            mode="w",
+            suffix=".json",
+            delete=False,
         ) as config_file:
             config_path = config_file.name
 
@@ -416,7 +440,9 @@ class TestMainScriptDirect:
                 json.dump(config_data, f)
 
             with tempfile.NamedTemporaryFile(
-                mode="w", suffix=".txt", delete=False,
+                mode="w",
+                suffix=".txt",
+                delete=False,
             ) as f:
                 f.write("This is the best solution ever!")
                 temp_file = f.name
@@ -432,7 +458,8 @@ class TestMainScriptDirect:
                     ],
                     capture_output=True,
                     text=True,
-                    cwd=Path(__file__).parent.parent, check=False,
+                    cwd=Path(__file__).parent.parent,
+                    check=False,
                 )
 
                 assert result.returncode == 1  # Should find issues
@@ -466,7 +493,8 @@ class TestMainScriptDirect:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should find issues (but might return 0 if no issues found)
@@ -478,7 +506,8 @@ class TestMainScriptDirect:
             [sys.executable, "humility-detector.py", "nonexistent_file.txt"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent, check=False,
+            cwd=Path(__file__).parent.parent,
+            check=False,
         )
 
         assert result.returncode == 1
@@ -491,7 +520,8 @@ class TestMainScriptDirect:
                 [sys.executable, "humility-detector.py", temp_dir],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should succeed with no findings

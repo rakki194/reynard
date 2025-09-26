@@ -44,11 +44,17 @@ async def register(
 
     # Simulate user creation
     user = MockUser(
-        id=1, username=user_data.username, email=user_data.email, is_active=True,
+        id=1,
+        username=user_data.username,
+        email=user_data.email,
+        is_active=True,
     )
 
     return MockUserPublic(
-        id=user.id, username=user.username, email=user.email, is_active=user.is_active,
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        is_active=user.is_active,
     )
 
 
@@ -58,8 +64,7 @@ async def login(
     request: Request = None,
     auth_manager: MockAuthManager = Depends(lambda: MockAuthManager()),
 ):
-    """Authenticate user and return access/refresh tokens.
-    """
+    """Authenticate user and return access/refresh tokens."""
     # Simulate authentication
     if form_data.username == "testuser" and form_data.password == "testpassword":
         return MockTokenResponse(
@@ -69,7 +74,8 @@ async def login(
             expires_in=1800,
         )
     raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials",
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid credentials",
     )
 
 
@@ -78,8 +84,7 @@ async def refresh_token(
     refresh_token: str,
     auth_manager: MockAuthManager = Depends(lambda: MockAuthManager()),
 ):
-    """Refresh access token using refresh token.
-    """
+    """Refresh access token using refresh token."""
     if refresh_token == "mock_refresh_token":
         return MockTokenResponse(
             access_token="new_mock_access_token",
@@ -88,7 +93,8 @@ async def refresh_token(
             expires_in=1800,
         )
     raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token",
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Invalid refresh token",
     )
 
 
@@ -97,8 +103,7 @@ async def logout(
     request: Request = None,
     auth_manager: MockAuthManager = Depends(lambda: MockAuthManager()),
 ):
-    """Logout user and invalidate tokens.
-    """
+    """Logout user and invalidate tokens."""
     return {"message": "Successfully logged out"}
 
 
@@ -106,12 +111,14 @@ async def logout(
 async def get_current_user_info(
     current_user: MockUser = Depends(
         lambda: MockUser(
-            id=1, username="testuser", email="test@example.com", is_active=True,
+            id=1,
+            username="testuser",
+            email="test@example.com",
+            is_active=True,
         ),
     ),
 ):
-    """Get current user information.
-    """
+    """Get current user information."""
     return MockUserPublic(
         id=current_user.id,
         username=current_user.username,

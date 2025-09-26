@@ -37,8 +37,7 @@ class SuccessAdvisor8Release:
 
 
 class GitTagTracker:
-    """Tracks git tags and releases for Success-Advisor-8 legacy tracking.
-    """
+    """Tracks git tags and releases for Success-Advisor-8 legacy tracking."""
 
     def __init__(self, repo_path: str = "."):
         """Initialize the git tag tracker.

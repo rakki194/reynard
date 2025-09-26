@@ -587,7 +587,9 @@ class TestDiffusionModels:
     def test_diffusion_generation_response_defaults(self):
         """Test DiffusionGenerationResponse with default values."""
         response = DiffusionGenerationResponse(
-            success=True, model_id="dreamon", processing_time=1.5,
+            success=True,
+            model_id="dreamon",
+            processing_time=1.5,
         )
 
         assert response.success is True
@@ -618,7 +620,9 @@ class TestDiffusionModels:
     def test_diffusion_infilling_response_defaults(self):
         """Test DiffusionInfillingResponse with default values."""
         response = DiffusionInfillingResponse(
-            success=True, model_id="dreamon", processing_time=1.0,
+            success=True,
+            model_id="dreamon",
+            processing_time=1.0,
         )
 
         assert response.success is True

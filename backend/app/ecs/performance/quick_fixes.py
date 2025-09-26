@@ -90,7 +90,8 @@ class ECSQuickFixes:
 
     # 3. HIGH PRIORITY: Batch Processing
     async def batch_agent_traits_fetch(
-        self, agent_ids: list[str],
+        self,
+        agent_ids: list[str],
     ) -> dict[str, dict[str, Any]]:
         """Fetch traits for multiple agents in a single query."""
         # Simulate batch database query (replace with actual implementation)
@@ -101,7 +102,8 @@ class ECSQuickFixes:
         return traits_batch
 
     async def batch_compatibility_analysis(
-        self, agent_pairs: list[tuple],
+        self,
+        agent_pairs: list[tuple],
     ) -> list[dict[str, Any]]:
         """Process multiple compatibility checks in batch."""
         # Get all unique agent IDs
@@ -117,7 +119,8 @@ class ECSQuickFixes:
         results = []
         for agent1, agent2 in agent_pairs:
             compatibility = self._calculate_compatibility(
-                traits_batch.get(agent1, {}), traits_batch.get(agent2, {}),
+                traits_batch.get(agent1, {}),
+                traits_batch.get(agent2, {}),
             )
             results.append(
                 {"agent1": agent1, "agent2": agent2, "compatibility": compatibility},
@@ -127,7 +130,9 @@ class ECSQuickFixes:
 
     # 4. MEDIUM PRIORITY: Optimized Lineage Query
     async def get_agent_lineage_optimized(
-        self, agent_id: str, max_depth: int = 3,
+        self,
+        agent_id: str,
+        max_depth: int = 3,
     ) -> dict[str, Any]:
         """Optimized lineage query with depth limiting."""
         if not self.validate_agent_id(agent_id):
@@ -177,7 +182,9 @@ class ECSQuickFixes:
         return [{"agent_id": f"child_{i}", "name": f"Child {i}"} for i in range(3)]
 
     def _calculate_compatibility(
-        self, traits1: dict[str, Any], traits2: dict[str, Any],
+        self,
+        traits1: dict[str, Any],
+        traits2: dict[str, Any],
     ) -> float:
         """Calculate compatibility between two agents."""
         if not traits1 or not traits2:

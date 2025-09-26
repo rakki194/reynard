@@ -152,7 +152,8 @@ class TestNaturalLanguageSearchEndpoints:
                 mock_auth.return_value = lambda: None
 
                 response = self.client.post(
-                    "/api/search/analyze-query", json={"query": "find function"},
+                    "/api/search/analyze-query",
+                    json={"query": "find function"},
                 )
 
                 assert response.status_code == 200
@@ -180,7 +181,8 @@ class TestNaturalLanguageSearchEndpoints:
                 mock_auth.return_value = lambda: None
 
                 response = self.client.post(
-                    "/api/search/suggestions/intelligent", json={"query": "find"},
+                    "/api/search/suggestions/intelligent",
+                    json={"query": "find"},
                 )
 
                 assert response.status_code == 200

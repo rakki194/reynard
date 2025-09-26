@@ -216,7 +216,10 @@ class PhoenixProjectTracker:
             # Check for PHEONIX project activities
             if self._is_phoenix_activity(line):
                 activity = await self._extract_phoenix_activity(
-                    line, i, current_version, current_date,
+                    line,
+                    i,
+                    current_version,
+                    current_date,
                 )
                 if activity:
                     activities.append(activity)
@@ -240,7 +243,11 @@ class PhoenixProjectTracker:
         return False
 
     async def _extract_phoenix_activity(
-        self, line: str, line_number: int, version: str | None, date: datetime | None,
+        self,
+        line: str,
+        line_number: int,
+        version: str | None,
+        date: datetime | None,
     ) -> PhoenixProjectActivity | None:
         """Extract PHEONIX activity from changelog line."""
         try:
@@ -279,7 +286,8 @@ class PhoenixProjectTracker:
 
         except Exception:
             logger.exception(
-                "Failed to extract PHEONIX activity from line %d", line_number,
+                "Failed to extract PHEONIX activity from line %d",
+                line_number,
             )
             return None
 
@@ -414,7 +422,8 @@ class PhoenixProjectTracker:
         return initiatives
 
     def _extract_key_findings(
-        self, activities: list[PhoenixProjectActivity],
+        self,
+        activities: list[PhoenixProjectActivity],
     ) -> list[str]:
         """Extract key findings from activities."""
         findings = []

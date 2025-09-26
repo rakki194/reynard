@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 class TrainingProfile:
     """Training profile with metadata and configuration."""
-    
+
     def __init__(
         self,
         name: str,
@@ -43,7 +43,7 @@ class TrainingProfile:
         self.version = version
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert profile to dictionary."""
         return {
@@ -56,7 +56,7 @@ class TrainingProfile:
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat(),
         }
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "TrainingProfile":
         """Create profile from dictionary."""
@@ -69,39 +69,45 @@ class TrainingProfile:
             created_by=data.get("created_by", "system"),
             version=data.get("version", "1.0.0"),
         )
-        profile.created_at = datetime.fromisoformat(data.get("created_at", datetime.now().isoformat()))
-        profile.updated_at = datetime.fromisoformat(data.get("updated_at", datetime.now().isoformat()))
+        profile.created_at = datetime.fromisoformat(
+            data.get("created_at", datetime.now().isoformat())
+        )
+        profile.updated_at = datetime.fromisoformat(
+            data.get("updated_at", datetime.now().isoformat())
+        )
         return profile
 
 
 class TrainingProfileManager:
     """Manager for training profiles with template support."""
-    
+
     def __init__(self):
         self.config = get_config()
-        self.profiles_dir = Path(self.config.DIFFUSION_PIPE_DEFAULT_OUTPUT_DIR) / "profiles"
+        self.profiles_dir = (
+            Path(self.config.DIFFUSION_PIPE_DEFAULT_OUTPUT_DIR) / "profiles"
+        )
         self.profiles_dir.mkdir(parents=True, exist_ok=True)
         self._profiles: Dict[str, TrainingProfile] = {}
         self._load_default_profiles()
-    
+
     def _load_default_profiles(self):
         """Load default training profiles."""
         logger.info("Loading default training profiles")
-        
+
         # Chroma E6AI 512 Profile (Default)
         chroma_512_profile = self._create_chroma_e6ai_512_profile()
         self._profiles["chroma_e6ai_512"] = chroma_512_profile
-        
+
         # Chroma E6AI 1024 Profile (Advanced)
         chroma_1024_profile = self._create_chroma_e6ai_1024_profile()
         self._profiles["chroma_e6ai_1024"] = chroma_1024_profile
-        
+
         # SDXL Basic Profile
         sdxl_basic_profile = self._create_sdxl_basic_profile()
         self._profiles["sdxl_basic"] = sdxl_basic_profile
-        
+
         logger.info(f"Loaded {len(self._profiles)} default profiles")
-    
+
     def _create_chroma_e6ai_512_profile(self) -> TrainingProfile:
         """Create Chroma E6AI 512 training profile."""
         config = DiffusionPipeConfig(
@@ -145,7 +151,7 @@ class TrainingProfileManager:
             wandb_tracker_name="e6ai-lora",
             wandb_run_name="e6ai-512-default",
         )
-        
+
         return TrainingProfile(
             name="Chroma E6AI 512",
             description="Chroma model training with E6AI dataset at 512 resolution - optimized for quality and speed",
@@ -153,7 +159,7 @@ class TrainingProfileManager:
             tags=["chroma", "e6ai", "512", "lora", "default"],
             created_by="system",
         )
-    
+
     def _create_chroma_e6ai_1024_profile(self) -> TrainingProfile:
         """Create Chroma E6AI 1024 training profile."""
         config = DiffusionPipeConfig(
@@ -197,7 +203,7 @@ class TrainingProfileManager:
             wandb_tracker_name="e6ai-lora",
             wandb_run_name="e6ai-1024-advanced",
         )
-        
+
         return TrainingProfile(
             name="Chroma E6AI 1024",
             description="Chroma model training with E6AI dataset at 1024 resolution - advanced high-quality training",
@@ -205,7 +211,7 @@ class TrainingProfileManager:
             tags=["chroma", "e6ai", "1024", "lora", "advanced", "high-quality"],
             created_by="system",
         )
-    
+
     def _create_sdxl_basic_profile(self) -> TrainingProfile:
         """Create SDXL basic training profile."""
         config = DiffusionPipeConfig(
@@ -249,7 +255,7 @@ class TrainingProfileManager:
             wandb_tracker_name="sdxl-lora",
             wandb_run_name="sdxl-basic",
         )
-        
+
         return TrainingProfile(
             name="SDXL Basic",
             description="Basic SDXL model training configuration for general use",
@@ -257,24 +263,24 @@ class TrainingProfileManager:
             tags=["sdxl", "basic", "lora", "general"],
             created_by="system",
         )
-    
+
     def get_profile(self, name: str) -> Optional[TrainingProfile]:
         """Get a training profile by name."""
         return self._profiles.get(name)
-    
+
     def list_profiles(self, tags: Optional[List[str]] = None) -> List[TrainingProfile]:
         """List all profiles, optionally filtered by tags."""
         profiles = list(self._profiles.values())
-        
+
         if tags:
             filtered_profiles = []
             for profile in profiles:
                 if any(tag in profile.tags for tag in tags):
                     filtered_profiles.append(profile)
             return filtered_profiles
-        
+
         return profiles
-    
+
     def create_custom_profile(
         self,
         name: str,
@@ -286,7 +292,7 @@ class TrainingProfileManager:
         """Create a custom training profile."""
         if name in self._profiles:
             raise ValueError(f"Profile '{name}' already exists")
-        
+
         profile = TrainingProfile(
             name=name,
             description=description,
@@ -294,13 +300,13 @@ class TrainingProfileManager:
             tags=tags or [],
             created_by=created_by,
         )
-        
+
         self._profiles[name] = profile
         self._save_profile(profile)
-        
+
         logger.info(f"Created custom profile: {name}")
         return profile
-    
+
     def update_profile(
         self,
         name: str,
@@ -311,110 +317,118 @@ class TrainingProfileManager:
         """Update an existing training profile."""
         if name not in self._profiles:
             raise ValueError(f"Profile '{name}' not found")
-        
+
         profile = self._profiles[name]
-        
+
         if config:
             profile.config = config
         if description:
             profile.description = description
         if tags:
             profile.tags = tags
-        
+
         profile.updated_at = datetime.now()
         self._save_profile(profile)
-        
+
         logger.info(f"Updated profile: {name}")
         return profile
-    
+
     def delete_profile(self, name: str) -> bool:
         """Delete a training profile."""
         if name not in self._profiles:
             return False
-        
+
         # Don't allow deletion of system profiles
         if self._profiles[name].created_by == "system":
             raise ValueError(f"Cannot delete system profile: {name}")
-        
+
         del self._profiles[name]
-        
+
         # Delete profile file
         profile_file = self.profiles_dir / f"{name}.json"
         if profile_file.exists():
             profile_file.unlink()
-        
+
         logger.info(f"Deleted profile: {name}")
         return True
-    
+
     def export_profile(self, name: str) -> Dict[str, Any]:
         """Export a profile to dictionary format."""
         if name not in self._profiles:
             raise ValueError(f"Profile '{name}' not found")
-        
+
         return self._profiles[name].to_dict()
-    
-    def import_profile(self, data: Dict[str, Any], overwrite: bool = False) -> TrainingProfile:
+
+    def import_profile(
+        self, data: Dict[str, Any], overwrite: bool = False
+    ) -> TrainingProfile:
         """Import a profile from dictionary format."""
         name = data["name"]
-        
+
         if name in self._profiles and not overwrite:
-            raise ValueError(f"Profile '{name}' already exists. Use overwrite=True to replace.")
-        
+            raise ValueError(
+                f"Profile '{name}' already exists. Use overwrite=True to replace."
+            )
+
         profile = TrainingProfile.from_dict(data)
         self._profiles[name] = profile
         self._save_profile(profile)
-        
+
         logger.info(f"Imported profile: {name}")
         return profile
-    
+
     def validate_profile(self, name: str) -> Dict[str, Any]:
         """Validate a training profile configuration."""
         if name not in self._profiles:
             return {"valid": False, "errors": [f"Profile '{name}' not found"]}
-        
+
         profile = self._profiles[name]
         errors = []
         warnings = []
-        
+
         try:
             # Validate configuration
             profile.config.model_validate(profile.config.model_dump())
         except Exception as e:
             errors.append(f"Configuration validation failed: {str(e)}")
-        
+
         # Check paths
         if not Path(profile.config.dataset_config.dataset_path).exists():
-            errors.append(f"Dataset path does not exist: {profile.config.dataset_config.dataset_path}")
-        
+            errors.append(
+                f"Dataset path does not exist: {profile.config.dataset_config.dataset_path}"
+            )
+
         if not Path(profile.config.training_model_config.transformer_path).exists():
-            errors.append(f"Transformer path does not exist: {profile.config.training_model_config.transformer_path}")
-        
+            errors.append(
+                f"Transformer path does not exist: {profile.config.training_model_config.transformer_path}"
+            )
+
         # Check WandB configuration
         if profile.config.enable_wandb and not profile.config.wandb_api_key:
             warnings.append("WandB enabled but no API key provided")
-        
+
         # Check GPU memory requirements
         if profile.config.micro_batch_size_per_gpu > 8:
             warnings.append("Large batch size may require significant GPU memory")
-        
+
         return {
             "valid": len(errors) == 0,
             "errors": errors,
             "warnings": warnings,
         }
-    
+
     def _save_profile(self, profile: TrainingProfile):
         """Save a profile to disk."""
         profile_file = self.profiles_dir / f"{profile.name}.json"
         with open(profile_file, "w") as f:
             json.dump(profile.to_dict(), f, indent=2)
-    
+
     def _load_profile(self, name: str) -> Optional[TrainingProfile]:
         """Load a profile from disk."""
         profile_file = self.profiles_dir / f"{name}.json"
         if not profile_file.exists():
             return None
-        
+
         try:
             with open(profile_file, "r") as f:
                 data = json.load(f)

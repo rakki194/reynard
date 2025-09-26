@@ -137,12 +137,15 @@ class SecurityErrorHandler:
         # Determine response action based on threat level and IP history
         client_ip = self._get_client_ip(request)
         final_action = self._determine_response_action(
-            threat_level, client_ip, response_action,
+            threat_level,
+            client_ip,
+            response_action,
         )
 
         # Execute response strategy
         response_strategy = self.response_strategies.get(
-            threat_level, self._log_and_monitor,
+            threat_level,
+            self._log_and_monitor,
         )
         response_strategy(event_type, request, details, final_action)
 
@@ -157,7 +160,11 @@ class SecurityErrorHandler:
 
         # Log security event
         self._log_security_event(
-            event_type, threat_level, request, details, final_action,
+            event_type,
+            threat_level,
+            request,
+            details,
+            final_action,
         )
 
         # Return appropriate response
@@ -295,7 +302,10 @@ class SecurityErrorHandler:
         self.security_metrics["events_by_user_agent"][user_agent] += 1
 
     def _determine_response_action(
-        self, threat_level: SecurityThreatLevel, client_ip: str, requested_action: str,
+        self,
+        threat_level: SecurityThreatLevel,
+        client_ip: str,
+        requested_action: str,
     ) -> str:
         """Determine the appropriate response action based on threat level and IP history."""
         # Check if IP is whitelisted
@@ -411,7 +421,9 @@ class SecurityErrorHandler:
 
         # Remove email addresses
         text = re.sub(
-            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "[EMAIL]", text,
+            r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
+            "[EMAIL]",
+            text,
         )
 
         # Remove tokens and keys

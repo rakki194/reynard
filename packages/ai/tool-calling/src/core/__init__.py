@@ -47,11 +47,11 @@ from .executor import ToolExecutor
 # Import MCP client for git operations
 from .mcp_client import (
     MCPGitClient,
-    git_status_tool,
-    git_commit_tool,
     git_add_tool,
     git_branches_tool,
+    git_commit_tool,
     git_history_tool,
+    git_status_tool,
 )
 from .registry import ToolRegistry, get_tool_registry
 

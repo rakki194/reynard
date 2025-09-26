@@ -16,7 +16,7 @@ async function runDemo() {
 
   try {
     // Initialize the diagram generator
-    const generator = new DiagramGenerator("/home/kade/runeset/reynard");
+    const generator = new DiagramGenerator(process.cwd());
 
     console.log("📊 Available diagram types:");
     const types = generator.getAvailableDiagramTypes();

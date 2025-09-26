@@ -168,7 +168,8 @@ class TestVectorStoreService:
             )
 
             results = await vector_store_service.similarity_search(
-                query_embedding, limit,
+                query_embedding,
+                limit,
             )
 
             assert len(results) == 2
@@ -248,7 +249,8 @@ class TestClass:
 """
 
         chunks, symbol_map = document_indexer.ast_chunker.chunk_code_ast_aware(
-            python_code, "python",
+            python_code,
+            "python",
         )
 
         assert len(chunks) > 0
@@ -339,7 +341,9 @@ class TestSearchEngine:
             ]
 
             results = await search_engine.search(
-                query, search_type="semantic", limit=limit,
+                query,
+                search_type="semantic",
+                limit=limit,
             )
 
             assert len(results) == 2
@@ -358,7 +362,9 @@ class TestSearchEngine:
             ]
 
             results = await search_engine.search(
-                query, search_type="keyword", limit=limit,
+                query,
+                search_type="keyword",
+                limit=limit,
             )
 
             assert len(results) == 2
@@ -383,7 +389,9 @@ class TestSearchEngine:
             ]
 
             results = await search_engine.search(
-                query, search_type="hybrid", limit=limit,
+                query,
+                search_type="hybrid",
+                limit=limit,
             )
 
             assert len(results) >= 1
@@ -403,7 +411,8 @@ class TestSearchEngine:
         ]
 
         fused_results = search_engine._reciprocal_rank_fusion(
-            semantic_results, keyword_results,
+            semantic_results,
+            keyword_results,
         )
 
         assert len(fused_results) >= 3

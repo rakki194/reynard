@@ -1,5 +1,4 @@
-"""Python validation utilities for Reynard framework.
-"""
+"""Python validation utilities for Reynard framework."""
 
 from .colors import BLUE, CYAN, GREEN, NC, PURPLE, RED, WHITE, YELLOW, print_colored
 from .command_runner import run_command

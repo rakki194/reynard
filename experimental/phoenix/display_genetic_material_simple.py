@@ -397,7 +397,9 @@ def display_summary_statistics(genetic_materials):
         name: max(strengths) for name, strengths in all_traits.items()
     }
     sorted_strengths = sorted(
-        trait_max_strengths.items(), key=lambda x: x[1], reverse=True,
+        trait_max_strengths.items(),
+        key=lambda x: x[1],
+        reverse=True,
     )
     for trait_name, max_strength in sorted_strengths:
         print(f"   • {trait_name}: {max_strength:.3f} max strength")

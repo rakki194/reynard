@@ -1830,7 +1830,10 @@ class KnowledgeDistillation:
         self.logger.info("🧠 Knowledge distillation system initialized")
 
     async def extract_genetic_material(
-        self, agent: AgentState, output: str, generation: int,
+        self,
+        agent: AgentState,
+        output: str,
+        generation: int,
     ) -> AgentGeneticMaterial:
         """Extract genetic material from agent output.
 
@@ -1914,7 +1917,9 @@ class KnowledgeDistillation:
 
         # Calculate confidence scores
         confidence_scores = self._calculate_confidence_scores(
-            output, concepts, reasoning_patterns,
+            output,
+            concepts,
+            reasoning_patterns,
         )
 
         return StructuredKnowledge(
@@ -2219,14 +2224,18 @@ class KnowledgeDistillation:
         return domain_knowledge
 
     def _calculate_confidence_scores(
-        self, output: str, concepts: list[dict], reasoning_patterns: list[dict],
+        self,
+        output: str,
+        concepts: list[dict],
+        reasoning_patterns: list[dict],
     ) -> dict[str, float]:
         """Calculate confidence scores for extracted knowledge."""
         confidence_scores = {}
 
         # Base confidence on output quality indicators
         confidence_scores["overall"] = min(
-            1.0, len(output) / 1000,
+            1.0,
+            len(output) / 1000,
         )  # Longer outputs generally more confident
 
         # Concept confidence
@@ -2288,7 +2297,8 @@ class KnowledgeDistillation:
 
                 # Calculate confidence based on multiple indicators
                 confidence = min(
-                    1.0, (keyword_matches * 0.3 + pattern_matches * 0.7) / 2,
+                    1.0,
+                    (keyword_matches * 0.3 + pattern_matches * 0.7) / 2,
                 )
 
                 trait = SubliminalTrait(
@@ -2421,7 +2431,9 @@ class KnowledgeDistillation:
         # Syntactic complexity (presence of complex structures)
         complex_structures = len(
             re.findall(
-                r"\b(if|when|because|although|while|since)\b", output, re.IGNORECASE,
+                r"\b(if|when|because|although|while|since)\b",
+                output,
+                re.IGNORECASE,
             ),
         )
         syntactic_complexity = min(1.0, complex_structures / 5)
@@ -2442,7 +2454,8 @@ class KnowledgeDistillation:
         return f"genetic_{agent.id}_{content_hash}_{timestamp}"
 
     async def distill_knowledge(
-        self, genetic_materials: list[AgentGeneticMaterial],
+        self,
+        genetic_materials: list[AgentGeneticMaterial],
     ) -> KnowledgeDistillationResult:
         """Distill knowledge from multiple genetic materials.
 
@@ -2484,7 +2497,8 @@ class KnowledgeDistillation:
         return result
 
     def _combine_structured_knowledge(
-        self, genetic_materials: list[AgentGeneticMaterial],
+        self,
+        genetic_materials: list[AgentGeneticMaterial],
     ) -> StructuredKnowledge:
         """Combine structured knowledge from multiple genetic materials."""
         all_categories = set()
@@ -2550,7 +2564,8 @@ class KnowledgeDistillation:
         )
 
     def _aggregate_subliminal_traits(
-        self, genetic_materials: list[AgentGeneticMaterial],
+        self,
+        genetic_materials: list[AgentGeneticMaterial],
     ) -> list[SubliminalTrait]:
         """Aggregate subliminal traits from multiple genetic materials."""
         trait_aggregates = {}
@@ -2594,7 +2609,8 @@ class KnowledgeDistillation:
         return aggregated_traits
 
     def _combine_relevance_scores(
-        self, genetic_materials: list[AgentGeneticMaterial],
+        self,
+        genetic_materials: list[AgentGeneticMaterial],
     ) -> dict[str, float]:
         """Combine relevance scores from multiple genetic materials."""
         combined_scores = {}
@@ -2614,7 +2630,8 @@ class KnowledgeDistillation:
         return combined_scores
 
     def _calculate_distillation_quality(
-        self, genetic_materials: list[AgentGeneticMaterial],
+        self,
+        genetic_materials: list[AgentGeneticMaterial],
     ) -> float:
         """Calculate the quality of knowledge distillation."""
         if not genetic_materials:

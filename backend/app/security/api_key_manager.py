@@ -185,7 +185,9 @@ class APIKeyManager:
                 raise ValueError("API key encryption key not found")
 
             encrypted_key = EncryptionUtils.encrypt_field(
-                data=api_key, key=encryption_key, field_name=f"api_key_{key_id}",
+                data=api_key,
+                key=encryption_key,
+                field_name=f"api_key_{key_id}",
             )
 
             return encrypted_key
@@ -346,7 +348,9 @@ class APIKeyManager:
                     if stored_key == api_key:
                         # Found the matching key
                         return self._validate_api_key_metadata(
-                            metadata, required_scopes, ip_address,
+                            metadata,
+                            required_scopes,
+                            ip_address,
                         )
                 except Exception:
                     # Continue searching if decryption fails
@@ -622,7 +626,9 @@ class APIKeyManager:
             return False
 
     def rotate_api_key(
-        self, key_id: str, user_id: str | None = None,
+        self,
+        key_id: str,
+        user_id: str | None = None,
     ) -> str | None:
         """Rotate an API key by generating a new one.
 
@@ -680,7 +686,9 @@ class APIKeyManager:
         return self._api_key_metadata.get(key_id)
 
     def list_api_keys(
-        self, user_id: str | None = None, status: APIKeyStatus | None = None,
+        self,
+        user_id: str | None = None,
+        status: APIKeyStatus | None = None,
     ) -> list[APIKeyMetadata]:
         """List API keys with optional filtering."""
         keys = list(self._api_key_metadata.values())
@@ -797,7 +805,8 @@ def rotate_api_key(key_id: str, user_id: str | None = None) -> str | None:
 
 
 def list_api_keys(
-    user_id: str | None = None, status: APIKeyStatus | None = None,
+    user_id: str | None = None,
+    status: APIKeyStatus | None = None,
 ) -> list[APIKeyMetadata]:
     """List API keys."""
     manager = get_api_key_manager()

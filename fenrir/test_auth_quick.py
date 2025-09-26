@@ -41,6 +41,7 @@ async def quick_auth_test():
         print("\n1. Testing MCP server accessibility...")
         try:
             import requests
+
             response = requests.get(f"{test_suite.mcp_server_url}/health", timeout=5)
             if response.status_code == 200:
                 print("✅ MCP server is accessible")
@@ -53,11 +54,15 @@ async def quick_auth_test():
         # Test 2: Check if FastAPI backend is accessible
         print("\n2. Testing FastAPI backend accessibility...")
         try:
-            response = requests.get(f"{test_suite.fastapi_backend_url}/health", timeout=5)
+            response = requests.get(
+                f"{test_suite.fastapi_backend_url}/health", timeout=5
+            )
             if response.status_code == 200:
                 print("✅ FastAPI backend is accessible")
             else:
-                print(f"⚠️  FastAPI backend responded with status {response.status_code}")
+                print(
+                    f"⚠️  FastAPI backend responded with status {response.status_code}"
+                )
         except Exception as e:
             print(f"❌ FastAPI backend is not accessible: {e}")
             return False
@@ -65,11 +70,15 @@ async def quick_auth_test():
         # Test 3: Test unauthenticated access rejection
         print("\n3. Testing unauthenticated access rejection...")
         try:
-            response = requests.get(f"{test_suite.mcp_server_url}/tools/list", timeout=5)
+            response = requests.get(
+                f"{test_suite.mcp_server_url}/tools/list", timeout=5
+            )
             if response.status_code == 401:
                 print("✅ MCP server correctly rejects unauthenticated requests")
             else:
-                print(f"❌ MCP server allows unauthenticated access: {response.status_code}")
+                print(
+                    f"❌ MCP server allows unauthenticated access: {response.status_code}"
+                )
                 return False
         except Exception as e:
             print(f"⚠️  Could not test unauthenticated access: {e}")

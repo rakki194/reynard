@@ -161,7 +161,9 @@ class SecurityAuditLogger:
         # Set up rotating file handler
         log_file = logs_dir / "security_audit.log"
         handler = logging.handlers.RotatingFileHandler(
-            log_file, maxBytes=10 * 1024 * 1024, backupCount=5,  # 10MB
+            log_file,
+            maxBytes=10 * 1024 * 1024,
+            backupCount=5,  # 10MB
         )
 
         # Set up formatter
@@ -401,7 +403,9 @@ class SecurityAuditLogger:
         self.log_event(event)
 
     def log_system_event(
-        self, event_type: SecurityEventType, details: dict[str, Any] | None = None,
+        self,
+        event_type: SecurityEventType,
+        details: dict[str, Any] | None = None,
     ) -> None:
         """Log a system event."""
         event = SecurityEvent(
@@ -480,7 +484,12 @@ def log_authentication_event(
 ) -> None:
     """Log an authentication event."""
     get_security_audit_logger().log_authentication_event(
-        event_type, user_id, ip_address, user_agent, success, details,
+        event_type,
+        user_id,
+        ip_address,
+        user_agent,
+        success,
+        details,
     )
 
 
@@ -495,7 +504,13 @@ def log_authorization_event(
 ) -> None:
     """Log an authorization event."""
     get_security_audit_logger().log_authorization_event(
-        event_type, user_id, resource, action, granted, ip_address, details,
+        event_type,
+        user_id,
+        resource,
+        action,
+        granted,
+        ip_address,
+        details,
     )
 
 
@@ -508,7 +523,11 @@ def log_data_access_event(
 ) -> None:
     """Log a data access event."""
     get_security_audit_logger().log_data_access_event(
-        user_id, resource, action, ip_address, details,
+        user_id,
+        resource,
+        action,
+        ip_address,
+        details,
     )
 
 
@@ -522,12 +541,18 @@ def log_security_violation(
 ) -> None:
     """Log a security violation."""
     get_security_audit_logger().log_security_violation(
-        event_type, severity, ip_address, user_agent, resource, details,
+        event_type,
+        severity,
+        ip_address,
+        user_agent,
+        resource,
+        details,
     )
 
 
 def log_system_event(
-    event_type: SecurityEventType, details: dict[str, Any] | None = None,
+    event_type: SecurityEventType,
+    details: dict[str, Any] | None = None,
 ) -> None:
     """Log a system event."""
     get_security_audit_logger().log_system_event(event_type, details)

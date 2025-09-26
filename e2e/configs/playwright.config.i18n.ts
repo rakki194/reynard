@@ -136,7 +136,7 @@ export default defineConfig({
   },
 
   /* Output directory for benchmark results */
-  outputDir: resultsManager.getOutputDir(),
+  outputDir: resultsPaths.artifactsDir,
 
   /* Global setup and teardown for performance testing */
   globalSetup: "../core/setup/global-i18n-setup.ts",

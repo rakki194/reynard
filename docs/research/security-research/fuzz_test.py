@@ -79,7 +79,9 @@ async def register_and_login_user(username, password):
     register_data = {"username": username, "password": password}
     try:
         register_response = httpx.post(
-            f"{BASE_URL}/api/register", json=register_data, timeout=5,
+            f"{BASE_URL}/api/register",
+            json=register_data,
+            timeout=5,
         )
         print(
             f"Registration for {username}: Status Code: {register_response.status_code}, Response: {register_response.text.strip()[:100]}...",
@@ -112,7 +114,9 @@ async def register_and_login_admin_user(username, password):
     register_data = {"username": username, "password": password}
     try:
         register_response = httpx.post(
-            f"{BASE_URL}/api/register", json=register_data, timeout=5,
+            f"{BASE_URL}/api/register",
+            json=register_data,
+            timeout=5,
         )
         print(
             f"Admin Registration for {username}: Status Code: {register_response.status_code}, Response: {register_response.text.strip()[:100]}...",
@@ -171,7 +175,9 @@ async def fuzz_engagement_record_endpoint():
 
         try:
             response = await httpx.AsyncClient().post(
-                f"{BASE_URL}/api/engagement/record", json=record_data, timeout=5,
+                f"{BASE_URL}/api/engagement/record",
+                json=record_data,
+                timeout=5,
             )
             print(
                 f"Record Engagement (User: '{fuzzed_username}', Type: '{fuzzed_engagement_type}', Value: {fuzzed_value}, Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -232,7 +238,9 @@ async def fuzz_get_profile_picture(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/users/me/profile_picture", headers=headers, timeout=5,
+            f"{BASE_URL}/api/users/me/profile_picture",
+            headers=headers,
+            timeout=5,
         )
         print(
             f"GET Profile Picture: Status Code: {response.status_code}, Content Length: {len(response.content) if response.content else 0}, Response: {response.text.strip()[:100]}...",
@@ -327,7 +335,9 @@ async def fuzz_get_user_settings(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/users/me/settings", headers=headers, timeout=5,
+            f"{BASE_URL}/api/users/me/settings",
+            headers=headers,
+            timeout=5,
         )
         print(
             f"GET User Settings: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -387,7 +397,9 @@ async def fuzz_get_my_yapcoins(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/users/me/yapcoins", headers=headers, timeout=5,
+            f"{BASE_URL}/api/users/me/yapcoins",
+            headers=headers,
+            timeout=5,
         )
         print(
             f"GET My Yapcoins: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -454,7 +466,9 @@ async def fuzz_admin_get_all_user_engagement_data(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/engagement/all", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/engagement/all",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Admin Get All User Engagement: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -538,7 +552,9 @@ async def fuzz_admin_delete_all_user_engagement_data(admin_headers):
 
     try:
         response = await httpx.AsyncClient().delete(
-            f"{BASE_URL}/api/engagement/all", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/engagement/all",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Admin Delete All User Engagement: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -561,7 +577,9 @@ async def fuzz_admin_get_engagement_insights(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/engagement/insights", headers=admin_headers, timeout=10,
+            f"{BASE_URL}/api/engagement/insights",
+            headers=admin_headers,
+            timeout=10,
         )
         print(
             f"Admin Get Engagement Insights: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -582,7 +600,9 @@ async def fuzz_refresh_token_endpoint(refresh_token):
     headers = {"Authorization": f"Bearer {refresh_token}"}
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/refresh-token", headers=headers, timeout=5,
+            f"{BASE_URL}/api/refresh-token",
+            headers=headers,
+            timeout=5,
         )
         print(
             f"Refresh Token: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -601,7 +621,9 @@ async def fuzz_admin_get_all_users(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/admin/users", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/admin/users",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Admin Get All Users: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -624,7 +646,8 @@ async def fuzz_admin_update_user_role(admin_headers):
     # First, try to create a user to modify their role
     target_username = "user_to_change_role_" + generate_random_string(5)
     await register_and_login_user(
-        target_username, "password123",
+        target_username,
+        "password123",
     )  # Register a user for role change
 
     for username in test_usernames + [target_username]:
@@ -662,7 +685,8 @@ async def fuzz_admin_manage_yapcoins(admin_headers):
     # First, try to create a user to modify their yapcoins
     target_username = "user_for_yapcoins_" + generate_random_string(5)
     await register_and_login_user(
-        target_username, "password123",
+        target_username,
+        "password123",
     )  # Register a user for yapcoins
 
     for username in test_usernames + [target_username]:
@@ -696,7 +720,9 @@ async def fuzz_get_indexing_status(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/index/status", headers=headers, timeout=5,
+            f"{BASE_URL}/api/index/status",
+            headers=headers,
+            timeout=5,
         )
         print(
             f"GET Indexing Status: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -715,7 +741,9 @@ async def fuzz_start_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/start", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/index/start",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Start Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -734,7 +762,9 @@ async def fuzz_smart_start_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/smart-start", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/index/smart-start",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Smart Start Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -753,7 +783,9 @@ async def fuzz_stop_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/stop", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/index/stop",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Stop Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -772,7 +804,9 @@ async def fuzz_pause_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/pause", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/index/pause",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Pause Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -791,7 +825,9 @@ async def fuzz_resume_indexing(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/index/resume", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/index/resume",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Resume Indexing: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -810,7 +846,9 @@ async def fuzz_get_fast_indexing_mode(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/index/fast-mode", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/index/fast-mode",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"GET Fast Indexing Mode: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -856,7 +894,9 @@ async def fuzz_get_indexing_enabled(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/index/enabled", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/index/enabled",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"GET Indexing Enabled: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -919,7 +959,10 @@ async def create_test_memory(
     }
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/memory", headers=headers, json=memory_data, timeout=5,
+            f"{BASE_URL}/api/memory",
+            headers=headers,
+            json=memory_data,
+            timeout=5,
         )
         if response.status_code == 200:
             memory_id = response.json().get("memory_id")
@@ -977,7 +1020,10 @@ async def fuzz_create_memory_endpoint(headers):
 
         try:
             response = await httpx.AsyncClient().post(
-                f"{BASE_URL}/api/memory", headers=headers, json=memory_data, timeout=5,
+                f"{BASE_URL}/api/memory",
+                headers=headers,
+                json=memory_data,
+                timeout=5,
             )
             print(
                 f"Create Memory (Type: '{fuzzed_memory_type}', Title: '{fuzzed_title[:30]}...', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -990,12 +1036,16 @@ async def fuzz_create_memory_endpoint(headers):
 
 
 async def _test_memory_by_id_with_headers(
-    memory_id: str, headers: dict, user_type: str,
+    memory_id: str,
+    headers: dict,
+    user_type: str,
 ) -> None:
     """Test getting memory by ID with specific headers."""
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/memory/{memory_id}", headers=headers, timeout=5,
+            f"{BASE_URL}/api/memory/{memory_id}",
+            headers=headers,
+            timeout=5,
         )
         print(
             f"GET Memory (ID: '{memory_id}', User: {user_type}): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1009,7 +1059,10 @@ async def _test_memory_by_id_with_headers(
 
 
 async def fuzz_get_memory_by_id_endpoint(
-    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None,
+    headers,
+    admin_headers,
+    test_user_memory_id=None,
+    admin_user_memory_id=None,
 ):
     print("--- Fuzzing /api/memory/{memory_id} (GET) endpoint ---")
     if not headers and not admin_headers:
@@ -1172,7 +1225,10 @@ async def fuzz_search_memories_endpoint(headers, admin_headers):
 
 
 async def fuzz_update_memory_endpoint(
-    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None,
+    headers,
+    admin_headers,
+    test_user_memory_id=None,
+    admin_user_memory_id=None,
 ):
     print("--- Fuzzing /api/memory/{memory_id} (PUT) endpoint ---")
     if not headers and not admin_headers:
@@ -1253,7 +1309,10 @@ async def fuzz_update_memory_endpoint(
 
 
 async def fuzz_delete_memory_endpoint(
-    headers, admin_headers, test_user_memory_id=None, admin_user_memory_id=None,
+    headers,
+    admin_headers,
+    test_user_memory_id=None,
+    admin_user_memory_id=None,
 ):
     print("--- Fuzzing /api/memory/{memory_id} (DELETE) endpoint ---")
     if not headers and not admin_headers:
@@ -1264,13 +1323,17 @@ async def fuzz_delete_memory_endpoint(
     # Prepare some memories to be deleted
     memories_to_delete_regular = [
         await create_test_memory(
-            headers, "temp_user", title_prefix="delete_me_regular_",
+            headers,
+            "temp_user",
+            title_prefix="delete_me_regular_",
         )
         for _ in range(3)
     ]
     memories_to_delete_admin = [
         await create_test_memory(
-            admin_headers, "temp_admin", title_prefix="delete_me_admin_",
+            admin_headers,
+            "temp_admin",
+            title_prefix="delete_me_admin_",
         )
         for _ in range(3)
     ]
@@ -1298,7 +1361,9 @@ async def fuzz_delete_memory_endpoint(
         if headers:
             try:
                 response = await httpx.AsyncClient().delete(
-                    f"{BASE_URL}/api/memory/{memory_id}", headers=headers, timeout=5,
+                    f"{BASE_URL}/api/memory/{memory_id}",
+                    headers=headers,
+                    timeout=5,
                 )
                 print(
                     f"Delete Memory (ID: '{memory_id}', User: Regular): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1346,7 +1411,9 @@ async def fuzz_get_user_context_endpoint(headers, admin_headers):
     if headers:
         try:
             response = await httpx.AsyncClient().get(
-                f"{BASE_URL}/api/memory/context/user", headers=headers, timeout=5,
+                f"{BASE_URL}/api/memory/context/user",
+                headers=headers,
+                timeout=5,
             )
             print(
                 f"GET User Context (User: Regular): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1361,7 +1428,9 @@ async def fuzz_get_user_context_endpoint(headers, admin_headers):
     if admin_headers:
         try:
             response = await httpx.AsyncClient().get(
-                f"{BASE_URL}/api/memory/context/user", headers=admin_headers, timeout=5,
+                f"{BASE_URL}/api/memory/context/user",
+                headers=admin_headers,
+                timeout=5,
             )
             print(
                 f"GET User Context (User: Admin): Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1386,7 +1455,9 @@ async def fuzz_cleanup_memories_endpoint(admin_headers):
     # This is an admin-only endpoint without request body, so just test auth
     try:
         response = await httpx.AsyncClient().post(
-            f"{BASE_URL}/api/memory/cleanup", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/memory/cleanup",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Cleanup Memories: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1420,7 +1491,9 @@ async def fuzz_ollama_status(admin_headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/ollama/status", headers=admin_headers, timeout=5,
+            f"{BASE_URL}/api/ollama/status",
+            headers=admin_headers,
+            timeout=5,
         )
         print(
             f"Ollama Status: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1439,7 +1512,9 @@ async def fuzz_ollama_list_models(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/ollama/models", headers=headers, timeout=10,
+            f"{BASE_URL}/api/ollama/models",
+            headers=headers,
+            timeout=10,
         )
         print(
             f"Ollama List Models: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1559,7 +1634,9 @@ async def fuzz_ollama_assistant_models(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/ollama/assistant/models", headers=headers, timeout=5,
+            f"{BASE_URL}/api/ollama/assistant/models",
+            headers=headers,
+            timeout=5,
         )
         print(
             f"Ollama Assistant Models: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1578,7 +1655,9 @@ async def fuzz_ollama_assistant_tools(headers):
         return
     try:
         response = await httpx.AsyncClient().get(
-            f"{BASE_URL}/api/ollama/assistant/tools", headers=headers, timeout=5,
+            f"{BASE_URL}/api/ollama/assistant/tools",
+            headers=headers,
+            timeout=5,
         )
         print(
             f"Ollama Assistant Tools: Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1775,7 +1854,9 @@ def fuzz_register_endpoint():
         register_data = {"username": str(username_fuzz), "password": str(password_fuzz)}
         try:
             response = httpx.post(
-                f"{BASE_URL}/api/register", json=register_data, timeout=5,
+                f"{BASE_URL}/api/register",
+                json=register_data,
+                timeout=5,
             )
             print(
                 f"Register Username: '{register_data['username']}', Password: '{register_data['password']}', Status Code: {response.status_code}, Response: {response.text.strip()[:100]}...",
@@ -1797,7 +1878,8 @@ def fuzz_browse_endpoint():
         fuzzed_path = generate_malicious_path()
         fuzzed_page = generate_random_int(0, 5)  # Page can be 0 or negative for fuzzing
         fuzzed_page_size = generate_random_int(
-            0, 600,
+            0,
+            600,
         )  # Page size can be 0, negative or very large
         url = f"{BASE_URL}/api/browse?path={fuzzed_path}&page={fuzzed_page}&page_size={fuzzed_page_size}"
         try:
@@ -1846,13 +1928,16 @@ if __name__ == "__main__":
             test_user_memory_id = await create_test_memory(headers, test_username)
             await fuzz_create_memory_endpoint(headers)
             await fuzz_list_memories_endpoint(
-                headers, {},
+                headers,
+                {},
             )  # Pass empty dict for admin_headers as it's not needed for regular user test
             await fuzz_search_memories_endpoint(
-                headers, {},
+                headers,
+                {},
             )  # Pass empty dict for admin_headers as it's not needed for regular user test
             await fuzz_get_user_context_endpoint(
-                headers, {},
+                headers,
+                {},
             )  # Pass empty dict for admin_headers as it's not needed for regular user test
             await fuzz_ollama_list_models(headers)
             await fuzz_ollama_pull_model(
@@ -1872,7 +1957,8 @@ if __name__ == "__main__":
         admin_username = "admin_fuzz_user_" + generate_random_string(8)
         admin_password = "admin_fuzz_password_" + generate_random_string(8)
         admin_auth_token, admin_refresh_token = await register_and_login_admin_user(
-            admin_username, admin_password,
+            admin_username,
+            admin_password,
         )
         admin_user_memory_id = None
         admin_headers = {}  # Initialize admin_headers
@@ -1905,14 +1991,17 @@ if __name__ == "__main__":
 
             # Create a memory for the admin user to test ID-specific endpoints
             admin_user_memory_id = await create_test_memory(
-                admin_headers, admin_username,
+                admin_headers,
+                admin_username,
             )
             await fuzz_create_memory_endpoint(admin_headers)
             await fuzz_list_memories_endpoint(
-                {}, admin_headers,
+                {},
+                admin_headers,
             )  # Pass empty dict for regular user headers as it's not needed for admin user test
             await fuzz_search_memories_endpoint(
-                {}, admin_headers,
+                {},
+                admin_headers,
             )  # Pass empty dict for regular user headers as it's not needed for admin user test
             await fuzz_cleanup_memories_endpoint(admin_headers)
             await fuzz_ollama_status(admin_headers)
@@ -1924,13 +2013,22 @@ if __name__ == "__main__":
 
         # Fuzzing memory endpoints requiring specific IDs (after creation)
         await fuzz_get_memory_by_id_endpoint(
-            headers, admin_headers, test_user_memory_id, admin_user_memory_id,
+            headers,
+            admin_headers,
+            test_user_memory_id,
+            admin_user_memory_id,
         )
         await fuzz_update_memory_endpoint(
-            headers, admin_headers, test_user_memory_id, admin_user_memory_id,
+            headers,
+            admin_headers,
+            test_user_memory_id,
+            admin_user_memory_id,
         )
         await fuzz_delete_memory_endpoint(
-            headers, admin_headers, test_user_memory_id, admin_user_memory_id,
+            headers,
+            admin_headers,
+            test_user_memory_id,
+            admin_user_memory_id,
         )
         await fuzz_get_memory_types_endpoint()
         await fuzz_ollama_health_check()

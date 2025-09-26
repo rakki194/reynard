@@ -157,7 +157,8 @@ class ReleaseAutomation:
             # Check for untracked files or uncommitted changes
             if result.stdout.strip():
                 self.logger.warning(
-                    "Git repository has uncommitted changes", "git_status",
+                    "Git repository has uncommitted changes",
+                    "git_status",
                 )
                 return False
 
@@ -178,7 +179,10 @@ class ReleaseAutomation:
         try:
             # Get diff statistics
             result = subprocess.run(
-                ["git", "diff", "--stat"], capture_output=True, text=True, check=True,
+                ["git", "diff", "--stat"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
 
             # Get changed files
@@ -217,7 +221,8 @@ class ReleaseAutomation:
                     changes["has_bug_fixes"] = True
 
             self.logger.info(
-                f"Analyzed {len(changed_files)} changed files", "change_analysis",
+                f"Analyzed {len(changed_files)} changed files",
+                "change_analysis",
             )
             return changes
 
@@ -243,7 +248,8 @@ class ReleaseAutomation:
             return "major"
         if changes.get("has_new_features", False):
             self.logger.info(
-                "Detected new features - minor version bump", "version_determination",
+                "Detected new features - minor version bump",
+                "version_determination",
             )
             return "minor"
         self.logger.info(
@@ -267,7 +273,8 @@ class ReleaseAutomation:
             package_json = Path("package.json")
             if not package_json.exists():
                 self.logger.warning(
-                    "package.json not found, skipping version update", "version_update",
+                    "package.json not found, skipping version update",
+                    "version_update",
                 )
                 return "0.0.0"
 
@@ -282,7 +289,8 @@ class ReleaseAutomation:
 
             # Update version
             subprocess.run(
-                ["npm", "version", version_type, "--no-git-tag-version"], check=True,
+                ["npm", "version", version_type, "--no-git-tag-version"],
+                check=True,
             )
 
             # Get new version
@@ -295,7 +303,8 @@ class ReleaseAutomation:
             new_version = result.stdout.strip().strip('"')
 
             self.logger.success(
-                f"Version updated: {current_version} -> {new_version}", "version_update",
+                f"Version updated: {current_version} -> {new_version}",
+                "version_update",
             )
             return new_version
 
@@ -329,7 +338,8 @@ class ReleaseAutomation:
             # Replace [Unreleased] with new version
             today = datetime.now().strftime("%Y-%m-%d")
             new_content = content.replace(
-                "## [Unreleased]", f"## [{version}] - {today}",
+                "## [Unreleased]",
+                f"## [{version}] - {today}",
             )
 
             # Add new [Unreleased] section
@@ -359,7 +369,8 @@ class ReleaseAutomation:
                 f.write(new_content)
 
             self.logger.success(
-                f"CHANGELOG.md updated for version {version}", "changelog_update",
+                f"CHANGELOG.md updated for version {version}",
+                "changelog_update",
             )
             return True
 
@@ -368,7 +379,9 @@ class ReleaseAutomation:
             return False
 
     async def _commit_changes(
-        self, version: str, changes: dict[str, Any],
+        self,
+        version: str,
+        changes: dict[str, Any],
     ) -> str | None:
         """Stage and commit changes.
 
@@ -403,12 +416,16 @@ class ReleaseAutomation:
 
             # Get commit hash
             hash_result = subprocess.run(
-                ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True,
+                ["git", "rev-parse", "HEAD"],
+                capture_output=True,
+                text=True,
+                check=True,
             )
             commit_hash = hash_result.stdout.strip()
 
             self.logger.success(
-                f"Changes committed with hash: {commit_hash[:8]}", "commit",
+                f"Changes committed with hash: {commit_hash[:8]}",
+                "commit",
             )
             return commit_hash
 
@@ -437,7 +454,8 @@ class ReleaseAutomation:
             )
 
             subprocess.run(
-                ["git", "tag", "-a", tag_name, "-m", tag_message], check=True,
+                ["git", "tag", "-a", tag_name, "-m", tag_message],
+                check=True,
             )
 
             self.logger.success(f"Created tag: {tag_name}", "tag")
@@ -482,13 +500,15 @@ class ReleaseAutomation:
             # This would integrate with the agent state management system
             # For now, just log the update
             self.logger.info(
-                f"Agent state updated with release {version}", "agent_state_update",
+                f"Agent state updated with release {version}",
+                "agent_state_update",
             )
             return True
 
         except Exception as e:
             self.logger.error(
-                f"Failed to update agent state: {e}", "agent_state_update",
+                f"Failed to update agent state: {e}",
+                "agent_state_update",
             )
             return False
 
@@ -537,7 +557,8 @@ class ReleaseAutomation:
                             )
 
             self.logger.info(
-                f"Retrieved {len(releases)} releases from history", "release_history",
+                f"Retrieved {len(releases)} releases from history",
+                "release_history",
             )
             return releases
 

@@ -3,10 +3,8 @@
  * Comprehensive tools for testing internationalization across Reynard packages
  */
 
-import type { Component } from "solid-js";
 import { readFileSync, readdirSync, statSync } from "fs";
 import { join, extname } from "path";
-import { useI18n } from "reynard-i18n";
 
 // Types for i18n testing
 export interface I18nTestConfig {
@@ -154,7 +152,7 @@ export function detectHardcodedStrings(
       return;
     }
 
-    patterns.forEach(({ regex, type }) => {
+    patterns.forEach(({ regex, type: _type }) => {
       let match;
       while ((match = regex.exec(line)) !== null) {
         const text = match[1] || match[2];

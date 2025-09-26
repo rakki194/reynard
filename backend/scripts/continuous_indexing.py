@@ -25,7 +25,8 @@ from app.services.rag import RAGService
 
 # Set up logging
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
 
@@ -162,7 +163,13 @@ class CodebaseChangeHandler(FileSystemEventHandler):
 class ContinuousIndexer:
     """Continuous indexing system for the Reynard codebase."""
 
-    def __init__(self, root_path: str = "/home/kade/runeset/reynard"):
+    def __init__(self, root_path: str = None):
+        if root_path is None:
+            # Get project root by walking up from this script
+            current_file = Path(__file__)
+            root_path = str(
+                current_file.parent.parent.parent
+            )  # scripts -> backend -> project root
         self.root_path = Path(root_path)
         self.rag_service = None
         self.observer = None
@@ -212,7 +219,9 @@ class ContinuousIndexer:
             self.change_handler = CodebaseChangeHandler(self)
             self.observer = Observer()
             self.observer.schedule(
-                self.change_handler, str(self.root_path), recursive=True,
+                self.change_handler,
+                str(self.root_path),
+                recursive=True,
             )
 
             logger.info("✅ Continuous indexing system initialized successfully")
@@ -267,7 +276,8 @@ class ContinuousIndexer:
             try:
                 # Wait for files to index
                 file_path = await asyncio.wait_for(
-                    self.indexing_queue.get(), timeout=1.0,
+                    self.indexing_queue.get(),
+                    timeout=1.0,
                 )
 
                 # Wait a bit to batch multiple changes
@@ -296,7 +306,8 @@ class ContinuousIndexer:
             try:
                 # Wait for files to remove
                 file_path = await asyncio.wait_for(
-                    self.removal_queue.get(), timeout=1.0,
+                    self.removal_queue.get(),
+                    timeout=1.0,
                 )
 
                 # Remove from index
@@ -452,14 +463,21 @@ async def main():
         description="Continuous indexing monitor for Reynard codebase",
     )
     parser.add_argument(
-        "--watch", action="store_true", help="Start watching for file changes",
+        "--watch",
+        action="store_true",
+        help="Start watching for file changes",
     )
     parser.add_argument(
-        "--interval", type=int, default=5, help="Stats report interval in minutes",
+        "--interval",
+        type=int,
+        default=5,
+        help="Stats report interval in minutes",
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
     parser.add_argument(
-        "--root", default="/home/kade/runeset/reynard", help="Root path to watch",
+        "--root",
+        default=None,
+        help="Root path to watch (defaults to project root)",
     )
 
     args = parser.parse_args()
@@ -470,6 +488,13 @@ async def main():
     logger.info("🦊 Starting continuous indexing monitor...")
 
     try:
+        # Set default root path if not provided
+        if args.root is None:
+            current_file = Path(__file__)
+            args.root = str(
+                current_file.parent.parent.parent
+            )  # scripts -> backend -> project root
+
         # Create continuous indexer
         indexer = ContinuousIndexer(args.root)
         indexer.stats["start_time"] = time.time()

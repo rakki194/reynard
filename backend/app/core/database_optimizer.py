@@ -21,11 +21,11 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 from sqlalchemy.pool import QueuePool
 
 from .debug_logging import (
-    setup_sqlalchemy_debug_logging,
-    setup_connection_pool_logging,
-    log_sql_query,
+    debug_log,
     log_db_connection_event,
-    debug_log
+    log_sql_query,
+    setup_connection_pool_logging,
+    setup_sqlalchemy_debug_logging,
 )
 
 logger = logging.getLogger(__name__)
@@ -217,15 +217,19 @@ class OptimizedDatabaseConnection:
             echo=False,  # Set to True for SQL logging
             future=True,
         )
-        
+
         # Setup debug logging for this engine
-        database_name = database_url.split('/')[-1] if '/' in database_url else "unknown"
+        database_name = (
+            database_url.split('/')[-1] if '/' in database_url else "unknown"
+        )
         setup_sqlalchemy_debug_logging(self.engine, database_name)
         setup_connection_pool_logging(self.engine, database_name)
 
         # Create session factory
         self.async_session_factory = async_sessionmaker(
-            self.engine, class_=AsyncSession, expire_on_commit=False,
+            self.engine,
+            class_=AsyncSession,
+            expire_on_commit=False,
         )
 
         # Initialize performance monitor
@@ -268,14 +272,18 @@ class OptimizedDatabaseConnection:
                 rows_returned = result.rowcount if hasattr(result, "rowcount") else 0
 
                 # Log SQL query for debug logging
-                database_name = self.database_url.split('/')[-1] if '/' in self.database_url else "unknown"
+                database_name = (
+                    self.database_url.split('/')[-1]
+                    if '/' in self.database_url
+                    else "unknown"
+                )
                 log_sql_query(
                     query=query,
                     params=params,
                     duration_ms=execution_time_ms,
                     rows_affected=rows_returned,
                     database=database_name,
-                    connection_id=query_id
+                    connection_id=query_id,
                 )
 
                 # Record metrics
@@ -304,14 +312,18 @@ class OptimizedDatabaseConnection:
             execution_time_ms = (time.time() - start_time) * 1000
 
             # Log failed SQL query for debug logging
-            database_name = self.database_url.split('/')[-1] if '/' in self.database_url else "unknown"
+            database_name = (
+                self.database_url.split('/')[-1]
+                if '/' in self.database_url
+                else "unknown"
+            )
             log_sql_query(
                 query=query,
                 params=params,
                 duration_ms=execution_time_ms,
                 rows_affected=0,
                 database=database_name,
-                connection_id=query_id
+                connection_id=query_id,
             )
 
             if self.monitor:

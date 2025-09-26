@@ -146,7 +146,7 @@ jobs:
           # 🦊 Reynard Code Quality Analysis Report
 
           **Analysis Date:** "$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
-          **Environment:** ${{ github.event.inputs.environment || 'development' }}
+          **Environment:** "${{ github.event.inputs.environment || 'development' }}"
           **Branch:** ${{ github.ref_name }}
           **Commit:** ${{ github.sha }}
 
@@ -176,7 +176,7 @@ jobs:
           EOF
 
           # Upload report as artifact
-          echo "quality-report.md" >> $GITHUB_STEP_SUMMARY
+          echo "quality-report.md" >> "$GITHUB_STEP_SUMMARY"
 
       - name: 🚨 Comment on PR
         if: github.event_name == 'pull_request' && always()

@@ -15,8 +15,11 @@ from typing import Any
 
 # Conditional image processing imports
 from app.core.service_conditional_loading import (
-    is_pillow_enabled, is_opencv_enabled, is_numpy_enabled,
-    can_load_service, load_service
+    can_load_service,
+    is_numpy_enabled,
+    is_opencv_enabled,
+    is_pillow_enabled,
+    load_service,
 )
 
 # Pillow import
@@ -24,6 +27,7 @@ if is_pillow_enabled() and can_load_service("pillow"):
     try:
         import PIL.ExifTags
         from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
+
         PIL_AVAILABLE = True
         load_service("pillow")
     except ImportError:
@@ -32,26 +36,36 @@ else:
     PIL_AVAILABLE = False
 
 # OpenCV and numpy imports
-if is_opencv_enabled() and is_numpy_enabled() and can_load_service("opencv") and can_load_service("numpy"):
+if (
+    is_opencv_enabled()
+    and is_numpy_enabled()
+    and can_load_service("opencv")
+    and can_load_service("numpy")
+):
     try:
         import cv2
         import numpy as np
+
         OPENCV_AVAILABLE = True
         load_service("opencv")
         load_service("numpy")
     except ImportError:
         OPENCV_AVAILABLE = False
+
         # Create a dummy numpy module for type hints
         class DummyNumpy:
             class ndarray:
                 pass
+
         np = DummyNumpy()
 else:
     OPENCV_AVAILABLE = False
+
     # Create a dummy numpy module for type hints
     class DummyNumpy:
         class ndarray:
             pass
+
     np = DummyNumpy()
 
 # Scikit-image import (conditional)
@@ -61,6 +75,7 @@ if is_numpy_enabled() and can_load_service("scikit_learn"):
         from skimage import color, exposure, filters, measure, morphology, segmentation
         from skimage.feature import hog, local_binary_pattern
         from skimage.metrics import structural_similarity as ssim
+
         SKIMAGE_AVAILABLE = True
         load_service("scikit_learn")
     except ImportError:
@@ -380,7 +395,8 @@ class ImageProcessingService:
 
             # Resize image
             resized_image = image.resize(
-                (new_width, new_height), Image.Resampling.LANCZOS,
+                (new_width, new_height),
+                Image.Resampling.LANCZOS,
             )
 
             # Save processed image
@@ -792,7 +808,9 @@ class ImageProcessingService:
             raise
 
     def _extract_dominant_colors(
-        self, image_array: np.ndarray, n_colors: int = 5,
+        self,
+        image_array: np.ndarray,
+        n_colors: int = 5,
     ) -> list[tuple[int, int, int]]:
         """Extract dominant colors from image."""
         try:
@@ -858,7 +876,10 @@ class ImageProcessingService:
 
             # HOG features
             hog_features = hog(
-                gray, orientations=9, pixels_per_cell=(8, 8), cells_per_block=(2, 2),
+                gray,
+                orientations=9,
+                pixels_per_cell=(8, 8),
+                cells_per_block=(2, 2),
             )
 
             return {

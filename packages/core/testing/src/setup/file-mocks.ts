@@ -37,7 +37,7 @@ export function setupFileMocks() {
       return Promise.resolve(new Uint8Array(0));
     }
 
-    slice(start?: number, end?: number, contentType?: string): Blob {
+    slice(_start?: number, _end?: number, _contentType?: string): Blob {
       return new Blob();
     }
 

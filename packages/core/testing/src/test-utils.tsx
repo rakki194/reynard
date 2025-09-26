@@ -53,34 +53,19 @@ interface PerformanceTestOptions {
   threshold?: number;
 }
 
-interface MockOptions {
-  implementation?: (...args: any[]) => any;
-}
+// Removed unused MockOptions interface
 
-interface MockMethods {
-  [key: string]: (...args: any[]) => any;
-}
+// Removed unused MockMethods interface
 
-interface ConditionalTestOptions {
-  condition: () => boolean;
-  message?: string;
-}
+// Removed unused ConditionalTestOptions interface
 
-interface DataTestOptions {
-  defaultData?: any;
-}
+// Removed unused DataTestOptions interface
 
-interface SignalTestOptions {
-  initialValue?: any;
-}
+// Removed unused SignalTestOptions interface
 
-interface FunctionTestOptions {
-  fn: () => any;
-}
+// Removed unused FunctionTestOptions interface
 
-interface PropsTestOptions {
-  props: Record<string, any>;
-}
+// Removed unused PropsTestOptions interface
 
 interface RenderOptions {
   [key: string]: any;
@@ -263,9 +248,9 @@ export async function testComponentErrorHandling(
  */
 export async function testAPIClient(apiCall: () => Promise<any>, options: ApiTestOptions = {}) {
   const {
-    baseURL = "http://localhost:8000",
-    timeout = 5000,
-    retries = 3,
+    baseURL: _baseURL = "http://localhost:8000",
+    timeout: _timeout = 5000,
+    retries: _retries = 3,
     mockResponse = { data: "test" },
     mockError,
   } = options;
@@ -364,7 +349,7 @@ export function testValidationWithError(validator: (value: any) => any, invalidV
  * Test function performance
  */
 export async function testPerformance(fn: () => any, options: PerformanceTestOptions = {}) {
-  const { iterations = 1000, timeout = 5000, threshold = 100 } = options;
+  const { iterations = 1000, timeout: _timeout = 5000, threshold = 100 } = options;
   const start = performance.now();
   for (let i = 0; i < iterations; i++) {
     await fn();
@@ -382,7 +367,7 @@ export async function testPerformance(fn: () => any, options: PerformanceTestOpt
  * Test memory usage
  */
 export async function testMemoryUsage(fn: () => any, options: PerformanceTestOptions = {}) {
-  const { iterations = 100, timeout = 5000 } = options;
+  const { iterations = 100, timeout: _timeout = 5000 } = options;
   // Force garbage collection if available
   if (global.gc) {
     global.gc();

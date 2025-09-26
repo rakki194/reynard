@@ -72,36 +72,54 @@ class TTSConfigModel(BaseModel):
     """Configuration model for TTS service."""
 
     default_backend: str = Field(
-        default="espeak", description="Default TTS backend to use",
+        default="espeak",
+        description="Default TTS backend to use",
     )
     default_voice: str = Field(default="en", description="Default voice for synthesis")
     default_speed: float = Field(
-        default=1.0, ge=0.1, le=3.0, description="Default speech speed",
+        default=1.0,
+        ge=0.1,
+        le=3.0,
+        description="Default speech speed",
     )
     default_language: str = Field(
-        default="en", description="Default language for synthesis",
+        default="en",
+        description="Default language for synthesis",
     )
     enable_ogg_conversion: bool = Field(
-        default=True, description="Enable OGG format conversion",
+        default=True,
+        description="Enable OGG format conversion",
     )
     enable_opus_conversion: bool = Field(
-        default=False, description="Enable Opus format conversion",
+        default=False,
+        description="Enable Opus format conversion",
     )
     max_text_length: int = Field(
-        default=5000, ge=1, le=50000, description="Maximum text length per request",
+        default=5000,
+        ge=1,
+        le=50000,
+        description="Maximum text length per request",
     )
     max_batch_size: int = Field(
-        default=10, ge=1, le=100, description="Maximum batch size for processing",
+        default=10,
+        ge=1,
+        le=100,
+        description="Maximum batch size for processing",
     )
     audio_quality: str = Field(default="high", description="Audio quality setting")
     enable_voice_cloning: bool = Field(
-        default=True, description="Enable voice cloning capabilities",
+        default=True,
+        description="Enable voice cloning capabilities",
     )
     temp_file_cleanup: bool = Field(
-        default=True, description="Enable automatic temp file cleanup",
+        default=True,
+        description="Enable automatic temp file cleanup",
     )
     max_concurrent_requests: int = Field(
-        default=5, ge=1, le=20, description="Max concurrent synthesis requests",
+        default=5,
+        ge=1,
+        le=20,
+        description="Max concurrent synthesis requests",
     )
 
 
@@ -167,21 +185,27 @@ class TTSServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         async def synthesize_text(request: TTSSynthesisRequest):
             """Synthesize text to speech."""
             return await self._standard_async_operation(
-                "synthesize_text", self._handle_synthesize_request, request,
+                "synthesize_text",
+                self._handle_synthesize_request,
+                request,
             )
 
         @self.router.post("/synthesize/batch", response_model=TTSBatchResponse)
         async def synthesize_batch(request: TTSBatchRequest):
             """Synthesize multiple texts to speech."""
             return await self._standard_async_operation(
-                "synthesize_batch", self._handle_batch_request, request,
+                "synthesize_batch",
+                self._handle_batch_request,
+                request,
             )
 
         @self.router.get("/audio/{filename}")
         async def get_audio_file(filename: str):
             """Get generated audio file."""
             return await self._standard_async_operation(
-                "get_audio_file", self._handle_get_audio_request, filename,
+                "get_audio_file",
+                self._handle_get_audio_request,
+                filename,
             )
 
         @self.router.post("/voice-clone")
@@ -207,32 +231,39 @@ class TTSServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         async def validate_audio_file(request: AudioValidationRequest):
             """Validate audio file format and quality."""
             return await self._standard_async_operation(
-                "validate_audio", self._handle_validate_audio_request, request,
+                "validate_audio",
+                self._handle_validate_audio_request,
+                request,
             )
 
         @self.router.get("/quality/summary", response_model=QualitySummaryResponse)
         async def get_quality_summary():
             """Get comprehensive audio quality summary."""
             return await self._standard_async_operation(
-                "get_quality_summary", self._handle_get_quality_summary_request,
+                "get_quality_summary",
+                self._handle_get_quality_summary_request,
             )
 
         @self.router.post("/quality/trends", response_model=QualityTrendResponse)
         async def get_quality_trends(request: QualityTrendRequest):
             """Get audio quality trends and analysis."""
             return await self._standard_async_operation(
-                "get_quality_trends", self._handle_get_quality_trends_request, request,
+                "get_quality_trends",
+                self._handle_get_quality_trends_request,
+                request,
             )
 
         @self.router.get("/quality/formats")
         async def get_supported_formats():
             """Get supported audio formats and validation info."""
             return await self._standard_async_operation(
-                "get_supported_formats", self._handle_get_supported_formats_request,
+                "get_supported_formats",
+                self._handle_get_supported_formats_request,
             )
 
     async def _handle_synthesize_request(
-        self, request: TTSSynthesisRequest,
+        self,
+        request: TTSSynthesisRequest,
     ) -> TTSSynthesisResponse:
         """Handle text synthesis request with standardized error handling and quality analysis."""
         import time
@@ -269,7 +300,8 @@ class TTSServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
                 # Validate and analyze the generated audio
                 validator = get_audio_validator("high")
                 validation_result = await validator.validate_audio_file(
-                    result["audio_path"], validate_content=True,
+                    result["audio_path"],
+                    validate_content=True,
                 )
 
                 audio_metadata = validation_result.get("metadata", {})
@@ -359,7 +391,9 @@ class TTSServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
             )
 
         return FileResponse(
-            path=str(audio_path), media_type="audio/wav", filename=filename,
+            path=str(audio_path),
+            media_type="audio/wav",
+            filename=filename,
         )
 
     async def _handle_voice_clone_request(self, request_data: dict):
@@ -442,14 +476,16 @@ class TTSServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
                 reference_path.unlink(missing_ok=True)
 
     async def _handle_validate_audio_request(
-        self, request: AudioValidationRequest,
+        self,
+        request: AudioValidationRequest,
     ) -> AudioValidationResponse:
         """Handle audio validation request."""
         validator = get_audio_validator(request.quality_level)
 
         try:
             validation_result = await validator.validate_audio_file(
-                request.audio_file_path, validate_content=request.validate_content,
+                request.audio_file_path,
+                validate_content=request.validate_content,
             )
 
             return AudioValidationResponse(
@@ -459,7 +495,8 @@ class TTSServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
                 quality_metrics=validation_result.get("quality_metrics", {}),
                 file_size=validation_result.get("file_size", 0),
                 validation_timestamp=validation_result.get(
-                    "validation_timestamp", time.time(),
+                    "validation_timestamp",
+                    time.time(),
                 ),
                 issues=validation_result.get("quality_metrics", {}).get("issues", []),
             )
@@ -494,7 +531,8 @@ class TTSServiceRouter(BaseServiceRouter, ConfigEndpointMixin):
         )
 
     async def _handle_get_quality_trends_request(
-        self, request: QualityTrendRequest,
+        self,
+        request: QualityTrendRequest,
     ) -> QualityTrendResponse:
         """Handle get quality trends request."""
         quality_analyzer = get_quality_analyzer()

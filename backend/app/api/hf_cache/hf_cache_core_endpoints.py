@@ -35,7 +35,10 @@ async def get_cache_info():
             model_count = len([d for d in hub_path.iterdir() if d.is_dir()])
 
         return HFCacheInfoResponse(
-            cache_dir=cache_dir, hub_dir=hub_dir, size=size, model_count=model_count,
+            cache_dir=cache_dir,
+            hub_dir=hub_dir,
+            size=size,
+            model_count=model_count,
         )
 
     except Exception as e:

@@ -121,27 +121,31 @@ async def search_agents(
     """Search for agents by name or ID with flexible matching."""
     try:
         agents_data = await service.get_all_agents()
-        
+
         # Filter agents based on query
         if exact_match:
             matching_agents = [
-                agent for agent in agents_data
+                agent
+                for agent in agents_data
                 if agent["agent_id"] == query or agent["name"] == query
             ]
         else:
             query_lower = query.lower()
             matching_agents = [
-                agent for agent in agents_data
-                if (query_lower in agent["agent_id"].lower() or 
-                    query_lower in agent["name"].lower() or
-                    query_lower in agent["spirit"].lower())
+                agent
+                for agent in agents_data
+                if (
+                    query_lower in agent["agent_id"].lower()
+                    or query_lower in agent["name"].lower()
+                    or query_lower in agent["spirit"].lower()
+                )
             ]
-        
+
         return {
             "query": query,
             "exact_match": exact_match,
             "results": matching_agents,
-            "count": len(matching_agents)
+            "count": len(matching_agents),
         }
     except Exception as e:
         logger.exception("Error searching agents")
@@ -222,7 +226,8 @@ async def find_compatible_mates(
     except Exception as e:
         logger.exception("Error finding mates")
         raise HTTPException(
-            status_code=500, detail="Failed to find compatible mates",
+            status_code=500,
+            detail="Failed to find compatible mates",
         ) from e
 
 
@@ -240,7 +245,8 @@ async def analyze_compatibility(
     except Exception as e:
         logger.exception("Error analyzing compatibility")
         raise HTTPException(
-            status_code=500, detail="Failed to analyze compatibility",
+            status_code=500,
+            detail="Failed to analyze compatibility",
         ) from e
 
 
@@ -258,7 +264,8 @@ async def get_agent_lineage(
     except Exception as e:
         logger.exception("Error getting agent lineage")
         raise HTTPException(
-            status_code=500, detail="Failed to get agent lineage",
+            status_code=500,
+            detail="Failed to get agent lineage",
         ) from e
 
 
@@ -267,7 +274,8 @@ async def get_agent_lineage(
 
 @router.get("/{agent_id}/position", response_model=PositionResponse)
 async def get_agent_position(
-    agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_ecs_service),
+    agent_id: str,
+    service: PostgresECSWorldService = Depends(get_postgres_ecs_service),
 ) -> PositionResponse:
     """Get the current position of an agent."""
     try:
@@ -287,7 +295,8 @@ async def get_agent_position(
     except Exception as e:
         logger.exception("Error getting agent position")
         raise HTTPException(
-            status_code=500, detail="Failed to get agent position",
+            status_code=500,
+            detail="Failed to get agent position",
         ) from e
 
 
@@ -301,7 +310,8 @@ async def get_all_agent_positions(
     except Exception as e:
         logger.exception("Error getting all agent positions")
         raise HTTPException(
-            status_code=500, detail="Failed to get all agent positions",
+            status_code=500,
+            detail="Failed to get all agent positions",
         ) from e
 
 
@@ -340,7 +350,9 @@ async def move_agent_towards(
     """Move an agent towards another agent."""
     try:
         position_data = await service.move_agent_towards(
-            agent_id, request.target_agent_id, request.distance,
+            agent_id,
+            request.target_agent_id,
+            request.distance,
         )
         return PositionResponse(
             agent_id=position_data["agent_id"],
@@ -357,7 +369,8 @@ async def move_agent_towards(
     except Exception as e:
         logger.exception("Error moving agent towards target")
         raise HTTPException(
-            status_code=500, detail="Failed to move agent towards target",
+            status_code=500,
+            detail="Failed to move agent towards target",
         ) from e
 
 
@@ -375,7 +388,8 @@ async def get_agent_distance(
     except Exception as e:
         logger.exception("Error getting agent distance")
         raise HTTPException(
-            status_code=500, detail="Failed to get agent distance",
+            status_code=500,
+            detail="Failed to get agent distance",
         ) from e
 
 
@@ -399,7 +413,8 @@ async def get_nearby_agents(
     except Exception as e:
         logger.exception("Error getting nearby agents")
         raise HTTPException(
-            status_code=500, detail="Failed to get nearby agents",
+            status_code=500,
+            detail="Failed to get nearby agents",
         ) from e
 
 
@@ -415,14 +430,17 @@ async def initiate_interaction(
     """Initiate an interaction between two agents."""
     try:
         return await service.initiate_interaction(
-            agent_id, request.agent2_id, request.interaction_type,
+            agent_id,
+            request.agent2_id,
+            request.interaction_type,
         )
     except HTTPException:
         raise
     except Exception as e:
         logger.exception("Error initiating interaction")
         raise HTTPException(
-            status_code=500, detail="Failed to initiate interaction",
+            status_code=500,
+            detail="Failed to initiate interaction",
         ) from e
 
 
@@ -442,7 +460,8 @@ async def send_chat_message(agent_id: str, request: ChatRequest) -> dict[str, An
     except Exception as e:
         logger.exception("Error sending chat message")
         raise HTTPException(
-            status_code=500, detail="Failed to send chat message",
+            status_code=500,
+            detail="Failed to send chat message",
         ) from e
 
 
@@ -464,13 +483,15 @@ async def get_interaction_history(
     except Exception as e:
         logger.exception("Error getting interaction history")
         raise HTTPException(
-            status_code=500, detail="Failed to get interaction history",
+            status_code=500,
+            detail="Failed to get interaction history",
         ) from e
 
 
 @router.get("/{agent_id}/relationships")
 async def get_agent_relationships(
-    agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_ecs_service),
+    agent_id: str,
+    service: PostgresECSWorldService = Depends(get_postgres_ecs_service),
 ):
     """Get all relationships for an agent."""
     try:
@@ -480,13 +501,15 @@ async def get_agent_relationships(
     except Exception as e:
         logger.exception("Error getting agent relationships")
         raise HTTPException(
-            status_code=500, detail="Failed to get agent relationships",
+            status_code=500,
+            detail="Failed to get agent relationships",
         ) from e
 
 
 @router.get("/{agent_id}/social_stats")
 async def get_agent_social_stats(
-    agent_id: str, service: PostgresECSWorldService = Depends(get_postgres_ecs_service),
+    agent_id: str,
+    service: PostgresECSWorldService = Depends(get_postgres_ecs_service),
 ):
     """Get social interaction statistics for an agent."""
     try:
@@ -521,5 +544,6 @@ async def get_agent_social_stats(
     except Exception as e:
         logger.exception("Error getting agent social stats")
         raise HTTPException(
-            status_code=500, detail="Failed to get agent social stats",
+            status_code=500,
+            detail="Failed to get agent social stats",
         ) from e

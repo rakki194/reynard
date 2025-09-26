@@ -166,7 +166,9 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["agent_id"], ["agents.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
-            "agent_id", "specialization", name="uq_agent_specialization",
+            "agent_id",
+            "specialization",
+            name="uq_agent_specialization",
         ),
     )
     op.create_table(
@@ -190,7 +192,9 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["agent_id"], ["agents.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
-            "agent_id", "preference_name", name="uq_agent_workflow_preference",
+            "agent_id",
+            "preference_name",
+            name="uq_agent_workflow_preference",
         ),
     )
     op.create_table(
@@ -238,7 +242,9 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["agent_id"], ["agents.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint(
-            "agent_id", "trait_name", name="uq_agent_personality_trait",
+            "agent_id",
+            "trait_name",
+            name="uq_agent_personality_trait",
         ),
     )
     op.create_table(

@@ -65,7 +65,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_get_email_analytics_metrics_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful email analytics metrics retrieval."""
         from app.auth.user_service import get_current_active_user
@@ -125,7 +128,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_get_email_analytics_metrics_with_filters(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test email analytics metrics with filters."""
         from app.auth.user_service import get_current_active_user
@@ -181,7 +187,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_get_email_analytics_insights_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful email analytics insights retrieval."""
         from app.auth.user_service import get_current_active_user
@@ -246,7 +255,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_get_analytics_dashboard_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful analytics dashboard retrieval."""
         from app.auth.user_service import get_current_active_user
@@ -336,7 +348,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_generate_encryption_key_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful encryption key generation."""
         from app.auth.user_service import get_current_active_user
@@ -385,7 +400,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_encrypt_email_content_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful email content encryption."""
         from app.auth.user_service import get_current_active_user
@@ -433,7 +451,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_list_encryption_keys_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful encryption keys listing."""
         from app.auth.user_service import get_current_active_user
@@ -502,7 +523,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_extract_meeting_requests_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful meeting request extraction."""
         from app.auth.user_service import get_current_active_user
@@ -614,7 +638,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_get_upcoming_meetings_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful upcoming meetings retrieval."""
         from app.auth.user_service import get_current_active_user
@@ -670,7 +697,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_analyze_email_context_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful email context analysis."""
         from app.auth.user_service import get_current_active_user
@@ -728,7 +758,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_generate_ai_response_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful AI response generation."""
         from app.auth.user_service import get_current_active_user
@@ -798,7 +831,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_get_ai_response_history_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful AI response history retrieval."""
         from app.auth.user_service import get_current_active_user
@@ -871,7 +907,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_create_email_account_success(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test successful email account creation."""
         from app.auth.user_service import get_current_active_user
@@ -1111,7 +1150,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_analytics_metrics_service_error(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test analytics metrics endpoint with service error."""
         from app.auth.user_service import get_current_active_user
@@ -1133,7 +1175,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_encryption_generate_key_service_error(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test encryption key generation endpoint with service error."""
         from app.auth.user_service import get_current_active_user
@@ -1158,7 +1203,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_calendar_extract_meetings_service_error(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test meeting extraction endpoint with service error."""
         from app.auth.user_service import get_current_active_user
@@ -1188,7 +1236,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_ai_analyze_context_service_error(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test AI context analysis endpoint with service error."""
         from app.auth.user_service import get_current_active_user
@@ -1217,7 +1268,10 @@ class TestAdvancedEmailRoutes:
 
     @pytest.mark.asyncio
     async def test_multi_account_create_service_error(
-        self, app, client, mock_auth_dependency,
+        self,
+        app,
+        client,
+        mock_auth_dependency,
     ):
         """Test multi-account creation endpoint with service error."""
         from app.auth.user_service import get_current_active_user

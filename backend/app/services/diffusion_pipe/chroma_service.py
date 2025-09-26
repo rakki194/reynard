@@ -19,7 +19,9 @@ from app.api.diffusion_pipe.models import (
 )
 from app.core.config import get_config
 from app.services.diffusion_pipe.model_provider import ModelProvider
-from app.services.diffusion_pipe.training_profile_manager import get_training_profile_manager
+from app.services.diffusion_pipe.training_profile_manager import (
+    get_training_profile_manager,
+)
 from app.services.diffusion_pipe.websocket_manager import get_websocket_manager
 
 logger = logging.getLogger(__name__)
@@ -27,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 class ChromaOptimizationPreset:
     """Chroma optimization preset with specific configurations."""
-    
+
     def __init__(
         self,
         name: str,
@@ -47,35 +49,35 @@ class ChromaOptimizationPreset:
         self.epochs = epochs
         self.optimizer_type = optimizer_type
         self.special_config = special_config or {}
-    
+
     def apply_to_config(self, config: ChromaTrainingConfig) -> ChromaTrainingConfig:
         """Apply preset settings to a Chroma training configuration."""
         config.rank = self.rank
         config.learning_rate = self.learning_rate
         config.optimizer_type = self.optimizer_type
-        
+
         # Apply special configuration
         for key, value in self.special_config.items():
             if hasattr(config, key):
                 setattr(config, key, value)
-        
+
         return config
 
 
 class ChromaService:
     """Specialized service for Chroma model training and optimization."""
-    
+
     def __init__(self):
         self.config = get_config()
         self.profile_manager = get_training_profile_manager()
         self.websocket_manager = get_websocket_manager()
         self.chroma_provider = ModelProvider(ModelType.CHROMA, {})
         self._optimization_presets = self._create_optimization_presets()
-    
+
     def _create_optimization_presets(self) -> Dict[str, ChromaOptimizationPreset]:
         """Create Chroma optimization presets."""
         presets = {}
-        
+
         # Quality Preset - High quality, slower training
         presets["quality"] = ChromaOptimizationPreset(
             name="Quality",
@@ -89,9 +91,9 @@ class ChromaService:
                 "betas": [0.9, 0.999],
                 "weight_decay": 0.01,
                 "eps": 1e-8,
-            }
+            },
         )
-        
+
         # Speed Preset - Fast training, good quality
         presets["speed"] = ChromaOptimizationPreset(
             name="Speed",
@@ -105,9 +107,9 @@ class ChromaService:
                 "betas": [0.9, 0.99],
                 "weight_decay": 0.01,
                 "eps": 1e-8,
-            }
+            },
         )
-        
+
         # Balanced Preset - Good balance of quality and speed
         presets["balanced"] = ChromaOptimizationPreset(
             name="Balanced",
@@ -121,9 +123,9 @@ class ChromaService:
                 "betas": [0.9, 0.99],
                 "weight_decay": 0.01,
                 "eps": 1e-8,
-            }
+            },
         )
-        
+
         # E6AI Optimized Preset - Specifically optimized for E6AI dataset
         presets["e6ai_optimized"] = ChromaOptimizationPreset(
             name="E6AI Optimized",
@@ -138,11 +140,11 @@ class ChromaService:
                 "weight_decay": 0.01,
                 "eps": 1e-8,
                 "caption_prefix": "by e6ai, ",
-            }
+            },
         )
-        
+
         return presets
-    
+
     async def validate_chroma_model(self, model_path: str) -> Dict[str, Any]:
         """Validate Chroma model for training compatibility."""
         validation_result = {
@@ -151,27 +153,33 @@ class ChromaService:
             "warnings": [],
             "model_info": {},
         }
-        
+
         try:
             model_file = Path(model_path)
-            
+
             # Check if model file exists
             if not model_file.exists():
                 validation_result["valid"] = False
-                validation_result["errors"].append(f"Model file does not exist: {model_path}")
+                validation_result["errors"].append(
+                    f"Model file does not exist: {model_path}"
+                )
                 return validation_result
-            
+
             # Check file extension
             if model_file.suffix not in [".safetensors", ".ckpt", ".pt"]:
-                validation_result["warnings"].append(f"Unexpected file extension: {model_file.suffix}")
-            
+                validation_result["warnings"].append(
+                    f"Unexpected file extension: {model_file.suffix}"
+                )
+
             # Check file size (basic validation)
             file_size_mb = model_file.stat().st_size / (1024 * 1024)
             if file_size_mb < 100:
                 validation_result["warnings"].append("Model file seems unusually small")
             elif file_size_mb > 10000:
-                validation_result["warnings"].append("Model file is very large, may require significant memory")
-            
+                validation_result["warnings"].append(
+                    "Model file is very large, may require significant memory"
+                )
+
             # Extract model info
             validation_result["model_info"] = {
                 "file_path": str(model_file.absolute()),
@@ -179,23 +187,23 @@ class ChromaService:
                 "file_extension": model_file.suffix,
                 "last_modified": model_file.stat().st_mtime,
             }
-            
+
             # Check for Chroma-specific model patterns
             if "chroma" in model_file.name.lower():
                 validation_result["model_info"]["detected_type"] = "chroma"
             elif "unet" in model_file.name.lower():
                 validation_result["model_info"]["detected_type"] = "unet"
-            
+
         except Exception as e:
             validation_result["valid"] = False
             validation_result["errors"].append(f"Validation error: {str(e)}")
-        
+
         return validation_result
-    
+
     async def get_optimization_presets(self) -> Dict[str, ChromaOptimizationPreset]:
         """Get available Chroma optimization presets."""
         return self._optimization_presets
-    
+
     async def apply_optimization_preset(
         self,
         config: ChromaTrainingConfig,
@@ -204,10 +212,10 @@ class ChromaService:
         """Apply an optimization preset to a Chroma training configuration."""
         if preset_name not in self._optimization_presets:
             raise ValueError(f"Unknown optimization preset: {preset_name}")
-        
+
         preset = self._optimization_presets[preset_name]
         return preset.apply_to_config(config)
-    
+
     async def create_chroma_training_request(
         self,
         dataset_path: str,
@@ -217,13 +225,13 @@ class ChromaService:
         custom_config: Optional[Dict[str, Any]] = None,
     ) -> TrainingRequest:
         """Create a Chroma training request with optimization preset."""
-        
+
         # Get the optimization preset
         if preset_name not in self._optimization_presets:
             raise ValueError(f"Unknown optimization preset: {preset_name}")
-        
+
         preset = self._optimization_presets[preset_name]
-        
+
         # Create base Chroma configuration
         chroma_config = ChromaTrainingConfig(
             model_type=ModelType.CHROMA,
@@ -241,19 +249,19 @@ class ChromaService:
             weight_decay=0.01,
             eps=1e-8,
         )
-        
+
         # Apply preset optimizations
         chroma_config = preset.apply_to_config(chroma_config)
-        
+
         # Apply custom configuration if provided
         if custom_config:
             for key, value in custom_config.items():
                 if hasattr(chroma_config, key):
                     setattr(chroma_config, key, value)
-        
+
         # Create full training configuration
         from app.api.diffusion_pipe.models import DatasetConfig, DiffusionPipeConfig
-        
+
         training_config = DiffusionPipeConfig(
             output_dir=output_dir,
             dataset_config=DatasetConfig(
@@ -280,11 +288,12 @@ class ChromaService:
             wandb_tracker_name="chroma-lora",
             wandb_run_name=f"chroma-{preset_name}",
         )
-        
+
         # Generate request ID
         import uuid
+
         request_id = f"chroma_{preset_name}_{uuid.uuid4().hex[:8]}"
-        
+
         return TrainingRequest(
             config=training_config,
             request_id=request_id,
@@ -292,9 +301,9 @@ class ChromaService:
                 "preset": preset_name,
                 "model_type": "chroma",
                 "optimization_level": preset.name,
-            }
+            },
         )
-    
+
     async def start_chroma_training(
         self,
         dataset_path: str,
@@ -304,14 +313,14 @@ class ChromaService:
         custom_config: Optional[Dict[str, Any]] = None,
     ) -> str:
         """Start a Chroma training session with optimization preset."""
-        
+
         logger.info(f"Starting Chroma training with preset: {preset_name}")
-        
+
         # Validate model first
         validation_result = await self.validate_chroma_model(model_path)
         if not validation_result["valid"]:
             raise ValueError(f"Model validation failed: {validation_result['errors']}")
-        
+
         # Create training request
         training_request = await self.create_chroma_training_request(
             dataset_path=dataset_path,
@@ -320,10 +329,10 @@ class ChromaService:
             preset_name=preset_name,
             custom_config=custom_config,
         )
-        
+
         # Start training using the provider
         training_id = await self.chroma_provider.execute_training(training_request)
-        
+
         # Send initial status update via WebSocket
         initial_status = TrainingStatus(
             request_id=training_id,
@@ -343,14 +352,16 @@ class ChromaService:
                 "preset": preset_name,
                 "model_type": "chroma",
                 "optimization_level": self._optimization_presets[preset_name].name,
-            }
+            },
         )
-        
-        await self.websocket_manager.send_training_status_update(training_id, initial_status)
-        
+
+        await self.websocket_manager.send_training_status_update(
+            training_id, initial_status
+        )
+
         logger.info(f"Chroma training started: {training_id}")
         return training_id
-    
+
     async def get_chroma_training_recommendations(
         self,
         dataset_size: int,
@@ -358,7 +369,7 @@ class ChromaService:
         quality_preference: str = "balanced",
     ) -> Dict[str, Any]:
         """Get Chroma training recommendations based on system specs."""
-        
+
         recommendations = {
             "recommended_preset": "balanced",
             "batch_size": 4,
@@ -367,45 +378,55 @@ class ChromaService:
             "epochs": 1000,
             "reasoning": [],
         }
-        
+
         # Adjust based on dataset size
         if dataset_size < 1000:
             recommendations["epochs"] = 1500
-            recommendations["reasoning"].append("Small dataset - increased epochs for better convergence")
+            recommendations["reasoning"].append(
+                "Small dataset - increased epochs for better convergence"
+            )
         elif dataset_size > 10000:
             recommendations["epochs"] = 800
-            recommendations["reasoning"].append("Large dataset - reduced epochs to prevent overfitting")
-        
+            recommendations["reasoning"].append(
+                "Large dataset - reduced epochs to prevent overfitting"
+            )
+
         # Adjust based on GPU memory
         if gpu_memory_gb < 8:
             recommendations["batch_size"] = 2
             recommendations["rank"] = 16
-            recommendations["reasoning"].append("Limited GPU memory - reduced batch size and rank")
+            recommendations["reasoning"].append(
+                "Limited GPU memory - reduced batch size and rank"
+            )
         elif gpu_memory_gb > 24:
             recommendations["batch_size"] = 6
             recommendations["rank"] = 64
-            recommendations["reasoning"].append("High GPU memory - increased batch size and rank")
-        
+            recommendations["reasoning"].append(
+                "High GPU memory - increased batch size and rank"
+            )
+
         # Adjust based on quality preference
         if quality_preference == "quality":
             recommendations["recommended_preset"] = "quality"
             recommendations["rank"] = 64
             recommendations["learning_rate"] = 1e-4
-            recommendations["reasoning"].append("Quality preference - using high-quality preset")
+            recommendations["reasoning"].append(
+                "Quality preference - using high-quality preset"
+            )
         elif quality_preference == "speed":
             recommendations["recommended_preset"] = "speed"
             recommendations["rank"] = 32
             recommendations["learning_rate"] = 2.5e-4
             recommendations["reasoning"].append("Speed preference - using fast preset")
-        
+
         return recommendations
-    
+
     async def integrate_with_comfyui(self, training_id: str) -> Dict[str, Any]:
         """Integrate Chroma training with ComfyUI workflow."""
-        
+
         # This would integrate with existing ComfyUI service
         # For now, return a placeholder response
-        
+
         integration_info = {
             "training_id": training_id,
             "comfyui_workflow_id": f"chroma_training_{training_id}",
@@ -415,9 +436,9 @@ class ChromaService:
                 "model_type": "chroma",
                 "integration_type": "lora_training",
                 "workflow_template": "chroma_lora_training",
-            }
+            },
         }
-        
+
         logger.info(f"ComfyUI integration prepared for training: {training_id}")
         return integration_info
 

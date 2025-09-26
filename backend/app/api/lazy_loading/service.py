@@ -24,7 +24,9 @@ class LazyLoadingService:
 
     # Package Management Operations
     def create_lazy_export(
-        self, package_name: str, validation_level: str,
+        self,
+        package_name: str,
+        validation_level: str,
     ) -> dict[str, Any]:
         """Create a new lazy export for a package."""
         return self.package_manager.create_lazy_export(package_name, validation_level)

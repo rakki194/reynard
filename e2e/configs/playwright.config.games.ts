@@ -162,7 +162,7 @@ export default defineConfig({
   },
 
   /* Output directory for test artifacts */
-  outputDir: resultsManager.getOutputDir(),
+  outputDir: _resultsPaths.artifactsDir,
 
   /* No global setup/teardown needed for games tests */
 

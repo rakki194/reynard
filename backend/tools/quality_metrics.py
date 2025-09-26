@@ -241,12 +241,15 @@ class QualityMetricsAnalyzer:
 
             # Calculate maintainability index
             maintainability_index = self._calculate_maintainability_index(
-                lines_of_code, cyclomatic_complexity, comment_ratio,
+                lines_of_code,
+                cyclomatic_complexity,
+                comment_ratio,
             )
 
             # Technical debt ratio
             technical_debt_ratio = self._calculate_technical_debt_ratio(
-                cyclomatic_complexity, maintainability_index,
+                cyclomatic_complexity,
+                maintainability_index,
             )
 
             return CodeQualityMetrics(
@@ -273,7 +276,11 @@ class QualityMetricsAnalyzer:
         complexity = 1  # Base complexity
 
         for node in ast.walk(tree):
-            if isinstance(node, (ast.If, ast.While, ast.For, ast.AsyncFor)) or isinstance(node, ast.ExceptHandler) or isinstance(node, (ast.BoolOp, ast.Compare)):
+            if (
+                isinstance(node, (ast.If, ast.While, ast.For, ast.AsyncFor))
+                or isinstance(node, ast.ExceptHandler)
+                or isinstance(node, (ast.BoolOp, ast.Compare))
+            ):
                 complexity += 1
 
         return complexity
@@ -314,7 +321,10 @@ class QualityMetricsAnalyzer:
         return 0.0  # No test file found
 
     def _calculate_maintainability_index(
-        self, lines_of_code: int, complexity: int, comment_ratio: float,
+        self,
+        lines_of_code: int,
+        complexity: int,
+        comment_ratio: float,
     ) -> float:
         """Calculate maintainability index (simplified)."""
         # Simplified maintainability index calculation
@@ -335,7 +345,9 @@ class QualityMetricsAnalyzer:
         return min(index, 1.0)
 
     def _calculate_technical_debt_ratio(
-        self, complexity: int, maintainability: float,
+        self,
+        complexity: int,
+        maintainability: float,
     ) -> float:
         """Calculate technical debt ratio."""
         # Higher complexity and lower maintainability = more technical debt
@@ -367,7 +379,9 @@ class QualityMetricsAnalyzer:
         return services
 
     def _analyze_service_quality(
-        self, service_name: str, file_metrics: list[CodeQualityMetrics],
+        self,
+        service_name: str,
+        file_metrics: list[CodeQualityMetrics],
     ) -> ServiceMetrics:
         """Analyze quality metrics for a specific service."""
         # Filter files for this service
@@ -440,7 +454,8 @@ class QualityMetricsAnalyzer:
         )
 
     def _check_health_check_implementation(
-        self, service_files: list[CodeQualityMetrics],
+        self,
+        service_files: list[CodeQualityMetrics],
     ) -> bool:
         """Check if service has standardized health checks."""
         for file_metric in service_files:
@@ -449,7 +464,8 @@ class QualityMetricsAnalyzer:
         return False
 
     def _check_error_handling_standardization(
-        self, service_files: list[CodeQualityMetrics],
+        self,
+        service_files: list[CodeQualityMetrics],
     ) -> bool:
         """Check if service uses standardized error handling."""
         # This would need to analyze actual code content
@@ -460,7 +476,8 @@ class QualityMetricsAnalyzer:
         return avg_complexity < 15  # Lower complexity suggests better error handling
 
     def _check_configuration_centralization(
-        self, service_files: list[CodeQualityMetrics],
+        self,
+        service_files: list[CodeQualityMetrics],
     ) -> bool:
         """Check if service uses centralized configuration."""
         # Look for config-related files
@@ -470,7 +487,8 @@ class QualityMetricsAnalyzer:
         return False
 
     def _check_logging_standardization(
-        self, service_files: list[CodeQualityMetrics],
+        self,
+        service_files: list[CodeQualityMetrics],
     ) -> bool:
         """Check if service uses standardized logging."""
         # This would need to analyze actual code content
@@ -481,7 +499,8 @@ class QualityMetricsAnalyzer:
         return avg_docstring_ratio > 0.3
 
     def _check_router_standardization(
-        self, service_files: list[CodeQualityMetrics],
+        self,
+        service_files: list[CodeQualityMetrics],
     ) -> bool:
         """Check if service uses standardized routers."""
         # Look for router files
@@ -552,7 +571,8 @@ class QualityMetricsAnalyzer:
             [fm.maintainability_index for fm in file_metrics],
         )
         avg_complexity_score = 1.0 - min(
-            statistics.mean([fm.cyclomatic_complexity for fm in file_metrics]) / 15, 1.0,
+            statistics.mean([fm.cyclomatic_complexity for fm in file_metrics]) / 15,
+            1.0,
         )
         avg_test_coverage = statistics.mean([fm.test_coverage for fm in file_metrics])
         avg_documentation = statistics.mean([fm.docstring_ratio for fm in file_metrics])
@@ -577,7 +597,8 @@ class QualityMetricsAnalyzer:
         return min(overall_score, 1.0)
 
     def _calculate_refactoring_completeness(
-        self, service_metrics: list[ServiceMetrics],
+        self,
+        service_metrics: list[ServiceMetrics],
     ) -> float:
         """Calculate how complete the refactoring is."""
         if not service_metrics:
@@ -591,7 +612,8 @@ class QualityMetricsAnalyzer:
         return well_refactored / len(service_metrics)
 
     def _calculate_code_consistency(
-        self, file_metrics: list[CodeQualityMetrics],
+        self,
+        file_metrics: list[CodeQualityMetrics],
     ) -> float:
         """Calculate code consistency across files."""
         if len(file_metrics) < 2:
@@ -615,7 +637,8 @@ class QualityMetricsAnalyzer:
         return (complexity_consistency + maintainability_consistency) / 2.0
 
     def _calculate_maintainability_score(
-        self, file_metrics: list[CodeQualityMetrics],
+        self,
+        file_metrics: list[CodeQualityMetrics],
     ) -> float:
         """Calculate overall maintainability score."""
         if not file_metrics:
@@ -631,7 +654,8 @@ class QualityMetricsAnalyzer:
         return statistics.mean([fm.test_coverage for fm in file_metrics])
 
     def _calculate_documentation_quality(
-        self, file_metrics: list[CodeQualityMetrics],
+        self,
+        file_metrics: list[CodeQualityMetrics],
     ) -> float:
         """Calculate documentation quality."""
         if not file_metrics:
@@ -766,7 +790,9 @@ def main():
     parser = argparse.ArgumentParser(description="Refactoring Quality Metrics Tool")
     parser.add_argument("--project-root", default=".", help="Project root directory")
     parser.add_argument(
-        "--output", default="quality_metrics_report.json", help="Output report file",
+        "--output",
+        default="quality_metrics_report.json",
+        help="Output report file",
     )
     parser.add_argument("--verbose", action="store_true", help="Verbose output")
 

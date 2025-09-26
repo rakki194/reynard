@@ -243,7 +243,9 @@ class ReynardGalleryService:
             return {"is_valid": False, "error": f"Validation failed: {e!s}"}
 
     async def download_gallery(
-        self, url: str, options: dict[str, Any] | None = None,
+        self,
+        url: str,
+        options: dict[str, Any] | None = None,
     ) -> DownloadResult:
         """Download a gallery from URL"""
         if not self.gallery_dl_available:

@@ -226,7 +226,9 @@ class EmailService:
         server = None
         try:
             logger.info(
-                "Connecting to %s:%s", self.config.smtp_server, self.config.smtp_port,
+                "Connecting to %s:%s",
+                self.config.smtp_server,
+                self.config.smtp_port,
             )
 
             # Connect to server
@@ -236,7 +238,8 @@ class EmailService:
                 server.starttls()
             else:
                 server = smtplib.SMTP_SSL(
-                    self.config.smtp_server, self.config.smtp_port,
+                    self.config.smtp_server,
+                    self.config.smtp_port,
                 )
                 server.set_debuglevel(0)
 
@@ -258,7 +261,11 @@ class EmailService:
                 server.quit()
 
     async def send_simple_email(
-        self, to_email: str, subject: str, body: str, html_body: str | None = None,
+        self,
+        to_email: str,
+        subject: str,
+        body: str,
+        html_body: str | None = None,
     ) -> dict[str, Any]:
         """Send a simple email.
 
@@ -273,7 +280,10 @@ class EmailService:
 
         """
         message = EmailMessage(
-            to_emails=[to_email], subject=subject, body=body, html_body=html_body,
+            to_emails=[to_email],
+            subject=subject,
+            body=body,
+            html_body=html_body,
         )
         return await self.send_email(message)
 
@@ -297,7 +307,10 @@ class EmailService:
 
         """
         message = EmailMessage(
-            to_emails=to_emails, subject=subject, body=body, html_body=html_body,
+            to_emails=to_emails,
+            subject=subject,
+            body=body,
+            html_body=html_body,
         )
         return await self.send_email(message)
 

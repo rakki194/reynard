@@ -50,7 +50,8 @@ class JTP2Generator(CaptionGeneratorBase):
             "RedRocket/JointTaggerProject/JTP_PILOT2/JTP_PILOT2-e3-vit_so400m_patch14_siglip_384.safetensors",
         )
         self._tags_path = self._config.get(
-            "tags_path", "RedRocket/JointTaggerProject/JTP_PILOT2/tags.json",
+            "tags_path",
+            "RedRocket/JointTaggerProject/JTP_PILOT2/tags.json",
         )
         self._downloaded_model_path = None
         self._downloaded_tags_path = None
@@ -164,7 +165,8 @@ class JTP2Generator(CaptionGeneratorBase):
 
             # Load model and tags in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._load_model_and_tags,
+                None,
+                self._load_model_and_tags,
             )
 
             self._is_loaded = True
@@ -203,7 +205,10 @@ class JTP2Generator(CaptionGeneratorBase):
 
             # Generate tags using self-contained implementation
             tags = await asyncio.get_event_loop().run_in_executor(
-                None, self._generate_caption, str(image_path), config,
+                None,
+                self._generate_caption,
+                str(image_path),
+                config,
             )
 
             return tags

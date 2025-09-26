@@ -20,7 +20,8 @@ security = HTTPBearer()
 
 # Create secure summarization router
 secure_summarization_router = APIRouter(
-    prefix="/summarization", tags=["secure-summarization"],
+    prefix="/summarization",
+    tags=["secure-summarization"],
 )
 
 

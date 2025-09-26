@@ -1,5 +1,5 @@
 import { createSignal, For } from "solid-js";
-import { Button, Card } from "reynard-components";
+import { Button, Card } from "reynard-primitives";
 import { useNotifications } from "reynard-core";
 
 export function NotificationsDemo() {

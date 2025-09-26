@@ -1,5 +1,4 @@
-"""Pydantic models for Diffusion-LLM API endpoints.
-"""
+"""Pydantic models for Diffusion-LLM API endpoints."""
 
 import re
 from typing import Any
@@ -13,7 +12,10 @@ class DiffusionGenerationRequest(BaseModel):
     model_config = ConfigDict(protected_namespaces=())
 
     text: str = Field(
-        ..., description="Input text for generation", min_length=1, max_length=10000,
+        ...,
+        description="Input text for generation",
+        min_length=1,
+        max_length=10000,
     )
     model_id: str = Field("dreamon", description="Model ID to use for generation")
     max_length: int = Field(512, description="Maximum generation length", ge=1, le=2048)
@@ -21,7 +23,10 @@ class DiffusionGenerationRequest(BaseModel):
     top_p: float = Field(0.9, description="Top-p sampling parameter", ge=0.1, le=1.0)
     top_k: int = Field(50, description="Top-k sampling parameter", ge=1, le=100)
     repetition_penalty: float = Field(
-        1.1, description="Repetition penalty", ge=1.0, le=2.0,
+        1.1,
+        description="Repetition penalty",
+        ge=1.0,
+        le=2.0,
     )
     stream: bool = Field(True, description="Enable streaming response")
 
@@ -172,7 +177,8 @@ class DiffusionGenerationResponse(BaseModel):
     processing_time: float = Field(..., description="Processing time in seconds")
     tokens_generated: int = Field(0, description="Number of tokens generated")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata",
+        default_factory=dict,
+        description="Additional metadata",
     )
 
 
@@ -187,7 +193,8 @@ class DiffusionInfillingResponse(BaseModel):
     processing_time: float = Field(..., description="Processing time in seconds")
     tokens_generated: int = Field(0, description="Number of tokens generated")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata",
+        default_factory=dict,
+        description="Additional metadata",
     )
 
 
@@ -198,7 +205,8 @@ class DiffusionStreamEvent(BaseModel):
     data: str = Field("", description="Event data (token text or error message)")
     timestamp: float = Field(..., description="Event timestamp")
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata",
+        default_factory=dict,
+        description="Additional metadata",
     )
 
 
@@ -222,13 +230,16 @@ class DiffusionConfig(BaseModel):
     enabled: bool = Field(True, description="Whether diffusion service is enabled")
     default_model: str = Field("dreamon", description="Default model for generation")
     max_concurrent_requests: int = Field(
-        3, description="Maximum concurrent generation requests",
+        3,
+        description="Maximum concurrent generation requests",
     )
     device_preference: str = Field(
-        "auto", description="Device preference (auto, cuda, cpu)",
+        "auto",
+        description="Device preference (auto, cuda, cpu)",
     )
     memory_threshold: float = Field(
-        0.8, description="Memory threshold for device switching",
+        0.8,
+        description="Memory threshold for device switching",
     )
 
 
@@ -250,7 +261,10 @@ class DiffusionBatchGenerationRequest(BaseModel):
     top_p: float = Field(0.9, description="Top-p sampling parameter", ge=0.1, le=1.0)
     top_k: int = Field(50, description="Top-k sampling parameter", ge=1, le=100)
     repetition_penalty: float = Field(
-        1.1, description="Repetition penalty", ge=1.0, le=2.0,
+        1.1,
+        description="Repetition penalty",
+        ge=1.0,
+        le=2.0,
     )
     batch_size: int = Field(4, description="Batch size for processing", ge=1, le=16)
     parallel_processing: bool = Field(True, description="Enable parallel processing")
@@ -311,18 +325,22 @@ class DiffusionBatchGenerationResponse(BaseModel):
     success: bool = Field(..., description="Whether batch generation was successful")
     results: list[dict[str, Any]] = Field(..., description="List of generation results")
     total_processing_time: float = Field(
-        ..., description="Total processing time in seconds",
+        ...,
+        description="Total processing time in seconds",
     )
     average_processing_time: float = Field(
-        ..., description="Average processing time per text",
+        ...,
+        description="Average processing time per text",
     )
     tokens_generated: int = Field(0, description="Total tokens generated")
     batch_size: int = Field(..., description="Actual batch size used")
     parallel_processing_used: bool = Field(
-        ..., description="Whether parallel processing was used",
+        ...,
+        description="Whether parallel processing was used",
     )
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata",
+        default_factory=dict,
+        description="Additional metadata",
     )
 
 
@@ -332,7 +350,10 @@ class DiffusionBatchInfillingRequest(BaseModel):
     model_config = ConfigDict(protected_namespaces=())
 
     infill_requests: list[dict[str, str]] = Field(
-        ..., description="List of infill requests", min_length=1, max_length=50,
+        ...,
+        description="List of infill requests",
+        min_length=1,
+        max_length=50,
     )
     model_id: str = Field("dreamon", description="Model ID to use for infilling")
     max_length: int = Field(256, description="Maximum infill length", ge=1, le=1024)
@@ -381,7 +402,9 @@ class DiffusionBatchInfillingRequest(BaseModel):
 
             for pattern in dangerous_patterns:
                 if re.search(pattern, prefix, re.IGNORECASE) or re.search(
-                    pattern, suffix, re.IGNORECASE,
+                    pattern,
+                    suffix,
+                    re.IGNORECASE,
                 ):
                     raise ValueError(
                         f"Infill request {i} contains potentially dangerous content: {pattern}",
@@ -415,18 +438,22 @@ class DiffusionBatchInfillingResponse(BaseModel):
     success: bool = Field(..., description="Whether batch infilling was successful")
     results: list[dict[str, Any]] = Field(..., description="List of infilling results")
     total_processing_time: float = Field(
-        ..., description="Total processing time in seconds",
+        ...,
+        description="Total processing time in seconds",
     )
     average_processing_time: float = Field(
-        ..., description="Average processing time per request",
+        ...,
+        description="Average processing time per request",
     )
     tokens_generated: int = Field(0, description="Total tokens generated")
     batch_size: int = Field(..., description="Actual batch size used")
     parallel_processing_used: bool = Field(
-        ..., description="Whether parallel processing was used",
+        ...,
+        description="Whether parallel processing was used",
     )
     metadata: dict[str, Any] = Field(
-        default_factory=dict, description="Additional metadata",
+        default_factory=dict,
+        description="Additional metadata",
     )
     timeout_seconds: int = Field(300, description="Request timeout in seconds")
 
@@ -440,7 +467,8 @@ class DiffusionStats(BaseModel):
     successful_requests: int = Field(..., description="Successful generation requests")
     failed_requests: int = Field(..., description="Failed generation requests")
     average_processing_time: float = Field(
-        ..., description="Average processing time in seconds",
+        ...,
+        description="Average processing time in seconds",
     )
     total_tokens_generated: int = Field(..., description="Total tokens generated")
     model_usage: dict[str, int] = Field(..., description="Model usage statistics")

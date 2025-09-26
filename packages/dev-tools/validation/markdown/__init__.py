@@ -1,2 +1,1 @@
-"""Markdown validation utilities.
-"""
+"""Markdown validation utilities."""

@@ -146,7 +146,8 @@ async def main():
         current_version = await version_manager.get_current_version()
         if current_version:
             next_version = await version_manager.suggest_next_version(
-                current_version, "feature",
+                current_version,
+                "feature",
             )
             print(f"   Current Version: {current_version}")
             print(f"   Next Version: {next_version}")
@@ -159,13 +160,16 @@ async def main():
 
         # Add release entry
         await changelog_manager.add_entry(
-            "Added", "New feature for automated release management",
+            "Added",
+            "New feature for automated release management",
         )
         await changelog_manager.add_entry(
-            "Changed", "Improved version detection algorithm",
+            "Changed",
+            "Improved version detection algorithm",
         )
         await changelog_manager.add_entry(
-            "Fixed", "Resolved issue with changelog formatting",
+            "Fixed",
+            "Resolved issue with changelog formatting",
         )
         print("   ✅ Changelog updated")
 

@@ -1,12 +1,25 @@
 {
   "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist"
+  },
+  "include": ["src"],
   "exclude": [
-    "node_modules",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "*.config.ts",
+    "*.config.js",
     "dist",
     "**/*.test.ts",
     "**/*.test.tsx",
     "**/*.spec.ts",
     "**/*.spec.tsx",
-    "**/__tests__/**"
+    "**/test-setup.ts",
+    "**/__tests__/**/*.test.ts",
+    "**/__tests__/**/*.test.tsx"
   ]
 }

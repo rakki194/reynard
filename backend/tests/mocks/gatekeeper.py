@@ -1,5 +1,4 @@
-"""Mock gatekeeper module for testing.
-"""
+"""Mock gatekeeper module for testing."""
 
 from datetime import datetime, timedelta
 from typing import Any
@@ -61,19 +60,25 @@ class MockTokenManager:
         self.config = config
 
     def create_access_token(
-        self, data: dict[str, Any], expires_delta: timedelta | None = None,
+        self,
+        data: dict[str, Any],
+        expires_delta: timedelta | None = None,
     ) -> str:
         """Create a mock access token."""
         return "mock_access_token"
 
     def create_refresh_token(
-        self, data: dict[str, Any], expires_delta: timedelta | None = None,
+        self,
+        data: dict[str, Any],
+        expires_delta: timedelta | None = None,
     ) -> str:
         """Create a mock refresh token."""
         return "mock_refresh_token"
 
     def verify_token(
-        self, token: str, token_type: str = "access",
+        self,
+        token: str,
+        token_type: str = "access",
     ) -> TokenValidationResult:
         """Verify a mock token."""
         if token == "mock_access_token" and token_type == "access":
@@ -177,7 +182,10 @@ def get_current_user() -> User:
     """Mock dependency to get current user."""
     # Return a default test user
     return User(
-        id="test_user_1", username="testuser", email="test@example.com", is_active=True,
+        id="test_user_1",
+        username="testuser",
+        email="test@example.com",
+        is_active=True,
     )
 
 

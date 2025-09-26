@@ -1,20 +1,21 @@
 """Tests for MCP tool configuration models."""
 
-import pytest
 from datetime import datetime
+
+import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
 
 from app.models.base import Base
 from app.models.mcp.tool_config import (
-    Tool,
-    ToolCategory,
-    ToolConfiguration,
-    ToolConfigHistory,
-    ToolCategoryEnum,
     ExecutionType,
+    Tool,
     ToolAction,
+    ToolCategory,
+    ToolCategoryEnum,
+    ToolConfigHistory,
+    ToolConfiguration,
 )
 
 
@@ -44,12 +45,12 @@ class TestToolCategory:
             description="General utility tools",
             icon="wrench",
             color="#3B82F6",
-            sort_order=1
+            sort_order=1,
         )
-        
+
         session.add(category)
         session.commit()
-        
+
         assert category.id is not None
         assert category.name == "UTILITY"
         assert category.display_name == "Utility Tools"
@@ -63,29 +64,22 @@ class TestToolCategory:
 
     def test_tool_category_unique_name(self, session):
         """Test tool category unique name constraint."""
-        category1 = ToolCategory(
-            name="UTILITY",
-            display_name="Utility Tools"
-        )
+        category1 = ToolCategory(name="UTILITY", display_name="Utility Tools")
         session.add(category1)
         session.commit()
-        
+
         category2 = ToolCategory(
-            name="UTILITY",  # Same name
-            display_name="Another Utility"
+            name="UTILITY", display_name="Another Utility"  # Same name
         )
         session.add(category2)
-        
+
         with pytest.raises(IntegrityError):
             session.commit()
 
     def test_tool_category_defaults(self, session):
         """Test tool category default values."""
-        category = ToolCategory(
-            name="TEST",
-            display_name="Test Category"
-        )
-        
+        category = ToolCategory(name="TEST", display_name="Test Category")
+
         assert category.is_active is True
         assert category.description is None
         assert category.icon is None
@@ -114,10 +108,7 @@ class TestTool:
     @pytest.fixture
     def category(self, session):
         """Create a test category."""
-        category = ToolCategory(
-            name="UTILITY",
-            display_name="Utility Tools"
-        )
+        category = ToolCategory(name="UTILITY", display_name="Utility Tools")
         session.add(category)
         session.commit()
         return category
@@ -135,12 +126,12 @@ class TestTool:
             is_system_tool=False,
             execution_type="sync",
             timeout_seconds=30,
-            max_concurrent=1
+            max_concurrent=1,
         )
-        
+
         session.add(tool)
         session.commit()
-        
+
         assert tool.id is not None
         assert tool.name == "test_tool"
         assert tool.category_id == category.id
@@ -162,19 +153,19 @@ class TestTool:
             name="test_tool",
             category_id=category.id,
             description="First tool",
-            version="1.0.0"
+            version="1.0.0",
         )
         session.add(tool1)
         session.commit()
-        
+
         tool2 = Tool(
             name="test_tool",  # Same name
             category_id=category.id,
             description="Second tool",
-            version="1.0.0"
+            version="1.0.0",
         )
         session.add(tool2)
-        
+
         with pytest.raises(IntegrityError):
             session.commit()
 
@@ -184,9 +175,9 @@ class TestTool:
             name="test_tool",
             category_id=category.id,
             description="A test tool",
-            version="1.0.0"
+            version="1.0.0",
         )
-        
+
         assert tool.enabled is True
         assert tool.dependencies is None
         assert tool.config is None
@@ -201,14 +192,14 @@ class TestTool:
             name="test_tool",
             category_id=category.id,
             description="A test tool",
-            version="1.0.0"
+            version="1.0.0",
         )
-        
+
         session.add(tool)
         session.commit()
-        
+
         tool_dict = tool.to_dict()
-        
+
         assert isinstance(tool_dict, dict)
         assert tool_dict["name"] == "test_tool"
         assert tool_dict["category"] == "UTILITY"
@@ -225,12 +216,12 @@ class TestTool:
             name="test_tool",
             category_id=category.id,
             description="A test tool",
-            version="1.0.0"
+            version="1.0.0",
         )
-        
+
         session.add(tool)
         session.commit()
-        
+
         # Test relationship
         assert tool.category is not None
         assert tool.category.name == "UTILITY"
@@ -263,12 +254,12 @@ class TestToolConfiguration:
             default_timeout=30,
             max_concurrent_tools=10,
             cache_ttl_seconds=300,
-            settings={"key": "value"}
+            settings={"key": "value"},
         )
-        
+
         session.add(config)
         session.commit()
-        
+
         assert config.id is not None
         assert config.version == "1.0.0"
         assert config.auto_sync_enabled is True
@@ -285,9 +276,9 @@ class TestToolConfiguration:
             version="1.0.0",
             default_timeout=30,
             max_concurrent_tools=10,
-            cache_ttl_seconds=300
+            cache_ttl_seconds=300,
         )
-        
+
         assert config.auto_sync_enabled is True
         assert config.settings is None
 
@@ -313,18 +304,15 @@ class TestToolConfigHistory:
     @pytest.fixture
     def tool(self, session):
         """Create a test tool."""
-        category = ToolCategory(
-            name="UTILITY",
-            display_name="Utility Tools"
-        )
+        category = ToolCategory(name="UTILITY", display_name="Utility Tools")
         session.add(category)
         session.commit()
-        
+
         tool = Tool(
             name="test_tool",
             category_id=category.id,
             description="A test tool",
-            version="1.0.0"
+            version="1.0.0",
         )
         session.add(tool)
         session.commit()
@@ -337,12 +325,12 @@ class TestToolConfigHistory:
             change_type="created",
             new_values={"name": "test_tool", "enabled": True},
             changed_by="test_user",
-            change_reason="Initial creation"
+            change_reason="Initial creation",
         )
-        
+
         session.add(history)
         session.commit()
-        
+
         assert history.id is not None
         assert history.tool_id == tool.id
         assert history.change_type == "created"
@@ -358,12 +346,12 @@ class TestToolConfigHistory:
             change_type="updated",
             old_values={"enabled": True},
             new_values={"enabled": False},
-            changed_by="test_user"
+            changed_by="test_user",
         )
-        
+
         session.add(history)
         session.commit()
-        
+
         # Test relationship
         assert history.tool is not None
         assert history.tool.name == "test_tool"
@@ -392,5 +380,3 @@ class TestEnums:
         assert ToolAction.ENABLED == "enabled"
         assert ToolAction.DISABLED == "disabled"
         assert ToolAction.DELETED == "deleted"
-
-

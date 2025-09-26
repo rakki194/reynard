@@ -68,7 +68,10 @@ class CulturalAgentComponent:
     """ECS component for cultural agent behavior"""
 
     def __init__(
-        self, persona: CulturalPersona, agent_id: str, initial_competence: float = 0.5,
+        self,
+        persona: CulturalPersona,
+        agent_id: str,
+        initial_competence: float = 0.5,
     ):
         self.agent_id = agent_id
         self.persona = persona
@@ -86,7 +89,9 @@ class CulturalAgentComponent:
         self.adaptation_threshold = 0.7
 
     def evaluate_cultural_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response against cultural persona"""
         if scenario.cultural_context not in self.cultural_patterns:
@@ -138,7 +143,10 @@ class CulturalAgentComponent:
             self.current_state = CulturalAgentState.ACTIVE
 
     def interact_with_agent(
-        self, partner_id: str, scenario: CulturalScenario, response: str,
+        self,
+        partner_id: str,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalInteraction:
         """Record interaction with another agent"""
         # Evaluate the interaction
@@ -188,7 +196,9 @@ class CulturalAgentComponent:
         return sum(trait_similarities) / len(trait_similarities)
 
     def generate_cultural_response(
-        self, scenario: CulturalScenario, context: dict[str, Any] | None = None,
+        self,
+        scenario: CulturalScenario,
+        context: dict[str, Any] | None = None,
     ) -> str:
         """Generate culturally appropriate response"""
         if scenario.cultural_context not in self.cultural_patterns:
@@ -209,7 +219,8 @@ class CulturalAgentComponent:
         return response
 
     def _adjust_evaluation_for_competence(
-        self, result: CulturalEvaluationResult,
+        self,
+        result: CulturalEvaluationResult,
     ) -> CulturalEvaluationResult:
         """Adjust evaluation based on agent's cultural competence"""
         # Scale metrics based on competence
@@ -238,7 +249,9 @@ class CulturalAgentComponent:
         )
 
     def _basic_evaluation(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Basic evaluation for unsupported cultural contexts"""
         # Simple heuristic evaluation
@@ -279,7 +292,8 @@ class CulturalAgentComponent:
         return "poor_cultural_appropriateness"
 
     def _learn_from_successful_interaction(
-        self, interaction: CulturalInteraction,
+        self,
+        interaction: CulturalInteraction,
     ) -> None:
         """Learn from successful cultural interaction"""
         # Boost relevant traits
@@ -305,7 +319,8 @@ class CulturalAgentComponent:
         self.cultural_competence = min(1.0, self.cultural_competence + learning_boost)
 
     def _calculate_cross_cultural_compatibility(
-        self, other_persona: CulturalPersona,
+        self,
+        other_persona: CulturalPersona,
     ) -> float:
         """Calculate compatibility across different cultural contexts"""
         # Base compatibility for cross-cultural interaction
@@ -369,7 +384,9 @@ class CulturalAgentComponent:
         return [trait for trait, score in trait_scores[:3]]
 
     def _add_cultural_authenticity(
-        self, scenario: CulturalScenario, cultural_rules: dict[str, Any],
+        self,
+        scenario: CulturalScenario,
+        cultural_rules: dict[str, Any],
     ) -> str:
         """Add culturally authentic elements to response"""
         if scenario.cultural_context == CulturalContext.FURRY:

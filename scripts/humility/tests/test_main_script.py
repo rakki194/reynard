@@ -1,5 +1,4 @@
-"""Tests for the main humility detector script.
-"""
+"""Tests for the main humility detector script."""
 
 import os
 import subprocess
@@ -13,7 +12,6 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
-
 class TestMainScript:
     """Test the main humility detector script functionality."""
 
@@ -23,7 +21,8 @@ class TestMainScript:
             [sys.executable, "humility-detector.py", "--help"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent, check=False,
+            cwd=Path(__file__).parent.parent,
+            check=False,
         )
 
         assert result.returncode == 0
@@ -37,7 +36,8 @@ class TestMainScript:
             [sys.executable, "humility-detector.py", "nonexistent_file.txt"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent, check=False,
+            cwd=Path(__file__).parent.parent,
+            check=False,
         )
 
         assert result.returncode == 1
@@ -54,7 +54,8 @@ class TestMainScript:
                 [sys.executable, "humility-detector.py", temp_file],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode in [
@@ -77,7 +78,8 @@ class TestMainScript:
                 [sys.executable, "humility-detector.py", temp_file],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode == 0  # Should find no issues
@@ -92,7 +94,9 @@ class TestMainScript:
             temp_file = f.name
 
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False,
+            mode="w",
+            suffix=".json",
+            delete=False,
         ) as output_file:
             output_path = output_file.name
 
@@ -109,7 +113,8 @@ class TestMainScript:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode in [
@@ -147,7 +152,8 @@ class TestMainScript:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # The script might return 0 or 1 depending on findings
@@ -173,7 +179,8 @@ class TestMainScript:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode in [
@@ -200,7 +207,8 @@ class TestMainScript:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode in [
@@ -214,7 +222,9 @@ class TestMainScript:
     def test_save_config(self):
         """Test configuration saving."""
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False,
+            mode="w",
+            suffix=".json",
+            delete=False,
         ) as config_file:
             config_path = config_file.name
 
@@ -229,7 +239,8 @@ class TestMainScript:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode == 0  # Should succeed
@@ -245,7 +256,9 @@ class TestMainScript:
         """Test configuration loading."""
         # First create a config file
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False,
+            mode="w",
+            suffix=".json",
+            delete=False,
         ) as config_file:
             config_path = config_file.name
 
@@ -262,7 +275,9 @@ class TestMainScript:
                 json.dump(config_data, f)
 
             with tempfile.NamedTemporaryFile(
-                mode="w", suffix=".txt", delete=False,
+                mode="w",
+                suffix=".txt",
+                delete=False,
             ) as f:
                 f.write("This is the best solution ever!")
                 temp_file = f.name
@@ -278,7 +293,8 @@ class TestMainScript:
                     ],
                     capture_output=True,
                     text=True,
-                    cwd=Path(__file__).parent.parent, check=False,
+                    cwd=Path(__file__).parent.parent,
+                    check=False,
                 )
 
                 assert result.returncode in [
@@ -298,7 +314,8 @@ class TestMainScript:
             [sys.executable, "humility-detector.py", ".", "--clear-cache"],
             capture_output=True,
             text=True,
-            cwd=Path(__file__).parent.parent, check=False,
+            cwd=Path(__file__).parent.parent,
+            check=False,
         )
 
         assert result.returncode == 0  # Should succeed
@@ -315,7 +332,8 @@ class TestMainScript:
                 [sys.executable, "humility-detector.py", temp_file, "--verbose"],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode in [
@@ -344,7 +362,8 @@ class TestMainScript:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             # Should still find issues as "best" has high confidence
@@ -371,7 +390,8 @@ class TestMainScript:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode in [
@@ -405,7 +425,8 @@ class TestMainScript:
                 ],
                 capture_output=True,
                 text=True,
-                cwd=Path(__file__).parent.parent, check=False,
+                cwd=Path(__file__).parent.parent,
+                check=False,
             )
 
             assert result.returncode in [

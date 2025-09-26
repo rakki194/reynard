@@ -31,7 +31,10 @@ def upgrade() -> None:
         sa.Column("title", sa.String(255), nullable=False),
         sa.Column("description", sa.Text(), nullable=True),
         sa.Column(
-            "color", sa.String(7), nullable=False, default="#3b82f6",
+            "color",
+            sa.String(7),
+            nullable=False,
+            default="#3b82f6",
         ),  # Hex color
         sa.Column("is_public", sa.Boolean(), nullable=False, default=False),
         sa.Column("is_archived", sa.Boolean(), nullable=False, default=False),
@@ -68,7 +71,10 @@ def upgrade() -> None:
         sa.Column("title", sa.String(255), nullable=False),
         sa.Column("content", sa.Text(), nullable=False, default=""),
         sa.Column(
-            "content_type", sa.String(20), nullable=False, default="markdown",
+            "content_type",
+            sa.String(20),
+            nullable=False,
+            default="markdown",
         ),  # markdown, rich-text, code
         sa.Column("is_favorite", sa.Boolean(), nullable=False, default=False),
         sa.Column("is_archived", sa.Boolean(), nullable=False, default=False),
@@ -111,7 +117,10 @@ def upgrade() -> None:
         sa.Column("description", sa.Text(), nullable=True),
         sa.Column("completed", sa.Boolean(), nullable=False, default=False),
         sa.Column(
-            "priority", sa.String(10), nullable=False, default="medium",
+            "priority",
+            sa.String(10),
+            nullable=False,
+            default="medium",
         ),  # low, medium, high, urgent
         sa.Column("due_date", sa.DateTime(timezone=True), nullable=True),
         sa.Column("completed_at", sa.DateTime(timezone=True), nullable=True),
@@ -149,7 +158,10 @@ def upgrade() -> None:
         ),
         sa.Column("name", sa.String(100), nullable=False),
         sa.Column(
-            "color", sa.String(7), nullable=False, default="#6b7280",
+            "color",
+            sa.String(7),
+            nullable=False,
+            default="#6b7280",
         ),  # Hex color
         sa.Column(
             "created_at",
@@ -220,7 +232,10 @@ def upgrade() -> None:
             default=sa.text("uuid_generate_v4()"),
         ),
         sa.Column(
-            "permission", sa.String(20), nullable=False, default="read",
+            "permission",
+            sa.String(20),
+            nullable=False,
+            default="read",
         ),  # read, write, admin
         sa.Column(
             "created_at",
@@ -236,7 +251,9 @@ def upgrade() -> None:
         sa.UniqueConstraint("note_id", "collaborator_id", name="uq_note_collaboration"),
     )
     op.create_index(
-        "ix_note_collaborations_note_id", "note_collaborations", ["note_id"],
+        "ix_note_collaborations_note_id",
+        "note_collaborations",
+        ["note_id"],
     )
     op.create_index(
         "ix_note_collaborations_collaborator_id",
@@ -272,7 +289,9 @@ def upgrade() -> None:
     )
     op.create_index("ix_note_versions_note_id", "note_versions", ["note_id"])
     op.create_index(
-        "ix_note_versions_version_number", "note_versions", ["version_number"],
+        "ix_note_versions_version_number",
+        "note_versions",
+        ["version_number"],
     )
     op.create_index("ix_note_versions_created_at", "note_versions", ["created_at"])
 
@@ -288,7 +307,9 @@ def upgrade() -> None:
         sa.Column("entity_type", sa.String(20), nullable=False),  # note, todo, notebook
         sa.Column("entity_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column(
-            "ai_type", sa.String(50), nullable=False,
+            "ai_type",
+            sa.String(50),
+            nullable=False,
         ),  # summary, tags, categorization, etc.
         sa.Column("ai_data", postgresql.JSON(astext_type=sa.Text()), nullable=False),
         sa.Column("confidence_score", sa.Float(), nullable=True),

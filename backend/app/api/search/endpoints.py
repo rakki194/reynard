@@ -61,10 +61,12 @@ class NaturalLanguageSearchRequest(BaseModel):
     query: str = Field(..., description="Natural language search query")
     max_results: int = Field(20, description="Maximum number of results to return")
     file_types: list[str] | None = Field(
-        None, description="File extensions to search in",
+        None,
+        description="File extensions to search in",
     )
     directories: list[str] | None = Field(
-        None, description="Directories to search in",
+        None,
+        description="Directories to search in",
     )
     enable_expansion: bool = Field(True, description="Enable query expansion")
     confidence_threshold: float = Field(0.6, description="Minimum confidence threshold")
@@ -76,13 +78,16 @@ class IntelligentSearchRequest(BaseModel):
     query: str = Field(..., description="Search query (natural language or structured)")
     max_results: int = Field(20, description="Maximum number of results to return")
     file_types: list[str] | None = Field(
-        None, description="File extensions to search in",
+        None,
+        description="File extensions to search in",
     )
     directories: list[str] | None = Field(
-        None, description="Directories to search in",
+        None,
+        description="Directories to search in",
     )
     search_modes: list[str] | None = Field(
-        None, description="Specific search modes to use",
+        None,
+        description="Specific search modes to use",
     )
 
 
@@ -91,7 +96,8 @@ class ContextualSearchRequest(BaseModel):
 
     query: str = Field(..., description="Search query")
     context: dict[str, Any] | None = Field(
-        None, description="Additional context information",
+        None,
+        description="Additional context information",
     )
     max_results: int = Field(20, description="Maximum number of results to return")
 
@@ -126,7 +132,8 @@ def get_search_service() -> SearchService:
 
 @router.post("/semantic", response_model=dict[str, Any])
 async def semantic_search(
-    request: SemanticSearchRequest, http_request: Request,
+    request: SemanticSearchRequest,
+    http_request: Request,
 ) -> JSONResponse:
     """Perform semantic search using vector embeddings with intelligent caching.
 
@@ -309,7 +316,10 @@ async def get_search_stats() -> JSONResponse:
 async def get_query_suggestions(
     query: str = Query(..., description="Query to get suggestions for"),
     max_suggestions: int = Query(
-        default=5, ge=1, le=20, description="Maximum suggestions to return",
+        default=5,
+        ge=1,
+        le=20,
+        description="Maximum suggestions to return",
     ),
 ) -> JSONResponse:
     """Get intelligent query suggestions.

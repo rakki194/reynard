@@ -11,9 +11,8 @@ import sys
 # Add the fenrir directory to the path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from test_runner import FenrirTestRunner
-
 from penetration_testing_client import penetration_testing_session
+from test_runner import FenrirTestRunner
 
 
 async def main():

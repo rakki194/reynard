@@ -28,9 +28,13 @@ log_success() {
 main() {
     log "🦊 CHANGELOG.md scan triggered!"
 
+    # Get project root
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+    
     # Change to project root
-    cd /home/kade/runeset/reynard || {
-        echo "❌ Failed to change to project root"
+    cd "$PROJECT_ROOT" || {
+        echo "❌ Failed to change to project root: $PROJECT_ROOT"
         exit 1
     }
 

@@ -14,7 +14,13 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from ...interfaces.base import BaseService, ServiceStatus
-from ...interfaces.security import SecurityProvider, AccessLevel, OperationType, SecurityPolicy, AuditLog
+from ...interfaces.security import (
+    AccessLevel,
+    AuditLog,
+    OperationType,
+    SecurityPolicy,
+    SecurityProvider,
+)
 
 logger = logging.getLogger("uvicorn")
 
@@ -24,18 +30,18 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         super().__init__("access-control-security", config)
-        
+
         # Security configuration
         self.encryption_enabled = self.config.get("encryption_enabled", True)
         self.audit_enabled = self.config.get("audit_enabled", True)
         self.retention_days = self.config.get("retention_days", 365)
-        
+
         # Security components
         self.encryption_keys: Dict[AccessLevel, str] = {}
         self.security_policies: Dict[str, SecurityPolicy] = {}
         self.audit_logs: List[AuditLog] = []
         self.user_permissions: Dict[str, List[str]] = {}
-        
+
         # Metrics
         self.metrics = {
             "access_checks": 0,
@@ -49,39 +55,52 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
     async def initialize(self) -> bool:
         """Initialize the security service."""
         try:
-            self.update_status(ServiceStatus.INITIALIZING, "Initializing access control security service")
-            
+            self.update_status(
+                ServiceStatus.INITIALIZING,
+                "Initializing access control security service",
+            )
+
             # Initialize encryption keys
             if self.encryption_enabled:
                 await self._initialize_encryption_keys()
-            
+
             # Initialize default security policies
             await self._initialize_default_policies()
-            
+
             # Initialize user permissions
             await self._initialize_user_permissions()
-            
-            self.update_status(ServiceStatus.HEALTHY, "Access control security service initialized")
+
+            self.update_status(
+                ServiceStatus.HEALTHY, "Access control security service initialized"
+            )
             return True
-            
+
         except Exception as e:
-            self.logger.error(f"Failed to initialize access control security service: {e}")
+            self.logger.error(
+                f"Failed to initialize access control security service: {e}"
+            )
             self.update_status(ServiceStatus.ERROR, f"Initialization failed: {e}")
             return False
 
     async def shutdown(self) -> None:
         """Shutdown the security service."""
         try:
-            self.update_status(ServiceStatus.SHUTTING_DOWN, "Shutting down access control security service")
-            
+            self.update_status(
+                ServiceStatus.SHUTTING_DOWN,
+                "Shutting down access control security service",
+            )
+
             # Clear sensitive data
             self.encryption_keys.clear()
             self.security_policies.clear()
             self.audit_logs.clear()
             self.user_permissions.clear()
-            
-            self.update_status(ServiceStatus.SHUTDOWN, "Access control security service shutdown complete")
-            
+
+            self.update_status(
+                ServiceStatus.SHUTDOWN,
+                "Access control security service shutdown complete",
+            )
+
         except Exception as e:
             self.logger.error(f"Error during shutdown: {e}")
 
@@ -89,13 +108,17 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
         """Perform health check."""
         try:
             # Check if encryption is properly initialized
-            encryption_healthy = not self.encryption_enabled or len(self.encryption_keys) > 0
-            
+            encryption_healthy = (
+                not self.encryption_enabled or len(self.encryption_keys) > 0
+            )
+
             if encryption_healthy:
                 self.update_status(ServiceStatus.HEALTHY, "Service is healthy")
             else:
-                self.update_status(ServiceStatus.DEGRADED, "Encryption not properly initialized")
-            
+                self.update_status(
+                    ServiceStatus.DEGRADED, "Encryption not properly initialized"
+                )
+
             return {
                 "status": self.status.value,
                 "message": self.health.message,
@@ -107,7 +130,7 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                 "metrics": self.metrics,
                 "dependencies": self.get_dependency_status(),
             }
-            
+
         except Exception as e:
             self.logger.error(f"Health check failed: {e}")
             self.update_status(ServiceStatus.ERROR, f"Health check failed: {e}")
@@ -125,9 +148,9 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                 # Generate 256-bit encryption key
                 key = secrets.token_hex(32)
                 self.encryption_keys[access_level] = key
-            
+
             self.logger.info("Encryption keys initialized for all access levels")
-            
+
         except Exception as e:
             self.logger.error(f"Failed to initialize encryption keys: {e}")
             raise
@@ -188,17 +211,32 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                 allowed_roles=["admin", "security_officer"],
             ),
         ]
-        
+
         for policy in default_policies:
             self.security_policies[policy.policy_id] = policy
-        
-        self.logger.info(f"Initialized {len(default_policies)} default security policies")
+
+        self.logger.info(
+            f"Initialized {len(default_policies)} default security policies"
+        )
 
     async def _initialize_user_permissions(self) -> None:
         """Initialize user permissions mapping."""
         self.user_permissions = {
-            "admin": ["admin", "security_officer", "senior_developer", "manager", "developer", "analyst"],
-            "security_officer": ["security_officer", "senior_developer", "manager", "developer", "analyst"],
+            "admin": [
+                "admin",
+                "security_officer",
+                "senior_developer",
+                "manager",
+                "developer",
+                "analyst",
+            ],
+            "security_officer": [
+                "security_officer",
+                "senior_developer",
+                "manager",
+                "developer",
+                "analyst",
+            ],
             "senior_developer": ["senior_developer", "developer", "analyst"],
             "manager": ["manager", "developer", "analyst"],
             "developer": ["developer", "analyst"],
@@ -213,34 +251,38 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
         resource_type: str,
         access_level: AccessLevel,
         resource_id: str = "",
-        **kwargs
+        **kwargs,
     ) -> bool:
         """Check if user has permission to perform operation on resource."""
         if not self.is_healthy():
             return False
-        
+
         try:
             self.metrics["access_checks"] += 1
-            
+
             # Get policy for the access level
             policy = self._get_policy_for_access_level(access_level)
             if not policy:
                 self.logger.warning(f"No policy found for access level: {access_level}")
                 self.metrics["access_denied"] += 1
                 return False
-            
+
             # Check if operation is allowed
             if operation not in policy.allowed_operations:
-                self.logger.warning(f"Operation {operation} not allowed for access level {access_level}")
+                self.logger.warning(
+                    f"Operation {operation} not allowed for access level {access_level}"
+                )
                 self.metrics["access_denied"] += 1
                 return False
-            
+
             # Check user access
             if not self._check_user_access(user_id, policy):
-                self.logger.warning(f"User {user_id} not authorized for access level {access_level}")
+                self.logger.warning(
+                    f"User {user_id} not authorized for access level {access_level}"
+                )
                 self.metrics["access_denied"] += 1
                 return False
-            
+
             # Log successful access
             if self.audit_enabled:
                 await self.log_audit_event(
@@ -250,16 +292,16 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                     resource_id=resource_id,
                     access_level=access_level,
                     success=True,
-                    **kwargs
+                    **kwargs,
                 )
-            
+
             self.metrics["access_granted"] += 1
             return True
-            
+
         except Exception as e:
             self.logger.error(f"Access permission check failed: {e}")
             self.metrics["access_denied"] += 1
-            
+
             # Log failed access attempt
             if self.audit_enabled:
                 await self.log_audit_event(
@@ -270,76 +312,74 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                     access_level=access_level,
                     success=False,
                     details={"error": str(e)},
-                    **kwargs
+                    **kwargs,
                 )
-            
+
             return False
 
-    async def encrypt_data(
-        self,
-        data: str,
-        access_level: AccessLevel,
-        **kwargs
-    ) -> str:
+    async def encrypt_data(self, data: str, access_level: AccessLevel, **kwargs) -> str:
         """Encrypt data based on access level."""
         if not self.encryption_enabled:
             return data
-        
+
         try:
             self.metrics["encryption_operations"] += 1
-            
+
             # Get encryption key for access level
             key = self.encryption_keys.get(access_level)
             if not key:
-                raise ValueError(f"No encryption key found for access level: {access_level}")
-            
+                raise ValueError(
+                    f"No encryption key found for access level: {access_level}"
+                )
+
             # Simple XOR encryption (in production, use proper encryption like AES)
             encrypted_data = ""
             key_bytes = key.encode()
             data_bytes = data.encode()
-            
+
             for i, byte in enumerate(data_bytes):
                 encrypted_data += chr(byte ^ key_bytes[i % len(key_bytes)])
-            
+
             # Encode as base64-like string
             import base64
+
             return base64.b64encode(encrypted_data.encode()).decode()
-            
+
         except Exception as e:
             self.logger.error(f"Failed to encrypt data: {e}")
             raise RuntimeError(f"Failed to encrypt data: {e}")
 
     async def decrypt_data(
-        self,
-        encrypted_data: str,
-        access_level: AccessLevel,
-        **kwargs
+        self, encrypted_data: str, access_level: AccessLevel, **kwargs
     ) -> str:
         """Decrypt data based on access level."""
         if not self.encryption_enabled:
             return encrypted_data
-        
+
         try:
             self.metrics["encryption_operations"] += 1
-            
+
             # Decode from base64-like string
             import base64
+
             encrypted_bytes = base64.b64decode(encrypted_data.encode()).decode()
-            
+
             # Get decryption key for access level
             key = self.encryption_keys.get(access_level)
             if not key:
-                raise ValueError(f"No decryption key found for access level: {access_level}")
-            
+                raise ValueError(
+                    f"No decryption key found for access level: {access_level}"
+                )
+
             # Simple XOR decryption
             decrypted_data = ""
             key_bytes = key.encode()
-            
+
             for i, byte in enumerate(encrypted_bytes):
                 decrypted_data += chr(ord(byte) ^ key_bytes[i % len(key_bytes)])
-            
+
             return decrypted_data
-            
+
         except Exception as e:
             self.logger.error(f"Failed to decrypt data: {e}")
             raise RuntimeError(f"Failed to decrypt data: {e}")
@@ -353,15 +393,15 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
         access_level: AccessLevel,
         success: bool,
         details: Optional[Dict[str, Any]] = None,
-        **kwargs
+        **kwargs,
     ) -> str:
         """Log an audit event."""
         if not self.audit_enabled:
             return ""
-        
+
         try:
             self.metrics["audit_events"] += 1
-            
+
             audit_log = AuditLog(
                 log_id=self._generate_log_id(),
                 user_id=user_id,
@@ -374,19 +414,19 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                 user_agent=kwargs.get("user_agent", "system"),
                 success=success,
                 details=details or {},
-                metadata=kwargs.get("metadata", {})
+                metadata=kwargs.get("metadata", {}),
             )
-            
+
             self.audit_logs.append(audit_log)
-            
+
             # Clean up old audit logs
             await self._cleanup_old_audit_logs()
-            
+
             # Check for suspicious activity
             await self._check_suspicious_activity(audit_log)
-            
+
             return audit_log.log_id
-            
+
         except Exception as e:
             self.logger.error(f"Failed to log audit event: {e}")
             return ""
@@ -397,67 +437,63 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
         operation: Optional[OperationType] = None,
         access_level: Optional[AccessLevel] = None,
         hours: int = 24,
-        **kwargs
+        **kwargs,
     ) -> List[AuditLog]:
         """Get audit logs with optional filtering."""
         try:
             cutoff_time = datetime.now() - timedelta(hours=hours)
-            
+
             filtered_logs = [
                 log for log in self.audit_logs if log.timestamp > cutoff_time
             ]
-            
+
             # Apply filters
             if user_id:
                 filtered_logs = [log for log in filtered_logs if log.user_id == user_id]
-            
+
             if operation:
-                filtered_logs = [log for log in filtered_logs if log.operation == operation]
-            
+                filtered_logs = [
+                    log for log in filtered_logs if log.operation == operation
+                ]
+
             if access_level:
-                filtered_logs = [log for log in filtered_logs if log.access_level == access_level]
-            
+                filtered_logs = [
+                    log for log in filtered_logs if log.access_level == access_level
+                ]
+
             return filtered_logs
-            
+
         except Exception as e:
             self.logger.error(f"Failed to get audit logs: {e}")
             return []
 
-    async def create_security_policy(
-        self,
-        policy: SecurityPolicy,
-        **kwargs
-    ) -> str:
+    async def create_security_policy(self, policy: SecurityPolicy, **kwargs) -> str:
         """Create a new security policy."""
         try:
             self.security_policies[policy.policy_id] = policy
             self.logger.info(f"Created security policy: {policy.policy_id}")
             return policy.policy_id
-            
+
         except Exception as e:
             self.logger.error(f"Failed to create security policy: {e}")
             raise RuntimeError(f"Failed to create security policy: {e}")
 
-    async def update_security_policy(
-        self,
-        policy_id: str,
-        **kwargs
-    ) -> bool:
+    async def update_security_policy(self, policy_id: str, **kwargs) -> bool:
         """Update an existing security policy."""
         try:
             if policy_id not in self.security_policies:
                 return False
-            
+
             policy = self.security_policies[policy_id]
-            
+
             # Update policy properties
             for key, value in kwargs.items():
                 if hasattr(policy, key):
                     setattr(policy, key, value)
-            
+
             self.logger.info(f"Updated security policy: {policy_id}")
             return True
-            
+
         except Exception as e:
             self.logger.error(f"Failed to update security policy {policy_id}: {e}")
             return False
@@ -470,7 +506,7 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                 self.logger.info(f"Deleted security policy: {policy_id}")
                 return True
             return False
-            
+
         except Exception as e:
             self.logger.error(f"Failed to delete security policy {policy_id}: {e}")
             return False
@@ -479,82 +515,83 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
         self,
         access_level: Optional[AccessLevel] = None,
         enabled_only: bool = True,
-        **kwargs
+        **kwargs,
     ) -> List[SecurityPolicy]:
         """Get security policies with optional filtering."""
         try:
             policies = list(self.security_policies.values())
-            
+
             # Apply filters
             if access_level:
                 policies = [p for p in policies if p.access_level == access_level]
-            
+
             if enabled_only:
                 policies = [p for p in policies if p.enabled]
-            
+
             return policies
-            
+
         except Exception as e:
             self.logger.error(f"Failed to get security policies: {e}")
             return []
 
     async def detect_threats(
-        self,
-        user_id: str,
-        operation: OperationType,
-        **kwargs
+        self, user_id: str, operation: OperationType, **kwargs
     ) -> List[Dict[str, Any]]:
         """Detect potential security threats."""
         try:
             threats = []
-            
+
             # Check for multiple failed access attempts
             recent_failures = [
-                log for log in self.audit_logs
+                log
+                for log in self.audit_logs
                 if (
                     log.user_id == user_id
                     and not log.success
                     and log.timestamp > datetime.now() - timedelta(minutes=5)
                 )
             ]
-            
+
             if len(recent_failures) >= 5:
-                threats.append({
-                    "type": "multiple_failed_attempts",
-                    "severity": "high",
-                    "description": f"Multiple failed access attempts by {user_id}",
-                    "count": len(recent_failures),
-                    "timestamp": datetime.now().isoformat(),
-                })
-            
+                threats.append(
+                    {
+                        "type": "multiple_failed_attempts",
+                        "severity": "high",
+                        "description": f"Multiple failed access attempts by {user_id}",
+                        "count": len(recent_failures),
+                        "timestamp": datetime.now().isoformat(),
+                    }
+                )
+
             # Check for unusual access patterns
             recent_access = [
-                log for log in self.audit_logs
+                log
+                for log in self.audit_logs
                 if (
                     log.user_id == user_id
                     and log.timestamp > datetime.now() - timedelta(hours=1)
                 )
             ]
-            
+
             if len(recent_access) >= 100:
-                threats.append({
-                    "type": "high_activity",
-                    "severity": "medium",
-                    "description": f"High activity detected for {user_id}",
-                    "count": len(recent_access),
-                    "timestamp": datetime.now().isoformat(),
-                })
-            
+                threats.append(
+                    {
+                        "type": "high_activity",
+                        "severity": "medium",
+                        "description": f"High activity detected for {user_id}",
+                        "count": len(recent_access),
+                        "timestamp": datetime.now().isoformat(),
+                    }
+                )
+
             return threats
-            
+
         except Exception as e:
             self.logger.error(f"Failed to detect threats: {e}")
             return []
 
     async def get_security_report(
-        self,
-        report_type: str = "summary",
-        **kwargs
+        self, report_type: str = "summary", **kwargs
     ) -> Dict[str, Any]:
         """Generate a security report."""
         try:
@@ -562,25 +599,27 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
             total_logs = len(self.audit_logs)
             successful_logs = len([log for log in self.audit_logs if log.success])
             failed_logs = total_logs - successful_logs
-            
+
             # Recent activity (last 24 hours)
             recent_cutoff = datetime.now() - timedelta(hours=24)
-            recent_logs = [log for log in self.audit_logs if log.timestamp > recent_cutoff]
+            recent_logs = [
+                log for log in self.audit_logs if log.timestamp > recent_cutoff
+            ]
             recent_successful = len([log for log in recent_logs if log.success])
             recent_failed = len(recent_logs) - recent_successful
-            
+
             # Access level distribution
             access_level_counts = {}
             for log in recent_logs:
                 level = log.access_level.value
                 access_level_counts[level] = access_level_counts.get(level, 0) + 1
-            
+
             # Operation distribution
             operation_counts = {}
             for log in recent_logs:
                 op = log.operation.value
                 operation_counts[op] = operation_counts.get(op, 0) + 1
-            
+
             return {
                 "report_timestamp": datetime.now().isoformat(),
                 "report_type": report_type,
@@ -590,11 +629,15 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                     "total_operations": len(recent_logs),
                     "successful_operations": recent_successful,
                     "failed_operations": recent_failed,
-                    "success_rate": recent_successful / len(recent_logs) if recent_logs else 0,
+                    "success_rate": (
+                        recent_successful / len(recent_logs) if recent_logs else 0
+                    ),
                 },
                 "access_level_distribution": access_level_counts,
                 "operation_distribution": operation_counts,
-                "active_policies": len([p for p in self.security_policies.values() if p.enabled]),
+                "active_policies": len(
+                    [p for p in self.security_policies.values() if p.enabled]
+                ),
                 "encryption_enabled": self.encryption_enabled,
                 "security_features": {
                     "encryption": self.encryption_enabled,
@@ -604,7 +647,7 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
                 },
                 "metrics": self.metrics,
             }
-            
+
         except Exception as e:
             self.logger.error(f"Failed to generate security report: {e}")
             return {"error": str(e)}
@@ -617,18 +660,25 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
             "encryption_enabled": self.encryption_enabled,
             "audit_enabled": self.audit_enabled,
             "total_audit_logs": len(self.audit_logs),
-            "active_policies": len([p for p in self.security_policies.values() if p.enabled]),
+            "active_policies": len(
+                [p for p in self.security_policies.values() if p.enabled]
+            ),
             "encryption_keys_configured": len(self.encryption_keys),
             "access_levels_supported": len(AccessLevel),
             "operation_types_supported": len(OperationType),
-            "recent_logs_24h": len([
-                log for log in self.audit_logs
-                if log.timestamp > datetime.now() - timedelta(hours=24)
-            ]),
+            "recent_logs_24h": len(
+                [
+                    log
+                    for log in self.audit_logs
+                    if log.timestamp > datetime.now() - timedelta(hours=24)
+                ]
+            ),
             "metrics": self.metrics,
         }
 
-    def _get_policy_for_access_level(self, access_level: AccessLevel) -> Optional[SecurityPolicy]:
+    def _get_policy_for_access_level(
+        self, access_level: AccessLevel
+    ) -> Optional[SecurityPolicy]:
         """Get security policy for access level."""
         for policy in self.security_policies.values():
             if policy.access_level == access_level and policy.enabled:
@@ -640,12 +690,14 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
         # Check direct user access
         if "*" in policy.allowed_users or user_id in policy.allowed_users:
             return True
-        
+
         # Check role-based access
         user_roles = self._get_user_roles(user_id)
-        if "*" in policy.allowed_roles or any(role in policy.allowed_roles for role in user_roles):
+        if "*" in policy.allowed_roles or any(
+            role in policy.allowed_roles for role in user_roles
+        ):
             return True
-        
+
         return False
 
     def _get_user_roles(self, user_id: str) -> List[str]:
@@ -659,37 +711,48 @@ class AccessControlSecurityService(BaseService, SecurityProvider):
     async def _cleanup_old_audit_logs(self) -> None:
         """Clean up old audit logs based on retention policies."""
         cutoff_date = datetime.now() - timedelta(days=self.retention_days)
-        self.audit_logs = [log for log in self.audit_logs if log.timestamp > cutoff_date]
+        self.audit_logs = [
+            log for log in self.audit_logs if log.timestamp > cutoff_date
+        ]
 
     async def _check_suspicious_activity(self, audit_log: AuditLog) -> None:
         """Check for suspicious activity patterns."""
         try:
             # Check for multiple failed access attempts
             recent_failures = [
-                log for log in self.audit_logs
+                log
+                for log in self.audit_logs
                 if (
                     log.user_id == audit_log.user_id
                     and not log.success
                     and log.timestamp > datetime.now() - timedelta(minutes=5)
                 )
             ]
-            
+
             if len(recent_failures) >= 5:
-                self.logger.warning(f"Suspicious activity detected: {len(recent_failures)} failed access attempts by {audit_log.user_id}")
+                self.logger.warning(
+                    f"Suspicious activity detected: {len(recent_failures)} failed access attempts by {audit_log.user_id}"
+                )
                 self.metrics["policy_violations"] += 1
-                
+
                 # In production, this would trigger alerts, lock accounts, etc.
-                await self._handle_suspicious_activity(audit_log.user_id, recent_failures)
-            
+                await self._handle_suspicious_activity(
+                    audit_log.user_id, recent_failures
+                )
+
         except Exception as e:
             self.logger.error(f"Failed to check suspicious activity: {e}")
 
-    async def _handle_suspicious_activity(self, user_id: str, failed_attempts: List[AuditLog]) -> None:
+    async def _handle_suspicious_activity(
+        self, user_id: str, failed_attempts: List[AuditLog]
+    ) -> None:
         """Handle detected suspicious activity."""
         # In production, this would:
         # - Send alerts to security team
         # - Temporarily lock the account
         # - Require additional authentication
         # - Log to security monitoring system
-        
-        self.logger.warning(f"Handling suspicious activity for user {user_id}: {len(failed_attempts)} failed attempts")
+
+        self.logger.warning(
+            f"Handling suspicious activity for user {user_id}: {len(failed_attempts)} failed attempts"
+        )

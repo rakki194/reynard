@@ -7,9 +7,11 @@ Author: Odonata-Oracle-6 (Dragonfly Specialist)
 Version: 1.0.0
 """
 
+from datetime import datetime
+
 import pytest
 import requests
-from datetime import datetime
+
 from backend.app.security.mcp_auth import MCPAuthService, MCPClient
 
 
@@ -117,7 +119,9 @@ class TestBackendConnectivity:
 
     def test_mcp_bootstrap_health(self):
         """Test MCP bootstrap health endpoint."""
-        response = requests.get("http://localhost:8000/api/mcp/bootstrap/health", timeout=5)
+        response = requests.get(
+            "http://localhost:8000/api/mcp/bootstrap/health", timeout=5
+        )
         assert response.status_code == 200
 
         data = response.json()
@@ -130,13 +134,13 @@ class TestBackendConnectivity:
             "client_id": "invalid-client",
             "client_secret": "invalid-secret",
             "client_type": "agent",
-            "permissions": ["mcp:read"]
+            "permissions": ["mcp:read"],
         }
 
         response = requests.post(
             "http://localhost:8000/api/mcp/bootstrap/authenticate",
             json=invalid_data,
-            timeout=5
+            timeout=5,
         )
 
         assert response.status_code == 401
@@ -151,7 +155,7 @@ class TestBackendConnectivity:
         response = requests.post(
             "http://localhost:8000/api/mcp/bootstrap/authenticate",
             json=malformed_data,
-            timeout=5
+            timeout=5,
         )
 
         assert response.status_code in [400, 422]  # Bad Request or Validation Error
@@ -171,7 +175,7 @@ class TestBackendConnectivity:
         security_headers = [
             'x-content-type-options',
             'x-frame-options',
-            'x-xss-protection'
+            'x-xss-protection',
         ]
 
         for header in security_headers:
@@ -192,9 +196,9 @@ class TestRateLimiting:
                     "client_id": f"test-client-{i}",
                     "client_secret": "invalid-secret",
                     "client_type": "agent",
-                    "permissions": ["mcp:read"]
+                    "permissions": ["mcp:read"],
                 },
-                timeout=5
+                timeout=5,
             )
             responses.append(response)
 

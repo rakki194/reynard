@@ -107,7 +107,8 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.intelligent_search(
-                query="test query", max_results=10,
+                query="test query",
+                max_results=10,
             )
 
             assert result["success"] is True
@@ -130,7 +131,9 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.contextual_search(
-                query="test query", context="test context", max_results=10,
+                query="test query",
+                context="test context",
+                max_results=10,
             )
 
             assert result["success"] is True
@@ -195,7 +198,9 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.search_with_examples(
-                query="test query", examples=["example1", "example2"], max_results=10,
+                query="test query",
+                examples=["example1", "example2"],
+                max_results=10,
             )
 
             assert result["success"] is True
@@ -234,7 +239,8 @@ class TestEnhancedSearchTools:
             mock_post.return_value = mock_response
 
             result = await self.tools.natural_language_search(
-                query="test query", max_results=10,
+                query="test query",
+                max_results=10,
             )
 
             assert result["success"] is False
@@ -250,7 +256,8 @@ class TestEnhancedSearchTools:
             mock_post.side_effect = Exception("Network error")
 
             result = await self.tools.natural_language_search(
-                query="test query", max_results=10,
+                query="test query",
+                max_results=10,
             )
 
             assert result["success"] is False

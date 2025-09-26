@@ -63,5 +63,5 @@ export default defineConfig({
     timeout: 10 * 1000,
   },
 
-  outputDir: "../results/component-tests-results/",
+  outputDir: resultsPaths.artifactsDir,
 });

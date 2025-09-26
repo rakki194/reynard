@@ -96,82 +96,22 @@ export function createGenerated(directory: string, description: string): Directo
   };
 }
 
-/**
- * Common relationship patterns
- */
-export const COMMON_RELATIONSHIPS = {
-  // Core package relationships
-  CORE_DEPENDENCY: createDependency("packages/core/core", "Uses core utilities"),
-  VALIDATION_DEPENDENCY: createDependency("packages/core/validation", "Uses validation utilities"),
-  HTTP_CLIENT_DEPENDENCY: createDependency("packages/core/http-client", "Uses HTTP client"),
-
-  // AI package relationships
-  AI_SHARED_DEPENDENCY: createDependency("packages/ai/ai-shared", "Uses AI shared utilities"),
-  ANNOTATING_CORE_DEPENDENCY: createDependency("packages/ai/annotating-core", "Uses core annotation system"),
-  CAPTION_CORE_DEPENDENCY: createDependency("packages/ai/caption-core", "Uses core caption system"),
-
-  // UI package relationships
-  UI_COMPONENTS_DEPENDENCY: createDependency("packages/ui/components-core", "Uses UI components"),
-  FLUENT_ICONS_DEPENDENCY: createDependency("packages/ui/fluent-icons", "Uses fluent icons"),
-  THEMES_DEPENDENCY: createDependency("packages/ui/themes", "Uses themes"),
-  COLORS_DEPENDENCY: createDependency("packages/ui/colors", "Uses colors"),
-
-  // Service package relationships
-  API_CLIENT_DEPENDENCY: createDependency("packages/services/api-client", "Uses API client"),
-  AUTH_DEPENDENCY: createDependency("packages/services/auth", "Uses auth service"),
-
-  // Data package relationships
-  REPOSITORY_CORE_DEPENDENCY: createDependency("packages/data/repository-core", "Uses repository system"),
-  FILE_PROCESSING_DEPENDENCY: createDependency("packages/data/file-processing", "Uses file processing"),
-
-  // Media package relationships
-  IMAGE_DEPENDENCY: createDependency("packages/media/image", "Uses image processing"),
-  VIDEO_DEPENDENCY: createDependency("packages/media/video", "Uses video processing"),
-  AUDIO_DEPENDENCY: createDependency("packages/media/audio", "Uses audio processing"),
-
-  // Dev tools relationships
-  SCRIPTS_SIBLING: createSibling("scripts", "Related automation scripts"),
-
-  // Documentation relationships
-  DOCS_DOCUMENTS: createDocuments("docs", "Generates documentation"),
-
-  // Backend relationships
-  BACKEND_SIBLING: createSibling("backend", "Related backend services"),
-
-  // Examples and templates relationships
-  PACKAGES_DEPENDENCY: createDependency("packages", "Uses packages"),
-  EXAMPLES_SIBLING: createSibling("examples", "Related examples"),
-  TEMPLATES_SIBLING: createSibling("templates", "Related templates"),
-
-  // Testing relationships
-  PACKAGES_TESTS: createTests("packages", "Tests packages"),
-  EXAMPLES_TESTS: createTests("examples", "Tests examples"),
-} as const;
+// Re-export patterns and helpers from separate files
+export { COMMON_RELATIONSHIPS } from "./relationship-patterns.js";
+export {
+  addCoreDependencies,
+  addUIDependencies,
+  addAIDependencies,
+  addComprehensiveUIDependencies,
+  addComprehensiveAIDependencies,
+  addServiceDependencies,
+  addDataDependencies,
+  addMediaDependencies,
+} from "./relationship-helpers.js";
 
 /**
  * Build relationship array from common patterns
  */
 export function buildRelationships(...patterns: DirectoryRelationship[]): DirectoryRelationship[] {
   return patterns;
-}
-
-/**
- * Add core dependencies to relationships
- */
-export function addCoreDependencies(relationships: DirectoryRelationship[]): DirectoryRelationship[] {
-  return [COMMON_RELATIONSHIPS.CORE_DEPENDENCY, COMMON_RELATIONSHIPS.VALIDATION_DEPENDENCY, ...relationships];
-}
-
-/**
- * Add UI dependencies to relationships
- */
-export function addUIDependencies(relationships: DirectoryRelationship[]): DirectoryRelationship[] {
-  return [COMMON_RELATIONSHIPS.CORE_DEPENDENCY, COMMON_RELATIONSHIPS.UI_COMPONENTS_DEPENDENCY, ...relationships];
-}
-
-/**
- * Add AI dependencies to relationships
- */
-export function addAIDependencies(relationships: DirectoryRelationship[]): DirectoryRelationship[] {
-  return [COMMON_RELATIONSHIPS.AI_SHARED_DEPENDENCY, COMMON_RELATIONSHIPS.CORE_DEPENDENCY, ...relationships];
 }

@@ -39,7 +39,7 @@ from ..interfaces.model_provider import (
 
 class LLaMACppConfig(ModelProviderConfig):
     """Configuration for LLaMA.cpp provider."""
-    
+
     provider_type: ProviderType = ProviderType.LLAMACPP
     base_url: str = "http://localhost:8080"
     model_path: Optional[str] = None
@@ -63,10 +63,10 @@ class LLaMACppConfig(ModelProviderConfig):
 
 class LLaMACppProvider(ModelProvider):
     """LLaMA.cpp model provider for lightweight edge deployments."""
-    
+
     def __init__(self, config: LLaMACppConfig):
         """Initialize LLaMA.cpp provider.
-        
+
         Args:
             config: LLaMA.cpp-specific configuration
         """
@@ -75,7 +75,7 @@ class LLaMACppProvider(ModelProvider):
         self.client: Optional[httpx.AsyncClient] = None
         self._available_models: List[ModelInfo] = []
         self._model_loaded = False
-    
+
     async def initialize(self) -> bool:
         """Initialize LLaMA.cpp provider."""
         try:
@@ -88,25 +88,25 @@ class LLaMACppProvider(ModelProvider):
                     max_connections=self.config.max_concurrent_requests * 2,
                 ),
             )
-            
+
             # Test connection and get available models
             await self._load_available_models()
-            
+
             # Load default model if specified
             if self.config.default_model and not self._model_loaded:
                 await self._load_model(self.config.default_model)
-            
+
             self._initialized = True
             self._health_status = "healthy"
             self._last_health_check = time.time()
-            
+
             return True
-            
+
         except Exception as e:
             self._health_status = "unhealthy"
             self._last_health_check = time.time()
             raise RuntimeError(f"Failed to initialize LLaMA.cpp provider: {e}")
-    
+
     async def shutdown(self) -> None:
         """Shutdown LLaMA.cpp provider."""
         if self.client:
@@ -114,35 +114,35 @@ class LLaMACppProvider(ModelProvider):
             self.client = None
         self._initialized = False
         self._model_loaded = False
-    
+
     async def health_check(self) -> bool:
         """Check LLaMA.cpp provider health."""
         try:
             if not self.client:
                 return False
-            
+
             response = await self.client.get("/health")
             is_healthy = response.status_code == 200
-            
+
             self._health_status = "healthy" if is_healthy else "unhealthy"
             self._last_health_check = time.time()
-            
+
             return is_healthy
-            
+
         except Exception:
             self._health_status = "unhealthy"
             self._last_health_check = time.time()
             return False
-    
+
     async def _load_available_models(self) -> None:
         """Load available models from LLaMA.cpp server."""
         try:
             response = await self.client.get("/v1/models")
             response.raise_for_status()
-            
+
             models_data = response.json()
             self._available_models = []
-            
+
             for model_data in models_data.get("data", []):
                 model_info = ModelInfo(
                     name=model_data["id"],
@@ -161,7 +161,7 @@ class LLaMACppProvider(ModelProvider):
                     metadata=model_data,
                 )
                 self._available_models.append(model_info)
-                
+
         except Exception as e:
             # If we can't load models, create a default one
             default_model = ModelInfo(
@@ -181,7 +181,7 @@ class LLaMACppProvider(ModelProvider):
                 metadata={},
             )
             self._available_models = [default_model]
-    
+
     async def _load_model(self, model_name: str) -> bool:
         """Load a specific model in LLaMA.cpp server."""
         try:
@@ -203,45 +203,45 @@ class LLaMACppProvider(ModelProvider):
                 "numa": self.config.numa,
                 "embedding": self.config.embedding,
             }
-            
+
             if self.config.grammar_file:
                 payload["grammar_file"] = self.config.grammar_file
-            
+
             response = await self.client.post("/v1/models/load", json=payload)
             response.raise_for_status()
-            
+
             self._model_loaded = True
             return True
-            
+
         except Exception as e:
             raise RuntimeError(f"Failed to load model {model_name}: {e}")
-    
+
     async def get_available_models(self) -> List[ModelInfo]:
         """Get available models."""
         return self._available_models.copy()
-    
+
     async def generate_completion(
         self,
         prompt: str,
         model: Optional[str] = None,
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
-        **kwargs
+        **kwargs,
     ) -> GenerationResult:
         """Generate text completion using LLaMA.cpp."""
         if not self.client:
             raise RuntimeError("LLaMA.cpp provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         # Load model if not already loaded
         if not self._model_loaded:
             await self._load_model(model)
-        
+
         start_time = time.time()
-        
+
         # Prepare request payload
         payload = {
             "model": model,
@@ -257,23 +257,23 @@ class LLaMACppProvider(ModelProvider):
             "mirostat_tau": self.config.mirostat_tau,
             **kwargs,
         }
-        
+
         try:
             response = await self.client.post("/v1/completions", json=payload)
             response.raise_for_status()
-            
+
             result_data = response.json()
             completion = result_data["choices"][0]["text"]
-            
+
             processing_time = (time.time() - start_time) * 1000
             tokens_generated = result_data.get("usage", {}).get("completion_tokens", 0)
-            
+
             # Update metrics
             self._metrics["requests_total"] += 1
             self._metrics["requests_successful"] += 1
             self._metrics["total_tokens_generated"] += tokens_generated
             self._update_average_latency(processing_time)
-            
+
             return GenerationResult(
                 text=completion,
                 tokens_generated=tokens_generated,
@@ -283,12 +283,12 @@ class LLaMACppProvider(ModelProvider):
                 metadata=result_data,
                 finish_reason=result_data["choices"][0].get("finish_reason"),
             )
-            
+
         except Exception as e:
             self._metrics["requests_total"] += 1
             self._metrics["requests_failed"] += 1
             raise RuntimeError(f"LLaMA.cpp completion failed: {e}")
-    
+
     async def generate_chat_completion(
         self,
         messages: List[ChatMessage],
@@ -296,22 +296,22 @@ class LLaMACppProvider(ModelProvider):
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        **kwargs,
     ) -> ChatResult:
         """Generate chat completion using LLaMA.cpp."""
         if not self.client:
             raise RuntimeError("LLaMA.cpp provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         # Load model if not already loaded
         if not self._model_loaded:
             await self._load_model(model)
-        
+
         start_time = time.time()
-        
+
         # Convert messages to LLaMA.cpp format
         llamacpp_messages = []
         for msg in messages:
@@ -319,7 +319,7 @@ class LLaMACppProvider(ModelProvider):
             if msg.name:
                 llamacpp_msg["name"] = msg.name
             llamacpp_messages.append(llamacpp_msg)
-        
+
         # Prepare request payload
         payload = {
             "model": model,
@@ -335,35 +335,35 @@ class LLaMACppProvider(ModelProvider):
             "mirostat_tau": self.config.mirostat_tau,
             **kwargs,
         }
-        
+
         # Note: LLaMA.cpp doesn't support tools natively
         if tools:
             # Could implement a workaround using structured prompts
             pass
-        
+
         try:
             response = await self.client.post("/v1/chat/completions", json=payload)
             response.raise_for_status()
-            
+
             result_data = response.json()
             choice = result_data["choices"][0]
             message_data = choice["message"]
-            
+
             # Convert response message
             response_message = ChatMessage(
                 role=message_data["role"],
                 content=message_data["content"],
             )
-            
+
             processing_time = (time.time() - start_time) * 1000
             tokens_generated = result_data.get("usage", {}).get("completion_tokens", 0)
-            
+
             # Update metrics
             self._metrics["requests_total"] += 1
             self._metrics["requests_successful"] += 1
             self._metrics["total_tokens_generated"] += tokens_generated
             self._update_average_latency(processing_time)
-            
+
             return ChatResult(
                 message=response_message,
                 tokens_generated=tokens_generated,
@@ -373,32 +373,32 @@ class LLaMACppProvider(ModelProvider):
                 metadata=result_data,
                 finish_reason=choice.get("finish_reason"),
             )
-            
+
         except Exception as e:
             self._metrics["requests_total"] += 1
             self._metrics["requests_failed"] += 1
             raise RuntimeError(f"LLaMA.cpp chat completion failed: {e}")
-    
+
     async def stream_completion(
         self,
         prompt: str,
         model: Optional[str] = None,
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncGenerator[str, None]:
         """Stream text completion using LLaMA.cpp."""
         if not self.client:
             raise RuntimeError("LLaMA.cpp provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         # Load model if not already loaded
         if not self._model_loaded:
             await self._load_model(model)
-        
+
         # Prepare request payload
         payload = {
             "model": model,
@@ -414,17 +414,19 @@ class LLaMACppProvider(ModelProvider):
             "mirostat_tau": self.config.mirostat_tau,
             **kwargs,
         }
-        
+
         try:
-            async with self.client.stream("POST", "/v1/completions", json=payload) as response:
+            async with self.client.stream(
+                "POST", "/v1/completions", json=payload
+            ) as response:
                 response.raise_for_status()
-                
+
                 async for line in response.aiter_lines():
                     if line.startswith("data: "):
                         data = line[6:]  # Remove "data: " prefix
                         if data.strip() == "[DONE]":
                             break
-                        
+
                         try:
                             chunk_data = json.loads(data)
                             if "choices" in chunk_data and chunk_data["choices"]:
@@ -433,12 +435,12 @@ class LLaMACppProvider(ModelProvider):
                                     yield delta
                         except json.JSONDecodeError:
                             continue
-                            
+
         except Exception as e:
             self._metrics["requests_total"] += 1
             self._metrics["requests_failed"] += 1
             raise RuntimeError(f"LLaMA.cpp streaming completion failed: {e}")
-    
+
     async def stream_chat_completion(
         self,
         messages: List[ChatMessage],
@@ -446,20 +448,20 @@ class LLaMACppProvider(ModelProvider):
         max_tokens: Optional[int] = None,
         temperature: Optional[float] = None,
         tools: Optional[List[Dict[str, Any]]] = None,
-        **kwargs
+        **kwargs,
     ) -> AsyncGenerator[ChatMessage, None]:
         """Stream chat completion using LLaMA.cpp."""
         if not self.client:
             raise RuntimeError("LLaMA.cpp provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         # Load model if not already loaded
         if not self._model_loaded:
             await self._load_model(model)
-        
+
         # Convert messages to LLaMA.cpp format
         llamacpp_messages = []
         for msg in messages:
@@ -467,7 +469,7 @@ class LLaMACppProvider(ModelProvider):
             if msg.name:
                 llamacpp_msg["name"] = msg.name
             llamacpp_messages.append(llamacpp_msg)
-        
+
         # Prepare request payload
         payload = {
             "model": model,
@@ -483,17 +485,19 @@ class LLaMACppProvider(ModelProvider):
             "mirostat_tau": self.config.mirostat_tau,
             **kwargs,
         }
-        
+
         try:
-            async with self.client.stream("POST", "/v1/chat/completions", json=payload) as response:
+            async with self.client.stream(
+                "POST", "/v1/chat/completions", json=payload
+            ) as response:
                 response.raise_for_status()
-                
+
                 async for line in response.aiter_lines():
                     if line.startswith("data: "):
                         data = line[6:]  # Remove "data: " prefix
                         if data.strip() == "[DONE]":
                             break
-                        
+
                         try:
                             chunk_data = json.loads(data)
                             if "choices" in chunk_data and chunk_data["choices"]:
@@ -506,54 +510,52 @@ class LLaMACppProvider(ModelProvider):
                                     yield message
                         except json.JSONDecodeError:
                             continue
-                            
+
         except Exception as e:
             self._metrics["requests_total"] += 1
             self._metrics["requests_failed"] += 1
             raise RuntimeError(f"LLaMA.cpp streaming chat completion failed: {e}")
-    
+
     async def generate_embedding(
-        self,
-        text: str,
-        model: Optional[str] = None,
-        **kwargs
+        self, text: str, model: Optional[str] = None, **kwargs
     ) -> List[float]:
         """Generate embedding using LLaMA.cpp (if embedding mode is enabled)."""
         if not self.config.embedding:
             raise RuntimeError("Embedding mode not enabled in LLaMA.cpp configuration")
-        
+
         if not self.client:
             raise RuntimeError("LLaMA.cpp provider not initialized")
-        
+
         model = model or self.config.default_model
         if not model:
             raise ValueError("No model specified and no default model configured")
-        
+
         payload = {
             "model": model,
             "input": text,
             **kwargs,
         }
-        
+
         try:
             response = await self.client.post("/v1/embeddings", json=payload)
             response.raise_for_status()
-            
+
             result_data = response.json()
             return result_data["data"][0]["embedding"]
-            
+
         except Exception as e:
             raise RuntimeError(f"LLaMA.cpp embedding generation failed: {e}")
-    
+
     def _update_average_latency(self, latency_ms: float) -> None:
         """Update average latency metric."""
         current_avg = self._metrics["average_latency_ms"]
         total_requests = self._metrics["requests_successful"]
-        
+
         if total_requests == 1:
             self._metrics["average_latency_ms"] = latency_ms
         else:
             # Calculate running average
-            new_avg = ((current_avg * (total_requests - 1)) + latency_ms) / total_requests
+            new_avg = (
+                (current_avg * (total_requests - 1)) + latency_ms
+            ) / total_requests
             self._metrics["average_latency_ms"] = new_avg
-

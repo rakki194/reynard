@@ -183,7 +183,8 @@ class TestTTSService:
 
     @patch("app.services.tts.tts_service.httpx.AsyncClient")
     async def test_synthesize_speech_http_version_not_supported(
-        self, mock_client_class,
+        self,
+        mock_client_class,
     ):
         """Test speech synthesis with HTTP version not supported."""
         # Mock the HTTP client
@@ -275,7 +276,8 @@ class TestTTSService:
 
     @patch("app.services.tts.tts_service.httpx.AsyncClient")
     async def test_synthesize_speech_network_authentication_required(
-        self, mock_client_class,
+        self,
+        mock_client_class,
     ):
         """Test speech synthesis with network authentication required."""
         # Mock the HTTP client
@@ -543,7 +545,8 @@ class TestTTSService:
 
     @patch("app.services.tts.tts_service.httpx.AsyncClient")
     async def test_get_available_voices_http_version_not_supported(
-        self, mock_client_class,
+        self,
+        mock_client_class,
     ):
         """Test voice retrieval with HTTP version not supported."""
         # Mock the HTTP client
@@ -562,7 +565,8 @@ class TestTTSService:
 
     @patch("app.services.tts.tts_service.httpx.AsyncClient")
     async def test_get_available_voices_variant_also_negotiates(
-        self, mock_client_class,
+        self,
+        mock_client_class,
     ):
         """Test voice retrieval with variant also negotiates."""
         # Mock the HTTP client
@@ -632,7 +636,8 @@ class TestTTSService:
 
     @patch("app.services.tts.tts_service.httpx.AsyncClient")
     async def test_get_available_voices_network_authentication_required(
-        self, mock_client_class,
+        self,
+        mock_client_class,
     ):
         """Test voice retrieval with network authentication required."""
         # Mock the HTTP client
@@ -697,7 +702,9 @@ class TestAudioProcessor:
 
         # Convert format
         result = self.processor.convert_format(
-            audio_data, from_format="wav", to_format="mp3",
+            audio_data,
+            from_format="wav",
+            to_format="mp3",
         )
 
         assert result is not None
@@ -713,7 +720,9 @@ class TestAudioProcessor:
 
         # Convert format
         result = self.processor.convert_format(
-            audio_data, from_format="wav", to_format="wav",
+            audio_data,
+            from_format="wav",
+            to_format="wav",
         )
 
         assert result is not None
@@ -728,7 +737,9 @@ class TestAudioProcessor:
         audio_data = b""
         with pytest.raises(ValueError):
             self.processor.convert_format(
-                audio_data, from_format="wav", to_format="mp3",
+                audio_data,
+                from_format="wav",
+                to_format="mp3",
             )
 
     def test_convert_format_invalid_from_format(self):
@@ -737,7 +748,9 @@ class TestAudioProcessor:
         audio_data = b"fake audio data"
         with pytest.raises(ValueError):
             self.processor.convert_format(
-                audio_data, from_format="invalid", to_format="mp3",
+                audio_data,
+                from_format="invalid",
+                to_format="mp3",
             )
 
     def test_convert_format_invalid_to_format(self):
@@ -746,7 +759,9 @@ class TestAudioProcessor:
         audio_data = b"fake audio data"
         with pytest.raises(ValueError):
             self.processor.convert_format(
-                audio_data, from_format="wav", to_format="invalid",
+                audio_data,
+                from_format="wav",
+                to_format="invalid",
             )
 
     def test_convert_format_unsupported_conversion(self):
@@ -755,7 +770,9 @@ class TestAudioProcessor:
         audio_data = b"fake audio data"
         with pytest.raises(ValueError):
             self.processor.convert_format(
-                audio_data, from_format="wav", to_format="flac",
+                audio_data,
+                from_format="wav",
+                to_format="flac",
             )
 
     def test_convert_format_network_error(self):
@@ -768,7 +785,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_timeout(self):
@@ -781,7 +800,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_server_error(self):
@@ -794,7 +815,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_service_unavailable(self):
@@ -807,7 +830,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_gateway_timeout(self):
@@ -820,7 +845,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_http_version_not_supported(self):
@@ -833,7 +860,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_variant_also_negotiates(self):
@@ -846,7 +875,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_insufficient_storage(self):
@@ -859,7 +890,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_loop_detected(self):
@@ -872,7 +905,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_not_extended(self):
@@ -885,7 +920,9 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )
 
     def test_convert_format_network_authentication_required(self):
@@ -898,5 +935,7 @@ class TestAudioProcessor:
             audio_data = b"fake audio data"
             with pytest.raises(Exception):
                 self.processor.convert_format(
-                    audio_data, from_format="wav", to_format="mp3",
+                    audio_data,
+                    from_format="wav",
+                    to_format="mp3",
                 )

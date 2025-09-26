@@ -1,5 +1,4 @@
-"""Test configuration and fixtures for RAG service tests.
-"""
+"""Test configuration and fixtures for RAG service tests."""
 
 import asyncio
 from unittest.mock import AsyncMock, MagicMock

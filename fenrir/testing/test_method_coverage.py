@@ -32,8 +32,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestMethodCoverage(FenrirTestBase):
-    """*otter curiosity* Test suite focused on calling actual methods for maximum coverage
-    """
+    """*otter curiosity* Test suite focused on calling actual methods for maximum coverage"""
 
     async def test_api_exploits_methods(self):
         """Test API exploits methods for coverage"""

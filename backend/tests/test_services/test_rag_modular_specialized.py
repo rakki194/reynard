@@ -1,20 +1,29 @@
 """Test suite for Modular RAG Specialized Services.
 
-Tests the new modular RAG specialized functionality including monitoring, security, 
+Tests the new modular RAG specialized functionality including monitoring, security,
 evaluation, improvement, and documentation services with the new interface-based architecture.
 """
 
-import pytest
-from unittest.mock import AsyncMock, MagicMock, patch
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Any, Dict, List
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from app.services.rag.services.monitoring.prometheus_monitoring import PrometheusMonitoringService
-from app.services.rag.services.security.access_control_security import AccessControlSecurityService
-from app.services.rag.services.evaluation.model_evaluation import ModelEvaluationService
-from app.services.rag.services.improvement.continuous_improvement import ContinuousImprovementService
-from app.services.rag.services.documentation.auto_documentation import AutoDocumentationService
+import pytest
+
 from app.services.rag.interfaces.base import ServiceStatus
+from app.services.rag.services.documentation.auto_documentation import (
+    AutoDocumentationService,
+)
+from app.services.rag.services.evaluation.model_evaluation import ModelEvaluationService
+from app.services.rag.services.improvement.continuous_improvement import (
+    ContinuousImprovementService,
+)
+from app.services.rag.services.monitoring.prometheus_monitoring import (
+    PrometheusMonitoringService,
+)
+from app.services.rag.services.security.access_control_security import (
+    AccessControlSecurityService,
+)
 
 
 class TestPrometheusMonitoringService:
@@ -39,7 +48,9 @@ class TestPrometheusMonitoringService:
         return PrometheusMonitoringService(config)
 
     @pytest.mark.asyncio
-    async def test_monitoring_service_initialization(self, monitoring_service: PrometheusMonitoringService):
+    async def test_monitoring_service_initialization(
+        self, monitoring_service: PrometheusMonitoringService
+    ):
         """Test monitoring service initialization."""
         result = await monitoring_service.initialize()
         assert result is True
@@ -49,9 +60,11 @@ class TestPrometheusMonitoringService:
     async def test_record_metric(self, monitoring_service: PrometheusMonitoringService):
         """Test recording performance metrics."""
         await monitoring_service.initialize()
-        
+
         await monitoring_service.record_metric(
-            "latency", 150.0, {"operation": "search"},
+            "latency",
+            150.0,
+            {"operation": "search"},
         )
 
         # Verify metric was recorded
@@ -59,7 +72,9 @@ class TestPrometheusMonitoringService:
         assert "metrics" in stats
 
     @pytest.mark.asyncio
-    async def test_get_health_status(self, monitoring_service: PrometheusMonitoringService):
+    async def test_get_health_status(
+        self, monitoring_service: PrometheusMonitoringService
+    ):
         """Test getting health status."""
         await monitoring_service.initialize()
         health = await monitoring_service.get_health_status()
@@ -69,7 +84,9 @@ class TestPrometheusMonitoringService:
         assert "last_updated" in health
 
     @pytest.mark.asyncio
-    async def test_get_performance_summary(self, monitoring_service: PrometheusMonitoringService):
+    async def test_get_performance_summary(
+        self, monitoring_service: PrometheusMonitoringService
+    ):
         """Test getting performance summary."""
         await monitoring_service.initialize()
         summary = await monitoring_service.get_performance_summary(hours=24)
@@ -79,7 +96,9 @@ class TestPrometheusMonitoringService:
         assert "alerts" in summary
 
     @pytest.mark.asyncio
-    async def test_generate_report(self, monitoring_service: PrometheusMonitoringService):
+    async def test_generate_report(
+        self, monitoring_service: PrometheusMonitoringService
+    ):
         """Test generating performance report."""
         await monitoring_service.initialize()
         report = await monitoring_service.generate_report("performance", hours=24)
@@ -87,7 +106,9 @@ class TestPrometheusMonitoringService:
         assert isinstance(report, str)
         assert len(report) > 0
 
-    def test_get_prometheus_metrics(self, monitoring_service: PrometheusMonitoringService):
+    def test_get_prometheus_metrics(
+        self, monitoring_service: PrometheusMonitoringService
+    ):
         """Test getting Prometheus metrics."""
         metrics = monitoring_service.get_prometheus_metrics()
         assert isinstance(metrics, str)
@@ -138,7 +159,9 @@ class TestAccessControlSecurityService:
         return AccessControlSecurityService(config)
 
     @pytest.mark.asyncio
-    async def test_security_service_initialization(self, security_service: AccessControlSecurityService):
+    async def test_security_service_initialization(
+        self, security_service: AccessControlSecurityService
+    ):
         """Test security service initialization."""
         result = await security_service.initialize()
         assert result is True
@@ -148,7 +171,7 @@ class TestAccessControlSecurityService:
     async def test_encrypt_data(self, security_service: AccessControlSecurityService):
         """Test data encryption."""
         await security_service.initialize()
-        
+
         test_data = "Sensitive information"
         access_level = "confidential"
 
@@ -160,7 +183,7 @@ class TestAccessControlSecurityService:
     async def test_decrypt_data(self, security_service: AccessControlSecurityService):
         """Test data decryption."""
         await security_service.initialize()
-        
+
         test_data = "Sensitive information"
         access_level = "confidential"
 
@@ -169,17 +192,22 @@ class TestAccessControlSecurityService:
         assert decrypted == test_data
 
     @pytest.mark.asyncio
-    async def test_check_access_permission(self, security_service: AccessControlSecurityService):
+    async def test_check_access_permission(
+        self, security_service: AccessControlSecurityService
+    ):
         """Test access permission checking."""
         await security_service.initialize()
-        
+
         user_id = "test_user"
         operation = "read"
         resource_type = "document"
         access_level = "internal"
 
         has_permission = await security_service.check_access_permission(
-            user_id, operation, resource_type, access_level,
+            user_id,
+            operation,
+            resource_type,
+            access_level,
         )
         assert isinstance(has_permission, bool)
 
@@ -187,14 +215,17 @@ class TestAccessControlSecurityService:
     async def test_get_audit_logs(self, security_service: AccessControlSecurityService):
         """Test getting audit logs."""
         await security_service.initialize()
-        
+
         logs = await security_service.get_audit_logs(
-            user_id="test_user", hours=24,
+            user_id="test_user",
+            hours=24,
         )
         assert isinstance(logs, list)
 
     @pytest.mark.asyncio
-    async def test_get_security_report(self, security_service: AccessControlSecurityService):
+    async def test_get_security_report(
+        self, security_service: AccessControlSecurityService
+    ):
         """Test security report generation."""
         await security_service.initialize()
         report = await security_service.get_security_report()
@@ -263,10 +294,10 @@ class TestModelEvaluationService:
 
     @pytest.fixture
     def model_evaluator(
-        self, 
+        self,
         config: Dict[str, Any],
         mock_embedding_service: AsyncMock,
-        mock_vector_store_service: AsyncMock
+        mock_vector_store_service: AsyncMock,
     ) -> ModelEvaluationService:
         """Create model evaluator instance."""
         evaluator = ModelEvaluationService(config)
@@ -274,7 +305,9 @@ class TestModelEvaluationService:
         return evaluator
 
     @pytest.mark.asyncio
-    async def test_model_evaluator_initialization(self, model_evaluator: ModelEvaluationService):
+    async def test_model_evaluator_initialization(
+        self, model_evaluator: ModelEvaluationService
+    ):
         """Test model evaluator initialization."""
         result = await model_evaluator.initialize()
         assert result is True
@@ -290,7 +323,9 @@ class TestModelEvaluationService:
         assert len(results) > 0
 
     @pytest.mark.asyncio
-    async def test_benchmark_model_performance(self, model_evaluator: ModelEvaluationService):
+    async def test_benchmark_model_performance(
+        self, model_evaluator: ModelEvaluationService
+    ):
         """Test model performance benchmarking."""
         await model_evaluator.initialize()
         results = await model_evaluator.benchmark_model_performance(
@@ -353,22 +388,28 @@ class TestContinuousImprovementService:
         }
 
     @pytest.fixture
-    def improvement_service(self, config: Dict[str, Any]) -> ContinuousImprovementService:
+    def improvement_service(
+        self, config: Dict[str, Any]
+    ) -> ContinuousImprovementService:
         """Create continuous improvement service instance."""
         return ContinuousImprovementService(config)
 
     @pytest.mark.asyncio
-    async def test_improvement_service_initialization(self, improvement_service: ContinuousImprovementService):
+    async def test_improvement_service_initialization(
+        self, improvement_service: ContinuousImprovementService
+    ):
         """Test continuous improvement service initialization."""
         result = await improvement_service.initialize()
         assert result is True
         assert improvement_service.status == ServiceStatus.HEALTHY
 
     @pytest.mark.asyncio
-    async def test_create_experiment(self, improvement_service: ContinuousImprovementService):
+    async def test_create_experiment(
+        self, improvement_service: ContinuousImprovementService
+    ):
         """Test A/B testing experiment creation."""
         await improvement_service.initialize()
-        
+
         experiment_id = await improvement_service.create_experiment(
             name="Test Experiment",
             description="Testing new embedding model",
@@ -382,10 +423,12 @@ class TestContinuousImprovementService:
         assert experiment_id is not None
 
     @pytest.mark.asyncio
-    async def test_start_experiment(self, improvement_service: ContinuousImprovementService):
+    async def test_start_experiment(
+        self, improvement_service: ContinuousImprovementService
+    ):
         """Test starting an A/B testing experiment."""
         await improvement_service.initialize()
-        
+
         # Create experiment first
         experiment_id = await improvement_service.create_experiment(
             name="Test Experiment",
@@ -401,10 +444,12 @@ class TestContinuousImprovementService:
         assert success is True
 
     @pytest.mark.asyncio
-    async def test_collect_feedback(self, improvement_service: ContinuousImprovementService):
+    async def test_collect_feedback(
+        self, improvement_service: ContinuousImprovementService
+    ):
         """Test user feedback collection."""
         await improvement_service.initialize()
-        
+
         feedback_id = await improvement_service.collect_feedback(
             user_id="user1",
             query="machine learning algorithm",
@@ -417,15 +462,21 @@ class TestContinuousImprovementService:
         assert feedback_id is not None
 
     @pytest.mark.asyncio
-    async def test_generate_optimization_recommendations(self, improvement_service: ContinuousImprovementService):
+    async def test_generate_optimization_recommendations(
+        self, improvement_service: ContinuousImprovementService
+    ):
         """Test optimization recommendations generation."""
         await improvement_service.initialize()
-        recommendations = await improvement_service.generate_optimization_recommendations()
+        recommendations = (
+            await improvement_service.generate_optimization_recommendations()
+        )
 
         assert isinstance(recommendations, list)
 
     @pytest.mark.asyncio
-    async def test_health_check(self, improvement_service: ContinuousImprovementService):
+    async def test_health_check(
+        self, improvement_service: ContinuousImprovementService
+    ):
         """Test continuous improvement service health check."""
         await improvement_service.initialize()
         health = await improvement_service.health_check()
@@ -469,14 +520,18 @@ class TestAutoDocumentationService:
         return AutoDocumentationService(config)
 
     @pytest.mark.asyncio
-    async def test_documentation_service_initialization(self, documentation_service: AutoDocumentationService):
+    async def test_documentation_service_initialization(
+        self, documentation_service: AutoDocumentationService
+    ):
         """Test documentation service initialization."""
         result = await documentation_service.initialize()
         assert result is True
         assert documentation_service.status == ServiceStatus.HEALTHY
 
     @pytest.mark.asyncio
-    async def test_generate_user_documentation(self, documentation_service: AutoDocumentationService):
+    async def test_generate_user_documentation(
+        self, documentation_service: AutoDocumentationService
+    ):
         """Test user documentation generation."""
         await documentation_service.initialize()
         doc = await documentation_service.generate_user_documentation()
@@ -485,7 +540,9 @@ class TestAutoDocumentationService:
         assert len(doc) > 0
 
     @pytest.mark.asyncio
-    async def test_generate_api_reference(self, documentation_service: AutoDocumentationService):
+    async def test_generate_api_reference(
+        self, documentation_service: AutoDocumentationService
+    ):
         """Test API reference generation."""
         await documentation_service.initialize()
         doc = await documentation_service.generate_api_reference()
@@ -494,7 +551,9 @@ class TestAutoDocumentationService:
         assert len(doc) > 0
 
     @pytest.mark.asyncio
-    async def test_generate_developer_guide(self, documentation_service: AutoDocumentationService):
+    async def test_generate_developer_guide(
+        self, documentation_service: AutoDocumentationService
+    ):
         """Test developer guide generation."""
         await documentation_service.initialize()
         doc = await documentation_service.generate_developer_guide()
@@ -503,7 +562,9 @@ class TestAutoDocumentationService:
         assert len(doc) > 0
 
     @pytest.mark.asyncio
-    async def test_generate_troubleshooting_guide(self, documentation_service: AutoDocumentationService):
+    async def test_generate_troubleshooting_guide(
+        self, documentation_service: AutoDocumentationService
+    ):
         """Test troubleshooting guide generation."""
         await documentation_service.initialize()
         doc = await documentation_service.generate_troubleshooting_guide()
@@ -512,7 +573,9 @@ class TestAutoDocumentationService:
         assert len(doc) > 0
 
     @pytest.mark.asyncio
-    async def test_generate_training_materials(self, documentation_service: AutoDocumentationService):
+    async def test_generate_training_materials(
+        self, documentation_service: AutoDocumentationService
+    ):
         """Test comprehensive training materials generation."""
         await documentation_service.initialize()
         materials = await documentation_service.generate_training_materials()
@@ -523,7 +586,9 @@ class TestAutoDocumentationService:
         assert "troubleshooting" in materials
 
     @pytest.mark.asyncio
-    async def test_save_documentation(self, documentation_service: AutoDocumentationService, tmp_path):
+    async def test_save_documentation(
+        self, documentation_service: AutoDocumentationService, tmp_path
+    ):
         """Test saving documentation to files."""
         await documentation_service.initialize()
         output_dir = str(tmp_path / "docs")
@@ -592,14 +657,19 @@ class TestModularRAGSpecializedIntegration:
 
         # Test performance monitoring
         await monitoring_service.record_metric(
-            "latency", 150.0, {"operation": "search"},
+            "latency",
+            150.0,
+            {"operation": "search"},
         )
         stats = await monitoring_service.get_monitoring_stats()
         assert "metrics" in stats
 
         # Test security
         has_permission = await security_service.check_access_permission(
-            "user1", "read", "document", "public",
+            "user1",
+            "read",
+            "document",
+            "public",
         )
         assert isinstance(has_permission, bool)
 
@@ -643,7 +713,7 @@ class TestModularRAGSpecializedIntegration:
         # Test initialization failure
         with patch.object(monitoring_service, '_setup_prometheus') as mock_setup:
             mock_setup.side_effect = Exception("Prometheus setup failed")
-            
+
             result = await monitoring_service.initialize()
             assert result is False
             assert monitoring_service.status == ServiceStatus.ERROR
@@ -651,7 +721,7 @@ class TestModularRAGSpecializedIntegration:
         # Test recovery
         with patch.object(monitoring_service, '_setup_prometheus') as mock_setup:
             mock_setup.return_value = None
-            
+
             result = await monitoring_service.initialize()
             assert result is True
             assert monitoring_service.status == ServiceStatus.HEALTHY
@@ -667,12 +737,17 @@ class TestModularRAGSpecializedIntegration:
 
         # Test that monitoring can track security operations
         await security_service.check_access_permission(
-            "user1", "read", "document", "public",
+            "user1",
+            "read",
+            "document",
+            "public",
         )
 
         # Record a security-related metric
         await monitoring_service.record_metric(
-            "security_operation", 1.0, {"operation": "access_check"},
+            "security_operation",
+            1.0,
+            {"operation": "access_check"},
         )
 
         # Verify metrics were recorded

@@ -1,5 +1,5 @@
 import { createSignal, createEffect, For } from "solid-js";
-import { Button, Card, TextField, Toggle } from "reynard-components";
+import { Button, Card, TextField, Toggle } from "reynard-primitives";
 import {
   useLocalStorage,
   useDebounce,
@@ -7,9 +7,8 @@ import {
   formatDateTime,
   formatNumber,
   formatCurrency,
-  isValidEmail,
-  isValidUrl,
 } from "reynard-core";
+import { validateEmail, validateUrl } from "reynard-validation";
 import { useTheme, getAvailableThemes, type ThemeName } from "reynard-themes";
 
 export function CoreDemo() {
@@ -52,8 +51,13 @@ export function CoreDemo() {
   // Create effect for validation
   createEffect(() => {
     const emailValue = email();
-    if (emailValue && !isValidEmail(emailValue)) {
-      setEmailError("Please enter a valid email address");
+    if (emailValue) {
+      const result = validateEmail(emailValue);
+      if (!result.isValid) {
+        setEmailError(result.error || "Please enter a valid email address");
+      } else {
+        setEmailError("");
+      }
     } else {
       setEmailError("");
     }
@@ -61,8 +65,13 @@ export function CoreDemo() {
 
   createEffect(() => {
     const urlValue = url();
-    if (urlValue && !isValidUrl(urlValue)) {
-      setUrlError("Please enter a valid URL");
+    if (urlValue) {
+      const result = validateUrl(urlValue);
+      if (!result.isValid) {
+        setUrlError(result.error || "Please enter a valid URL");
+      } else {
+        setUrlError("");
+      }
     } else {
       setUrlError("");
     }

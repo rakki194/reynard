@@ -3,7 +3,7 @@
  */
 
 import { Component, For, createSignal } from "solid-js";
-import { Card, Tabs, TabPanel } from "reynard-components-core";
+import { Card, Tabs, TabPanel } from "reynard-primitives";
 import "./GamificationPanel.css";
 
 interface Achievement {

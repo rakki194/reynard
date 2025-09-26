@@ -217,7 +217,8 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
 
             # Load model and processor in executor to avoid blocking
             await asyncio.get_event_loop().run_in_executor(
-                None, self._load_model_and_processor,
+                None,
+                self._load_model_and_processor,
             )
 
             self._is_loaded = True
@@ -255,7 +256,10 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
 
             # Generate caption using self-contained implementation
             caption = await asyncio.get_event_loop().run_in_executor(
-                None, self._generate_caption, str(image_path), config,
+                None,
+                self._generate_caption,
+                str(image_path),
+                config,
             )
 
             return caption
@@ -350,7 +354,8 @@ class JoyCaptionGenerator(CaptionGeneratorBase):
 
         # Decode the generated text
         generated_text = self._processor.batch_decode(
-            generated_ids, skip_special_tokens=True,
+            generated_ids,
+            skip_special_tokens=True,
         )[0]
 
         # Extract caption from the generated text

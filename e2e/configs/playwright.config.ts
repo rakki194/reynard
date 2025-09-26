@@ -10,6 +10,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import { detectAuthAppPort } from "../core/config/port-detector";
 import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
+import { getE2EDir, getExampleAppPath } from "../core/utils/project-root";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -100,13 +101,13 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: "cd backend && ./start.sh",
+      command: `cd ${getE2EDir()}/backend && ./start.sh`,
       url: "http://localhost:8000",
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000,
     },
     {
-      command: "cd ../examples/auth-app && E2E_BACKEND_URL=http://localhost:8000 pnpm run dev",
+      command: `cd ${getExampleAppPath("auth-app")} && E2E_BACKEND_URL=http://localhost:8000 pnpm run dev`,
       url: `http://localhost:${detectAuthAppPort()}`,
       reuseExistingServer: !process.env.CI,
       timeout: 120 * 1000,
@@ -122,7 +123,7 @@ export default defineConfig({
   },
 
   /* Output directory for test artifacts */
-  outputDir: resultsManager.getOutputDir(),
+  outputDir: resultsPaths.artifactsDir,
 
   /* Global setup and teardown */
   globalSetup: "../core/setup/global-setup.ts",

@@ -111,7 +111,7 @@ export default defineConfig({
   },
 
   /* Output directory for test artifacts */
-  outputDir: resultsManager.getOutputDir(),
+  outputDir: resultsPaths.artifactsDir,
 
   /* Global setup and teardown */
   globalSetup: "../core/setup/benchmark-setup.ts",

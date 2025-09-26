@@ -20,8 +20,8 @@ import pytest
 
 from app.config.continuous_indexing_config import continuous_indexing_config
 from app.services.infrastructure.continuous_indexing import (
-    FileChangeHandler,
     ContinuousIndexingService,
+    FileChangeHandler,
     IndexingConfig,
 )
 
@@ -67,7 +67,7 @@ class TestContinuousIndexingService:
             enable_metadata_extraction=True,
             auto_cleanup_days=30,
         )
-        
+
         service = ContinuousIndexingService(config, str(temp_dir))
         return service
 
@@ -78,13 +78,13 @@ class TestContinuousIndexingService:
         assert indexing_service is not None
         assert hasattr(indexing_service, 'start_monitoring')
         assert hasattr(indexing_service, 'stop_monitoring')
-        
+
         # Test that the service can start monitoring
         await indexing_service.start_monitoring()
         assert indexing_service.file_handler is not None
         assert indexing_service.observer is not None
         assert indexing_service.is_monitoring is True
-        
+
         # Clean up
         await indexing_service.stop_monitoring()
 
@@ -98,11 +98,15 @@ class TestContinuousIndexingService:
 
     @pytest.mark.asyncio
     async def test_service_initialization_invalid_config(
-        self, service_config, temp_dir,
+        self,
+        service_config,
+        temp_dir,
     ):
         """🐼 Test service initialization with invalid configuration."""
         with patch.object(
-            continuous_indexing_config, "validate", return_value=["Invalid config"],
+            continuous_indexing_config,
+            "validate",
+            return_value=["Invalid config"],
         ):
             service = ContinuousIndexingService(service_config)
             result = await service.initialize()
@@ -156,7 +160,10 @@ class TestContinuousIndexingService:
 
     @pytest.mark.asyncio
     async def test_index_files_with_rag_service(
-        self, indexing_service, mock_rag_service, temp_dir,
+        self,
+        indexing_service,
+        mock_rag_service,
+        temp_dir,
     ):
         """🐼 Test indexing files with RAG service."""
         indexing_service.set_rag_service(mock_rag_service)
@@ -170,7 +177,9 @@ class TestContinuousIndexingService:
 
         # Patch the watch root to match our test directory
         with patch.object(
-            continuous_indexing_config, "watch_root", "/home/kade/test_project",
+            continuous_indexing_config,
+            "watch_root",
+            "/home/kade/test_project",
         ):
             # Test indexing
             await indexing_service.index_files([test_file1, test_file2])
@@ -204,7 +213,9 @@ class TestContinuousIndexingService:
 
         # Patch the watch root to match our test directory
         with patch.object(
-            continuous_indexing_config, "watch_root", "/home/kade/test_project",
+            continuous_indexing_config,
+            "watch_root",
+            "/home/kade/test_project",
         ):
             doc = await indexing_service._create_document_from_file(test_file)
 
@@ -299,7 +310,9 @@ class TestFileChangeHandler:
 
         # Mock the config
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True,
+            continuous_indexing_config,
+            "should_watch_file",
+            return_value=True,
         ):
             with patch.object(continuous_indexing_config, "debounce_seconds", 0.1):
                 change_handler.on_modified(event)
@@ -325,7 +338,9 @@ class TestFileChangeHandler:
         event.src_path = "/test/newfile.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True,
+            continuous_indexing_config,
+            "should_watch_file",
+            return_value=True,
         ):
             change_handler.on_created(event)
 
@@ -339,7 +354,9 @@ class TestFileChangeHandler:
         event.src_path = "/test/deleted.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True,
+            continuous_indexing_config,
+            "should_watch_file",
+            return_value=True,
         ):
             change_handler.on_deleted(event)
 
@@ -355,7 +372,9 @@ class TestFileChangeHandler:
         event.src_path = "/test/file.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True,
+            continuous_indexing_config,
+            "should_watch_file",
+            return_value=True,
         ):
             change_handler.on_modified(event)
 
@@ -369,7 +388,9 @@ class TestFileChangeHandler:
         event.src_path = "/test/file.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=False,
+            continuous_indexing_config,
+            "should_watch_file",
+            return_value=False,
         ):
             change_handler.on_modified(event)
 
@@ -383,7 +404,9 @@ class TestFileChangeHandler:
         event.src_path = "/test/file.py"
 
         with patch.object(
-            continuous_indexing_config, "should_watch_file", return_value=True,
+            continuous_indexing_config,
+            "should_watch_file",
+            return_value=True,
         ):
             with patch.object(continuous_indexing_config, "debounce_seconds", 1.0):
                 # First change
@@ -471,7 +494,9 @@ class TestContinuousIndexingIntegration:
         }
 
         with patch.object(
-            continuous_indexing_config, "watch_root", "/home/kade/test_project",
+            continuous_indexing_config,
+            "watch_root",
+            "/home/kade/test_project",
         ):
             with patch.object(continuous_indexing_config, "enabled", True):
                 service = ContinuousIndexingService(service_config)
@@ -518,7 +543,9 @@ class PandaTestUtils:
 
     @staticmethod
     def create_bamboo_file(
-        temp_dir: Path, name: str, content: str = "🐼 *munches bamboo*",
+        temp_dir: Path,
+        name: str,
+        content: str = "🐼 *munches bamboo*",
     ) -> Path:
         """Create a test file with panda-themed content."""
         file_path = temp_dir / name
@@ -527,7 +554,8 @@ class PandaTestUtils:
 
     @staticmethod
     def assert_panda_spirit(
-        test_result: bool, message: str = "Panda spirit not detected",
+        test_result: bool,
+        message: str = "Panda spirit not detected",
     ):
         """Assert with panda spirit."""
         assert test_result, f"🐼 {message}"

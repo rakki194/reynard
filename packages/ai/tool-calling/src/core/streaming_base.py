@@ -61,7 +61,10 @@ class StreamingToolExecutionContext(ToolExecutionContext):
         if self._progress_callback:
             try:
                 await self._progress_callback(
-                    progress, status, message, intermediate_data,
+                    progress,
+                    status,
+                    message,
+                    intermediate_data,
                 )
             except Exception as e:
                 logger.error(f"Error in progress callback: {e}")
@@ -107,7 +110,9 @@ class StreamingBaseTool(BaseTool, ABC):
 
     @abstractmethod
     async def execute_streaming(
-        self, context: StreamingToolExecutionContext, **params,
+        self,
+        context: StreamingToolExecutionContext,
+        **params,
     ) -> AsyncGenerator[StreamingToolResult]:
         """Execute the tool with streaming progress updates.
 
@@ -151,11 +156,14 @@ class StreamingBaseTool(BaseTool, ABC):
             final_result = result
 
         return final_result or StreamingToolResult(
-            success=False, error="No result generated",
+            success=False,
+            error="No result generated",
         )
 
     async def execute_with_timeout(
-        self, context: ToolExecutionContext, **params,
+        self,
+        context: ToolExecutionContext,
+        **params,
     ) -> ToolResult:
         """Execute tool with timeout handling, supporting streaming.
 
@@ -171,7 +179,8 @@ class StreamingBaseTool(BaseTool, ABC):
 
         try:
             return await asyncio.wait_for(
-                self.execute(context, **params), timeout=timeout,
+                self.execute(context, **params),
+                timeout=timeout,
             )
         except TimeoutError:
             from .exceptions import ToolTimeoutError
@@ -180,8 +189,7 @@ class StreamingBaseTool(BaseTool, ABC):
 
 
 class ProgressReportingMixin:
-    """Mixin that provides progress reporting utilities for streaming tools.
-    """
+    """Mixin that provides progress reporting utilities for streaming tools."""
 
     async def report_initialization_progress(
         self,
@@ -202,7 +210,10 @@ class ProgressReportingMixin:
     ):
         """Report processing progress."""
         await context.report_progress(
-            progress, "processing", message, intermediate_data,
+            progress,
+            "processing",
+            message,
+            intermediate_data,
         )
 
     async def report_finalization_progress(

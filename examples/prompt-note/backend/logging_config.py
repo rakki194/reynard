@@ -15,12 +15,14 @@ class LoggingConfig:
     def __init__(self):
         self.log_level = os.getenv("LOG_LEVEL", "INFO").upper()
         self.log_format = os.getenv(
-            "LOG_FORMAT", "detailed",
+            "LOG_FORMAT",
+            "detailed",
         )  # default, access, detailed, json
         self.log_to_file = os.getenv("LOG_TO_FILE", "true").lower() == "true"
         self.log_file_path = os.getenv("LOG_FILE_PATH", "logs/reynard-backend.log")
         self.log_error_file_path = os.getenv(
-            "LOG_ERROR_FILE_PATH", "logs/reynard-errors.log",
+            "LOG_ERROR_FILE_PATH",
+            "logs/reynard-errors.log",
         )
         self.log_max_bytes = int(os.getenv("LOG_MAX_BYTES", "10485760"))  # 10MB
         self.log_backup_count = int(os.getenv("LOG_BACKUP_COUNT", "5"))

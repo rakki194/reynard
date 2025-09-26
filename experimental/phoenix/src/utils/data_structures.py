@@ -459,7 +459,9 @@ def calculate_genetic_compatibility(agent1: AgentState, agent2: AgentState) -> f
 
 
 def create_offspring_traits(
-    parent1: AgentState, parent2: AgentState, mutation_rate: float = 0.1,
+    parent1: AgentState,
+    parent2: AgentState,
+    mutation_rate: float = 0.1,
 ) -> dict[str, dict[str, float]]:
     """Create offspring traits by inheriting from both parents with mutation."""
     import random
@@ -494,7 +496,8 @@ def create_offspring_traits(
             # Inherit from parent1 with mutation
             mutation = random.gauss(0, mutation_rate)
             final_value = max(
-                0.0, min(1.0, parent1.personality_traits[trait_name] + mutation),
+                0.0,
+                min(1.0, parent1.personality_traits[trait_name] + mutation),
             )
             offspring_traits["personality"][trait_name] = final_value
 
@@ -511,7 +514,8 @@ def create_offspring_traits(
         else:
             mutation = random.gauss(0, mutation_rate)
             final_value = max(
-                0.0, min(1.0, parent1.physical_traits[trait_name] + mutation),
+                0.0,
+                min(1.0, parent1.physical_traits[trait_name] + mutation),
             )
             offspring_traits["physical"][trait_name] = final_value
 
@@ -527,7 +531,8 @@ def create_offspring_traits(
         else:
             mutation = random.gauss(0, mutation_rate)
             final_value = max(
-                0.0, min(1.0, parent1.ability_traits[trait_name] + mutation),
+                0.0,
+                min(1.0, parent1.ability_traits[trait_name] + mutation),
             )
             offspring_traits["abilities"][trait_name] = final_value
 

@@ -1,2 +1,1 @@
-"""Validation scripts for Reynard framework.
-"""
+"""Validation scripts for Reynard framework."""

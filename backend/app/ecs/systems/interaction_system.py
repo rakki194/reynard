@@ -64,7 +64,8 @@ class InteractionSystem(System):
     def _process_interactions(self, delta_time: float) -> None:
         """Process potential interactions between agents."""
         entities = self.get_entities_with_components(
-            InteractionComponent, PositionComponent,
+            InteractionComponent,
+            PositionComponent,
         )
 
         # Find agents in proximity
@@ -95,7 +96,10 @@ class InteractionSystem(System):
         return distance <= self.interaction_range
 
     def _evaluate_interaction_opportunity(
-        self, agent1: Any, agent2: Any, delta_time: float,
+        self,
+        agent1: Any,
+        agent2: Any,
+        delta_time: float,
     ) -> None:
         """Evaluate and potentially initiate interaction between agents."""
         interaction_comp1 = agent1.get_component(InteractionComponent)
@@ -110,7 +114,9 @@ class InteractionSystem(System):
 
         # Calculate interaction probability
         probability = self._calculate_interaction_probability(
-            agent1, agent2, delta_time,
+            agent1,
+            agent2,
+            delta_time,
         )
 
         # Roll for interaction
@@ -118,7 +124,10 @@ class InteractionSystem(System):
             self._initiate_interaction(agent1, agent2)
 
     def _calculate_interaction_probability(
-        self, agent1: Any, agent2: Any, delta_time: float,
+        self,
+        agent1: Any,
+        agent2: Any,
+        delta_time: float,
     ) -> float:
         """Calculate the probability of interaction between two agents."""
         base_probability = self.interaction_probability_base * delta_time
@@ -171,7 +180,9 @@ class InteractionSystem(System):
 
         # Calculate relationship impact
         relationship_impact = self._calculate_relationship_impact(
-            agent1, agent2, outcome,
+            agent1,
+            agent2,
+            outcome,
         )
 
         # Create interaction record
@@ -229,7 +240,10 @@ class InteractionSystem(System):
         return InteractionType.SOCIAL
 
     def _generate_interaction_content(
-        self, agent1: Any, agent2: Any, interaction_type: InteractionType,
+        self,
+        agent1: Any,
+        agent2: Any,
+        interaction_type: InteractionType,
     ) -> str:
         """Generate content for an interaction."""
         # This would typically use AI or templates to generate realistic content
@@ -239,7 +253,10 @@ class InteractionSystem(System):
         )
 
     def _calculate_interaction_outcome(
-        self, agent1: Any, agent2: Any, interaction_type: InteractionType,
+        self,
+        agent1: Any,
+        agent2: Any,
+        interaction_type: InteractionType,
     ) -> InteractionOutcome:
         """Calculate the outcome of an interaction."""
         # Get trait components
@@ -274,7 +291,9 @@ class InteractionSystem(System):
         return InteractionOutcome.FAILURE
 
     def _calculate_trait_compatibility(
-        self, traits1: TraitComponent, traits2: TraitComponent,
+        self,
+        traits1: TraitComponent,
+        traits2: TraitComponent,
     ) -> float:
         """Calculate compatibility between two agents based on traits."""
         # Calculate compatibility for key traits
@@ -290,7 +309,10 @@ class InteractionSystem(System):
         return total_compatibility
 
     def _calculate_relationship_impact(
-        self, agent1: Any, agent2: Any, outcome: InteractionOutcome,
+        self,
+        agent1: Any,
+        agent2: Any,
+        outcome: InteractionOutcome,
     ) -> float:
         """Calculate the impact of an interaction on the relationship."""
         base_impact = 0.0
@@ -318,7 +340,10 @@ class InteractionSystem(System):
         return base_impact
 
     def _update_relationships_from_interaction(
-        self, agent1: Any, agent2: Any, interaction: Interaction,
+        self,
+        agent1: Any,
+        agent2: Any,
+        interaction: Interaction,
     ) -> None:
         """Update relationships based on interaction outcome."""
         interaction_comp1 = agent1.get_component(InteractionComponent)
@@ -399,7 +424,9 @@ class InteractionSystem(System):
         return True
 
     def get_agent_interactions(
-        self, agent_id: str, limit: int = 10,
+        self,
+        agent_id: str,
+        limit: int = 10,
     ) -> list[Interaction]:
         """Get recent interactions for a specific agent."""
         entity = self.world.get_entity(agent_id)

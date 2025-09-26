@@ -12,14 +12,13 @@ Version: 1.0.0
 
 import json
 import logging
-from datetime import datetime, UTC
+from datetime import UTC, datetime
 from typing import Any, Dict, List, Optional, Set
 
 from sqlalchemy import and_, desc, func, or_
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.database import get_db_session
-import logging
 from app.models.mcp.tool_config import (
     Tool,
     ToolCategory,
@@ -51,10 +50,10 @@ class ToolConfigService:
         db = self._get_db_session()
         try:
             query = db.query(Tool).options(joinedload(Tool.category))
-            
+
             if not include_disabled:
                 query = query.filter(Tool.enabled == True)
-            
+
             tools = query.order_by(Tool.name).all()
             return [tool.to_dict() for tool in tools]
         except Exception as e:
@@ -68,7 +67,12 @@ class ToolConfigService:
         """Get a specific tool by name."""
         db = self._get_db_session()
         try:
-            tool = db.query(Tool).options(joinedload(Tool.category)).filter(Tool.name == name).first()
+            tool = (
+                db.query(Tool)
+                .options(joinedload(Tool.category))
+                .filter(Tool.name == name)
+                .first()
+            )
             return tool.to_dict() if tool else None
         except Exception as e:
             logger.error(f"Failed to get tool {name}: {e}")
@@ -77,17 +81,22 @@ class ToolConfigService:
             if not self.db_session:
                 db.close()
 
-    def get_tools_by_category(self, category: str, include_disabled: bool = False) -> List[Dict[str, Any]]:
+    def get_tools_by_category(
+        self, category: str, include_disabled: bool = False
+    ) -> List[Dict[str, Any]]:
         """Get tools by category."""
         db = self._get_db_session()
         try:
-            query = db.query(Tool).options(joinedload(Tool.category)).join(ToolCategory).filter(
-                ToolCategory.name == ToolCategoryEnum(category.upper())
+            query = (
+                db.query(Tool)
+                .options(joinedload(Tool.category))
+                .join(ToolCategory)
+                .filter(ToolCategory.name == ToolCategoryEnum(category.upper()))
             )
-            
+
             if not include_disabled:
                 query = query.filter(Tool.enabled == True)
-            
+
             tools = query.order_by(Tool.name).all()
             return [tool.to_dict() for tool in tools]
         except Exception as e:
@@ -123,7 +132,9 @@ class ToolConfigService:
             if not self.db_session:
                 db.close()
 
-    def enable_tool(self, name: str, changed_by: str = "system") -> Optional[Dict[str, Any]]:
+    def enable_tool(
+        self, name: str, changed_by: str = "system"
+    ) -> Optional[Dict[str, Any]]:
         """Enable a tool."""
         db = self._get_db_session()
         try:
@@ -131,17 +142,19 @@ class ToolConfigService:
             if not tool:
                 logger.warning(f"Tool {name} not found")
                 return None
-            
+
             if tool.enabled:
                 return tool.to_dict()  # Already enabled
-            
+
             # Record history
-            self._record_change(db, tool, "enabled", {"enabled": False}, {"enabled": True}, changed_by)
-            
+            self._record_change(
+                db, tool, "enabled", {"enabled": False}, {"enabled": True}, changed_by
+            )
+
             tool.enabled = True
             tool.updated_at = datetime.now(UTC)
             db.commit()
-            
+
             logger.info(f"Enabled tool: {name}")
             return tool.to_dict()
         except Exception as e:
@@ -152,7 +165,9 @@ class ToolConfigService:
             if not self.db_session:
                 db.close()
 
-    def disable_tool(self, name: str, changed_by: str = "system") -> Optional[Dict[str, Any]]:
+    def disable_tool(
+        self, name: str, changed_by: str = "system"
+    ) -> Optional[Dict[str, Any]]:
         """Disable a tool."""
         db = self._get_db_session()
         try:
@@ -160,17 +175,19 @@ class ToolConfigService:
             if not tool:
                 logger.warning(f"Tool {name} not found")
                 return None
-            
+
             if not tool.enabled:
                 return tool.to_dict()  # Already disabled
-            
+
             # Record history
-            self._record_change(db, tool, "disabled", {"enabled": True}, {"enabled": False}, changed_by)
-            
+            self._record_change(
+                db, tool, "disabled", {"enabled": True}, {"enabled": False}, changed_by
+            )
+
             tool.enabled = False
             tool.updated_at = datetime.now(UTC)
             db.commit()
-            
+
             logger.info(f"Disabled tool: {name}")
             return tool.to_dict()
         except Exception as e:
@@ -189,18 +206,27 @@ class ToolConfigService:
             if not tool:
                 logger.warning(f"Tool {name} not found")
                 return None
-            
+
             old_enabled = tool.enabled
             new_enabled = not old_enabled
-            
+
             # Record history
-            self._record_change(db, tool, "toggled", {"enabled": old_enabled}, {"enabled": new_enabled}, changed_by)
-            
+            self._record_change(
+                db,
+                tool,
+                "toggled",
+                {"enabled": old_enabled},
+                {"enabled": new_enabled},
+                changed_by,
+            )
+
             tool.enabled = new_enabled
             tool.updated_at = datetime.now(UTC)
             db.commit()
-            
-            logger.info(f"Toggled tool {name} to {'enabled' if new_enabled else 'disabled'}")
+
+            logger.info(
+                f"Toggled tool {name} to {'enabled' if new_enabled else 'disabled'}"
+            )
             return new_enabled
         except Exception as e:
             logger.error(f"Failed to toggle tool {name}: {e}")
@@ -210,7 +236,9 @@ class ToolConfigService:
             if not self.db_session:
                 db.close()
 
-    def create_tool(self, tool_data: Dict[str, Any], changed_by: str = "system") -> Optional[Dict[str, Any]]:
+    def create_tool(
+        self, tool_data: Dict[str, Any], changed_by: str = "system"
+    ) -> Optional[Dict[str, Any]]:
         """Create a new tool."""
         # Use the provided session or create a new one
         db = self._get_db_session()
@@ -222,34 +250,44 @@ class ToolConfigService:
                 if isinstance(category_id, str):
                     try:
                         import uuid
+
                         category_id = uuid.UUID(category_id)
                     except ValueError:
                         logger.error(f"Invalid UUID format: {category_id}")
                         return None
-                
-                category = db.query(ToolCategory).filter(
-                    ToolCategory.id == category_id
-                ).first()
+
+                category = (
+                    db.query(ToolCategory)
+                    .filter(ToolCategory.id == category_id)
+                    .first()
+                )
                 if not category:
-                    logger.error(f"Category with ID {tool_data['category_id']} not found")
+                    logger.error(
+                        f"Category with ID {tool_data['category_id']} not found"
+                    )
                     return None
             elif "category" in tool_data:
-                category = db.query(ToolCategory).filter(
-                    ToolCategory.name == ToolCategoryEnum(tool_data["category"].upper())
-                ).first()
+                category = (
+                    db.query(ToolCategory)
+                    .filter(
+                        ToolCategory.name
+                        == ToolCategoryEnum(tool_data["category"].upper())
+                    )
+                    .first()
+                )
                 if not category:
                     logger.error(f"Category {tool_data['category']} not found")
                     return None
             else:
                 logger.error("Either 'category' or 'category_id' must be provided")
                 return None
-            
+
             # Check if tool already exists
             existing = db.query(Tool).filter(Tool.name == tool_data["name"]).first()
             if existing:
                 logger.warning(f"Tool {tool_data['name']} already exists")
                 return existing.to_dict()
-            
+
             # Create tool
             tool = Tool(
                 name=tool_data["name"],
@@ -264,25 +302,29 @@ class ToolConfigService:
                 timeout_seconds=tool_data.get("timeout_seconds", 30),
                 max_concurrent=tool_data.get("max_concurrent", 1),
             )
-            
+
             db.add(tool)
             db.flush()  # Get the ID
-            
+
             # Record history
             self._record_change(db, tool, "created", None, tool.to_dict(), changed_by)
-            
+
             db.commit()
             logger.info(f"Created tool: {tool_data['name']}")
             return tool.to_dict()
         except Exception as e:
-            logger.error(f"Failed to create tool {tool_data.get('name', 'unknown')}: {e}")
+            logger.error(
+                f"Failed to create tool {tool_data.get('name', 'unknown')}: {e}"
+            )
             db.rollback()
             return None
         finally:
             if not self.db_session:
                 db.close()
 
-    def update_tool(self, name: str, tool_data: Dict[str, Any], changed_by: str = "system") -> Optional[Dict[str, Any]]:
+    def update_tool(
+        self, name: str, tool_data: Dict[str, Any], changed_by: str = "system"
+    ) -> Optional[Dict[str, Any]]:
         """Update an existing tool."""
         db = self._get_db_session()
         try:
@@ -290,15 +332,15 @@ class ToolConfigService:
             if not tool:
                 logger.warning(f"Tool {name} not found")
                 return None
-            
+
             # Store old values for history
             old_values = tool.to_dict()
-            
+
             # Debug logging
             logger.info(f"Tool data received: {tool_data}")
             logger.info(f"Tool data keys: {list(tool_data.keys())}")
             logger.info(f"'enabled' in tool_data: {'enabled' in tool_data}")
-            
+
             # Update fields
             if "description" in tool_data:
                 tool.description = tool_data["description"]
@@ -309,12 +351,15 @@ class ToolConfigService:
             if "version" in tool_data:
                 tool.version = tool_data["version"]
             if "enabled" in tool_data:
-                logger.info(f"Updating enabled field from {tool.enabled} to {tool_data['enabled']}")
+                logger.info(
+                    f"Updating enabled field from {tool.enabled} to {tool_data['enabled']}"
+                )
                 # Use direct SQL update to ensure the field is updated
                 from sqlalchemy import text
+
                 db.execute(
                     text("UPDATE tools SET enabled = :enabled WHERE id = :tool_id"),
-                    {"enabled": tool_data["enabled"], "tool_id": tool.id}
+                    {"enabled": tool_data["enabled"], "tool_id": tool.id},
                 )
                 # Update the object in memory as well
                 tool.enabled = tool_data["enabled"]
@@ -325,13 +370,13 @@ class ToolConfigService:
                 tool.timeout_seconds = tool_data["timeout_seconds"]
             if "max_concurrent" in tool_data:
                 tool.max_concurrent = tool_data["max_concurrent"]
-            
+
             tool.updated_at = datetime.now(UTC)
-            
+
             # Record history
             new_values = tool.to_dict()
             self._record_change(db, tool, "updated", old_values, new_values, changed_by)
-            
+
             db.commit()
             logger.info(f"Updated tool: {name}")
             return tool.to_dict()
@@ -351,17 +396,19 @@ class ToolConfigService:
             if not tool:
                 logger.warning(f"Tool {name} not found")
                 return None
-            
+
             # Record history before deleting
             self._record_change(db, tool, "deleted", tool.to_dict(), None, changed_by)
-            
+
             # Delete history records first (due to foreign key constraint)
-            db.query(ToolConfigHistory).filter(ToolConfigHistory.tool_id == tool.id).delete()
-            
+            db.query(ToolConfigHistory).filter(
+                ToolConfigHistory.tool_id == tool.id
+            ).delete()
+
             # Delete the tool
             db.delete(tool)
             db.commit()
-            
+
             logger.info(f"Deleted tool: {name}")
             return True
         except Exception as e:
@@ -376,7 +423,12 @@ class ToolConfigService:
         """Get all tool categories."""
         db = self._get_db_session()
         try:
-            categories = db.query(ToolCategory).filter(ToolCategory.is_active == True).order_by(ToolCategory.sort_order).all()
+            categories = (
+                db.query(ToolCategory)
+                .filter(ToolCategory.is_active == True)
+                .order_by(ToolCategory.sort_order)
+                .all()
+            )
             return [
                 {
                     "id": str(cat.id),
@@ -402,17 +454,21 @@ class ToolConfigService:
         db = self._get_db_session()
         try:
             total_tools = db.query(func.count(Tool.id)).scalar()
-            enabled_tools = db.query(func.count(Tool.id)).filter(Tool.enabled == True).scalar()
+            enabled_tools = (
+                db.query(func.count(Tool.id)).filter(Tool.enabled == True).scalar()
+            )
             disabled_tools = total_tools - enabled_tools
-            
+
             # Count by category
-            category_stats = db.query(
-                ToolCategory.name,
-                func.count(Tool.id).label('count')
-            ).join(Tool).group_by(ToolCategory.name).all()
-            
+            category_stats = (
+                db.query(ToolCategory.name, func.count(Tool.id).label('count'))
+                .join(Tool)
+                .group_by(ToolCategory.name)
+                .all()
+            )
+
             categories = {cat.name: cat.count for cat in category_stats}
-            
+
             return {
                 "total_tools": total_tools,
                 "enabled_tools": enabled_tools,
@@ -434,11 +490,15 @@ class ToolConfigService:
             tool = db.query(Tool).filter(Tool.name == name).first()
             if not tool:
                 return []
-            
-            history = db.query(ToolConfigHistory).filter(
-                ToolConfigHistory.tool_id == tool.id
-            ).order_by(desc(ToolConfigHistory.created_at)).limit(limit).all()
-            
+
+            history = (
+                db.query(ToolConfigHistory)
+                .filter(ToolConfigHistory.tool_id == tool.id)
+                .order_by(desc(ToolConfigHistory.created_at))
+                .limit(limit)
+                .all()
+            )
+
             return [
                 {
                     "id": str(h.id),
@@ -458,50 +518,71 @@ class ToolConfigService:
             if not self.db_session:
                 db.close()
 
-    def sync_from_json(self, json_data: Dict[str, Any], changed_by: str = "system") -> Dict[str, Any]:
+    def sync_from_json(
+        self, json_data: Dict[str, Any], changed_by: str = "system"
+    ) -> Dict[str, Any]:
         """Sync tools from JSON configuration."""
         db = self._get_db_session()
         try:
-            results = {
-                "created": 0,
-                "updated": 0,
-                "errors": 0,
-                "errors_list": []
-            }
-            
+            results = {"created": 0, "updated": 0, "errors": 0, "errors_list": []}
+
             tools_data = json_data.get("tools", {})
-            
+
             for tool_name, tool_data in tools_data.items():
                 try:
-                    existing_tool = db.query(Tool).filter(Tool.name == tool_name).first()
-                    
+                    existing_tool = (
+                        db.query(Tool).filter(Tool.name == tool_name).first()
+                    )
+
                     if existing_tool:
                         # Update existing tool
                         old_values = existing_tool.to_dict()
-                        
+
                         # Update fields
-                        existing_tool.description = tool_data.get("description", existing_tool.description)
-                        existing_tool.dependencies = tool_data.get("dependencies", existing_tool.dependencies)
-                        existing_tool.config = tool_data.get("config", existing_tool.config)
-                        existing_tool.version = tool_data.get("version", existing_tool.version)
+                        existing_tool.description = tool_data.get(
+                            "description", existing_tool.description
+                        )
+                        existing_tool.dependencies = tool_data.get(
+                            "dependencies", existing_tool.dependencies
+                        )
+                        existing_tool.config = tool_data.get(
+                            "config", existing_tool.config
+                        )
+                        existing_tool.version = tool_data.get(
+                            "version", existing_tool.version
+                        )
                         existing_tool.updated_at = datetime.utcnow()
-                        
+
                         # Record history
                         new_values = existing_tool.to_dict()
-                        self._record_change(db, existing_tool, "updated", old_values, new_values, changed_by)
-                        
+                        self._record_change(
+                            db,
+                            existing_tool,
+                            "updated",
+                            old_values,
+                            new_values,
+                            changed_by,
+                        )
+
                         results["updated"] += 1
                     else:
                         # Create new tool
-                        category = db.query(ToolCategory).filter(
-                            ToolCategory.name == ToolCategoryEnum(tool_data["category"].upper())
-                        ).first()
-                        
+                        category = (
+                            db.query(ToolCategory)
+                            .filter(
+                                ToolCategory.name
+                                == ToolCategoryEnum(tool_data["category"].upper())
+                            )
+                            .first()
+                        )
+
                         if not category:
                             results["errors"] += 1
-                            results["errors_list"].append(f"Category {tool_data['category']} not found for tool {tool_name}")
+                            results["errors_list"].append(
+                                f"Category {tool_data['category']} not found for tool {tool_name}"
+                            )
                             continue
-                        
+
                         tool = Tool(
                             name=tool_name,
                             category_id=category.id,
@@ -515,24 +596,28 @@ class ToolConfigService:
                             timeout_seconds=30,
                             max_concurrent=1,
                         )
-                        
+
                         db.add(tool)
                         db.flush()
-                        
+
                         # Record history
-                        self._record_change(db, tool, "created", None, tool.to_dict(), changed_by)
-                        
+                        self._record_change(
+                            db, tool, "created", None, tool.to_dict(), changed_by
+                        )
+
                         results["created"] += 1
-                        
+
                 except Exception as e:
                     results["errors"] += 1
-                    results["errors_list"].append(f"Error processing tool {tool_name}: {str(e)}")
+                    results["errors_list"].append(
+                        f"Error processing tool {tool_name}: {str(e)}"
+                    )
                     logger.error(f"Error processing tool {tool_name}: {e}")
-            
+
             db.commit()
             logger.info(f"Sync completed: {results}")
             return results
-            
+
         except Exception as e:
             logger.error(f"Failed to sync from JSON: {e}")
             db.rollback()
@@ -541,7 +626,15 @@ class ToolConfigService:
             if not self.db_session:
                 db.close()
 
-    def _record_change(self, db: Session, tool: Tool, change_type: str, old_values: Optional[Dict], new_values: Optional[Dict], changed_by: str) -> None:
+    def _record_change(
+        self,
+        db: Session,
+        tool: Tool,
+        change_type: str,
+        old_values: Optional[Dict],
+        new_values: Optional[Dict],
+        changed_by: str,
+    ) -> None:
         """Record a change in tool configuration history."""
         try:
             history = ToolConfigHistory(
@@ -550,7 +643,7 @@ class ToolConfigService:
                 old_values=old_values,
                 new_values=new_values,
                 changed_by=changed_by,
-                change_reason=f"Tool {change_type} via API"
+                change_reason=f"Tool {change_type} via API",
             )
             db.add(history)
         except Exception as e:
@@ -566,7 +659,7 @@ class ToolConfigService:
                 config = ToolConfiguration()
                 db.add(config)
                 db.commit()
-            
+
             return config.to_dict()
         except Exception as e:
             logger.error(f"Failed to get global configuration: {e}")
@@ -575,7 +668,9 @@ class ToolConfigService:
             if not self.db_session:
                 db.close()
 
-    def update_global_configuration(self, config_data: Dict[str, Any], changed_by: str = "system") -> bool:
+    def update_global_configuration(
+        self, config_data: Dict[str, Any], changed_by: str = "system"
+    ) -> bool:
         """Update global tool configuration."""
         db = self._get_db_session()
         try:
@@ -583,7 +678,7 @@ class ToolConfigService:
             if not config:
                 config = ToolConfiguration()
                 db.add(config)
-            
+
             # Update fields
             if "auto_sync_enabled" in config_data:
                 config.auto_sync_enabled = config_data["auto_sync_enabled"]
@@ -595,10 +690,10 @@ class ToolConfigService:
                 config.cache_ttl_seconds = config_data["cache_ttl_seconds"]
             if "settings" in config_data:
                 config.settings = config_data["settings"]
-            
+
             config.updated_at = datetime.utcnow()
             db.commit()
-            
+
             logger.info(f"Updated global configuration by {changed_by}")
             return True
         except Exception as e:

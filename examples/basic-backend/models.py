@@ -72,7 +72,9 @@ class BackgroundTask(Base):
     id = Column(Integer, primary_key=True, index=True)
     task_name = Column(String(100), nullable=False, index=True)
     status = Column(
-        String(20), nullable=False, default="pending",
+        String(20),
+        nullable=False,
+        default="pending",
     )  # pending, running, completed, failed
     started_at = Column(DateTime(timezone=True), nullable=True)
     completed_at = Column(DateTime(timezone=True), nullable=True)

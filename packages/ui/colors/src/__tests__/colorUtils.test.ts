@@ -16,8 +16,8 @@ import {
   generateComplementaryColors,
   adjustLightness,
   adjustSaturation,
-} from "../../colorUtils";
-import type { OKLCHColor, ThemeName } from "../../../types";
+} from "../utils/colorUtils";
+import type { OKLCHColor, ThemeName } from "../types";
 
 describe("Color Utilities", () => {
   describe("hashString", () => {

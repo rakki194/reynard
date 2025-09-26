@@ -14,8 +14,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestAggressiveCoverage(FenrirTestBase):
-    """*otter curiosity* Aggressive test suite to push coverage to 95%
-    """
+    """*otter curiosity* Aggressive test suite to push coverage to 95%"""
 
     async def test_fuzzing_exploit_wrappers_deep_coverage(self):
         """Test fuzzing exploit wrappers with deep method coverage"""

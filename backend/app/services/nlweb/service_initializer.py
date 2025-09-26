@@ -49,14 +49,16 @@ def initialize_nlweb_service(config: dict[str, Any]) -> NLWebService:
             canary_percentage=nlweb_config.get("canary_percentage", 5.0),
             rollback_enabled=nlweb_config.get("rollback_enabled", False),
             performance_monitoring_enabled=nlweb_config.get(
-                "performance_monitoring_enabled", True,
+                "performance_monitoring_enabled",
+                True,
             ),
             proxy_max_retries=nlweb_config.get("proxy_max_retries", 2),
             proxy_backoff_ms=nlweb_config.get("proxy_backoff_ms", 200),
             proxy_connect_timeout_ms=nlweb_config.get("proxy_connect_timeout_ms", 2000),
             proxy_read_timeout_ms=nlweb_config.get("proxy_read_timeout_ms", 10000),
             proxy_sse_idle_timeout_ms=nlweb_config.get(
-                "proxy_sse_idle_timeout_ms", 15000,
+                "proxy_sse_idle_timeout_ms",
+                15000,
             ),
         )
 

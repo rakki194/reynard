@@ -18,7 +18,7 @@ from uuid import uuid4
 
 import pytest
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import ed25519, rsa, ec
+from cryptography.hazmat.primitives.asymmetric import ec, ed25519, rsa
 from cryptography.hazmat.primitives.serialization import load_ssh_public_key
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -60,7 +60,7 @@ class TestSSHKeyModels:
         """Test creating an SSH key record."""
         key_id = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
         fingerprint = "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
-        
+
         ssh_key = SSHKey(
             key_id=key_id,
             fingerprint=fingerprint,
@@ -77,10 +77,10 @@ class TestSSHKeyModels:
             usage=SSHKeyUsage.AUTHENTICATION,
             is_primary=True,
         )
-        
+
         test_db_session.add(ssh_key)
         test_db_session.commit()
-        
+
         # Verify the key was created
         retrieved_key = test_db_session.query(SSHKey).filter_by(key_id=key_id).first()
         assert retrieved_key is not None
@@ -94,7 +94,7 @@ class TestSSHKeyModels:
         """Test SSH key serialization to dictionary."""
         key_id = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
         fingerprint = "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
-        
+
         ssh_key = SSHKey(
             key_id=key_id,
             fingerprint=fingerprint,
@@ -111,12 +111,12 @@ class TestSSHKeyModels:
             usage=SSHKeyUsage.AUTHENTICATION,
             is_primary=True,
         )
-        
+
         test_db_session.add(ssh_key)
         test_db_session.commit()
-        
+
         key_dict = ssh_key.to_dict()
-        
+
         assert key_dict["key_id"] == key_id
         assert key_dict["fingerprint"] == fingerprint
         assert key_dict["user_id"] == "test_user"
@@ -139,10 +139,10 @@ class TestSSHKeyModels:
             target_user="admin",
             command_executed="ls -la",
         )
-        
+
         test_db_session.add(access_log)
         test_db_session.commit()
-        
+
         retrieved_log = test_db_session.query(SSHKeyAccessLog).first()
         assert retrieved_log is not None
         assert retrieved_log.key_id == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
@@ -168,10 +168,10 @@ class TestSSHKeyModels:
             target_hosts="server1.example.com,server2.example.com",
             completed_at=datetime.now(timezone.utc),
         )
-        
+
         test_db_session.add(rotation_log)
         test_db_session.commit()
-        
+
         retrieved_log = test_db_session.query(SSHKeyRotationLog).first()
         assert retrieved_log is not None
         assert retrieved_log.old_key_id == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
@@ -209,7 +209,9 @@ class TestSSHKeyService:
         key.key_length = 2048
         key.algorithm = "RSA"
         key.comment = "test@example.com"
-        key.public_key_openssh = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD... test@example.com"
+        key.public_key_openssh = (
+            "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD... test@example.com"
+        )
         key.status = SSHKeyStatus.ACTIVE
         key.usage = SSHKeyUsage.AUTHENTICATION
         key.is_primary = True
@@ -242,7 +244,7 @@ class TestSSHKeyService:
         mock_query.filter.return_value = mock_filter
         mock_filter.first.return_value = None  # No existing primary key
         mock_session.query.return_value = mock_query
-        
+
         mock_session.add.return_value = None
         mock_session.commit.return_value = None
 
@@ -261,7 +263,9 @@ class TestSSHKeyService:
             }
 
             with patch.object(ssh_key_service, "_log_access") as mock_log:
-                with patch.object(ssh_key_service, "session_factory", return_value=mock_session):
+                with patch.object(
+                    ssh_key_service, "session_factory", return_value=mock_session
+                ):
                     result = await ssh_key_service.generate_ssh_key(
                         user_id="test_user",
                         name="Test User",
@@ -274,8 +278,13 @@ class TestSSHKeyService:
                     )
 
                     # Verify the result
-                    assert result["key_id"] == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
-                    assert result["fingerprint"] == "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
+                    assert (
+                        result["key_id"] == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                    )
+                    assert (
+                        result["fingerprint"]
+                        == "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
+                    )
                     assert result["user_id"] == "test_user"
 
                     # Verify database operations
@@ -292,8 +301,10 @@ class TestSSHKeyService:
         mock_query.filter.return_value = mock_filter
         mock_filter.first.return_value = mock_ssh_key  # Existing primary key
         mock_session.query.return_value = mock_query
-        
-        with patch.object(ssh_key_service, "session_factory", return_value=mock_session):
+
+        with patch.object(
+            ssh_key_service, "session_factory", return_value=mock_session
+        ):
             with pytest.raises(ValueError, match="User already has a primary SSH key"):
                 await ssh_key_service.generate_ssh_key(
                     user_id="test_user",
@@ -313,10 +324,10 @@ class TestSSHKeyService:
         mock_query.filter.return_value = mock_filter
         mock_filter.first.return_value = None  # No existing key
         mock_session.query.return_value = mock_query
-        
+
         mock_session.add.return_value = None
         mock_session.commit.return_value = None
-        
+
         # Mock key validation
         with patch.object(ssh_key_service, "_validate_ssh_key") as mock_validate:
             mock_validate.return_value = {
@@ -329,9 +340,11 @@ class TestSSHKeyService:
                 "comment": "test@example.com",
                 "public_key_openssh": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD... test@example.com",
             }
-            
+
             with patch.object(ssh_key_service, "_log_access") as mock_log:
-                with patch.object(ssh_key_service, "session_factory", return_value=mock_session):
+                with patch.object(
+                    ssh_key_service, "session_factory", return_value=mock_session
+                ):
                     result = await ssh_key_service.import_ssh_key(
                         user_id="test_user",
                         name="Test User",
@@ -341,12 +354,17 @@ class TestSSHKeyService:
                         usage="authentication",
                         is_primary=False,
                     )
-                    
+
                     # Verify the result
-                    assert result["key_id"] == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
-                    assert result["fingerprint"] == "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
+                    assert (
+                        result["key_id"] == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                    )
+                    assert (
+                        result["fingerprint"]
+                        == "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
+                    )
                     assert result["user_id"] == "test_user"
-                    
+
                     # Verify database operations
                     mock_session.add.assert_called_once()
                     mock_session.commit.assert_called_once()
@@ -363,19 +381,23 @@ class TestSSHKeyService:
         mock_filter1.filter.return_value = mock_filter2
         mock_filter2.all.return_value = [mock_ssh_key]
         mock_session.query.return_value = mock_query
-        
+
         with patch.object(ssh_key_service, "_log_access") as mock_log:
-            with patch.object(ssh_key_service, "session_factory", return_value=mock_session):
+            with patch.object(
+                ssh_key_service, "session_factory", return_value=mock_session
+            ):
                 result = await ssh_key_service.get_user_keys(
                     user_id="test_user",
                     include_revoked=False,
                 )
-                
+
                 # Verify the result
                 assert len(result) == 1
-                assert result[0]["key_id"] == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                assert (
+                    result[0]["key_id"] == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                )
                 assert result[0]["user_id"] == "test_user"
-                
+
                 # Verify logging
                 mock_log.assert_called_once()
 
@@ -388,21 +410,23 @@ class TestSSHKeyService:
         mock_query.filter.return_value = mock_filter
         mock_filter.first.return_value = mock_ssh_key
         mock_session.query.return_value = mock_query
-        
+
         with patch.object(ssh_key_service, "_log_access") as mock_log:
-            with patch.object(ssh_key_service, "session_factory", return_value=mock_session):
+            with patch.object(
+                ssh_key_service, "session_factory", return_value=mock_session
+            ):
                 result = await ssh_key_service.revoke_key(
                     user_id="test_user",
                     key_id="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD...",
                     reason="Test revocation",
                 )
-                
+
                 # Verify the key was revoked
                 assert mock_ssh_key.status == SSHKeyStatus.REVOKED
                 assert mock_ssh_key.is_revoked is True
                 assert mock_ssh_key.revocation_reason == "Test revocation"
                 assert mock_ssh_key.revoked_at is not None
-                
+
                 # Verify database operations
                 mock_session.commit.assert_called_once()
                 mock_log.assert_called_once()
@@ -411,15 +435,15 @@ class TestSSHKeyService:
         """Test passphrase hashing."""
         passphrase = "test_passphrase"
         hashed = ssh_key_service._hash_passphrase(passphrase)
-        
+
         # Should be a SHA-256 hash
         assert len(hashed) == 64  # SHA-256 hex length
         assert hashed.isalnum()
-        
+
         # Same passphrase should produce same hash
         hashed2 = ssh_key_service._hash_passphrase(passphrase)
         assert hashed == hashed2
-        
+
         # Different passphrase should produce different hash
         different_hashed = ssh_key_service._hash_passphrase("different_passphrase")
         assert hashed != different_hashed
@@ -428,11 +452,11 @@ class TestSSHKeyService:
         """Test key ID generation."""
         fingerprint = "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
         key_id = ssh_key_service._generate_key_id(fingerprint)
-        
+
         # Should be a 16-character hex string
         assert len(key_id) == 16
         assert key_id.isalnum()
-        
+
         # Same fingerprint should produce same key ID
         key_id2 = ssh_key_service._generate_key_id(fingerprint)
         assert key_id == key_id2
@@ -441,19 +465,19 @@ class TestSSHKeyService:
         """Test fingerprint generation."""
         # Use a valid SSH public key format
         public_key_str = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDx8v7Y4hQ6zM1EIc8b+j0X7PqTtGvH2K9LmN3OpQ4RsT5YuI6PvB7WxE8ZyA9 test@example.com"
-        
+
         # Mock the load_ssh_public_key function to avoid parsing issues
         with patch("app.security.ssh_key_service.load_ssh_public_key") as mock_load:
             mock_public_key = MagicMock()
             mock_public_key.public_bytes.return_value = b"mock_key_bytes"
             mock_load.return_value = mock_public_key
-            
+
             fingerprint = ssh_key_service._generate_fingerprint(public_key_str)
-            
+
             # Should be a valid fingerprint format
             assert fingerprint.startswith("SHA256:")
             assert len(fingerprint) == 47  # SHA256: + 43 chars
-            
+
             # Same public key should produce same fingerprint
             fingerprint2 = ssh_key_service._generate_fingerprint(public_key_str)
             assert fingerprint == fingerprint2
@@ -462,22 +486,26 @@ class TestSSHKeyService:
         """Test SSH key validation."""
         # Test with a valid RSA public key
         public_key_str = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDx8v7Y4hQ6zM1EIc8b+j0X7PqTtGvH2K9LmN3OpQ4RsT5YuI6PvB7WxE8ZyA9 test@example.com"
-        
+
         with patch("app.security.ssh_key_service.load_ssh_public_key") as mock_load:
             # Create a mock that behaves like an RSA public key
             mock_public_key = MagicMock()
             mock_public_key.key_size = 2048
-            
+
             # Mock isinstance to return True for RSA
             with patch("app.security.ssh_key_service.isinstance") as mock_isinstance:
                 mock_isinstance.return_value = True
                 mock_load.return_value = mock_public_key
-                
-                with patch.object(ssh_key_service, "_generate_fingerprint") as mock_fingerprint:
-                    mock_fingerprint.return_value = "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
-                    
+
+                with patch.object(
+                    ssh_key_service, "_generate_fingerprint"
+                ) as mock_fingerprint:
+                    mock_fingerprint.return_value = (
+                        "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
+                    )
+
                     result = ssh_key_service._validate_ssh_key(public_key_str)
-                    
+
                     assert result["key_type"] == "rsa"
                     assert result["key_length"] == 2048
                     assert result["algorithm"] == "RSA"
@@ -509,7 +537,7 @@ class TestSSHKeySecurity:
         """Test that private keys are properly encrypted."""
         key_id = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
         fingerprint = "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
-        
+
         # Create a key with a passphrase
         ssh_key = SSHKey(
             key_id=key_id,
@@ -529,10 +557,10 @@ class TestSSHKeySecurity:
             usage=SSHKeyUsage.AUTHENTICATION,
             is_primary=True,
         )
-        
+
         test_db_session.add(ssh_key)
         test_db_session.commit()
-        
+
         # Verify the private key is stored
         retrieved_key = test_db_session.query(SSHKey).filter_by(key_id=key_id).first()
         assert retrieved_key.private_key_openssh is not None
@@ -567,15 +595,15 @@ class TestSSHKeySecurity:
                 ip_address="192.168.1.3",
             ),
         ]
-        
+
         for log in logs:
             test_db_session.add(log)
         test_db_session.commit()
-        
+
         # Verify all logs were created
         access_logs = test_db_session.query(SSHKeyAccessLog).all()
         assert len(access_logs) == 3
-        
+
         # Verify different operations
         operations = [log.operation for log in access_logs]
         assert "generate" in operations
@@ -599,10 +627,10 @@ class TestSSHKeySecurity:
             started_at=datetime.now(timezone.utc),
             completed_at=datetime.now(timezone.utc),
         )
-        
+
         test_db_session.add(rotation_log)
         test_db_session.commit()
-        
+
         # Verify rotation log
         retrieved_log = test_db_session.query(SSHKeyRotationLog).first()
         assert retrieved_log.old_key_revoked is True
@@ -616,7 +644,7 @@ class TestSSHKeySecurity:
         """Test key status validation."""
         key_id = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
         fingerprint = "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
-        
+
         # Create an active key
         ssh_key = SSHKey(
             key_id=key_id,
@@ -634,20 +662,20 @@ class TestSSHKeySecurity:
             usage=SSHKeyUsage.AUTHENTICATION,
             is_primary=True,
         )
-        
+
         test_db_session.add(ssh_key)
         test_db_session.commit()
-        
+
         # Test status transitions
         retrieved_key = test_db_session.query(SSHKey).filter_by(key_id=key_id).first()
-        
+
         # Revoke the key
         retrieved_key.status = SSHKeyStatus.REVOKED
         retrieved_key.is_revoked = True
         retrieved_key.revocation_reason = "Test revocation"
         retrieved_key.revoked_at = datetime.now(timezone.utc)
         test_db_session.commit()
-        
+
         # Verify revocation
         updated_key = test_db_session.query(SSHKey).filter_by(key_id=key_id).first()
         assert updated_key.status == SSHKeyStatus.REVOKED
@@ -659,7 +687,7 @@ class TestSSHKeySecurity:
         """Test different SSH key usage types."""
         key_id = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
         fingerprint = "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
-        
+
         # Test authentication key
         auth_key = SSHKey(
             key_id=key_id,
@@ -677,10 +705,10 @@ class TestSSHKeySecurity:
             usage=SSHKeyUsage.AUTHENTICATION,
             is_primary=True,
         )
-        
+
         test_db_session.add(auth_key)
         test_db_session.commit()
-        
+
         # Test signing key
         signing_key = SSHKey(
             key_id="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...",
@@ -698,14 +726,20 @@ class TestSSHKeySecurity:
             usage=SSHKeyUsage.SIGNING,
             is_primary=False,
         )
-        
+
         test_db_session.add(signing_key)
         test_db_session.commit()
-        
+
         # Verify both keys were created with correct usage types
-        auth_retrieved = test_db_session.query(SSHKey).filter_by(usage=SSHKeyUsage.AUTHENTICATION).first()
-        signing_retrieved = test_db_session.query(SSHKey).filter_by(usage=SSHKeyUsage.SIGNING).first()
-        
+        auth_retrieved = (
+            test_db_session.query(SSHKey)
+            .filter_by(usage=SSHKeyUsage.AUTHENTICATION)
+            .first()
+        )
+        signing_retrieved = (
+            test_db_session.query(SSHKey).filter_by(usage=SSHKeyUsage.SIGNING).first()
+        )
+
         assert auth_retrieved.usage == SSHKeyUsage.AUTHENTICATION
         assert signing_retrieved.usage == SSHKeyUsage.SIGNING
         assert auth_retrieved.is_primary is True
@@ -741,9 +775,11 @@ class TestSSHKeyIntegration:
         test_db_session.query(SSHKeyAccessLog).delete()
         test_db_session.query(SSHKeyRotationLog).delete()
         test_db_session.commit()
-        
+
         # Mock the session factory to return our test session
-        with patch.object(ssh_key_service, "session_factory", return_value=test_db_session):
+        with patch.object(
+            ssh_key_service, "session_factory", return_value=test_db_session
+        ):
             # Mock key generation
             with patch.object(ssh_key_service, "_generate_ssh_key") as mock_generate:
                 mock_generate.return_value = {
@@ -757,7 +793,7 @@ class TestSSHKeyIntegration:
                     "algorithm": "RSA",
                     "comment": "test@example.com",
                 }
-            
+
                 # 1. Generate key
                 with patch.object(ssh_key_service, "_log_access"):
                     key_data = await ssh_key_service.generate_ssh_key(
@@ -770,22 +806,30 @@ class TestSSHKeyIntegration:
                         usage="authentication",
                         is_primary=True,
                     )
-                    
-                    assert key_data["key_id"] == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+
+                    assert (
+                        key_data["key_id"]
+                        == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                    )
                     assert key_data["status"] == "active"
-                
+
                 # 2. Get user keys
                 with patch.object(ssh_key_service, "_log_access"):
                     keys = await ssh_key_service.get_user_keys(
                         user_id="test_user",
                         include_revoked=False,
                     )
-                    
+
                     assert len(keys) == 1
-                    assert keys[0]["key_id"] == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
-            
+                    assert (
+                        keys[0]["key_id"]
+                        == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                    )
+
                 # 3. Regenerate key
-                with patch.object(ssh_key_service, "generate_ssh_key") as mock_generate_new:
+                with patch.object(
+                    ssh_key_service, "generate_ssh_key"
+                ) as mock_generate_new:
                     mock_generate_new.return_value = {
                         "key_id": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...",
                         "fingerprint": "SHA256:EFGH5678901234567890EFGH5678901234567890EFGH",
@@ -804,7 +848,7 @@ class TestSSHKeyIntegration:
                         "created_at": datetime.now(timezone.utc).isoformat(),
                         "updated_at": None,
                     }
-                    
+
                     with patch.object(ssh_key_service, "_log_access"):
                         new_key = await ssh_key_service.regenerate_ssh_key(
                             user_id="test_user",
@@ -812,25 +856,38 @@ class TestSSHKeyIntegration:
                             key_type="ed25519",
                             key_length=256,
                         )
-                        
-                        assert new_key["key_id"] == "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."
-            
+
+                        assert (
+                            new_key["key_id"]
+                            == "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."
+                        )
+
                 # 4. Verify old key was revoked
-                old_key = test_db_session.query(SSHKey).filter_by(key_id="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD...").first()
+                old_key = (
+                    test_db_session.query(SSHKey)
+                    .filter_by(key_id="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD...")
+                    .first()
+                )
                 assert old_key.status == SSHKeyStatus.REVOKED
                 assert old_key.is_revoked is True
-            
+
                 # 5. Verify rotation log was created
                 rotation_logs = test_db_session.query(SSHKeyRotationLog).all()
                 assert len(rotation_logs) == 1
-                assert rotation_logs[0].old_key_id == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
-                assert rotation_logs[0].new_key_id == "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."
+                assert (
+                    rotation_logs[0].old_key_id
+                    == "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
+                )
+                assert (
+                    rotation_logs[0].new_key_id
+                    == "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI..."
+                )
 
     def test_database_constraints(self, test_db_session):
         """Test database constraints and uniqueness."""
         key_id = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD..."
         fingerprint = "SHA256:ABCD1234567890ABCD1234567890ABCD1234567890"
-        
+
         # Create first key
         ssh_key1 = SSHKey(
             key_id=key_id,
@@ -848,10 +905,10 @@ class TestSSHKeyIntegration:
             usage=SSHKeyUsage.AUTHENTICATION,
             is_primary=True,
         )
-        
+
         test_db_session.add(ssh_key1)
         test_db_session.commit()
-        
+
         # Try to create duplicate key_id
         ssh_key2 = SSHKey(
             key_id=key_id,  # Same key_id
@@ -869,15 +926,15 @@ class TestSSHKeyIntegration:
             usage=SSHKeyUsage.AUTHENTICATION,
             is_primary=False,
         )
-        
+
         test_db_session.add(ssh_key2)
-        
+
         # Should raise integrity error
         with pytest.raises(Exception):  # SQLAlchemy integrity error
             test_db_session.commit()
-        
+
         test_db_session.rollback()
-        
+
         # Try to create duplicate fingerprint
         ssh_key3 = SSHKey(
             key_id="ssh-rsa DIFFERENT1234567890ABCD1234567890ABCD1234567890",
@@ -895,9 +952,9 @@ class TestSSHKeyIntegration:
             usage=SSHKeyUsage.AUTHENTICATION,
             is_primary=False,
         )
-        
+
         test_db_session.add(ssh_key3)
-        
+
         # Should raise integrity error
         with pytest.raises(Exception):  # SQLAlchemy integrity error
             test_db_session.commit()

@@ -52,7 +52,8 @@ class SummarizationConfigModel(BaseModel):
     """Configuration model for Summarization service."""
 
     default_model: str = Field(
-        default="llama3.2:3b", description="Default model for summarization",
+        default="llama3.2:3b",
+        description="Default model for summarization",
     )
     default_content_type: str = Field(
         default="general",
@@ -71,13 +72,18 @@ class SummarizationConfigModel(BaseModel):
         description="Maximum text length for summarization",
     )
     enable_caching: bool = Field(
-        default=True, description="Enable result caching for performance",
+        default=True,
+        description="Enable result caching for performance",
     )
     cache_ttl_seconds: int = Field(
-        default=3600, ge=60, le=86400, description="Cache TTL in seconds",
+        default=3600,
+        ge=60,
+        le=86400,
+        description="Cache TTL in seconds",
     )
     enable_content_type_detection: bool = Field(
-        default=True, description="Enable automatic content type detection",
+        default=True,
+        description="Enable automatic content type detection",
     )
     content_type_confidence_threshold: float = Field(
         default=0.7,
@@ -86,21 +92,31 @@ class SummarizationConfigModel(BaseModel):
         description="Minimum confidence for content type detection",
     )
     enable_performance_stats: bool = Field(
-        default=True, description="Enable performance statistics collection",
+        default=True,
+        description="Enable performance statistics collection",
     )
     batch_processing_max_requests: int = Field(
-        default=50, ge=1, le=100, description="Maximum requests per batch",
+        default=50,
+        ge=1,
+        le=100,
+        description="Maximum requests per batch",
     )
     streaming_enabled: bool = Field(
-        default=True, description="Enable streaming for batch operations",
+        default=True,
+        description="Enable streaming for batch operations",
     )
     performance_stats_retention_days: int = Field(
-        default=30, ge=1, le=365, description="Performance stats retention period",
+        default=30,
+        ge=1,
+        le=365,
+        description="Performance stats retention period",
     )
 
 
 class SummarizationServiceRouter(
-    BaseServiceRouter, ConfigEndpointMixin, StreamingResponseMixin,
+    BaseServiceRouter,
+    ConfigEndpointMixin,
+    StreamingResponseMixin,
 ):
     """Summarization service router with enterprise-grade patterns.
 
@@ -188,7 +204,8 @@ class SummarizationServiceRouter(
             )
 
         @self.router.post(
-            "/detect-content-type", response_model=ContentTypeDetectionResponse,
+            "/detect-content-type",
+            response_model=ContentTypeDetectionResponse,
         )
         async def detect_content_type(request: ContentTypeDetectionRequest):
             """Automatically detect the content type of text."""
@@ -222,7 +239,11 @@ class SummarizationServiceRouter(
                 operation_func=self._handle_get_stats_request,
             )
 
-        @self.router.get("/health", response_model=HealthCheckResponse, operation_id="summarization_health_check")
+        @self.router.get(
+            "/health",
+            response_model=HealthCheckResponse,
+            operation_id="summarization_health_check",
+        )
         async def health_check():
             """Perform health check on the summarization service."""
             return await self._standard_async_operation(
@@ -231,7 +252,8 @@ class SummarizationServiceRouter(
             )
 
     async def _handle_summarize_request(
-        self, request: SummarizationRequest,
+        self,
+        request: SummarizationRequest,
     ) -> SummarizationResponse:
         """Handle text summarization request."""
         service = self.get_service()
@@ -307,7 +329,8 @@ class SummarizationServiceRouter(
         }
 
     async def _handle_content_type_detection_request(
-        self, request: ContentTypeDetectionRequest,
+        self,
+        request: ContentTypeDetectionRequest,
     ) -> ContentTypeDetectionResponse:
         """Handle content type detection request."""
         service = self.get_service()

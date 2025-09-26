@@ -53,7 +53,7 @@ export async function expectPromiseToReject(
   expectedError?: string | RegExp | Error
 ): Promise<any> {
   try {
-    const result = await promise;
+    await promise;
     // If we get here, the promise resolved, so we should reject
     throw new Error("Expected promise to reject, but it resolved");
   } catch (error) {

@@ -16,7 +16,7 @@ from .base import BaseService
 @dataclass
 class EmbeddingResult:
     """Result of embedding generation."""
-    
+
     embedding: List[float]
     model: str
     token_count: int
@@ -29,14 +29,18 @@ class IEmbeddingService(BaseService, ABC):
 
     @abstractmethod
     async def embed_text(
-        self, text: str, model: str = "embeddinggemma:latest",
+        self,
+        text: str,
+        model: str = "embeddinggemma:latest",
     ) -> List[float]:
         """Generate embedding for a single text."""
         pass
 
     @abstractmethod
     async def embed_batch(
-        self, texts: List[str], model: str = "embeddinggemma:latest",
+        self,
+        texts: List[str],
+        model: str = "embeddinggemma:latest",
     ) -> List[List[float]]:
         """Generate embeddings for a batch of texts."""
         pass
@@ -62,14 +66,18 @@ class EmbeddingProvider(ABC):
 
     @abstractmethod
     async def generate_embedding(
-        self, text: str, model: str = "embeddinggemma:latest",
+        self,
+        text: str,
+        model: str = "embeddinggemma:latest",
     ) -> EmbeddingResult:
         """Generate embedding for text."""
         pass
 
     @abstractmethod
     async def generate_embeddings_batch(
-        self, texts: List[str], model: str = "embeddinggemma:latest",
+        self,
+        texts: List[str],
+        model: str = "embeddinggemma:latest",
     ) -> List[EmbeddingResult]:
         """Generate embeddings for multiple texts."""
         pass

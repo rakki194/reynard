@@ -31,11 +31,13 @@ router = APIRouter(prefix="/semantic-search", tags=["semantic-search"])
 async def semantic_search(
     query: str,
     search_type: str = Query(
-        "hybrid", description="Search type: semantic, keyword, or hybrid",
+        "hybrid",
+        description="Search type: semantic, keyword, or hybrid",
     ),
     top_k: int = Query(10, description="Number of results to return"),
     language_filter: str | None = Query(
-        None, description="Filter by programming language",
+        None,
+        description="Filter by programming language",
     ),
     file_type_filter: str | None = Query(None, description="Filter by file type"),
     include_metadata: bool = Query(True, description="Include metadata in results"),
@@ -118,7 +120,8 @@ async def semantic_search(
     except Exception as e:
         logger.error(f"Failed to perform semantic search: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to perform semantic search: {e!s}",
+            status_code=500,
+            detail=f"Failed to perform semantic search: {e!s}",
         )
 
 
@@ -141,7 +144,8 @@ async def analyze_code_structure(
 
         # Perform semantic search first
         results = await rag_service.semantic_search(
-            query=query, top_k=top_k * 2,  # Get more results for analysis
+            query=query,
+            top_k=top_k * 2,  # Get more results for analysis
         )
 
         # Analyze code structure
@@ -227,7 +231,8 @@ async def analyze_code_structure(
     except Exception as e:
         logger.error(f"Failed to analyze code structure: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to analyze code structure: {e!s}",
+            status_code=500,
+            detail=f"Failed to analyze code structure: {e!s}",
         )
 
 
@@ -235,7 +240,8 @@ async def analyze_code_structure(
 async def search_documentation(
     query: str,
     doc_type: str = Query(
-        "all", description="Document type: markdown, comments, docstrings, or all",
+        "all",
+        description="Document type: markdown, comments, docstrings, or all",
     ),
     top_k: int = Query(15, description="Number of results to return"),
 ) -> JSONResponse:
@@ -260,7 +266,9 @@ async def search_documentation(
 
         # Perform semantic search
         results = await rag_service.semantic_search(
-            query=query, top_k=top_k, file_type_filter=file_type_filter,
+            query=query,
+            top_k=top_k,
+            file_type_filter=file_type_filter,
         )
 
         # Process documentation results
@@ -310,7 +318,8 @@ async def search_documentation(
     except Exception as e:
         logger.error(f"Failed to search documentation: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to search documentation: {e!s}",
+            status_code=500,
+            detail=f"Failed to search documentation: {e!s}",
         )
 
 
@@ -367,5 +376,6 @@ async def get_search_statistics() -> JSONResponse:
     except Exception as e:
         logger.error(f"Failed to get search statistics: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get search statistics: {e!s}",
+            status_code=500,
+            detail=f"Failed to get search statistics: {e!s}",
         )

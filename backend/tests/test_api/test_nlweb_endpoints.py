@@ -172,7 +172,8 @@ class TestNLWebHealthMonitoring:
             mock_service.return_value = mock_nlweb_service
 
             response = client.get(
-                "/api/nlweb/health", headers={"Authorization": f"Bearer {access_token}"},
+                "/api/nlweb/health",
+                headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 200
@@ -197,7 +198,8 @@ class TestNLWebHealthMonitoring:
             mock_service.return_value = mock_nlweb_service
 
             response = client.get(
-                "/api/nlweb/health", headers={"Authorization": f"Bearer {access_token}"},
+                "/api/nlweb/health",
+                headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 500
@@ -232,7 +234,8 @@ class TestNLWebPerformanceStats:
             mock_service.return_value = mock_nlweb_service
 
             response = client.get(
-                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"},
+                "/api/nlweb/stats",
+                headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 200
@@ -249,7 +252,9 @@ class TestNLWebPerformanceStats:
         assert response.status_code == 401
 
     def test_get_performance_stats_service_error(
-        self, client: TestClient, access_token,
+        self,
+        client: TestClient,
+        access_token,
     ):
         """Test performance stats when service throws an error."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:
@@ -260,7 +265,8 @@ class TestNLWebPerformanceStats:
             mock_service.return_value = mock_nlweb_service
 
             response = client.get(
-                "/api/nlweb/stats", headers={"Authorization": f"Bearer {access_token}"},
+                "/api/nlweb/stats",
+                headers={"Authorization": f"Bearer {access_token}"},
             )
 
             assert response.status_code == 500
@@ -409,7 +415,9 @@ class TestNLWebVerification:
         assert response.status_code == 401
 
     def test_get_verification_checklist_service_error(
-        self, client: TestClient, access_token,
+        self,
+        client: TestClient,
+        access_token,
     ):
         """Test verification checklist when service throws an error."""
         with patch("app.api.nlweb.endpoints.get_nlweb_service") as mock_service:

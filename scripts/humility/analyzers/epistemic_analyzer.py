@@ -1,5 +1,4 @@
-"""Epistemic humility analysis module.
-"""
+"""Epistemic humility analysis module."""
 
 from typing import Any
 
@@ -63,7 +62,8 @@ class EpistemicHumilityAnalyzer:
                     if pattern_type in ["overconfidence", "certainty_claims"]:
                         confidence_level = self._get_confidence_level(confidence_score)
                         replacement = self._generate_replacement(
-                            original_text, pattern_type,
+                            original_text,
+                            pattern_type,
                         )
 
                         start = max(0, match.start() - 30)
@@ -114,7 +114,8 @@ class EpistemicHumilityAnalyzer:
             humility_ratio = humility_count / total_lines
             overconfidence_ratio = overconfidence_count / total_lines
             epistemic_humility_score = max(
-                0, (humility_ratio - overconfidence_ratio) * 100,
+                0,
+                (humility_ratio - overconfidence_ratio) * 100,
             )
 
         return {

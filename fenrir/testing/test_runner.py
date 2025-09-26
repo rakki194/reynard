@@ -67,8 +67,7 @@ class FenrirTestRunner:
         self.suite_results: list[TestSuiteResult] = []
 
     async def run_all_tests(self) -> list[TestSuiteResult]:
-        """*splashes excitedly* Run all test suites and return comprehensive results
-        """
+        """*splashes excitedly* Run all test suites and return comprehensive results"""
         console.print(
             Panel.fit(
                 "[bold blue]🦦 FENRIR SECURITY TEST SUITE[/bold blue]\n"
@@ -97,7 +96,10 @@ class FenrirTestRunner:
 
                     start_time = time.time()
                     suite_result = await self._run_test_suite(
-                        suite_name, test_class, progress, task,
+                        suite_name,
+                        test_class,
+                        progress,
+                        task,
                     )
                     execution_time = time.time() - start_time
 
@@ -105,19 +107,27 @@ class FenrirTestRunner:
                     self.suite_results.append(suite_result)
 
                     progress.update(
-                        task, completed=100, description=f"✅ {suite_name} completed",
+                        task,
+                        completed=100,
+                        description=f"✅ {suite_name} completed",
                     )
 
                 except Exception as e:
                     progress.update(
-                        task, completed=100, description=f"❌ {suite_name} failed",
+                        task,
+                        completed=100,
+                        description=f"❌ {suite_name} failed",
                     )
                     console.print(f"[red]Error running {suite_name}: {e!s}[/red]")
 
         return self.suite_results
 
     async def _run_test_suite(
-        self, suite_name: str, test_class, progress, task,
+        self,
+        suite_name: str,
+        test_class,
+        progress,
+        task,
     ) -> TestSuiteResult:
         """Run a single test suite"""
         async with test_class(self.base_url) as tester:
@@ -188,7 +198,9 @@ class FenrirTestRunner:
 
         summary_table.add_row("Total Tests", str(total_tests), "100%")
         summary_table.add_row(
-            "Passed Tests", str(total_passed), f"{overall_success_rate:.1f}%",
+            "Passed Tests",
+            str(total_passed),
+            f"{overall_success_rate:.1f}%",
         )
         summary_table.add_row(
             "Failed Tests",
@@ -278,7 +290,9 @@ TEST SUITE BREAKDOWN:
 
             summary_table.add_row("Total Tests", str(total_tests), "100%")
             summary_table.add_row(
-                "Passed Tests", str(total_passed), f"{overall_success_rate:.1f}%",
+                "Passed Tests",
+                str(total_passed),
+                f"{overall_success_rate:.1f}%",
             )
             summary_table.add_row(
                 "Failed Tests",

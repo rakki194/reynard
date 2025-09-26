@@ -1,5 +1,4 @@
-"""Agent categorizer for classifying contributions by type.
-"""
+"""Agent categorizer for classifying contributions by type."""
 
 from .contribution import AgentContribution
 

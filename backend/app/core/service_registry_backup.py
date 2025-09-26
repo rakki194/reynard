@@ -149,7 +149,8 @@ class ServiceRegistry:
         for i, existing_name in enumerate(self._startup_order):
             if existing_name in self._services:
                 existing_priority = self._services[existing_name].config.get(
-                    "startup_priority", 0,
+                    "startup_priority",
+                    0,
                 )
                 if startup_priority > existing_priority:
                     insert_index = i
@@ -201,7 +202,8 @@ class ServiceRegistry:
 
                 if tasks:
                     await asyncio.wait_for(
-                        asyncio.gather(*tasks, return_exceptions=True), timeout=timeout,
+                        asyncio.gather(*tasks, return_exceptions=True),
+                        timeout=timeout,
                     )
 
             self._initialized = True
@@ -241,7 +243,8 @@ class ServiceRegistry:
 
             if tasks:
                 await asyncio.wait_for(
-                    asyncio.gather(*tasks, return_exceptions=True), timeout=timeout,
+                    asyncio.gather(*tasks, return_exceptions=True),
+                    timeout=timeout,
                 )
 
             self._initialized = False

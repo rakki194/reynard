@@ -43,13 +43,16 @@ class DynamicEnumService:
         self._providers["spirits"] = SpiritEnumProvider(self.data_provider)
         self._providers["styles"] = StyleEnumProvider(self.data_provider)
         self._providers["personality_traits"] = TraitEnumProvider(
-            "personality", self.data_provider,
+            "personality",
+            self.data_provider,
         )
         self._providers["physical_traits"] = TraitEnumProvider(
-            "physical", self.data_provider,
+            "physical",
+            self.data_provider,
         )
         self._providers["ability_traits"] = TraitEnumProvider(
-            "ability", self.data_provider,
+            "ability",
+            self.data_provider,
         )
 
     def register_provider(self, enum_type: str, provider: EnumProvider) -> None:
@@ -64,7 +67,10 @@ class DynamicEnumService:
         logger.debug("Registered enum provider for type: %s", enum_type)
 
     def create_custom_provider(
-        self, enum_type: str, fallback_data: dict[str, Any], default_fallback: str,
+        self,
+        enum_type: str,
+        fallback_data: dict[str, Any],
+        default_fallback: str,
     ) -> CustomEnumProvider:
         """Create and register a custom enum provider.
 
@@ -78,7 +84,10 @@ class DynamicEnumService:
 
         """
         provider = CustomEnumProvider(
-            enum_type, fallback_data, default_fallback, self.data_provider,
+            enum_type,
+            fallback_data,
+            default_fallback,
+            self.data_provider,
         )
         self.register_provider(enum_type, provider)
         return provider
@@ -149,7 +158,11 @@ class DynamicEnumService:
         return "unknown"
 
     async def get_metadata(
-        self, enum_type: str, value: str, key: str, default: Any = None,
+        self,
+        enum_type: str,
+        value: str,
+        key: str,
+        default: Any = None,
     ) -> Any:
         """Get metadata for a value in an enum type.
 
@@ -195,7 +208,10 @@ class DynamicEnumService:
 
         """
         return await self.get_metadata(
-            enum_type, value, "description", "No description available",
+            enum_type,
+            value,
+            "description",
+            "No description available",
         )
 
     def is_valid_value(self, enum_type: str, value: str) -> bool:

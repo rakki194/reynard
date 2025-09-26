@@ -87,7 +87,9 @@ class GeneralScraper(BaseScraper):
             return False
 
     async def scrape_url(
-        self, url: str, config: ScrapingConfig | None = None,
+        self,
+        url: str,
+        config: ScrapingConfig | None = None,
     ) -> list[dict[str, Any]]:
         """Scrape content from a URL.
 
@@ -139,7 +141,10 @@ class GeneralScraper(BaseScraper):
             raise
 
     async def _extract_content(
-        self, soup: BeautifulSoup, base_url: str, config: ScrapingConfig | None = None,
+        self,
+        soup: BeautifulSoup,
+        base_url: str,
+        config: ScrapingConfig | None = None,
     ) -> list[dict[str, Any]]:
         """Extract content from parsed HTML.
 
@@ -236,7 +241,9 @@ class GeneralScraper(BaseScraper):
         return ""
 
     async def _extract_images(
-        self, soup: BeautifulSoup, base_url: str,
+        self,
+        soup: BeautifulSoup,
+        base_url: str,
     ) -> list[dict[str, Any]]:
         """Extract image information."""
         images = []
@@ -269,7 +276,9 @@ class GeneralScraper(BaseScraper):
         return images
 
     async def _extract_links(
-        self, soup: BeautifulSoup, base_url: str,
+        self,
+        soup: BeautifulSoup,
+        base_url: str,
     ) -> list[dict[str, Any]]:
         """Extract link information."""
         links = []

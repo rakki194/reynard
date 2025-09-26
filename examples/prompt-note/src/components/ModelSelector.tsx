@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, createResource, For } from "solid-js";
-import { Button, Card, Select } from "reynard-components-core";
+import { Button, Card, Select } from "reynard-primitives";
 import { useNotifications } from "reynard-core";
 // import { BackendAnnotationManager } from "reynard-annotating-core";
 

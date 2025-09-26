@@ -18,7 +18,7 @@ from uuid import uuid4
 
 import pytest
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import ed25519, rsa, ec
+from cryptography.hazmat.primitives.asymmetric import ec, ed25519, rsa
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
@@ -50,13 +50,13 @@ def test_db_engine():
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
-    
+
     # Create all tables
     PGPAuthBase.metadata.create_all(engine)
     SSHAuthBase.metadata.create_all(engine)
-    
+
     yield engine
-    
+
     # Cleanup
     PGPAuthBase.metadata.drop_all(engine)
     SSHAuthBase.metadata.drop_all(engine)
@@ -258,21 +258,21 @@ def sample_rsa_key_pair():
         public_exponent=65537,
         key_size=2048,
     )
-    
+
     public_key = private_key.public_key()
-    
+
     # Serialize keys
     private_pem = private_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
         encryption_algorithm=serialization.NoEncryption(),
     )
-    
+
     public_pem = public_key.public_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo,
     )
-    
+
     return {
         "private_key": private_pem,
         "public_key": public_pem,
@@ -286,19 +286,19 @@ def sample_ed25519_key_pair():
     """Generate a sample Ed25519 key pair for testing."""
     private_key = ed25519.Ed25519PrivateKey.generate()
     public_key = private_key.public_key()
-    
+
     # Serialize keys
     private_pem = private_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
         encryption_algorithm=serialization.NoEncryption(),
     )
-    
+
     public_pem = public_key.public_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo,
     )
-    
+
     return {
         "private_key": private_pem,
         "public_key": public_pem,
@@ -312,19 +312,19 @@ def sample_ecdsa_key_pair():
     """Generate a sample ECDSA key pair for testing."""
     private_key = ec.generate_private_key(ec.SECP256R1())
     public_key = private_key.public_key()
-    
+
     # Serialize keys
     private_pem = private_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
         encryption_algorithm=serialization.NoEncryption(),
     )
-    
+
     public_pem = public_key.public_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo,
     )
-    
+
     return {
         "private_key": private_pem,
         "public_key": public_pem,

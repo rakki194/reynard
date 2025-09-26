@@ -72,10 +72,12 @@ async def test_mcp_authorization():
 
             # Test permission for search tool
             has_rag_query = mcp_auth_service.check_permission(
-                search_token_data, "rag:query",
+                search_token_data,
+                "rag:query",
             )
             has_rag_ingest = mcp_auth_service.check_permission(
-                search_token_data, "rag:ingest",
+                search_token_data,
+                "rag:ingest",
             )
             print(f"  Can query RAG: {has_rag_query}")
             print(f"  Can ingest documents: {has_rag_ingest}")

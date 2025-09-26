@@ -20,7 +20,8 @@ router = APIRouter(prefix="/api/email/analytics", tags=["email-analytics"])
 @router.get("/metrics")
 async def get_email_metrics(
     period_start: datetime | None = Query(
-        None, description="Start of analysis period",
+        None,
+        description="Start of analysis period",
     ),
     period_end: datetime | None = Query(None, description="End of analysis period"),
     agent_id: str | None = Query(None, description="Specific agent to analyze"),
@@ -65,14 +66,16 @@ async def get_email_metrics(
     except Exception as e:
         logger.error(f"Failed to get email metrics: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get email metrics: {e!s}",
+            status_code=500,
+            detail=f"Failed to get email metrics: {e!s}",
         )
 
 
 @router.get("/insights")
 async def get_email_insights(
     period_start: datetime | None = Query(
-        None, description="Start of analysis period",
+        None,
+        description="Start of analysis period",
     ),
     period_end: datetime | None = Query(None, description="End of analysis period"),
     agent_id: str | None = Query(None, description="Specific agent to analyze"),
@@ -86,7 +89,9 @@ async def get_email_insights(
     """
     try:
         insights = await email_analytics_service.generate_insights(
-            period_start=period_start, period_end=period_end, agent_id=agent_id,
+            period_start=period_start,
+            period_end=period_end,
+            agent_id=agent_id,
         )
 
         # Convert dataclass to dictionary
@@ -108,7 +113,8 @@ async def get_email_insights(
     except Exception as e:
         logger.error(f"Failed to generate insights: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate insights: {e!s}",
+            status_code=500,
+            detail=f"Failed to generate insights: {e!s}",
         )
 
 
@@ -116,7 +122,8 @@ async def get_email_insights(
 async def generate_email_report(
     report_type: str,
     period_start: datetime | None = Query(
-        None, description="Start of analysis period",
+        None,
+        description="Start of analysis period",
     ),
     period_end: datetime | None = Query(None, description="End of analysis period"),
     agent_id: str | None = Query(None, description="Specific agent to analyze"),
@@ -189,7 +196,8 @@ async def generate_email_report(
     except Exception as e:
         logger.error(f"Failed to generate report: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate report: {e!s}",
+            status_code=500,
+            detail=f"Failed to generate report: {e!s}",
         )
 
 
@@ -197,7 +205,8 @@ async def generate_email_report(
 async def get_agent_performance(
     agent_id: str,
     period_start: datetime | None = Query(
-        None, description="Start of analysis period",
+        None,
+        description="Start of analysis period",
     ),
     period_end: datetime | None = Query(None, description="End of analysis period"),
     current_user: dict = Depends(get_current_active_user),
@@ -213,7 +222,9 @@ async def get_agent_performance(
     """
     try:
         performance = await email_analytics_service.get_agent_performance(
-            agent_id=agent_id, period_start=period_start, period_end=period_end,
+            agent_id=agent_id,
+            period_start=period_start,
+            period_end=period_end,
         )
 
         return performance
@@ -221,7 +232,8 @@ async def get_agent_performance(
     except Exception as e:
         logger.error(f"Failed to get agent performance: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get agent performance: {e!s}",
+            status_code=500,
+            detail=f"Failed to get agent performance: {e!s}",
         )
 
 
@@ -251,7 +263,9 @@ async def get_email_trends(
             raise HTTPException(status_code=400, detail="Invalid metric type")
 
         trends = await email_analytics_service.get_email_trends(
-            metric=metric, period_days=period_days, agent_id=agent_id,
+            metric=metric,
+            period_days=period_days,
+            agent_id=agent_id,
         )
 
         return trends
@@ -259,7 +273,8 @@ async def get_email_trends(
     except Exception as e:
         logger.error(f"Failed to get email trends: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get email trends: {e!s}",
+            status_code=500,
+            detail=f"Failed to get email trends: {e!s}",
         )
 
 
@@ -280,19 +295,24 @@ async def get_analytics_dashboard(
 
         # Get all dashboard data in parallel
         metrics_task = email_analytics_service.get_email_metrics(
-            period_start=start_date, period_end=end_date,
+            period_start=start_date,
+            period_end=end_date,
         )
         insights_task = email_analytics_service.generate_insights(
-            period_start=start_date, period_end=end_date,
+            period_start=start_date,
+            period_end=end_date,
         )
         volume_trends_task = email_analytics_service.get_email_trends(
-            metric="volume", period_days=period_days,
+            metric="volume",
+            period_days=period_days,
         )
         response_trends_task = email_analytics_service.get_email_trends(
-            metric="response_time", period_days=period_days,
+            metric="response_time",
+            period_days=period_days,
         )
         agent_trends_task = email_analytics_service.get_email_trends(
-            metric="agent_activity", period_days=period_days,
+            metric="agent_activity",
+            period_days=period_days,
         )
 
         # Wait for all tasks to complete
@@ -362,7 +382,8 @@ async def get_analytics_dashboard(
     except Exception as e:
         logger.error(f"Failed to get analytics dashboard: {e}")
         raise HTTPException(
-            status_code=500, detail=f"Failed to get analytics dashboard: {e!s}",
+            status_code=500,
+            detail=f"Failed to get analytics dashboard: {e!s}",
         )
 
 

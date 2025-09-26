@@ -18,7 +18,7 @@ from .models import (
 
 __all__ = [
     "DiffusionPipeConfig",
-    "ChromaTrainingConfig", 
+    "ChromaTrainingConfig",
     "DatasetConfig",
     "TrainingRequest",
     "TrainingStatus",

@@ -85,7 +85,7 @@ class FenrirAttackOrchestrator:
                 "successful_attacks": 0,
                 "failed_attacks": 0,
                 "success_rate": 0,
-                "error": str(e)
+                "error": str(e),
             }
 
     async def run_network_attacks(self) -> Dict[str, Any]:
@@ -110,7 +110,7 @@ class FenrirAttackOrchestrator:
                 "successful_attacks": 0,
                 "failed_attacks": 0,
                 "success_rate": 0,
-                "error": str(e)
+                "error": str(e),
             }
 
     async def run_backend_integration_attacks(self) -> Dict[str, Any]:
@@ -123,7 +123,7 @@ class FenrirAttackOrchestrator:
             "successful_attacks": 0,
             "failed_attacks": 0,
             "success_rate": 0,
-            "results": []
+            "results": [],
         }
 
         # Attack 1: Database connection exploitation
@@ -145,23 +145,27 @@ class FenrirAttackOrchestrator:
                         database=db_name,
                         user=username,
                         password=password,
-                        port=5432
+                        port=5432,
                     )
                     conn.close()
 
-                    results["results"].append({
-                        "attack": f"database_access_{db_name}",
-                        "success": True,
-                        "details": f"Successfully connected to {db_name} database"
-                    })
+                    results["results"].append(
+                        {
+                            "attack": f"database_access_{db_name}",
+                            "success": True,
+                            "details": f"Successfully connected to {db_name} database",
+                        }
+                    )
                     results["successful_attacks"] += 1
 
                 except Exception as e:
-                    results["results"].append({
-                        "attack": f"database_access_{db_name}",
-                        "success": False,
-                        "details": f"Failed to connect to {db_name}: {e}"
-                    })
+                    results["results"].append(
+                        {
+                            "attack": f"database_access_{db_name}",
+                            "success": False,
+                            "details": f"Failed to connect to {db_name}: {e}",
+                        }
+                    )
                     results["failed_attacks"] += 1
 
                 results["total_attacks"] += 1
@@ -178,28 +182,34 @@ class FenrirAttackOrchestrator:
             r = redis.Redis(host='localhost', port=6379, db=0)
             r.ping()
 
-            results["results"].append({
-                "attack": "redis_access",
-                "success": True,
-                "details": "Successfully connected to Redis"
-            })
+            results["results"].append(
+                {
+                    "attack": "redis_access",
+                    "success": True,
+                    "details": "Successfully connected to Redis",
+                }
+            )
             results["successful_attacks"] += 1
 
         except ImportError:
             logger.warning("redis not available, skipping Redis attacks")
         except Exception as e:
-            results["results"].append({
-                "attack": "redis_access",
-                "success": False,
-                "details": f"Failed to connect to Redis: {e}"
-            })
+            results["results"].append(
+                {
+                    "attack": "redis_access",
+                    "success": False,
+                    "details": f"Failed to connect to Redis: {e}",
+                }
+            )
             results["failed_attacks"] += 1
 
         results["total_attacks"] += 1
 
         # Calculate success rate
         if results["total_attacks"] > 0:
-            results["success_rate"] = (results["successful_attacks"] / results["total_attacks"]) * 100
+            results["success_rate"] = (
+                results["successful_attacks"] / results["total_attacks"]
+            ) * 100
 
         self.attack_results["backend_integration_attacks"] = results
         self.total_attacks += results["total_attacks"]
@@ -217,7 +227,7 @@ class FenrirAttackOrchestrator:
             "successful_attacks": 0,
             "failed_attacks": 0,
             "success_rate": 0,
-            "results": []
+            "results": [],
         }
 
         # Attack 1: Input validation testing
@@ -231,7 +241,7 @@ class FenrirAttackOrchestrator:
             "${7*7}",
             "{{config}}",
             "{{request}}",
-            "{{self.__init__.__globals__.__builtins__.__import__('os').popen('id').read()}}"
+            "{{self.__init__.__globals__.__builtins__.__import__('os').popen('id').read()}}",
         ]
 
         for payload in malicious_inputs:
@@ -242,22 +252,24 @@ class FenrirAttackOrchestrator:
                         "client_id": payload,
                         "client_secret": "test",
                         "client_type": "agent",
-                        "permissions": ["mcp:read"]
+                        "permissions": ["mcp:read"],
                     },
-                    timeout=5
+                    timeout=5,
                 )
 
                 # Check if payload was reflected or executed
                 response_text = response.text.lower()
                 payload_reflected = payload.lower() in response_text
 
-                results["results"].append({
-                    "attack": f"input_validation_{payload[:20].replace(' ', '_')}",
-                    "success": payload_reflected,
-                    "details": f"Input validation test: {payload[:50]}...",
-                    "payload_reflected": payload_reflected,
-                    "status_code": response.status_code
-                })
+                results["results"].append(
+                    {
+                        "attack": f"input_validation_{payload[:20].replace(' ', '_')}",
+                        "success": payload_reflected,
+                        "details": f"Input validation test: {payload[:50]}...",
+                        "payload_reflected": payload_reflected,
+                        "status_code": response.status_code,
+                    }
+                )
 
                 if payload_reflected:
                     results["successful_attacks"] += 1
@@ -267,18 +279,22 @@ class FenrirAttackOrchestrator:
                 results["total_attacks"] += 1
 
             except Exception as e:
-                results["results"].append({
-                    "attack": f"input_validation_{payload[:20].replace(' ', '_')}",
-                    "success": False,
-                    "details": f"Input validation test failed: {e}",
-                    "error": str(e)
-                })
+                results["results"].append(
+                    {
+                        "attack": f"input_validation_{payload[:20].replace(' ', '_')}",
+                        "success": False,
+                        "details": f"Input validation test failed: {e}",
+                        "error": str(e),
+                    }
+                )
                 results["failed_attacks"] += 1
                 results["total_attacks"] += 1
 
         # Calculate success rate
         if results["total_attacks"] > 0:
-            results["success_rate"] = (results["successful_attacks"] / results["total_attacks"]) * 100
+            results["success_rate"] = (
+                results["successful_attacks"] / results["total_attacks"]
+            ) * 100
 
         self.attack_results["security_validation_attacks"] = results
         self.total_attacks += results["total_attacks"]
@@ -291,7 +307,11 @@ class FenrirAttackOrchestrator:
         end_time = time.time()
         duration = end_time - self.start_time
 
-        overall_success_rate = (self.total_successful / self.total_attacks) * 100 if self.total_attacks > 0 else 0
+        overall_success_rate = (
+            (self.total_successful / self.total_attacks) * 100
+            if self.total_attacks > 0
+            else 0
+        )
 
         report = {
             "fenrir_attack_report": {
@@ -302,14 +322,14 @@ class FenrirAttackOrchestrator:
                     "total_attacks": self.total_attacks,
                     "total_successful_attacks": self.total_successful,
                     "total_failed_attacks": self.total_attacks - self.total_successful,
-                    "overall_success_rate": round(overall_success_rate, 2)
+                    "overall_success_rate": round(overall_success_rate, 2),
                 },
                 "attack_suites": self.attack_results,
                 "security_assessment": {
                     "risk_level": self._assess_risk_level(overall_success_rate),
                     "recommendations": self._generate_recommendations(),
-                    "critical_vulnerabilities": self._identify_critical_vulnerabilities()
-                }
+                    "critical_vulnerabilities": self._identify_critical_vulnerabilities(),
+                },
             }
         }
 
@@ -335,33 +355,41 @@ class FenrirAttackOrchestrator:
         for suite_name, suite_results in self.attack_results.items():
             if suite_results.get("successful_attacks", 0) > 0:
                 if "mcp_server" in suite_name:
-                    recommendations.extend([
-                        "Implement proper JWT token validation with signature verification",
-                        "Add rate limiting to MCP authentication endpoints",
-                        "Validate all JSON-RPC requests before processing",
-                        "Implement proper error handling to prevent information disclosure"
-                    ])
+                    recommendations.extend(
+                        [
+                            "Implement proper JWT token validation with signature verification",
+                            "Add rate limiting to MCP authentication endpoints",
+                            "Validate all JSON-RPC requests before processing",
+                            "Implement proper error handling to prevent information disclosure",
+                        ]
+                    )
                 elif "network" in suite_name:
-                    recommendations.extend([
-                        "Implement proper network access controls",
-                        "Add input validation for all network protocols",
-                        "Implement proper error handling for malformed requests",
-                        "Add monitoring for suspicious network activity"
-                    ])
+                    recommendations.extend(
+                        [
+                            "Implement proper network access controls",
+                            "Add input validation for all network protocols",
+                            "Implement proper error handling for malformed requests",
+                            "Add monitoring for suspicious network activity",
+                        ]
+                    )
                 elif "backend_integration" in suite_name:
-                    recommendations.extend([
-                        "Secure database connections with proper authentication",
-                        "Implement database access controls and permissions",
-                        "Add monitoring for database access attempts",
-                        "Use connection pooling with proper security"
-                    ])
+                    recommendations.extend(
+                        [
+                            "Secure database connections with proper authentication",
+                            "Implement database access controls and permissions",
+                            "Add monitoring for database access attempts",
+                            "Use connection pooling with proper security",
+                        ]
+                    )
                 elif "security_validation" in suite_name:
-                    recommendations.extend([
-                        "Implement comprehensive input validation",
-                        "Add output encoding to prevent XSS",
-                        "Implement proper SQL injection prevention",
-                        "Add security headers to all HTTP responses"
-                    ])
+                    recommendations.extend(
+                        [
+                            "Implement comprehensive input validation",
+                            "Add output encoding to prevent XSS",
+                            "Implement proper SQL injection prevention",
+                            "Add security headers to all HTTP responses",
+                        ]
+                    )
 
         # Remove duplicates
         return list(set(recommendations))
@@ -376,15 +404,32 @@ class FenrirAttackOrchestrator:
                     attack_name = result.get("attack", "unknown")
 
                     # Identify critical attack types
-                    if any(keyword in attack_name.lower() for keyword in [
-                        "jwt", "token", "authentication", "admin", "database", "sql", "xss", "injection"
-                    ]):
-                        critical_vulns.append({
-                            "suite": suite_name,
-                            "attack": attack_name,
-                            "details": result.get("details", ""),
-                            "severity": "HIGH" if "admin" in attack_name or "database" in attack_name else "MEDIUM"
-                        })
+                    if any(
+                        keyword in attack_name.lower()
+                        for keyword in [
+                            "jwt",
+                            "token",
+                            "authentication",
+                            "admin",
+                            "database",
+                            "sql",
+                            "xss",
+                            "injection",
+                        ]
+                    ):
+                        critical_vulns.append(
+                            {
+                                "suite": suite_name,
+                                "attack": attack_name,
+                                "details": result.get("details", ""),
+                                "severity": (
+                                    "HIGH"
+                                    if "admin" in attack_name
+                                    or "database" in attack_name
+                                    else "MEDIUM"
+                                ),
+                            }
+                        )
 
         return critical_vulns
 
@@ -392,7 +437,9 @@ class FenrirAttackOrchestrator:
         """Run all attack suites."""
         self.log_banner()
 
-        logger.info(f"🚀 Starting Fenrir attack suite at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        logger.info(
+            f"🚀 Starting Fenrir attack suite at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        )
         logger.info("=" * 80)
 
         # Run all attack suites
@@ -412,15 +459,25 @@ class FenrirAttackOrchestrator:
         logger.info(f"Total Attacks: {self.total_attacks}")
         logger.info(f"Successful Attacks: {self.total_successful}")
         logger.info(f"Failed Attacks: {self.total_attacks - self.total_successful}")
-        logger.info(f"Overall Success Rate: {(self.total_successful / self.total_attacks) * 100:.1f}%")
-        logger.info(f"Risk Level: {report['fenrir_attack_report']['security_assessment']['risk_level']}")
-        logger.info(f"Duration: {report['fenrir_attack_report']['metadata']['duration_seconds']} seconds")
+        logger.info(
+            f"Overall Success Rate: {(self.total_successful / self.total_attacks) * 100:.1f}%"
+        )
+        logger.info(
+            f"Risk Level: {report['fenrir_attack_report']['security_assessment']['risk_level']}"
+        )
+        logger.info(
+            f"Duration: {report['fenrir_attack_report']['metadata']['duration_seconds']} seconds"
+        )
 
         if self.total_successful > 0:
             logger.warning("⚠️  SECURITY VULNERABILITIES DETECTED!")
-            logger.warning("Review the detailed report and implement recommended fixes.")
+            logger.warning(
+                "Review the detailed report and implement recommended fixes."
+            )
         else:
-            logger.info("✅ No security vulnerabilities detected in the tested attack vectors.")
+            logger.info(
+                "✅ No security vulnerabilities detected in the tested attack vectors."
+            )
 
         return report
 
@@ -443,7 +500,7 @@ async def main():
 if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     )
 
     try:

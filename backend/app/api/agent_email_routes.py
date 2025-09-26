@@ -39,7 +39,8 @@ agent_email_service = AgentEmailService()
 
 @router.get("/{agent_id}/config", response_model=AgentEmailConfig)
 async def get_agent_email_config(
-    agent_id: str, current_user: dict = Depends(get_current_active_user),
+    agent_id: str,
+    current_user: dict = Depends(get_current_active_user),
 ) -> AgentEmailConfig:
     """Get agent email configuration.
 
@@ -97,7 +98,8 @@ async def update_agent_email_config(
 
 @router.get("/{agent_id}/stats", response_model=AgentEmailStats)
 async def get_agent_email_stats(
-    agent_id: str, current_user: dict = Depends(get_current_active_user),
+    agent_id: str,
+    current_user: dict = Depends(get_current_active_user),
 ) -> AgentEmailStats:
     """Get agent email statistics.
 
@@ -127,7 +129,8 @@ async def get_agent_email_stats(
 
 @router.get("/{agent_id}/templates", response_model=list[AgentEmailTemplate])
 async def get_agent_email_templates(
-    agent_id: str, current_user: dict = Depends(get_current_active_user),
+    agent_id: str,
+    current_user: dict = Depends(get_current_active_user),
 ) -> list[AgentEmailTemplate]:
     """Get agent email templates.
 
@@ -169,7 +172,8 @@ async def create_agent_email_template(
     """
     try:
         created_template = await agent_email_service.create_agent_template(
-            agent_id, template,
+            agent_id,
+            template,
         )
         return created_template
     except Exception as e:
@@ -262,7 +266,8 @@ async def send_agent_email(
         # Update agent stats
         await agent_email_service.update_agent_stats(agent_id, "sent")
         await agent_email_service.update_agent_stats(
-            request.target_agent_id, "received",
+            request.target_agent_id,
+            "received",
         )
 
         # Log the interaction
@@ -338,7 +343,9 @@ async def send_agent_bulk_email(
 
         # Update agent stats
         await agent_email_service.update_agent_stats(
-            agent_id, "sent", len(target_emails),
+            agent_id,
+            "sent",
+            len(target_emails),
         )
         for target_agent_id in request.target_agent_ids:
             await agent_email_service.update_agent_stats(target_agent_id, "received")
@@ -463,7 +470,9 @@ async def get_agent_email_interactions(
     """
     try:
         interactions = await agent_email_service.get_agent_interactions(
-            agent_id, limit, offset,
+            agent_id,
+            limit,
+            offset,
         )
         return {
             "interactions": interactions,

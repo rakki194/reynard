@@ -71,7 +71,8 @@ def main():
 
         # Get database URL from environment or use default
         database_url = os.getenv(
-            "DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard",
+            "DATABASE_URL",
+            "postgresql://postgres:password@localhost:5432/reynard",
         )
         logger.info(f"Using database URL: {database_url}")
 

@@ -1,6 +1,6 @@
 {
   "name": "reynard-backend",
-  "version": "0.1.3",
+  "version": "0.23.0",
   "description": "FastAPI backend services for the Reynard framework",
   "type": "module",
   "main": "main.py",
@@ -19,7 +19,15 @@
     "test:parallel": "./scripts/run-tests.sh -p",
     "test:ci": "./scripts/run-tests.sh -t all -c -p -r xml"
   },
-  "keywords": ["fastapi", "python", "backend", "api", "reynard", "jwt", "authentication"],
+  "keywords": [
+    "fastapi",
+    "python",
+    "backend",
+    "api",
+    "reynard",
+    "jwt",
+    "authentication"
+  ],
   "author": "Balazs Horvath",
   "license": "MIT",
   "repository": {

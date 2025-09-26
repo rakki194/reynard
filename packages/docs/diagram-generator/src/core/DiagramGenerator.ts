@@ -23,7 +23,7 @@ export class DiagramGeneratorMain {
   private renderer: MermaidRenderer;
   private generators: Map<string, DiagramGenerator>;
 
-  constructor(rootPath: string = "/home/kade/runeset/reynard") {
+  constructor(rootPath: string = process.cwd()) {
     this.analyzer = new CodebaseAnalyzer(rootPath);
     this.renderer = new MermaidRenderer();
     this.generators = new Map();

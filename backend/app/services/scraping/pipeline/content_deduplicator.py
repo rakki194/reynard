@@ -50,7 +50,8 @@ class ContentDeduplicator:
             return False
 
     async def deduplicate_content(
-        self, content_list: list[dict[str, Any]],
+        self,
+        content_list: list[dict[str, Any]],
     ) -> list[dict[str, Any]]:
         """Remove duplicate content from a list.
 

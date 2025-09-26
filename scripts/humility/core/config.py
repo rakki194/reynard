@@ -1,5 +1,4 @@
-"""Configuration management for the Enhanced Humility Detector.
-"""
+"""Configuration management for the Enhanced Humility Detector."""
 
 import json
 from dataclasses import dataclass, field

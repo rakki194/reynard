@@ -106,7 +106,10 @@ class TestImageProcessing:
         # Height-based: 15x30 (diff: |15-50| = 35)
         # Height-based is better, so should return (15, 30)
         result = ImageProcessing.calculate_resize_dimensions(
-            100, 200, target_width=50, target_height=30,
+            100,
+            200,
+            target_width=50,
+            target_height=30,
         )
         assert result == (15, 30)
 
@@ -118,7 +121,10 @@ class TestImageProcessing:
         # Height-based: 60x30 (diff: |60-50| = 10)
         # Width-based is better, so should return (50, 25)
         result = ImageProcessing.calculate_resize_dimensions(
-            200, 100, target_width=50, target_height=30,
+            200,
+            100,
+            target_width=50,
+            target_height=30,
         )
         assert result == (50, 25)
 

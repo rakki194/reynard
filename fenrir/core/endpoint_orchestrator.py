@@ -32,7 +32,9 @@ class EndpointOrchestrator:
     """
 
     def __init__(
-        self, base_url: str = "http://localhost:8000", max_concurrent: int = 10,
+        self,
+        base_url: str = "http://localhost:8000",
+        max_concurrent: int = 10,
     ):
         """Initialize the endpoint orchestrator.
 
@@ -100,7 +102,9 @@ class EndpointOrchestrator:
             return results
 
     async def fuzz_all_categories(
-        self, categories: list[str] | None = None, **kwargs,
+        self,
+        categories: list[str] | None = None,
+        **kwargs,
     ) -> dict[str, list[FuzzResult]]:
         """Fuzz all registered endpoint categories.
 
@@ -277,7 +281,8 @@ ENDPOINT_CATEGORIES = {
 
 
 def create_endpoint_orchestrator(
-    base_url: str = "http://localhost:8000", max_concurrent: int = 10,
+    base_url: str = "http://localhost:8000",
+    max_concurrent: int = 10,
 ) -> EndpointOrchestrator:
     """Create a pre-configured endpoint orchestrator.
 
@@ -301,7 +306,8 @@ def create_endpoint_orchestrator(
         )
 
         orchestrator.register_fuzzer(
-            "embedding_visualization", EmbeddingVisualizationFuzzer,
+            "embedding_visualization",
+            EmbeddingVisualizationFuzzer,
         )
     except ImportError:
         console.print("[yellow]⚠️  EmbeddingVisualizationFuzzer not available[/yellow]")

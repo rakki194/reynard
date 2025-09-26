@@ -80,7 +80,8 @@ class TestSecurityHeaders:
         """Test CORS origin validation."""
         # Test with allowed origin
         response = client.get(
-            "/api/health", headers={"Origin": "http://localhost:3000"},
+            "/api/health",
+            headers={"Origin": "http://localhost:3000"},
         )
 
         assert response.status_code == 200

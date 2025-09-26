@@ -14,8 +14,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestRateLimiting(FenrirTestBase):
-    """*otter curiosity* Test suite for rate limiting security exploits
-    """
+    """*otter curiosity* Test suite for rate limiting security exploits"""
 
     async def test_rate_limit_bypass_detection(self):
         """Test that rate limit bypass detection works correctly"""

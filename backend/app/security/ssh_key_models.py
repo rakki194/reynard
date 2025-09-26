@@ -27,7 +27,9 @@ from sqlalchemy import (
     Boolean,
     Column,
     DateTime,
-    Enum as SQLEnum,
+)
+from sqlalchemy import Enum as SQLEnum
+from sqlalchemy import (
     Integer,
     String,
     Text,
@@ -46,12 +48,12 @@ AUTH_DATABASE_URL = os.getenv(
 )
 
 # Import the shared AuthBase from PGP key models
-from .pgp_key_models import AuthBase, auth_engine, AuthSessionLocal
+from .pgp_key_models import AuthBase, AuthSessionLocal, auth_engine
 
 
 class SSHKeyStatus(str, Enum):
     """SSH key status enumeration."""
-    
+
     ACTIVE = "active"
     INACTIVE = "inactive"
     REVOKED = "revoked"
@@ -61,7 +63,7 @@ class SSHKeyStatus(str, Enum):
 
 class SSHKeyType(str, Enum):
     """SSH key type enumeration."""
-    
+
     RSA = "rsa"
     ED25519 = "ed25519"
     ECDSA = "ecdsa"
@@ -70,7 +72,7 @@ class SSHKeyType(str, Enum):
 
 class SSHKeyUsage(str, Enum):
     """SSH key usage enumeration."""
-    
+
     AUTHENTICATION = "authentication"
     SIGNING = "signing"
     ENCRYPTION = "encryption"
@@ -83,31 +85,33 @@ class SSHKey(AuthBase):
     __tablename__ = "ssh_keys"
 
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
-    
+
     # Key identification
     key_id = Column(String(255), unique=True, nullable=False, index=True)
     fingerprint = Column(String(255), unique=True, nullable=False, index=True)
     public_key_hash = Column(String(64), nullable=False, index=True)  # SHA-256 hash
-    
+
     # Key details
     key_type = Column(SQLEnum(SSHKeyType), nullable=False)
     key_length = Column(Integer, nullable=False)
     algorithm = Column(String(50), nullable=False)
     comment = Column(String(255), nullable=True)  # SSH key comment
-    
+
     # User association (references Gatekeeper user)
     user_id = Column(String(255), nullable=False, index=True)  # Gatekeeper user ID
     email = Column(String(255), nullable=False, index=True)
     name = Column(String(255), nullable=False)
-    
+
     # Key data (encrypted)
     public_key_openssh = Column(Text, nullable=False)  # OpenSSH format public key
     private_key_openssh = Column(Text, nullable=True)  # Encrypted private key
     passphrase_hash = Column(String(255), nullable=True)  # Hash of passphrase
-    
+
     # Key metadata
     status = Column(SQLEnum(SSHKeyStatus), nullable=False, default=SSHKeyStatus.ACTIVE)
-    usage = Column(SQLEnum(SSHKeyUsage), nullable=False, default=SSHKeyUsage.AUTHENTICATION)
+    usage = Column(
+        SQLEnum(SSHKeyUsage), nullable=False, default=SSHKeyUsage.AUTHENTICATION
+    )
     created_at = Column(
         DateTime(timezone=True),
         server_default=text("CURRENT_TIMESTAMP"),
@@ -116,29 +120,31 @@ class SSHKey(AuthBase):
     expires_at = Column(DateTime(timezone=True), nullable=True)
     last_used = Column(DateTime(timezone=True), nullable=True)
     usage_count = Column(Integer, default=0)
-    
+
     # Admin controls
     is_primary = Column(Boolean, default=False, index=True)  # Primary key for user
     auto_rotate = Column(Boolean, default=False)  # Auto-rotation enabled
     rotation_schedule_days = Column(Integer, default=365)  # Rotation schedule
-    
+
     # Security metadata
     trust_level = Column(Integer, default=0)  # 0-5 trust level
     is_revoked = Column(Boolean, default=False, index=True)
     revocation_reason = Column(Text, nullable=True)
     revoked_at = Column(DateTime(timezone=True), nullable=True)
     revoked_by = Column(String(255), nullable=True)  # Admin who revoked
-    
+
     # SSH-specific metadata
     allowed_hosts = Column(Text, nullable=True)  # JSON list of allowed hosts
     allowed_commands = Column(Text, nullable=True)  # JSON list of allowed commands
-    source_restrictions = Column(Text, nullable=True)  # JSON list of source IP restrictions
+    source_restrictions = Column(
+        Text, nullable=True
+    )  # JSON list of source IP restrictions
     force_command = Column(String(255), nullable=True)  # Forced command execution
-    
+
     # Additional metadata
     key_metadata = Column(Text, nullable=True)  # JSON metadata
     notes = Column(Text, nullable=True)  # Admin notes
-    
+
     # Timestamps
     updated_at = Column(
         DateTime(timezone=True),
@@ -194,29 +200,29 @@ class SSHKeyAccessLog(AuthBase):
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
     key_id = Column(String(255), nullable=False, index=True)
     user_id = Column(String(255), nullable=False, index=True)
-    
+
     # Operation details
     operation = Column(
         String(100), nullable=False, index=True
     )  # 'generate', 'regenerate', 'revoke', 'export', 'import', 'use', 'authenticate'
     success = Column(Boolean, nullable=False, index=True)
     error_message = Column(Text, nullable=True)
-    
+
     # Request context
     ip_address = Column(String(45), nullable=True)  # IPv4 or IPv6
     user_agent = Column(Text, nullable=True)
     request_id = Column(String(255), nullable=True)  # For tracing
-    
+
     # SSH-specific context
     target_host = Column(String(255), nullable=True)  # Target host for authentication
     target_user = Column(String(255), nullable=True)  # Target user for authentication
     command_executed = Column(Text, nullable=True)  # Command executed via SSH
-    
+
     # Additional context
     admin_action = Column(Boolean, default=False)  # Was this an admin action?
     admin_user_id = Column(String(255), nullable=True)  # Admin who performed action
     target_user_id = Column(String(255), nullable=True)  # User whose key was affected
-    
+
     # Timestamp
     created_at = Column(
         DateTime(timezone=True),
@@ -234,28 +240,30 @@ class SSHKeyRotationLog(AuthBase):
     __tablename__ = "ssh_key_rotation_logs"
 
     id = Column(PostgresUUID(as_uuid=True), primary_key=True, default=uuid4)
-    
+
     # Key references
     old_key_id = Column(String(255), nullable=True, index=True)  # Previous key
     new_key_id = Column(String(255), nullable=False, index=True)  # New key
     user_id = Column(String(255), nullable=False, index=True)
-    
+
     # Rotation details
     rotation_type = Column(
         String(50), nullable=False
     )  # 'manual', 'automatic', 'scheduled', 'emergency'
     reason = Column(Text, nullable=True)  # Reason for rotation
     initiated_by = Column(String(255), nullable=False)  # User or system who initiated
-    
+
     # Rotation metadata
     old_key_expired = Column(Boolean, default=False)
     old_key_revoked = Column(Boolean, default=False)
     migration_completed = Column(Boolean, default=False)
-    
+
     # SSH-specific rotation metadata
-    authorized_keys_updated = Column(Boolean, default=False)  # Was authorized_keys updated?
+    authorized_keys_updated = Column(
+        Boolean, default=False
+    )  # Was authorized_keys updated?
     target_hosts = Column(Text, nullable=True)  # JSON list of target hosts
-    
+
     # Timestamps
     started_at = Column(
         DateTime(timezone=True),
@@ -263,7 +271,7 @@ class SSHKeyRotationLog(AuthBase):
         nullable=False,
     )
     completed_at = Column(DateTime(timezone=True), nullable=True)
-    
+
     # Additional metadata
     rotation_metadata = Column(Text, nullable=True)  # JSON metadata
 

@@ -89,10 +89,12 @@ class ComfyService:
             # Apply reconnection settings
             self._reconnect_max_attempts = config.get("comfy_reconnect_max_attempts", 5)
             self._reconnect_base_delay_s = config.get(
-                "comfy_reconnect_base_delay_s", 0.5,
+                "comfy_reconnect_base_delay_s",
+                0.5,
             )
             self._reconnect_max_delay_s = config.get(
-                "comfy_reconnect_max_delay_s", 30.0,
+                "comfy_reconnect_max_delay_s",
+                30.0,
             )
 
             if self._enabled:
@@ -205,7 +207,9 @@ class ComfyService:
         self._connection_state = ConnectionState.DISCONNECTED
 
     async def queue_prompt(
-        self, workflow: dict[str, Any], client_id: str | None = None,
+        self,
+        workflow: dict[str, Any],
+        client_id: str | None = None,
     ) -> QueueResult:
         """Queue a workflow for execution."""
         if not self._enabled:
@@ -313,7 +317,10 @@ class ComfyService:
             raise RuntimeError(f"Failed to check status: {e}")
 
     async def get_image(
-        self, filename: str, subfolder: str = "", type_: str = "output",
+        self,
+        filename: str,
+        subfolder: str = "",
+        type_: str = "output",
     ) -> bytes:
         """Retrieve a generated image."""
         if not self._enabled:

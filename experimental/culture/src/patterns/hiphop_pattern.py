@@ -96,7 +96,9 @@ class HipHopCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel,
+        self,
+        count: int,
+        safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate hip-hop-specific scenarios"""
         scenarios = []
@@ -150,7 +152,9 @@ class HipHopCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for hip-hop cultural appropriateness"""
         metrics = {}
@@ -207,7 +211,9 @@ class HipHopCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_authenticity(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate authenticity and genuine expression"""
         score = 0.0
@@ -348,7 +354,9 @@ class HipHopCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str,
+        self,
+        metrics: dict[str, float],
+        response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

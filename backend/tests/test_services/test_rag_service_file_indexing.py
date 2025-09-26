@@ -173,7 +173,8 @@ It contains information about the test modules.
         # Verify file indexing service dependency
         assert service.file_indexing_service is not None
         assert isinstance(
-            service.file_indexing_service, type(get_file_indexing_service()),
+            service.file_indexing_service,
+            type(get_file_indexing_service()),
         )
 
         # Test file indexing service functionality
@@ -212,7 +213,8 @@ It contains information about the test modules.
             (temp_path / "test.py").write_text("def test(): pass")
 
             result = await service.file_indexing_service.index_files(
-                [str(temp_path)], [".py"],
+                [str(temp_path)],
+                [".py"],
             )
             assert result["success"] is True
             assert result["indexed_files"] == 1
@@ -264,7 +266,9 @@ It contains information about the test modules.
 
     @pytest.mark.asyncio
     async def test_rag_service_file_discovery_performance(
-        self, rag_service_lightweight, temp_directory_with_files,
+        self,
+        rag_service_lightweight,
+        temp_directory_with_files,
     ):
         """Test RAG service file discovery performance using file indexing."""
         service = rag_service_lightweight
@@ -282,7 +286,8 @@ It contains information about the test modules.
 
         start_time = time.time()
         result = await service.file_indexing_service.index_files(
-            directories, file_types,
+            directories,
+            file_types,
         )
         end_time = time.time()
 
@@ -292,7 +297,8 @@ It contains information about the test modules.
 
         # Test file search
         search_results = await service.file_indexing_service.search_files(
-            "function", max_results=10,
+            "function",
+            max_results=10,
         )
         assert len(search_results) > 0
 
@@ -364,7 +370,9 @@ It contains information about the test modules.
 
     @pytest.mark.asyncio
     async def test_rag_service_concurrent_operations(
-        self, rag_service_lightweight, temp_directory_with_files,
+        self,
+        rag_service_lightweight,
+        temp_directory_with_files,
     ):
         """Test RAG service concurrent operations with file indexing."""
         service = rag_service_lightweight

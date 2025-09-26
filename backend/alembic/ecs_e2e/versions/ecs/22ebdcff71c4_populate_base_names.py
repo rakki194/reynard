@@ -22,7 +22,9 @@ def upgrade() -> None:
     """Populate base names for all naming spirits."""
     # Get table reference
     naming_spirits = sa.table(
-        "naming_spirits", sa.column("name", sa.String), sa.column("base_names", sa.JSON),
+        "naming_spirits",
+        sa.column("name", sa.String),
+        sa.column("base_names", sa.JSON),
     )
 
     # Define the spirit names from the agent naming service
@@ -127,7 +129,9 @@ def downgrade() -> None:
     """Clear base names for all naming spirits."""
     # Get table reference
     naming_spirits = sa.table(
-        "naming_spirits", sa.column("name", sa.String), sa.column("base_names", sa.JSON),
+        "naming_spirits",
+        sa.column("name", sa.String),
+        sa.column("base_names", sa.JSON),
     )
 
     # Clear all base names

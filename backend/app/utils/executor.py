@@ -28,7 +28,10 @@ async def get_global_executor(
 
 
 async def execute_in_thread_pool(
-    fn: Callable, *args, timeout: float | None = None, **kwargs,
+    fn: Callable,
+    *args,
+    timeout: float | None = None,
+    **kwargs,
 ) -> Any:
     """Execute a function in the global thread pool."""
     executor = await get_global_executor()
@@ -36,7 +39,8 @@ async def execute_in_thread_pool(
 
 
 async def execute_batch_in_thread_pool(
-    tasks: list[Callable], max_concurrent: int | None = None,
+    tasks: list[Callable],
+    max_concurrent: int | None = None,
 ) -> list[Any]:
     """Execute multiple tasks in the global thread pool."""
     executor = await get_global_executor()

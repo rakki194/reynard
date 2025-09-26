@@ -21,10 +21,8 @@ class FormatConversionError(Exception):
     """Base exception for format conversion errors."""
 
 
-
 class UnsupportedFormatError(FormatConversionError):
     """Exception raised when a format is not supported."""
-
 
 
 class ImageFormatConverter:
@@ -265,7 +263,8 @@ class ImageFormatConverter:
 
         # Check alpha channel support
         if input_info.get("supports_alpha", False) and not output_info.get(
-            "supports_alpha", False,
+            "supports_alpha",
+            False,
         ):
             logger.warning(
                 f"Converting from {input_format} (with alpha) to {output_format} (no alpha) may lose transparency",
@@ -273,7 +272,8 @@ class ImageFormatConverter:
 
         # Check animation support
         if input_info.get("supports_animation", False) and not output_info.get(
-            "supports_animation", False,
+            "supports_animation",
+            False,
         ):
             logger.warning(
                 f"Converting from {input_format} (animated) to {output_format} (not animated) may lose animation",
@@ -341,7 +341,9 @@ class ImageFormatConverter:
         return score
 
     def _score_quality_priority(
-        self, format_info: dict[str, Any], requirements: dict[str, Any],
+        self,
+        format_info: dict[str, Any],
+        requirements: dict[str, Any],
     ) -> int:
         """Score format based on quality priority."""
         quality_priority = requirements.get("quality_priority", "medium")
@@ -356,7 +358,9 @@ class ImageFormatConverter:
         return 0
 
     def _score_size_priority(
-        self, format_info: dict[str, Any], requirements: dict[str, Any],
+        self,
+        format_info: dict[str, Any],
+        requirements: dict[str, Any],
     ) -> int:
         """Score format based on size priority."""
         size_priority = requirements.get("size_priority", "medium")

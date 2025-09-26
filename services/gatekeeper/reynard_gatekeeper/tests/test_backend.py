@@ -135,7 +135,8 @@ class TestMemoryBackend:
         user_update = UserUpdate(email="updated@example.com", role=UserRole.ADMIN)
 
         updated_user = await memory_backend.update_user(
-            created_user.username, user_update,
+            created_user.username,
+            user_update,
         )
 
         assert updated_user.email == "updated@example.com"
@@ -244,7 +245,8 @@ class TestMemoryBackend:
         created_user = await memory_backend.create_user(sample_user)
 
         success = await memory_backend.update_user_password(
-            created_user.username, "new_hash",
+            created_user.username,
+            "new_hash",
         )
 
         assert success is True
@@ -265,7 +267,8 @@ class TestMemoryBackend:
         created_user = await memory_backend.create_user(sample_user)
 
         success = await memory_backend.update_user_role(
-            created_user.username, UserRole.ADMIN,
+            created_user.username,
+            UserRole.ADMIN,
         )
 
         assert success is True
@@ -286,7 +289,8 @@ class TestMemoryBackend:
         created_user = await memory_backend.create_user(sample_user)
 
         success = await memory_backend.update_user_profile_picture(
-            created_user.username, "https://example.com/avatar.jpg",
+            created_user.username,
+            "https://example.com/avatar.jpg",
         )
 
         assert success is True
@@ -299,7 +303,8 @@ class TestMemoryBackend:
     async def test_update_user_profile_picture_not_found(self, memory_backend):
         """Test updating profile picture for non-existent user."""
         success = await memory_backend.update_user_profile_picture(
-            "non-existent", "https://example.com/avatar.jpg",
+            "non-existent",
+            "https://example.com/avatar.jpg",
         )
         assert success is False
 
@@ -310,7 +315,8 @@ class TestMemoryBackend:
 
         metadata = {"key": "value", "preferences": {"theme": "dark"}}
         success = await memory_backend.update_user_metadata(
-            created_user.username, metadata,
+            created_user.username,
+            metadata,
         )
 
         assert success is True
@@ -451,7 +457,8 @@ class TestMemoryBackend:
 
         new_settings = {"theme": "light", "notifications": False}
         success = await memory_backend.update_user_settings(
-            created_user.username, new_settings,
+            created_user.username,
+            new_settings,
         )
 
         assert success is True

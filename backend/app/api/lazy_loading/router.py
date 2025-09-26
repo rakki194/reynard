@@ -31,7 +31,8 @@ async def create_lazy_export_endpoint(request: LazyExportRequest):
     try:
         service = get_lazy_loading_service()
         result = service.create_lazy_export(
-            request.package_name, request.validation_level,
+            request.package_name,
+            request.validation_level,
         )
         return LazyExportResponse(**result)
     except Exception as e:

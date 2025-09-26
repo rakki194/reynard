@@ -83,7 +83,8 @@ class AgentStateManager:
         """
         self.ecs_service = ecs_service
         self.legacy_tracker = SuccessAdvisor8LegacyTracker(
-            codebase_path, "CHANGELOG.md",
+            codebase_path,
+            "CHANGELOG.md",
         )
         logger.info("AgentStateManager initialized with ECS integration")
 
@@ -176,7 +177,10 @@ class AgentStateManager:
             return False
 
     async def track_agent_activity(
-        self, agent_id: str, activity: str, context: dict[str, Any],
+        self,
+        agent_id: str,
+        activity: str,
+        context: dict[str, Any],
     ) -> None:
         """Track agent activity for legacy analysis.
 
@@ -328,7 +332,9 @@ class AgentStateManager:
             return []
 
     async def _update_agent_traits(
-        self, agent_id: str, traits: dict[str, float],
+        self,
+        agent_id: str,
+        traits: dict[str, float],
     ) -> None:
         """Update agent traits in ECS database."""
         try:
@@ -338,7 +344,9 @@ class AgentStateManager:
             }
             for trait_name, value in personality_traits.items():
                 await self.ecs_service.update_personality_trait(
-                    agent_id, trait_name.replace("personality_", ""), value,
+                    agent_id,
+                    trait_name.replace("personality_", ""),
+                    value,
                 )
 
             # Update physical traits
@@ -347,7 +355,9 @@ class AgentStateManager:
             }
             for trait_name, value in physical_traits.items():
                 await self.ecs_service.update_physical_trait(
-                    agent_id, trait_name.replace("physical_", ""), value,
+                    agent_id,
+                    trait_name.replace("physical_", ""),
+                    value,
                 )
 
             # Update ability traits
@@ -356,25 +366,32 @@ class AgentStateManager:
             }
             for trait_name, value in ability_traits.items():
                 await self.ecs_service.update_ability_trait(
-                    agent_id, trait_name.replace("ability_", ""), value,
+                    agent_id,
+                    trait_name.replace("ability_", ""),
+                    value,
                 )
 
         except Exception as e:
             logger.error(f"Error updating traits for agent {agent_id}: {e}")
 
     async def _update_agent_specializations(
-        self, agent_id: str, specializations: list[str],
+        self,
+        agent_id: str,
+        specializations: list[str],
     ) -> None:
         """Update agent specializations in ECS database."""
         try:
             await self.ecs_service.update_agent_specializations(
-                agent_id, specializations,
+                agent_id,
+                specializations,
             )
         except Exception as e:
             logger.error(f"Error updating specializations for agent {agent_id}: {e}")
 
     async def _update_agent_achievements(
-        self, agent_id: str, achievements: list[dict],
+        self,
+        agent_id: str,
+        achievements: list[dict],
     ) -> None:
         """Update agent achievements in ECS database."""
         try:

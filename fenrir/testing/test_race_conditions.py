@@ -15,8 +15,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestRaceConditions(FenrirTestBase):
-    """*otter curiosity* Test suite for race condition exploits
-    """
+    """*otter curiosity* Test suite for race condition exploits"""
 
     async def test_race_condition_detection(self):
         """Test that race condition detection works correctly"""

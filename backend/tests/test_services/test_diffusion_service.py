@@ -101,13 +101,19 @@ class TestDiffusionLLMServiceSimple:
             # Mock streaming response
             async def mock_stream(params):
                 yield DiffusionStreamEvent(
-                    type="token", data="Hello", timestamp=1234567890,
+                    type="token",
+                    data="Hello",
+                    timestamp=1234567890,
                 )
                 yield DiffusionStreamEvent(
-                    type="token", data=" world", timestamp=1234567891,
+                    type="token",
+                    data=" world",
+                    timestamp=1234567891,
                 )
                 yield DiffusionStreamEvent(
-                    type="complete", data="", timestamp=1234567892,
+                    type="complete",
+                    data="",
+                    timestamp=1234567892,
                 )
 
             # Create a mock model that has the generate_stream method
@@ -125,7 +131,9 @@ class TestDiffusionLLMServiceSimple:
             await service.initialize(mock_config)
 
             params = DiffusionGenerationParams(
-                text="Test prompt", max_length=100, temperature=0.7,
+                text="Test prompt",
+                max_length=100,
+                temperature=0.7,
             )
 
             events = []
@@ -156,10 +164,14 @@ class TestDiffusionLLMServiceSimple:
             # Mock streaming response
             async def mock_stream(params):
                 yield DiffusionStreamEvent(
-                    type="token", data="infilled", timestamp=1234567890,
+                    type="token",
+                    data="infilled",
+                    timestamp=1234567890,
                 )
                 yield DiffusionStreamEvent(
-                    type="complete", data="", timestamp=1234567891,
+                    type="complete",
+                    data="",
+                    timestamp=1234567891,
                 )
 
             # Create a mock model that has the infill_stream method
@@ -177,7 +189,9 @@ class TestDiffusionLLMServiceSimple:
             await service.initialize(mock_config)
 
             params = DiffusionInfillingParams(
-                prefix="Hello ", suffix=" world", max_length=50,
+                prefix="Hello ",
+                suffix=" world",
+                max_length=50,
             )
 
             events = []

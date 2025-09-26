@@ -24,7 +24,8 @@ secure_auth_router = APIRouter(prefix="/auth", tags=["secure-authentication"])
 
 @secure_auth_router.post("/register")
 async def secure_register(
-    user_data: SecureUserCreate, auth_manager: SecureAuthManager = Depends(),
+    user_data: SecureUserCreate,
+    auth_manager: SecureAuthManager = Depends(),
 ) -> dict[str, Any]:
     """Securely register a new user with comprehensive input validation.
 
@@ -65,7 +66,8 @@ async def secure_register(
 
 @secure_auth_router.post("/login")
 async def secure_login(
-    login_data: SecureUserLogin, auth_manager: SecureAuthManager = Depends(),
+    login_data: SecureUserLogin,
+    auth_manager: SecureAuthManager = Depends(),
 ) -> dict[str, Any]:
     """Securely authenticate a user with comprehensive input validation.
 
@@ -175,7 +177,8 @@ async def secure_logout(
     except Exception as e:
         logger.error(f"Secure logout failed: {e}")
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Logout failed",
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Logout failed",
         )
 
 
@@ -218,7 +221,8 @@ def create_secure_auth_router(auth_manager) -> APIRouter:
         except Exception as e:
             logger.error(f"Secure registration error: {e}")
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Registration failed",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Registration failed",
             )
 
     @router.post("/login")
@@ -239,7 +243,8 @@ def create_secure_auth_router(auth_manager) -> APIRouter:
         except Exception as e:
             logger.error(f"Secure login error: {e}")
             raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed",
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Authentication failed",
             )
 
     @router.post("/logout")

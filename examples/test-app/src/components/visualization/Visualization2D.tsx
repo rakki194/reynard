@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, onMount, onCleanup, createMemo } from "solid-js";
-import { Card, Button } from "reynard-components";
+import { Card, Button } from "reynard-primitives";
 import { getIcon } from "reynard-fluent-icons";
 import { useOKLCHColors } from "reynard-themes";
 import { VisualizationCore, type DataPoint, type VisualizationConfig } from "./VisualizationCore";

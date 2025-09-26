@@ -164,7 +164,8 @@ class SocialConnection:
     def update_connection(self, interaction_impact: float) -> None:
         """Update connection based on interaction."""
         self.connection_strength = max(
-            0.0, min(1.0, self.connection_strength + interaction_impact * 0.1),
+            0.0,
+            min(1.0, self.connection_strength + interaction_impact * 0.1),
         )
         self.last_interaction = datetime.now()
 
@@ -205,7 +206,9 @@ class SocialComponent(Component):
         self._agent_id: str = "unknown"
 
     def add_social_connection(
-        self, target_agent: str, connection_type: str = "neutral",
+        self,
+        target_agent: str,
+        connection_type: str = "neutral",
     ) -> bool:
         """Add a social connection to another agent.
 
@@ -254,7 +257,8 @@ class SocialComponent(Component):
         ]
 
     def get_strong_connections(
-        self, min_strength: float = 0.7,
+        self,
+        min_strength: float = 0.7,
     ) -> list[SocialConnection]:
         """Get connections with strength above threshold."""
         return [
@@ -355,7 +359,8 @@ class SocialComponent(Component):
         if self.social_energy < self.max_social_energy:
             recovery_amount = self.energy_recovery_rate * delta_time
             self.social_energy = min(
-                self.max_social_energy, self.social_energy + recovery_amount,
+                self.max_social_energy,
+                self.social_energy + recovery_amount,
             )
 
     def consume_social_energy(self, amount: float) -> bool:

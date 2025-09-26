@@ -9,57 +9,55 @@ This package contains all database models organized by domain:
 
 from .base import Base
 
+# Content models
+from .content import (
+    AIMetadata,
+    Note,
+    NoteAttachment,
+    Notebook,
+    NoteCollaboration,
+    NoteVersion,
+    Tag,
+    Todo,
+)
+
 # Core models
 from .core import Agent
 
 # MCP models
 from .mcp import (
-    Tool,
-    ToolCategory,
-    ToolConfiguration,
-    ToolConfigHistory,
-    ToolCategoryEnum,
     ExecutionType,
+    Tool,
     ToolAction,
-)
-
-# Content models
-from .content import (
-    Notebook,
-    Note,
-    Todo,
-    Tag,
-    NoteAttachment,
-    NoteCollaboration,
-    NoteVersion,
-    AIMetadata,
+    ToolCategory,
+    ToolCategoryEnum,
+    ToolConfigHistory,
+    ToolConfiguration,
 )
 
 # Pydantic schemas
 from .schemas import (
+    AgentEmailBulkRequest,
+    AgentEmailConfig,
+    AgentEmailMessage,
+    AgentEmailSendRequest,
+    AgentEmailStats,
+    AgentEmailTemplate,
+    AgentEmailTriggerRequest,
+    CaptionRequest,
+    CaptionResponse,
     EmailAttachmentModel,
     EmailBulkRequest,
     EmailBulkResponse,
     EmailSendResponse,
-    CaptionRequest,
-    CaptionResponse,
     EventType,
-    AgentEmailConfig,
-    AgentEmailStats,
-    AgentEmailTemplate,
-    AgentEmailSendRequest,
-    AgentEmailMessage,
-    AgentEmailBulkRequest,
-    AgentEmailTriggerRequest,
 )
 
 __all__ = [
     # Base
     "Base",
-    
     # Core
     "Agent",
-    
     # MCP
     "Tool",
     "ToolCategory",
@@ -68,7 +66,6 @@ __all__ = [
     "ToolCategoryEnum",
     "ExecutionType",
     "ToolAction",
-    
     # Content
     "Notebook",
     "Note",
@@ -78,7 +75,6 @@ __all__ = [
     "NoteCollaboration",
     "NoteVersion",
     "AIMetadata",
-    
     # Schemas
     "EmailAttachmentModel",
     "EmailBulkRequest",

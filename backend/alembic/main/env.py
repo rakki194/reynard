@@ -2,8 +2,8 @@ import os
 from logging.config import fileConfig
 
 from alembic import context
-from sqlalchemy import engine_from_config, pool
 from dotenv import load_dotenv
+from sqlalchemy import engine_from_config, pool
 
 # Load environment variables from the .env file
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '../../.env'))
@@ -20,9 +20,23 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 from app.models.base import Base
+from app.models.content.notes import (
+    AIMetadata,
+    Note,
+    NoteAttachment,
+    Notebook,
+    NoteCollaboration,
+    NoteVersion,
+    Tag,
+    Todo,
+)
 from app.models.core.agent import Agent
-from app.models.mcp.tool_config import Tool, ToolCategory, ToolConfiguration, ToolConfigHistory
-from app.models.content.notes import Notebook, Note, Todo, Tag, NoteAttachment, NoteCollaboration, NoteVersion, AIMetadata
+from app.models.mcp.tool_config import (
+    Tool,
+    ToolCategory,
+    ToolConfigHistory,
+    ToolConfiguration,
+)
 
 # Import all models to ensure they're registered with Base.metadata
 target_metadata = Base.metadata

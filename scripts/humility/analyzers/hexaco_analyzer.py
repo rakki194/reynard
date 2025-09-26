@@ -1,5 +1,4 @@
-"""HEXACO personality analysis module for humility detection.
-"""
+"""HEXACO personality analysis module for humility detection."""
 
 from typing import Any
 
@@ -147,7 +146,8 @@ class HexacoAnalyzer:
 
                             # Generate replacement suggestion
                             replacement = self._generate_replacement(
-                                original_text, trait_type,
+                                original_text,
+                                trait_type,
                             )
 
                             # Calculate context
@@ -219,7 +219,8 @@ class HexacoAnalyzer:
 
         # Calculate overall honesty-humility score
         honesty_humility_score = max(
-            0, min(100, (trait_scores["honesty_humility"] + 1) * 50),
+            0,
+            min(100, (trait_scores["honesty_humility"] + 1) * 50),
         )
 
         return {

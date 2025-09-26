@@ -140,7 +140,9 @@ class TokenManager:
         return token in self._blacklisted_tokens
 
     def create_access_token(
-        self, data: dict[str, Any], expires_delta: timedelta | None = None,
+        self,
+        data: dict[str, Any],
+        expires_delta: timedelta | None = None,
     ) -> str:
         """Creates a JWT access token.
 
@@ -194,12 +196,16 @@ class TokenManager:
             to_encode["aud"] = self.config.audience
 
         encoded_jwt = jwt.encode(
-            to_encode, self.config.secret_key, algorithm=self.config.algorithm,
+            to_encode,
+            self.config.secret_key,
+            algorithm=self.config.algorithm,
         )
         return str(encoded_jwt)
 
     def create_refresh_token(
-        self, data: dict[str, Any], expires_delta: timedelta | None = None,
+        self,
+        data: dict[str, Any],
+        expires_delta: timedelta | None = None,
     ) -> str:
         """Creates a JWT refresh token.
 
@@ -235,7 +241,9 @@ class TokenManager:
             to_encode["aud"] = self.config.audience
 
         encoded_jwt = jwt.encode(
-            to_encode, self.config.secret_key, algorithm=self.config.algorithm,
+            to_encode,
+            self.config.secret_key,
+            algorithm=self.config.algorithm,
         )
         return str(encoded_jwt)
 
@@ -261,7 +269,9 @@ class TokenManager:
         )
 
     def verify_token(
-        self, token: str, token_type: str = TOKEN_TYPE_ACCESS,
+        self,
+        token: str,
+        token_type: str = TOKEN_TYPE_ACCESS,
     ) -> TokenValidationResult:
         """Verify and decode a JWT token.
 

@@ -40,7 +40,9 @@ def main() -> int:
     # Check if we're in a git repository
     try:
         subprocess.run(
-            ["git", "rev-parse", "--git-dir"], capture_output=True, check=True,
+            ["git", "rev-parse", "--git-dir"],
+            capture_output=True,
+            check=True,
         )
     except subprocess.CalledProcessError:
         print_colored("❌ Not in a git repository", RED)

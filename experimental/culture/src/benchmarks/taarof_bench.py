@@ -293,7 +293,10 @@ You say:"""
         return prompt
 
     def validate_response(
-        self, response: str, scenario: TaarofScenario, cultural_validator: Any,
+        self,
+        response: str,
+        scenario: TaarofScenario,
+        cultural_validator: Any,
     ) -> dict[str, Any]:
         """Validate a model response against cultural expectations."""
         # This would integrate with the cultural validator

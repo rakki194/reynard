@@ -16,7 +16,8 @@ class MermaidValidator:
         self.warnings: list[str] = []
 
     def validate_diagram(
-        self, diagram_content: str,
+        self,
+        diagram_content: str,
     ) -> tuple[bool, list[str], list[str]]:
         """Validate a mermaid diagram and return validation results."""
         self.errors = []

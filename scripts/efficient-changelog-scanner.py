@@ -301,7 +301,8 @@ class EfficientChangelogScanner:
                                         "file_path": str(relative_path),
                                         "name": package_data.get("name", "Unknown"),
                                         "version": package_data.get(
-                                            "version", "Unknown",
+                                            "version",
+                                            "Unknown",
                                         ),
                                         "type": "package",
                                     },

@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, onMount } from "solid-js";
-import { Card, Button, Select, Slider } from "reynard-components";
+import { Card, Button, Select, Slider } from "reynard-primitives";
 import { getIcon } from "reynard-fluent-icons";
 import { Visualization2D } from "./Visualization2D";
 import { Visualization3D } from "./Visualization3D";

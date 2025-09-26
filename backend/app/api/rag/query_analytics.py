@@ -206,7 +206,8 @@ class QueryAnalyticsCollector:
                         metrics.user_satisfaction = rating
                     elif feedback_type == "click" and clicked_results:
                         metrics.click_through_rate = len(clicked_results) / max(
-                            metrics.results_count, 1,
+                            metrics.results_count,
+                            1,
                         )
                     break
 
@@ -216,7 +217,8 @@ class QueryAnalyticsCollector:
             logger.error(f"Failed to record user feedback: {e}")
 
     async def get_performance_stats(
-        self, time_window_hours: int = 24,
+        self,
+        time_window_hours: int = 24,
     ) -> PerformanceStats:
         """Get aggregated performance statistics.
 
@@ -358,7 +360,9 @@ class QueryAnalyticsCollector:
                 query_counts[metrics.query_text] += 1
 
             popular_queries = sorted(
-                query_counts.items(), key=lambda x: x[1], reverse=True,
+                query_counts.items(),
+                key=lambda x: x[1],
+                reverse=True,
             )[:10]
 
             # Analyze query trends (simplified - would need more sophisticated time series analysis)
@@ -393,7 +397,9 @@ class QueryAnalyticsCollector:
                 hour_counts[hour] += 1
 
             peak_usage_hours = sorted(
-                hour_counts.items(), key=lambda x: x[1], reverse=True,
+                hour_counts.items(),
+                key=lambda x: x[1],
+                reverse=True,
             )[:3]
             peak_usage_hours = [hour for hour, count in peak_usage_hours]
 
@@ -500,7 +506,8 @@ class QueryAnalyticsCollector:
         )
 
     def _generate_optimization_opportunities(
-        self, metrics: list[QueryMetrics],
+        self,
+        metrics: list[QueryMetrics],
     ) -> list[str]:
         """Generate optimization opportunities based on metrics analysis."""
         opportunities = []
@@ -528,7 +535,8 @@ class QueryAnalyticsCollector:
         return opportunities
 
     async def generate_analytics_report(
-        self, time_period: str = "24h",
+        self,
+        time_period: str = "24h",
     ) -> AnalyticsReport:
         """Generate a comprehensive analytics report.
 
@@ -549,7 +557,8 @@ class QueryAnalyticsCollector:
 
             # Generate recommendations
             recommendations = self._generate_recommendations(
-                performance_stats, usage_insights,
+                performance_stats,
+                usage_insights,
             )
 
             # Create report
@@ -614,7 +623,9 @@ class QueryAnalyticsCollector:
         return 24  # Default to 24 hours
 
     def _generate_recommendations(
-        self, performance_stats: PerformanceStats, usage_insights: UsageInsights,
+        self,
+        performance_stats: PerformanceStats,
+        usage_insights: UsageInsights,
     ) -> list[str]:
         """Generate optimization recommendations based on analytics."""
         recommendations = []
@@ -707,7 +718,8 @@ class QueryAnalyticsCollector:
             }
 
     async def export_analytics_data(
-        self, format: str = "json",
+        self,
+        format: str = "json",
     ) -> str | dict[str, Any]:
         """Export analytics data in specified format."""
         try:

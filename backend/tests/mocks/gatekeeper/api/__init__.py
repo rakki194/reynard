@@ -1,5 +1,4 @@
-"""Mock gatekeeper API module for testing.
-"""
+"""Mock gatekeeper API module for testing."""
 
 from .routes import create_auth_router
 

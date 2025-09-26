@@ -46,7 +46,8 @@ class AgentStateManager:
             validation = await self.validate_agent_state(agent_state)
             if not validation["is_valid"]:
                 self.logger.error(
-                    f"Invalid agent state: {validation['errors']}", "registration",
+                    f"Invalid agent state: {validation['errors']}",
+                    "registration",
                 )
                 return False
 
@@ -54,7 +55,8 @@ class AgentStateManager:
             self.agent_states[agent_state.id] = agent_state
 
             self.logger.success(
-                f"Agent {agent_state.name} registered successfully", "registration",
+                f"Agent {agent_state.name} registered successfully",
+                "registration",
             )
             return True
 
@@ -92,7 +94,9 @@ class AgentStateManager:
         return agent_ids
 
     async def update_agent_performance(
-        self, agent_id: str, metrics: PerformanceMetrics,
+        self,
+        agent_id: str,
+        metrics: PerformanceMetrics,
     ) -> bool:
         """Update agent performance metrics.
 
@@ -294,7 +298,8 @@ class AgentStateManager:
         top_performers = sorted_agents[:count]
 
         self.logger.info(
-            f"Retrieved top {len(top_performers)} performers", "performance_analysis",
+            f"Retrieved top {len(top_performers)} performers",
+            "performance_analysis",
         )
         return top_performers
 
@@ -315,7 +320,8 @@ class AgentStateManager:
         ]
 
         self.logger.info(
-            f"Found {len(matching_agents)} agents with spirit {spirit}", "spirit_filter",
+            f"Found {len(matching_agents)} agents with spirit {spirit}",
+            "spirit_filter",
         )
         return matching_agents
 

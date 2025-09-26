@@ -41,7 +41,7 @@ export const ROOT_DIRECTORIES: DirectoryDefinition[] = [
     "services",
     "critical",
     ["python", "json", "yaml", "markdown", "toml"],
-    "Root-level microservices and standalone service components (3 packages): Agent naming system, gatekeeper authentication, and MCP server with comprehensive development tools",
+    "Root-level microservices and standalone service components (2 packages): Gatekeeper authentication and MCP server with comprehensive development tools",
     {
       relationships: buildRelationships(COMMON_RELATIONSHIPS.BACKEND_SIBLING, COMMON_RELATIONSHIPS.SCRIPTS_SIBLING, {
         directory: "packages",

@@ -3,7 +3,7 @@
  */
 
 import { Component } from "solid-js";
-import { Card } from "reynard-components-core";
+import { Card } from "reynard-primitives";
 import "./StatsPanel.css";
 
 interface UserStats {

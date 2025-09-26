@@ -14,8 +14,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestLLMComprehensiveCoverage(FenrirTestBase):
-    """*otter curiosity* Test suite focused on LLM exploit modules for maximum coverage
-    """
+    """*otter curiosity* Test suite focused on LLM exploit modules for maximum coverage"""
 
     async def test_llm_exploitation_orchestrator_coverage(self):
         """Test LLM exploitation orchestrator for coverage"""

@@ -43,7 +43,9 @@ async def login(
 
     # Authenticate user
     tokens = await auth_manager.authenticate(
-        username=form_data.username, password=form_data.password, client_ip=client_ip,
+        username=form_data.username,
+        password=form_data.password,
+        client_ip=client_ip,
     )
 
     if not tokens:
@@ -81,7 +83,8 @@ async def refresh_tokens(
 
     # Refresh tokens
     tokens = await auth_manager.refresh_tokens(
-        refresh_token=refresh_token, client_ip=client_ip,
+        refresh_token=refresh_token,
+        client_ip=client_ip,
     )
 
     if not tokens:
@@ -96,7 +99,8 @@ async def refresh_tokens(
 
 @auth_router.post("/logout")
 async def logout(
-    token: str, auth_manager: AuthManager = Depends(get_auth_manager),
+    token: str,
+    auth_manager: AuthManager = Depends(get_auth_manager),
 ) -> dict[str, str]:
     """Logout user by revoking their token.
 
@@ -112,7 +116,8 @@ async def logout(
 
     if not success:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to logout",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to logout",
         )
 
     return {"message": "Successfully logged out"}
@@ -120,7 +125,8 @@ async def logout(
 
 @auth_router.post("/register", response_model=UserPublic)
 async def register(
-    user_data: UserCreate, auth_manager: AuthManager = Depends(get_auth_manager),
+    user_data: UserCreate,
+    auth_manager: AuthManager = Depends(get_auth_manager),
 ) -> UserPublic:
     """Register a new user.
 
@@ -177,11 +183,13 @@ async def update_current_user(
     """
     try:
         updated_user = await auth_manager.update_user(
-            current_user.username, user_update,
+            current_user.username,
+            user_update,
         )
         if not updated_user:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found",
             )
         return UserPublic.from_user(updated_user)
     except Exception as e:
@@ -218,7 +226,8 @@ async def change_password(
 
     if not success:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to change password",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to change password",
         )
 
     return {"message": "Password changed successfully"}
@@ -267,7 +276,8 @@ async def get_user(
     user = await auth_manager.get_user_by_username(username)
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
         )
 
     return UserPublic.from_user(user)
@@ -299,7 +309,8 @@ async def update_user(
         updated_user = await auth_manager.update_user(username, user_update)
         if not updated_user:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND, detail="User not found",
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found",
             )
         return UserPublic.from_user(updated_user)
     except Exception as e:
@@ -330,7 +341,8 @@ async def delete_user(
         success = await auth_manager.delete_user(username)
         if not success:
             raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to delete user",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Failed to delete user",
             )
 
         return {"message": f"User '{username}' deleted successfully"}
@@ -359,7 +371,8 @@ async def revoke_user_tokens(
 
     if not success:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Failed to revoke tokens",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to revoke tokens",
         )
 
     return {"message": f"All tokens revoked for user '{username}'"}

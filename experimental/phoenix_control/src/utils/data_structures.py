@@ -89,7 +89,9 @@ class AgentState:
     def get_dominant_traits(self, count: int = 3) -> list[tuple[str, float]]:
         """Get the dominant personality traits."""
         sorted_traits = sorted(
-            self.personality_traits.items(), key=lambda x: x[1], reverse=True,
+            self.personality_traits.items(),
+            key=lambda x: x[1],
+            reverse=True,
         )
         return sorted_traits[:count]
 

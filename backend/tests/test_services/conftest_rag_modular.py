@@ -3,12 +3,13 @@
 This module provides shared fixtures and configuration for all modular RAG service tests.
 """
 
-import pytest
 import asyncio
-from unittest.mock import AsyncMock, MagicMock
-from typing import Dict, Any, List
-import tempfile
 import os
+import tempfile
+from typing import Any, Dict, List
+from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 
 
 @pytest.fixture(scope="session")
@@ -43,11 +44,13 @@ def base_config() -> Dict[str, Any]:
 def embedding_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
     """Configuration for embedding service."""
     config = base_config.copy()
-    config.update({
-        "embedding_model": "embeddinggemma:latest",
-        "embedding_batch_size": 10,
-        "embedding_cache_size": 1000,
-    })
+    config.update(
+        {
+            "embedding_model": "embeddinggemma:latest",
+            "embedding_batch_size": 10,
+            "embedding_cache_size": 1000,
+        }
+    )
     return config
 
 
@@ -55,9 +58,11 @@ def embedding_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
 def vector_store_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
     """Configuration for vector store service."""
     config = base_config.copy()
-    config.update({
-        "rag_migrations_enabled": False,
-    })
+    config.update(
+        {
+            "rag_migrations_enabled": False,
+        }
+    )
     return config
 
 
@@ -65,11 +70,13 @@ def vector_store_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
 def search_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
     """Configuration for search service."""
     config = base_config.copy()
-    config.update({
-        "rag_search_semantic_weight": 0.7,
-        "rag_search_keyword_weight": 0.3,
-        "rag_search_rrf_k": 60,
-    })
+    config.update(
+        {
+            "rag_search_semantic_weight": 0.7,
+            "rag_search_keyword_weight": 0.3,
+            "rag_search_rrf_k": 60,
+        }
+    )
     return config
 
 
@@ -77,14 +84,16 @@ def search_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
 def monitoring_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
     """Configuration for monitoring service."""
     config = base_config.copy()
-    config.update({
-        "rag_monitoring_interval": 60,
-        "rag_alert_thresholds": {
-            "latency_ms": 2000,
-            "error_rate": 0.05,
-            "memory_usage_mb": 1000,
-        },
-    })
+    config.update(
+        {
+            "rag_monitoring_interval": 60,
+            "rag_alert_thresholds": {
+                "latency_ms": 2000,
+                "error_rate": 0.05,
+                "memory_usage_mb": 1000,
+            },
+        }
+    )
     return config
 
 
@@ -92,10 +101,12 @@ def monitoring_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
 def security_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
     """Configuration for security service."""
     config = base_config.copy()
-    config.update({
-        "rag_encryption_enabled": True,
-        "rag_audit_logging_enabled": True,
-    })
+    config.update(
+        {
+            "rag_encryption_enabled": True,
+            "rag_audit_logging_enabled": True,
+        }
+    )
     return config
 
 
@@ -103,10 +114,12 @@ def security_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
 def improvement_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
     """Configuration for continuous improvement service."""
     config = base_config.copy()
-    config.update({
-        "rag_ab_testing_enabled": True,
-        "rag_feedback_collection_enabled": True,
-    })
+    config.update(
+        {
+            "rag_ab_testing_enabled": True,
+            "rag_feedback_collection_enabled": True,
+        }
+    )
     return config
 
 
@@ -114,9 +127,11 @@ def improvement_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
 def documentation_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
     """Configuration for documentation service."""
     config = base_config.copy()
-    config.update({
-        "rag_auto_documentation_enabled": True,
-    })
+    config.update(
+        {
+            "rag_auto_documentation_enabled": True,
+        }
+    )
     return config
 
 
@@ -124,9 +139,11 @@ def documentation_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
 def evaluation_config(base_config: Dict[str, Any]) -> Dict[str, Any]:
     """Configuration for model evaluation service."""
     config = base_config.copy()
-    config.update({
-        "rag_evaluation_models": ["embeddinggemma:latest", "nomic-embed-text"],
-    })
+    config.update(
+        {
+            "rag_evaluation_models": ["embeddinggemma:latest", "nomic-embed-text"],
+        }
+    )
     return config
 
 
@@ -136,7 +153,10 @@ def mock_embedding_service():
     service = AsyncMock()
     service.embed_text.return_value = [0.1, 0.2, 0.3] * 100
     service.embed_batch.return_value = [[0.1, 0.2, 0.3] * 100 for _ in range(3)]
-    service.get_available_models.return_value = ["embeddinggemma:latest", "nomic-embed-text"]
+    service.get_available_models.return_value = [
+        "embeddinggemma:latest",
+        "nomic-embed-text",
+    ]
     service.get_best_model.return_value = "embeddinggemma:latest"
     service.is_healthy.return_value = True
     service.health_check.return_value = {"status": "healthy", "message": "OK"}
@@ -158,10 +178,16 @@ def mock_vector_store_service():
         {"id": 2, "text": "Chunk 2", "metadata": {}},
     ]
     service.delete_document.return_value = True
-    service.get_dataset_stats.return_value = {"total_documents": 100, "total_chunks": 500}
+    service.get_dataset_stats.return_value = {
+        "total_documents": 100,
+        "total_chunks": 500,
+    }
     service.is_healthy.return_value = True
     service.health_check.return_value = {"status": "healthy", "message": "OK"}
-    service.get_stats.return_value = {"total_embeddings": 100, "connection_status": "connected"}
+    service.get_stats.return_value = {
+        "total_embeddings": 100,
+        "connection_status": "connected",
+    }
     return service
 
 
@@ -172,7 +198,11 @@ def mock_document_indexer():
     service.index_documents.return_value = [
         {"status": "success", "file_id": "test_1"},
     ]
-    service.get_supported_languages.return_value = ["python", "typescript", "javascript"]
+    service.get_supported_languages.return_value = [
+        "python",
+        "typescript",
+        "javascript",
+    ]
     service.is_language_supported.return_value = True
     service.is_healthy.return_value = True
     service.health_check.return_value = {"status": "healthy", "message": "OK"}
@@ -294,7 +324,9 @@ def mock_documentation_service():
     service.generate_user_documentation.return_value = "User Documentation Content"
     service.generate_api_reference.return_value = "API Reference Content"
     service.generate_developer_guide.return_value = "Developer Guide Content"
-    service.generate_troubleshooting_guide.return_value = "Troubleshooting Guide Content"
+    service.generate_troubleshooting_guide.return_value = (
+        "Troubleshooting Guide Content"
+    )
     service.generate_training_materials.return_value = {
         "user_guide": "User Guide",
         "api_reference": "API Reference",
@@ -364,7 +396,7 @@ def sample_documents() -> List[Dict[str, Any]]:
             "metadata": {"chunk_type": "function"},
         },
         {
-            "file_id": "test_2", 
+            "file_id": "test_2",
             "content": "class TestClass: pass",
             "file_path": "test.py",
             "language": "python",
@@ -433,12 +465,8 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')"
     )
-    config.addinivalue_line(
-        "markers", "integration: marks tests as integration tests"
-    )
-    config.addinivalue_line(
-        "markers", "unit: marks tests as unit tests"
-    )
+    config.addinivalue_line("markers", "integration: marks tests as integration tests")
+    config.addinivalue_line("markers", "unit: marks tests as unit tests")
 
 
 def pytest_collection_modifyitems(config, items):
@@ -447,7 +475,7 @@ def pytest_collection_modifyitems(config, items):
         # Add unit marker to all tests by default
         if "integration" not in item.keywords:
             item.add_marker(pytest.mark.unit)
-        
+
         # Mark slow tests
         if "slow" in item.keywords:
             item.add_marker(pytest.mark.slow)

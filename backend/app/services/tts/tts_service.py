@@ -89,16 +89,20 @@ class TTSService:
             self._max_chunk_length = config.get("tts_max_chunk_length", 2000)
             self._chunk_overlap_chars = config.get("tts_chunk_overlap_chars", 100)
             self._backend_health_check_interval = config.get(
-                "tts_backend_health_check_interval", 300,
+                "tts_backend_health_check_interval",
+                300,
             )
             self._backend_timeout_seconds = config.get(
-                "tts_backend_timeout_seconds", 30,
+                "tts_backend_timeout_seconds",
+                30,
             )
             self._enable_voice_compatibility_checks = config.get(
-                "tts_enable_voice_compatibility_checks", True,
+                "tts_enable_voice_compatibility_checks",
+                True,
             )
             self._enable_language_validation = config.get(
-                "tts_enable_language_validation", True,
+                "tts_enable_language_validation",
+                True,
             )
             self._rate_limit_per_minute = config.get("tts_rate_limit_per_minute", 60)
 
@@ -207,7 +211,9 @@ class TTSService:
             # Process audio if needed
             if to_ogg or to_opus:
                 audio_path = await self._audio_processor.process_audio(
-                    audio_path, to_ogg=to_ogg, to_opus=to_opus,
+                    audio_path,
+                    to_ogg=to_ogg,
+                    to_opus=to_opus,
                 )
 
             processing_time = time.time() - start_time
@@ -231,7 +237,10 @@ class TTSService:
 
             # Update metrics
             self._update_metrics(
-                backend or self._backend, voice, processing_time, False,
+                backend or self._backend,
+                voice,
+                processing_time,
+                False,
             )
 
             return {
@@ -398,7 +407,11 @@ class TTSService:
             return False
 
     def _update_metrics(
-        self, backend: str, voice: str, processing_time: float, success: bool,
+        self,
+        backend: str,
+        voice: str,
+        processing_time: float,
+        success: bool,
     ):
         """Update service metrics."""
         self._metrics["total_requests"] += 1
@@ -555,7 +568,11 @@ class TTSService:
                 )
             # Fallback to regular synthesis
             return await xtts_backend.synthesize(
-                text=text, out_path=out_path, voice="clone", speed=speed, lang=lang,
+                text=text,
+                out_path=out_path,
+                voice="clone",
+                speed=speed,
+                lang=lang,
             )
 
         except Exception as e:
@@ -589,7 +606,9 @@ class TTSService:
                         await backend_service.shutdown()
                     logger.debug(f"TTS backend {backend_name} shutdown")
                 except Exception as e:
-                    logger.warning(f"Failed to shutdown TTS backend {backend_name}: {e}")
+                    logger.warning(
+                        f"Failed to shutdown TTS backend {backend_name}: {e}"
+                    )
 
             # Clear backend services
             self._backend_services.clear()

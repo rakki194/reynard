@@ -44,7 +44,9 @@ class TestComfyService:
 
         # Create test workflow request
         workflow_request = ComfyWorkflowRequest(
-            workflow_id="test_workflow", inputs={"text": "test input"}, priority=1,
+            workflow_id="test_workflow",
+            inputs={"text": "test input"},
+            priority=1,
         )
 
         # Execute workflow
@@ -69,7 +71,9 @@ class TestComfyService:
 
         # Create test workflow request
         workflow_request = ComfyWorkflowRequest(
-            workflow_id="test_workflow", inputs={"text": "test input"}, priority=1,
+            workflow_id="test_workflow",
+            inputs={"text": "test input"},
+            priority=1,
         )
 
         # Execute workflow
@@ -712,7 +716,8 @@ class TestComfyService:
 
     @patch("app.services.comfy.comfy_service.httpx.AsyncClient")
     async def test_get_workflow_templates_http_version_not_supported(
-        self, mock_client_class,
+        self,
+        mock_client_class,
     ):
         """Test workflow templates retrieval with HTTP version not supported."""
         # Mock the HTTP client
@@ -731,7 +736,8 @@ class TestComfyService:
 
     @patch("app.services.comfy.comfy_service.httpx.AsyncClient")
     async def test_get_workflow_templates_variant_also_negotiates(
-        self, mock_client_class,
+        self,
+        mock_client_class,
     ):
         """Test workflow templates retrieval with variant also negotiates."""
         # Mock the HTTP client
@@ -801,7 +807,8 @@ class TestComfyService:
 
     @patch("app.services.comfy.comfy_service.httpx.AsyncClient")
     async def test_get_workflow_templates_network_authentication_required(
-        self, mock_client_class,
+        self,
+        mock_client_class,
     ):
         """Test workflow templates retrieval with network authentication required."""
         # Mock the HTTP client

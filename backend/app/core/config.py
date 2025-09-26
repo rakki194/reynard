@@ -166,7 +166,8 @@ class AppConfig:
     host: str = field(default_factory=lambda: os.getenv("HOST", "127.0.0.1"))
     port: int = 8000
     reload: bool = field(
-        default_factory=lambda: os.getenv("ENVIRONMENT", "development") == "development",
+        default_factory=lambda: os.getenv("ENVIRONMENT", "development")
+        == "development",
     )
 
     # API settings
@@ -272,7 +273,7 @@ def get_config() -> AppConfig:
 def get_service_configs() -> dict[str, dict[str, Any]]:
     """Get service configurations as dictionaries."""
     from app.core.service_config_manager import ServiceConfigManager
-    
+
     # Use ServiceConfigManager to get all service configurations
     config_manager = ServiceConfigManager()
     return config_manager.get_all_configurations()

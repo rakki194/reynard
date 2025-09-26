@@ -13,6 +13,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
+
 from backend.app.ecs.legacy_tracking.success_advisor_8_tracker import (
     CodeMovement,
     LegacyReport,
@@ -578,7 +579,9 @@ tracker.scan_codebase_movements()
     async def test_export_legacy_data(self, tracker):
         """Test legacy data export functionality."""
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False,
+            mode="w",
+            suffix=".json",
+            delete=False,
         ) as temp_file:
             temp_path = temp_file.name
 
@@ -647,7 +650,8 @@ tracker.scan_codebase_movements()
         ]
 
         context = tracker._get_heading_context(
-            lines, 4,
+            lines,
+            4,
         )  # Line 4 contains the reference
         assert context == "## Sub Heading"
 
@@ -981,7 +985,8 @@ Integration with release management systems:
 
     @pytest.mark.asyncio
     async def test_complete_legacy_tracking_workflow(
-        self, temp_codebase_with_complex_structure,
+        self,
+        temp_codebase_with_complex_structure,
     ):
         """Test the complete legacy tracking workflow."""
         tracker = SuccessAdvisor8LegacyTracker(
@@ -1021,7 +1026,9 @@ Integration with release management systems:
 
         # Step 4: Export legacy data
         with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False,
+            mode="w",
+            suffix=".json",
+            delete=False,
         ) as temp_file:
             temp_path = temp_file.name
 
@@ -1046,7 +1053,8 @@ Integration with release management systems:
 
     @pytest.mark.asyncio
     async def test_pattern_matching_comprehensive(
-        self, temp_codebase_with_complex_structure,
+        self,
+        temp_codebase_with_complex_structure,
     ):
         """Test comprehensive pattern matching across all file types."""
         tracker = SuccessAdvisor8LegacyTracker(
@@ -1084,7 +1092,8 @@ Integration with release management systems:
 
     @pytest.mark.asyncio
     async def test_movement_classification_comprehensive(
-        self, temp_codebase_with_complex_structure,
+        self,
+        temp_codebase_with_complex_structure,
     ):
         """Test comprehensive movement classification."""
         tracker = SuccessAdvisor8LegacyTracker(

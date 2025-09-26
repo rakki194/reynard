@@ -36,7 +36,8 @@ async def test_search():
     # Test 3: Query suggestions
     print("\n3. Testing query suggestions...")
     suggestions = await service.get_query_suggestions(
-        "authentication", max_suggestions=3,
+        "authentication",
+        max_suggestions=3,
     )
     print(f"   Query suggestions: {suggestions}")
 

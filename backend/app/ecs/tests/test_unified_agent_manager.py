@@ -14,7 +14,6 @@ import pytest
 sys.path.append(str(Path(__file__).parent.parent))
 
 from postgres_service import PostgresECSWorldService
-
 from services.unified_agent_manager import AgentState, AgentStateManager
 
 
@@ -164,7 +163,9 @@ class TestAgentStateManager:
 
         # Test
         await agent_manager.track_agent_activity(
-            "test-agent-123", "Test activity", {"context": "test"},
+            "test-agent-123",
+            "Test activity",
+            {"context": "test"},
         )
 
         # Verify ECS service was called
@@ -177,7 +178,9 @@ class TestAgentStateManager:
 
     @pytest.mark.asyncio
     async def test_track_success_advisor_8_activity(
-        self, agent_manager, mock_ecs_service,
+        self,
+        agent_manager,
+        mock_ecs_service,
     ):
         """Test Success-Advisor-8 specific activity tracking."""
         # Mock ECS service
@@ -185,7 +188,9 @@ class TestAgentStateManager:
 
         # Test
         await agent_manager.track_agent_activity(
-            "success-advisor-8", "Success-Advisor-8 test activity", {"context": "test"},
+            "success-advisor-8",
+            "Success-Advisor-8 test activity",
+            {"context": "test"},
         )
 
         # Verify ECS service was called
@@ -198,7 +203,9 @@ class TestAgentStateManager:
 
     @pytest.mark.asyncio
     async def test_get_success_advisor_8_legacy_report(
-        self, agent_manager, mock_ecs_service,
+        self,
+        agent_manager,
+        mock_ecs_service,
     ):
         """Test Success-Advisor-8 legacy report generation."""
         # Mock legacy tracker

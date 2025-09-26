@@ -14,15 +14,15 @@ Version: 1.0.0
 """
 
 from .ai_embedding import AIEmbeddingService as EmbeddingService
-from .vector_store import PostgreSQLVectorStore as VectorStoreService
-from .search import HybridSearchEngine as SearchEngine
-from .document_processor import ASTDocumentProcessor as DocumentIndexer
 from .codebase_scanner import CodebaseScanner
+from .document_processor import ASTDocumentProcessor as DocumentIndexer
+from .search import HybridSearchEngine as SearchEngine
+from .vector_store import PostgreSQLVectorStore as VectorStoreService
 
 __all__ = [
     "EmbeddingService",
     "VectorStoreService",
-    "SearchEngine", 
+    "SearchEngine",
     "DocumentIndexer",
     "CodebaseScanner",
 ]

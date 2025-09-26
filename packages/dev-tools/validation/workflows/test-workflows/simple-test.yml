@@ -9,4 +9,3 @@ jobs:
           if [ $VAR ]; then
             echo "Variable not quoted"
           fi
-

@@ -60,7 +60,9 @@ class Fuzzy(BaseFuzzer):
     """
 
     def __init__(
-        self, base_url: str = "http://localhost:8000", max_concurrent: int = 10,
+        self,
+        base_url: str = "http://localhost:8000",
+        max_concurrent: int = 10,
     ):
         """Initialize the modular fuzzing framework.
 
@@ -76,7 +78,8 @@ class Fuzzy(BaseFuzzer):
         # Initialize specialized fuzzing engines
         self.grammar_fuzzer = GrammarFuzzer(base_url, max_concurrent)
         self.websocket_fuzzer = WebSocketFuzzer(
-            base_url.replace("http://", "ws://"), max_concurrent,
+            base_url.replace("http://", "ws://"),
+            max_concurrent,
         )
         self.ml_fuzzer = MLFuzzer(base_url, max_concurrent)
         self.auth_fuzzer = AuthBypassFuzzer(base_url, max_concurrent)
@@ -84,7 +87,8 @@ class Fuzzy(BaseFuzzer):
 
         # Initialize endpoint orchestrator for specialized endpoints
         self.endpoint_orchestrator = create_endpoint_orchestrator(
-            base_url, max_concurrent,
+            base_url,
+            max_concurrent,
         )
 
         # Enhanced result tracking
@@ -117,7 +121,11 @@ class Fuzzy(BaseFuzzer):
         return self._detect_common_vulnerabilities(response.text)
 
     async def fuzz_endpoint(
-        self, endpoint: str, method: str = "GET", payload_count: int = 100, **kwargs,
+        self,
+        endpoint: str,
+        method: str = "GET",
+        payload_count: int = 100,
+        **kwargs,
     ) -> list[FuzzResult]:
         """Fuzz endpoint using traditional fuzzing techniques.
 
@@ -125,11 +133,17 @@ class Fuzzy(BaseFuzzer):
         for comprehensive HTTP endpoint coverage.
         """
         return await self.traditional_fuzzer.fuzz_endpoint(
-            endpoint, method, payload_count, **kwargs,
+            endpoint,
+            method,
+            payload_count,
+            **kwargs,
         )
 
     async def fuzz_with_grammar(
-        self, endpoint: str, method: str = "POST", payload_count: int = 50,
+        self,
+        endpoint: str,
+        method: str = "POST",
+        payload_count: int = 50,
     ) -> list[FuzzResult]:
         """Fuzz endpoint using grammar-based techniques.
 
@@ -142,13 +156,17 @@ class Fuzzy(BaseFuzzer):
         )
 
         results = await self.grammar_fuzzer.fuzz_endpoint(
-            endpoint, method, payload_count,
+            endpoint,
+            method,
+            payload_count,
         )
         self.results.extend(results)
         return results
 
     async def fuzz_websocket_endpoint(
-        self, endpoint: str, attack_types: list[str] | None = None,
+        self,
+        endpoint: str,
+        attack_types: list[str] | None = None,
     ) -> list[WebSocketResult]:
         """Fuzz WebSocket endpoint with specialized attacks.
 
@@ -218,7 +236,8 @@ class Fuzzy(BaseFuzzer):
         Targets authentication endpoints with comprehensive attack coverage.
         """
         self.print_fuzzing_header(
-            "FUZZING AUTHENTICATION ENDPOINTS", "Time to break your login security!",
+            "FUZZING AUTHENTICATION ENDPOINTS",
+            "Time to break your login security!",
         )
 
         return await self.traditional_fuzzer.fuzz_authentication_endpoints()
@@ -230,7 +249,8 @@ class Fuzzy(BaseFuzzer):
         endpoints with malicious file upload attempts.
         """
         self.print_fuzzing_header(
-            "FUZZING FILE ENDPOINTS", "Let's break your file security!",
+            "FUZZING FILE ENDPOINTS",
+            "Let's break your file security!",
         )
 
         return await self.traditional_fuzzer.fuzz_file_endpoints()
@@ -357,7 +377,9 @@ class Fuzzy(BaseFuzzer):
             top_vuln_table.add_column("Vulnerabilities", style="yellow")
 
             sorted_endpoints = sorted(
-                endpoint_vulns.items(), key=lambda x: x[1], reverse=True,
+                endpoint_vulns.items(),
+                key=lambda x: x[1],
+                reverse=True,
             )
             for endpoint, count in sorted_endpoints[:10]:
                 top_vuln_table.add_row(endpoint, str(count))
@@ -449,7 +471,9 @@ async def main():
             ["jwt_algorithm_confusion", "jwt_payload_manipulation"],
         )
         await fuzzer.fuzz_auth_bypass(
-            "/api/secure/auth/login", "POST", ["session_hijacking"],
+            "/api/secure/auth/login",
+            "POST",
+            ["session_hijacking"],
         )
 
         # 6. Specialized endpoint fuzzing with orchestrator

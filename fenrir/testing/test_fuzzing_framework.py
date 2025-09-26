@@ -16,8 +16,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestFuzzingFramework(FenrirTestBase):
-    """*otter curiosity* Test suite for the fuzzing framework
-    """
+    """*otter curiosity* Test suite for the fuzzing framework"""
 
     async def test_payload_composables(self):
         """Test that the payload composables create appropriate payloads"""

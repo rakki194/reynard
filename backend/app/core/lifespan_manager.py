@@ -46,39 +46,21 @@ from fastapi import FastAPI
 
 # Core configuration and service management
 from app.core.config import get_config, get_service_configs
+from app.core.database_auto_fix import auto_fix_all_databases
 
 # Health check functions
 from app.core.health_checks import (
+    health_check_ai_service,
     health_check_comfy,
     health_check_gatekeeper,
     health_check_nlweb,
     health_check_rag,
-    health_check_ai_service,
     health_check_tts_service,
 )
 
-# Service initializers
-from app.core.service_initializers import (
-    init_comfy_service,
-    init_gatekeeper_service,
-    init_nlweb_service,
-    init_ai_service,
-    init_rag_service,
-    init_search_service,
-    init_tts_service,
-    shutdown_search_service,
-)
+# Unified service management
+from app.core.service_manager import get_service_manager
 from app.core.service_registry import get_service_registry
-
-# Service shutdown functions
-from app.core.service_shutdown import (
-    shutdown_comfy_service_func,
-    shutdown_gatekeeper_service,
-    shutdown_nlweb_service_func,
-    shutdown_rag_service,
-    shutdown_ai_service,
-    shutdown_tts_service,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -180,69 +162,13 @@ async def lifespan(app: FastAPI):
     service_configs = get_service_configs()
     registry = get_service_registry()
 
-    # Register services with priority-based initialization
-    registry.register_service(
-        "gatekeeper",
-        service_configs["gatekeeper"],
-        init_gatekeeper_service,
-        shutdown_gatekeeper_service,
-        health_check_gatekeeper,
-        startup_priority=100,  # Highest priority
-    )
+    # Initialize all services using the unified service manager
+    service_manager = get_service_manager()
+    success = await service_manager.initialize_all_services()
 
-    registry.register_service(
-        "comfy",
-        service_configs["comfy"],
-        init_comfy_service,
-        shutdown_comfy_service_func,
-        health_check_comfy,
-        startup_priority=50,
-    )
-
-    registry.register_service(
-        "nlweb",
-        service_configs["nlweb"],
-        init_nlweb_service,
-        shutdown_nlweb_service_func,
-        health_check_nlweb,
-        startup_priority=50,
-    )
-
-    registry.register_service(
-        "rag",
-        service_configs["rag"],
-        init_rag_service,
-        shutdown_rag_service,
-        health_check_rag,
-        startup_priority=25,
-    )
-
-    registry.register_service(
-        "search",
-        service_configs.get("search", {"enabled": True}),
-        init_search_service,
-        shutdown_search_service,  # Proper shutdown with resource cleanup
-        _health_check_search_service,
-        startup_priority=20,  # Lower priority than RAG (25) to ensure RAG starts first
-    )
-
-    registry.register_service(
-        "ai_service",
-        service_configs["ai_service"],
-        init_ai_service,
-        shutdown_ai_service,
-        health_check_ai_service,
-        startup_priority=25,
-    )
-
-    registry.register_service(
-        "tts",
-        service_configs["tts"],
-        init_tts_service,
-        shutdown_tts_service,
-        health_check_tts_service,
-        startup_priority=10,
-    )
+    if not success:
+        logger.error("❌ Service initialization failed")
+        raise RuntimeError("Service initialization failed")
 
     # Register image processing service
     registry.register_service(
@@ -274,6 +200,17 @@ async def lifespan(app: FastAPI):
         startup_priority=15,  # Lower priority than Ollama (25) to ensure Ollama starts first
     )
 
+    # Auto-fix database issues before service initialization
+    logger.info("🔧 Auto-fixing database issues...")
+    try:
+        auto_fix_results = auto_fix_all_databases()
+        if auto_fix_results:
+            fixed_dbs = [db for db, success in auto_fix_results.items() if success]
+            if fixed_dbs:
+                logger.info(f"✅ Auto-fixed databases: {', '.join(fixed_dbs)}")
+    except Exception as e:
+        logger.warning(f"⚠️ Database auto-fix had issues: {e}")
+
     # Initialize all services
     logger.info("🚀 Starting Reynard API services...")
     start_time = time.time()
@@ -302,7 +239,9 @@ async def lifespan(app: FastAPI):
         shutdown_start = time.time()
 
         try:
-            await registry.shutdown_all(timeout=config.shutdown_timeout)
+            # Use unified service manager for shutdown
+            service_manager = get_service_manager()
+            await service_manager.shutdown_all_services()
             shutdown_time = time.time() - shutdown_start
             logger.info(
                 f"✅ All services shutdown successfully in {shutdown_time:.2f}s",

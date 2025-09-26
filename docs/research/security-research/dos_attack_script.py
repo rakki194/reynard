@@ -138,7 +138,8 @@ async def test_rapid_small_file_uploads(
         for i in range(num_files):
             filename = f"small_file_{i}_{random.randint(1000, 9999)}.jpg"
             file_path = create_dummy_file(
-                filename, file_size_kb / 1024,
+                filename,
+                file_size_kb / 1024,
             )  # Convert KB to MB
             file_paths.append(file_path)
 
@@ -179,7 +180,9 @@ if __name__ == "__main__":
     async def main_tests():
         # Test large general file upload (e.g., to /api/upload)
         await test_large_file_upload(
-            "/api/upload", 150, "very_large_image.jpg",
+            "/api/upload",
+            150,
+            "very_large_image.jpg",
         )  # 150 MB, should be rejected by frontend MAX_FILE_SIZE (100MB)
 
         # Test large profile picture upload
@@ -192,7 +195,9 @@ if __name__ == "__main__":
 
         # Test rapid small file uploads (e.g., to /api/upload)
         await test_rapid_small_file_uploads(
-            "/api/upload", 50, 100,
+            "/api/upload",
+            50,
+            100,
         )  # 50 files, 100 KB each
 
     asyncio.run(main_tests())

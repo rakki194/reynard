@@ -4,7 +4,7 @@
 
 import { Component } from "solid-js";
 import { LoginForm, RegisterForm } from "reynard-auth";
-import { Card } from "reynard-components-core";
+import { Card } from "reynard-primitives";
 import { useTheme } from "reynard-themes";
 import "./LoginPage.css";
 
@@ -25,11 +25,8 @@ const LoginPage: Component = () => {
             <h2>Welcome Back</h2>
             <p>Sign in to continue your note-taking journey</p>
             <LoginForm
-              onSuccess={() => {
-                console.log("Login successful");
-              }}
-              onError={(error: any) => {
-                console.error("Login error:", error);
+              onLogin={credentials => {
+                console.log("Login successful", credentials);
               }}
             />
           </Card>
@@ -38,11 +35,8 @@ const LoginPage: Component = () => {
             <h2>New to Prompt Note?</h2>
             <p>Create an account and start your gamified note-taking adventure</p>
             <RegisterForm
-              onSuccess={() => {
-                console.log("Registration successful");
-              }}
-              onError={(error: any) => {
-                console.error("Registration error:", error);
+              onRegister={data => {
+                console.log("Registration successful", data);
               }}
             />
           </Card>

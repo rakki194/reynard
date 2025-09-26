@@ -9,23 +9,30 @@ from dataclasses import dataclass
 from typing import Any, Protocol
 
 # Conditional numpy import
-from app.core.service_conditional_loading import is_numpy_enabled, can_load_service, load_service
+from app.core.service_conditional_loading import (
+    can_load_service,
+    is_numpy_enabled,
+    load_service,
+)
 
 if is_numpy_enabled() and can_load_service("numpy"):
     try:
         import numpy as np
+
         load_service("numpy")
     except ImportError:
         # Create a dummy numpy module for type hints
         class DummyNumpy:
             class ndarray:
                 pass
+
         np = DummyNumpy()
 else:
     # Create a dummy numpy module for type hints
     class DummyNumpy:
         class ndarray:
             pass
+
     np = DummyNumpy()
 
 logger = logging.getLogger(__name__)
@@ -96,7 +103,10 @@ class PCAReducer:
         try:
             # Run in thread pool to avoid blocking
             return await asyncio.get_event_loop().run_in_executor(
-                None, self._reduce_sync, data, parameters,
+                None,
+                self._reduce_sync,
+                data,
+                parameters,
             )
         except Exception as e:
             logger.error(f"PCA reduction failed: {e}")
@@ -181,7 +191,10 @@ class TSNEReducer:
         try:
             # Run in thread pool to avoid blocking
             return await asyncio.get_event_loop().run_in_executor(
-                None, self._reduce_sync, data, parameters,
+                None,
+                self._reduce_sync,
+                data,
+                parameters,
             )
         except Exception as e:
             logger.error(f"t-SNE reduction failed: {e}")
@@ -261,7 +274,10 @@ class UMAPReducer:
         try:
             # Run in thread pool to avoid blocking
             return await asyncio.get_event_loop().run_in_executor(
-                None, self._reduce_sync, data, parameters,
+                None,
+                self._reduce_sync,
+                data,
+                parameters,
             )
         except Exception as e:
             logger.error(f"UMAP reduction failed: {e}")
@@ -391,7 +407,8 @@ def validate_parameters(method: str, parameters: dict[str, Any]) -> dict[str, An
         return {
             "n_components": min(max(int(parameters.get("n_components", 3)), 2), 50),
             "variance_threshold": min(
-                max(float(parameters.get("variance_threshold", 0.95)), 0.0), 1.0,
+                max(float(parameters.get("variance_threshold", 0.95)), 0.0),
+                1.0,
             ),
             "whiten": bool(parameters.get("whiten", False)),
             "svd_solver": str(parameters.get("svd_solver", "auto")),
@@ -401,13 +418,16 @@ def validate_parameters(method: str, parameters: dict[str, Any]) -> dict[str, An
         return {
             "n_components": min(max(int(parameters.get("n_components", 3)), 2), 3),
             "perplexity": min(
-                max(float(parameters.get("perplexity", 30.0)), 5.0), 100.0,
+                max(float(parameters.get("perplexity", 30.0)), 5.0),
+                100.0,
             ),
             "learning_rate": min(
-                max(float(parameters.get("learning_rate", 200.0)), 10.0), 1000.0,
+                max(float(parameters.get("learning_rate", 200.0)), 10.0),
+                1000.0,
             ),
             "early_exaggeration": min(
-                max(float(parameters.get("early_exaggeration", 12.0)), 1.0), 50.0,
+                max(float(parameters.get("early_exaggeration", 12.0)), 1.0),
+                50.0,
             ),
             "max_iter": min(max(int(parameters.get("max_iter", 1000)), 100), 10000),
             "metric": str(parameters.get("metric", "euclidean")),
@@ -420,12 +440,14 @@ def validate_parameters(method: str, parameters: dict[str, Any]) -> dict[str, An
             "n_neighbors": min(max(int(parameters.get("n_neighbors", 15)), 2), 100),
             "min_dist": min(max(float(parameters.get("min_dist", 0.1)), 0.0), 1.0),
             "learning_rate": min(
-                max(float(parameters.get("learning_rate", 1.0)), 0.1), 10.0,
+                max(float(parameters.get("learning_rate", 1.0)), 0.1),
+                10.0,
             ),
             "spread": min(max(float(parameters.get("spread", 1.0)), 0.1), 10.0),
             "metric": str(parameters.get("metric", "euclidean")),
             "local_connectivity": min(
-                max(int(parameters.get("local_connectivity", 1)), 1), 10,
+                max(int(parameters.get("local_connectivity", 1)), 1),
+                10,
             ),
         }
 

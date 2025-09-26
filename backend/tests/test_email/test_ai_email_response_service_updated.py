@@ -11,6 +11,12 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 import pytest_asyncio
 
+from app.services.ai import AIService, AIServiceConfig
+from app.services.ai.interfaces.model_provider import (
+    ChatMessage,
+    ChatResult,
+    ProviderType,
+)
 from app.services.email.ai.ai_email_response_service import (
     AIEmailResponseService,
     AIResponse,
@@ -18,8 +24,6 @@ from app.services.email.ai.ai_email_response_service import (
     EmailContext,
     get_ai_email_response_service,
 )
-from app.services.ai import AIService, AIServiceConfig
-from app.services.ai.interfaces.model_provider import ProviderType, ChatResult, ChatMessage
 
 
 class TestAIEmailResponseService:
@@ -29,24 +33,24 @@ class TestAIEmailResponseService:
     async def mock_ai_service(self):
         """Create a mock AI service for testing."""
         mock_service = MagicMock(spec=AIService)
-        
+
         # Mock the generate_chat_completion method
         mock_result = ChatResult(
             content="Thank you for your inquiry. The project is currently on track and expected to be completed by the end of next week.",
             model="llama3.1:latest",
             provider=ProviderType.OLLAMA,
             usage={"total_tokens": 150, "prompt_tokens": 100, "completion_tokens": 50},
-            finish_reason="stop"
+            finish_reason="stop",
         )
         mock_service.generate_chat_completion = AsyncMock(return_value=mock_result)
-        
+
         # Mock streaming
         async def mock_stream():
             yield ChatMessage(role="assistant", content="Thank you for your inquiry.")
             yield ChatMessage(role="assistant", content=" The project is on track.")
-        
+
         mock_service.stream_chat_completion = AsyncMock(return_value=mock_stream())
-        
+
         return mock_service
 
     @pytest_asyncio.fixture
@@ -63,7 +67,9 @@ class TestAIEmailResponseService:
                 min_confidence_threshold=0.7,
                 default_tone="professional",
             )
-            service = AIEmailResponseService(config=config, data_dir=temp_dir, ai_service=mock_ai_service)
+            service = AIEmailResponseService(
+                config=config, data_dir=temp_dir, ai_service=mock_ai_service
+            )
             yield service
 
     @pytest.fixture
@@ -91,20 +97,28 @@ class TestAIEmailResponseService:
         """Test AI service initialization without AI service."""
         with tempfile.TemporaryDirectory() as temp_dir:
             config = AIResponseConfig()
-            service = AIEmailResponseService(config=config, data_dir=temp_dir, ai_service=None)
+            service = AIEmailResponseService(
+                config=config, data_dir=temp_dir, ai_service=None
+            )
             assert service.ai_service is None
 
     @pytest.mark.asyncio
     async def test_analyze_email_context_success(self, ai_service, sample_email_data):
         """Test successful email context analysis."""
         context = await ai_service.analyze_email_context(sample_email_data)
-        
+
         assert context is not None
         assert context.original_subject == sample_email_data["subject"]
         assert context.original_body == sample_email_data["body"]
         assert context.sender_email == sample_email_data["sender_email"]
         assert context.recipient_email == sample_email_data["recipient_email"]
-        assert context.email_type in ["question", "request", "complaint", "meeting", "general"]
+        assert context.email_type in [
+            "question",
+            "request",
+            "complaint",
+            "meeting",
+            "general",
+        ]
         assert context.priority in ["urgent", "high", "normal", "low"]
         assert context.sentiment in ["positive", "negative", "neutral"]
         assert context.language in ["en", "es", "fr", "other"]
@@ -118,7 +132,7 @@ class TestAIEmailResponseService:
             "sender_email": "customer@example.com",
             "recipient_email": "sales@example.com",
         }
-        
+
         context = await ai_service.analyze_email_context(email_data)
         assert context.email_type == "question"
 
@@ -131,7 +145,7 @@ class TestAIEmailResponseService:
             "sender_email": "manager@example.com",
             "recipient_email": "team@example.com",
         }
-        
+
         context = await ai_service.analyze_email_context(email_data)
         assert context.email_type == "meeting"
 
@@ -144,7 +158,7 @@ class TestAIEmailResponseService:
             "sender_email": "admin@example.com",
             "recipient_email": "support@example.com",
         }
-        
+
         context = await ai_service.analyze_email_context(email_data)
         assert context.priority == "urgent"
 
@@ -157,7 +171,7 @@ class TestAIEmailResponseService:
             "sender_email": "customer@example.com",
             "recipient_email": "support@example.com",
         }
-        
+
         context = await ai_service.analyze_email_context(email_data)
         assert context.sentiment == "positive"
 
@@ -170,7 +184,7 @@ class TestAIEmailResponseService:
             "sender_email": "angry@example.com",
             "recipient_email": "support@example.com",
         }
-        
+
         context = await ai_service.analyze_email_context(email_data)
         assert context.sentiment == "negative"
 
@@ -179,14 +193,12 @@ class TestAIEmailResponseService:
         """Test successful response generation with AI service."""
         # Create email context
         context = await ai_service.analyze_email_context(sample_email_data)
-        
+
         # Generate response
         response = await ai_service.generate_response(
-            email_context=context, 
-            response_type="reply", 
-            model="llama3.1:latest"
+            email_context=context, response_type="reply", model="llama3.1:latest"
         )
-        
+
         assert response is not None
         assert response.content is not None
         assert len(response.content) > 0
@@ -200,13 +212,12 @@ class TestAIEmailResponseService:
         """Test automatic reply generation."""
         # Create email context
         context = await ai_service.analyze_email_context(sample_email_data)
-        
+
         # Generate auto reply
         response = await ai_service.generate_response(
-            email_context=context, 
-            response_type="auto_reply"
+            email_context=context, response_type="auto_reply"
         )
-        
+
         assert response is not None
         assert response.content is not None
         assert response.response_type == "auto_reply"
@@ -216,32 +227,33 @@ class TestAIEmailResponseService:
         """Test follow-up response generation."""
         # Create email context
         context = await ai_service.analyze_email_context(sample_email_data)
-        
+
         # Generate follow-up
         response = await ai_service.generate_response(
-            email_context=context, 
-            response_type="follow_up"
+            email_context=context, response_type="follow_up"
         )
-        
+
         assert response is not None
         assert response.content is not None
         assert response.response_type == "follow_up"
 
     @pytest.mark.asyncio
-    async def test_generate_response_custom_instructions(self, ai_service, sample_email_data):
+    async def test_generate_response_custom_instructions(
+        self, ai_service, sample_email_data
+    ):
         """Test response generation with custom instructions."""
         # Create email context
         context = await ai_service.analyze_email_context(sample_email_data)
-        
+
         custom_instructions = "Always be very formal and include a signature"
-        
+
         # Generate response with custom instructions
         response = await ai_service.generate_response(
             email_context=context,
             response_type="reply",
-            custom_instructions=custom_instructions
+            custom_instructions=custom_instructions,
         )
-        
+
         assert response is not None
         assert response.content is not None
         assert response.custom_instructions == custom_instructions
@@ -251,15 +263,16 @@ class TestAIEmailResponseService:
         """Test response generation when no AI service is available."""
         with tempfile.TemporaryDirectory() as temp_dir:
             config = AIResponseConfig()
-            service = AIEmailResponseService(config=config, data_dir=temp_dir, ai_service=None)
-            
+            service = AIEmailResponseService(
+                config=config, data_dir=temp_dir, ai_service=None
+            )
+
             # Create email context
             context = await service.analyze_email_context(sample_email_data)
-            
+
             with pytest.raises(ValueError, match="AI service not available"):
                 await service.generate_response(
-                    email_context=context, 
-                    response_type="reply"
+                    email_context=context, response_type="reply"
                 )
 
     @pytest.mark.asyncio
@@ -267,19 +280,17 @@ class TestAIEmailResponseService:
         """Test response caching functionality."""
         # Create email context
         context = await ai_service.analyze_email_context(sample_email_data)
-        
+
         # Generate first response
         response1 = await ai_service.generate_response(
-            email_context=context, 
-            response_type="reply"
+            email_context=context, response_type="reply"
         )
-        
+
         # Generate second response (should be cached)
         response2 = await ai_service.generate_response(
-            email_context=context, 
-            response_type="reply"
+            email_context=context, response_type="reply"
         )
-        
+
         assert response1 is not None
         assert response2 is not None
         # Note: Caching behavior depends on implementation
@@ -289,16 +300,15 @@ class TestAIEmailResponseService:
         """Test getting response history."""
         # Create email context
         context = await ai_service.analyze_email_context(sample_email_data)
-        
+
         # Generate a response
         response = await ai_service.generate_response(
-            email_context=context, 
-            response_type="reply"
+            email_context=context, response_type="reply"
         )
-        
+
         # Get response history
         history = ai_service.get_response_history(limit=10)
-        
+
         assert isinstance(history, list)
         # History might be empty if not persisted, which is fine for testing
 
@@ -311,10 +321,9 @@ class TestAIEmailResponseService:
             email_data["message_id"] = f"msg_{i}"
             context = await ai_service.analyze_email_context(email_data)
             await ai_service.generate_response(
-                email_context=context, 
-                response_type="reply"
+                email_context=context, response_type="reply"
             )
-        
+
         # Get limited history
         history = ai_service.get_response_history(limit=3)
         assert isinstance(history, list)
@@ -346,13 +355,12 @@ class TestAIEmailResponseService:
         """Test saving and loading responses."""
         # Create email context
         context = await ai_service.analyze_email_context(sample_email_data)
-        
+
         # Generate response
         response = await ai_service.generate_response(
-            email_context=context, 
-            response_type="reply"
+            email_context=context, response_type="reply"
         )
-        
+
         # Save responses (this should not raise an exception)
         try:
             ai_service._save_responses()
@@ -388,7 +396,7 @@ class TestEmailContext:
             agent_personality={"tone": "professional"},
             extracted_at=datetime.now(),
         )
-        
+
         assert context.context_id == "test_context"
         assert context.original_subject == "Test Subject"
         assert context.original_body == "Test body"
@@ -414,7 +422,7 @@ class TestAIResponse:
             usage={"total_tokens": 100},
             generated_at=datetime.now(),
         )
-        
+
         assert response.content == "Test response content"
         assert response.model == "llama3.1:latest"
         assert response.provider == ProviderType.OLLAMA
@@ -428,7 +436,7 @@ class TestAIResponse:
             model="llama3.1:latest",
             provider=ProviderType.OLLAMA,
         )
-        
+
         assert response.content == "Test content"
         assert response.model == "llama3.1:latest"
         assert response.provider == ProviderType.OLLAMA
@@ -442,7 +450,7 @@ class TestAIResponseConfig:
     def test_ai_response_config_defaults(self):
         """Test AIResponseConfig default values."""
         config = AIResponseConfig()
-        
+
         assert config.auto_generate_responses is False
         assert config.require_human_approval is True
         assert config.default_model == "llama3.1:latest"  # Updated default
@@ -461,7 +469,7 @@ class TestAIResponseConfig:
             auto_generate_responses=True,
             require_human_approval=False,
         )
-        
+
         assert config.default_model == "gpt-4"
         assert config.max_tokens == 2000
         assert config.temperature == 0.5

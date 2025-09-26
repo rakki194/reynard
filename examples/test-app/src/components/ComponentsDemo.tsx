@@ -1,5 +1,6 @@
 import { createSignal, For } from "solid-js";
-import { Button, Card, TextField, Select, Modal } from "reynard-components";
+import { Button, Card, TextField, Select } from "reynard-primitives";
+import { Modal } from "reynard-components-core";
 import { useTheme } from "reynard-themes";
 import { getIcon } from "reynard-fluent-icons";
 

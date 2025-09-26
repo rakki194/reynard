@@ -18,8 +18,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestPathTraversal(FenrirTestBase):
-    """*otter curiosity* Test suite for path traversal exploits
-    """
+    """*otter curiosity* Test suite for path traversal exploits"""
 
     async def test_double_encoded_path_traversal(self):
         """Test that double encoded path traversal detection works correctly"""
@@ -33,7 +32,9 @@ class TestPathTraversal(FenrirTestBase):
 
             # Mock the exploit to avoid actual network calls
             with patch.object(
-                exploit, "_test_double_encoded_traversal", return_value=False,
+                exploit,
+                "_test_double_encoded_traversal",
+                return_value=False,
             ):
                 results = exploit.run_exploit()
 

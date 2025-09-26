@@ -16,6 +16,13 @@ Author: Reynard Development Team
 Version: 2.0.0 - AI Service Integration
 """
 
+from .ai_summarizer import (
+    AISummarizer,
+    get_ai_summarizer,
+    health_check_ai_summarizer,
+    initialize_ai_summarizer,
+    shutdown_ai_summarizer,
+)
 from .article_summarizer import ArticleSummarizer
 from .base import (
     BaseSummarizer,
@@ -28,13 +35,6 @@ from .code_summarizer import CodeSummarizer
 from .document_summarizer import DocumentSummarizer
 from .manager import SummarizationManager
 from .technical_summarizer import TechnicalSummarizer
-from .ai_summarizer import (
-    AISummarizer,
-    get_ai_summarizer,
-    health_check_ai_summarizer,
-    initialize_ai_summarizer,
-    shutdown_ai_summarizer,
-)
 
 __all__ = [
     "ArticleSummarizer",

@@ -17,20 +17,20 @@ shellcheck:
   enabled: true
   # Ignore specific shellcheck warnings
   ignore:
-    - SC1090  # Can't follow non-constant source
-    - SC1091  # Not following sourced file
-    - SC2034  # Variable appears unused
-    - SC2086  # Double quote to prevent globbing (handled by our fixes)
-    - SC2129  # Consider using { cmd1; cmd2; } >> file (handled by our fixes)
-    - SC2144  # -f doesn't work with globs (handled by our fixes)
+    - SC1090 # Can't follow non-constant source
+    - SC1091 # Not following sourced file
+    - SC2034 # Variable appears unused
+    - SC2086 # Double quote to prevent globbing (handled by our fixes)
+    - SC2129 # Consider using { cmd1; cmd2; } >> file (handled by our fixes)
+    - SC2144 # -f doesn't work with globs (handled by our fixes)
 
 # Pyflakes configuration for Python scripts
 pyflakes:
   enabled: true
   # Ignore specific pyflakes warnings
   ignore:
-    - F401  # Imported but unused
-    - F841  # Local variable assigned but never used
+    - F401 # Imported but unused
+    - F841 # Local variable assigned but never used
 
 # Expression validation
 expression:
@@ -63,7 +63,7 @@ step:
   # Check for required fields
   required_fields:
     - name
-    - uses  # or run
+    - uses # or run
 
 # Action validation
 action:
@@ -73,11 +73,11 @@ action:
   check_versions: true
   # Allow specific action patterns
   allow_patterns:
-    - "actions/*@*"
-    - "pnpm/*@*"
-    - "rhysd/*@*"
-    - "matheusjardimb/*@*"
-    - "alexkiro/*@*"
+    - 'actions/*@*'
+    - 'pnpm/*@*'
+    - 'rhysd/*@*'
+    - 'matheusjardimb/*@*'
+    - 'alexkiro/*@*'
 
 # Runner validation
 runner:
@@ -96,16 +96,16 @@ runner:
 
 # File patterns to check
 files:
-  - ".github/workflows/*.yml"
-  - ".github/workflows/*.yaml"
+  - '.github/workflows/*.yml'
+  - '.github/workflows/*.yaml'
 
 # Exclude patterns
 exclude:
-  - ".github/workflows/*.example.yml"
-  - ".github/workflows/*.template.yml"
+  - '.github/workflows/*.example.yml'
+  - '.github/workflows/*.template.yml'
 
 # Output format
-format: "github"
+format: 'github'
 
 # Verbose output
 verbose: false

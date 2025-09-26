@@ -15,10 +15,14 @@ import time
 from collections import OrderedDict
 from typing import Any, Dict, List, Optional
 
-from ...interfaces.base import BaseService, ServiceStatus
-from ...interfaces.embedding import EmbeddingProvider, EmbeddingResult, IEmbeddingService
 from ....ai.ai_service import AIService
 from ....ai.provider_registry import ProviderType
+from ...interfaces.base import BaseService, ServiceStatus
+from ...interfaces.embedding import (
+    EmbeddingProvider,
+    EmbeddingResult,
+    IEmbeddingService,
+)
 
 logger = logging.getLogger("uvicorn")
 
@@ -72,28 +76,32 @@ class LRUCache:
 class AIEmbeddingService(BaseService, EmbeddingProvider):
     """AI-based embedding service with caching and optimization."""
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None, ai_service: Optional[AIService] = None):
+    def __init__(
+        self,
+        config: Optional[Dict[str, Any]] = None,
+        ai_service: Optional[AIService] = None,
+    ):
         super().__init__("ai-embedding", config)
-        
+
         # AI service
         self.ai_service = ai_service
-        
+
         # Service configuration
         self.timeout = self.config.get("timeout_seconds", 30)
         self.max_retries = self.config.get("max_retries", 3)
         self.retry_delay = self.config.get("retry_delay", 1.0)
-        
+
         # Performance optimization
         self.cache_size = self.config.get("cache_size", 1000)
         self.lru_cache = LRUCache(max_size=self.cache_size)
         self.max_concurrent = self.config.get("max_concurrent", 8)
         self.concurrency_limiter = asyncio.Semaphore(self.max_concurrent)
-        
+
         # Model registry
         self.model_registry = self._initialize_model_registry()
         self.default_model = self.config.get("default_model", "embeddinggemma:latest")
         self.default_provider = self.config.get("default_provider", ProviderType.OLLAMA)
-        
+
         # Metrics
         self.metrics = {
             "requests": 0,
@@ -149,9 +157,10 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
             if not self.ai_service:
                 # Try to get AI service from service registry
                 from ....core.service_registry import ServiceRegistry
+
                 service_registry = ServiceRegistry()
                 self.ai_service = service_registry.get_service("ai_service")
-                
+
                 if not self.ai_service:
                     logger.error("AI service not available for embedding service")
                     return False
@@ -159,7 +168,7 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
             self.status = ServiceStatus.RUNNING
             logger.info("AI embedding service initialized successfully")
             return True
-            
+
         except Exception as e:
             logger.error(f"Failed to initialize AI embedding service: {e}")
             self.status = ServiceStatus.ERROR
@@ -183,10 +192,7 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
         return hashlib.md5(content.encode()).hexdigest()
 
     async def embed_text(
-        self, 
-        text: str, 
-        model: Optional[str] = None,
-        **kwargs
+        self, text: str, model: Optional[str] = None, **kwargs
     ) -> EmbeddingResult:
         """Generate embedding for a single text."""
         if not self.ai_service:
@@ -194,17 +200,17 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
 
         model = model or self.default_model
         start_time = time.time()
-        
+
         try:
             # Check cache first
             cache_key = self._generate_cache_key(text, model)
             cached_embedding = self.lru_cache.get(cache_key)
-            
+
             if cached_embedding:
                 self.metrics["cache_hits"] += 1
                 if DEBUG_RAG_OPERATIONS:
                     logger.debug(f"Cache hit for embedding: {cache_key[:8]}...")
-                
+
                 return EmbeddingResult(
                     embedding=cached_embedding,
                     model=model,
@@ -213,23 +219,25 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
                     processing_time_ms=(time.time() - start_time) * 1000,
                     cached=True,
                 )
-            
+
             self.metrics["cache_misses"] += 1
-            
+
             # Generate embedding using AI service
             async with self.concurrency_limiter:
                 embedding = await self._generate_embedding(text, model)
-            
+
             # Cache the result
             self.lru_cache.put(cache_key, embedding)
-            
+
             processing_time = (time.time() - start_time) * 1000
             self.metrics["requests"] += 1
             self.metrics["total_latency_ms"] += processing_time
-            
+
             if DEBUG_RAG_OPERATIONS:
-                logger.debug(f"Generated embedding for text: {text[:50]}... (model: {model}, time: {processing_time:.2f}ms)")
-            
+                logger.debug(
+                    f"Generated embedding for text: {text[:50]}... (model: {model}, time: {processing_time:.2f}ms)"
+                )
+
             return EmbeddingResult(
                 embedding=embedding,
                 model=model,
@@ -238,17 +246,14 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
                 processing_time_ms=processing_time,
                 cached=False,
             )
-            
+
         except Exception as e:
             self.metrics["errors"] += 1
             logger.error(f"Failed to generate embedding: {e}")
             raise
 
     async def embed_batch(
-        self, 
-        texts: List[str], 
-        model: Optional[str] = None,
-        **kwargs
+        self, texts: List[str], model: Optional[str] = None, **kwargs
     ) -> List[List[float]]:
         """Generate embeddings for a batch of texts."""
         if not self.ai_service:
@@ -256,12 +261,12 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
 
         model = model or self.default_model
         start_time = time.time()
-        
+
         try:
             # Process texts concurrently
             tasks = [self.embed_text(text, model, **kwargs) for text in texts]
             results = await asyncio.gather(*tasks, return_exceptions=True)
-            
+
             embeddings = []
             for i, result in enumerate(results):
                 if isinstance(result, Exception):
@@ -272,22 +277,21 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
                     embeddings.append([0.0] * dimensions)
                 else:
                     embeddings.append(result.embedding)
-            
+
             processing_time = (time.time() - start_time) * 1000
             if DEBUG_RAG_OPERATIONS:
-                logger.debug(f"Generated {len(embeddings)} embeddings in {processing_time:.2f}ms")
-            
+                logger.debug(
+                    f"Generated {len(embeddings)} embeddings in {processing_time:.2f}ms"
+                )
+
             return embeddings
-            
+
         except Exception as e:
             logger.error(f"Failed to generate batch embeddings: {e}")
             raise
 
     async def embed_batch_detailed(
-        self, 
-        texts: List[str], 
-        model: Optional[str] = None,
-        **kwargs
+        self, texts: List[str], model: Optional[str] = None, **kwargs
     ) -> List[EmbeddingResult]:
         """Generate embeddings for a batch of texts with detailed results."""
         if not self.ai_service:
@@ -295,12 +299,12 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
 
         model = model or self.default_model
         start_time = time.time()
-        
+
         try:
             # Process texts concurrently
             tasks = [self.embed_text(text, model, **kwargs) for text in texts]
             results = await asyncio.gather(*tasks, return_exceptions=True)
-            
+
             embeddings = []
             for i, result in enumerate(results):
                 if isinstance(result, Exception):
@@ -320,13 +324,15 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
                     embeddings.append(error_result)
                 else:
                     embeddings.append(result)
-            
+
             processing_time = (time.time() - start_time) * 1000
             if DEBUG_RAG_OPERATIONS:
-                logger.debug(f"Generated {len(embeddings)} detailed embeddings in {processing_time:.2f}ms")
-            
+                logger.debug(
+                    f"Generated {len(embeddings)} detailed embeddings in {processing_time:.2f}ms"
+                )
+
             return embeddings
-            
+
         except Exception as e:
             logger.error(f"Failed to generate detailed batch embeddings: {e}")
             raise
@@ -338,29 +344,31 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
                 # Get model info to determine provider
                 model_info = self.model_registry.get(model, {})
                 provider = model_info.get("provider", self.default_provider)
-                
+
                 # Format text for embedding generation
                 formatted_text = self._format_text_for_embedding(text, model)
-                
+
                 # Generate embedding using AI service
                 embedding = await self.ai_service.generate_embedding(
                     text=formatted_text,
                     model=model,
                     provider=provider,
                 )
-                
+
                 if embedding and len(embedding) > 0:
                     return embedding
                 else:
                     raise RuntimeError("No embedding returned from AI service")
-                    
+
             except Exception as e:
                 if attempt < self.max_retries - 1:
-                    await asyncio.sleep(self.retry_delay * (2 ** attempt))
+                    await asyncio.sleep(self.retry_delay * (2**attempt))
                     continue
                 else:
                     self.metrics["errors"] += 1
-                    raise RuntimeError(f"Failed to generate embedding after {self.max_retries} attempts: {e}")
+                    raise RuntimeError(
+                        f"Failed to generate embedding after {self.max_retries} attempts: {e}"
+                    )
 
     def _format_text_for_embedding(self, text: str, model: str) -> str:
         """Format text for embedding generation based on model requirements."""
@@ -390,7 +398,7 @@ class AIEmbeddingService(BaseService, EmbeddingProvider):
             if self.metrics["requests"] > 0
             else 0.0
         )
-        
+
         return {
             "service_name": self.name,
             "status": self.status.value,

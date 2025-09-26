@@ -15,8 +15,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestHTTPSmuggling(FenrirTestBase):
-    """*otter curiosity* Test suite for HTTP request smuggling exploits
-    """
+    """*otter curiosity* Test suite for HTTP request smuggling exploits"""
 
     async def test_http_smuggling_detection(self):
         """Test that HTTP request smuggling detection works correctly"""

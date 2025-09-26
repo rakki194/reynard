@@ -32,11 +32,16 @@ class ECSRedisCache:
         host: str = "localhost",
         port: int = 6379,
         db: int = 0,
-        password: str | None = None,
+        password: str = None,
         max_connections: int = 20,
         socket_timeout: int = 5,
         socket_connect_timeout: int = 5,
         retry_on_timeout: bool = True,
+        ssl: bool = False,
+        ssl_cert_reqs: str = "required",
+        ssl_ca_certs: str = None,
+        ssl_certfile: str = None,
+        ssl_keyfile: str = None,
     ):
         """Initialize Redis cache.
 
@@ -49,6 +54,11 @@ class ECSRedisCache:
             socket_timeout: Socket timeout
             socket_connect_timeout: Socket connect timeout
             retry_on_timeout: Retry on timeout
+            ssl: Enable SSL/TLS
+            ssl_cert_reqs: SSL certificate requirements
+            ssl_ca_certs: SSL CA certificates file
+            ssl_certfile: SSL certificate file
+            ssl_keyfile: SSL private key file
 
         """
         self.host = host
@@ -59,8 +69,13 @@ class ECSRedisCache:
         self.socket_timeout = socket_timeout
         self.socket_connect_timeout = socket_connect_timeout
         self.retry_on_timeout = retry_on_timeout
+        self.ssl = ssl
+        self.ssl_cert_reqs = ssl_cert_reqs
+        self.ssl_ca_certs = ssl_ca_certs
+        self.ssl_certfile = ssl_certfile
+        self.ssl_keyfile = ssl_keyfile
 
-        self.redis_client: redis.Redis | None = None
+        self.redis_client: redis.Redis = None
         self.connected = False
         self.fallback_cache: dict[str, dict[str, Any]] = {}
 
@@ -79,6 +94,27 @@ class ECSRedisCache:
             return False
 
         try:
+            # Prepare SSL context if enabled
+            ssl_context = None
+            if self.ssl:
+                import ssl
+
+                ssl_context = ssl.create_default_context()
+                if self.ssl_cert_reqs == "required":
+                    ssl_context.check_hostname = True
+                    ssl_context.verify_mode = ssl.CERT_REQUIRED
+                elif self.ssl_cert_reqs == "optional":
+                    ssl_context.check_hostname = False
+                    ssl_context.verify_mode = ssl.CERT_OPTIONAL
+                else:
+                    ssl_context.check_hostname = False
+                    ssl_context.verify_mode = ssl.CERT_NONE
+
+                if self.ssl_ca_certs:
+                    ssl_context.load_verify_locations(self.ssl_ca_certs)
+                if self.ssl_certfile and self.ssl_keyfile:
+                    ssl_context.load_cert_chain(self.ssl_certfile, self.ssl_keyfile)
+
             self.redis_client = redis.Redis(
                 host=self.host,
                 port=self.port,
@@ -87,8 +123,12 @@ class ECSRedisCache:
                 max_connections=self.max_connections,
                 socket_timeout=self.socket_timeout,
                 socket_connect_timeout=self.socket_connect_timeout,
-                retry_on_timeout=self.retry_on_timeout,
                 decode_responses=True,
+                ssl=self.ssl,
+                ssl_cert_reqs=self.ssl_cert_reqs,
+                ssl_ca_certs=self.ssl_ca_certs,
+                ssl_certfile=self.ssl_certfile,
+                ssl_keyfile=self.ssl_keyfile,
             )
 
             # Test connection
@@ -105,7 +145,7 @@ class ECSRedisCache:
     async def disconnect(self):
         """Disconnect from Redis server."""
         if self.redis_client:
-            await self.redis_client.close()
+            await self.redis_client.aclose()
             self.connected = False
             logger.info("Disconnected from Redis")
 
@@ -154,7 +194,7 @@ class ECSRedisCache:
             logger.error(f"Failed to deserialize data: {e}")
             raise
 
-    async def get(self, namespace: str, key: str) -> Any | None:
+    async def get(self, namespace: str, key: str) -> Any:
         """Get a value from cache.
 
         Args:
@@ -329,7 +369,7 @@ class ECSRedisCache:
 
 
 # Global cache instance
-_ecs_cache: ECSRedisCache | None = None
+_ecs_cache: ECSRedisCache = None
 
 
 def get_ecs_cache() -> ECSRedisCache:
@@ -341,12 +381,25 @@ def get_ecs_cache() -> ECSRedisCache:
     """
     global _ecs_cache
     if _ecs_cache is None:
-        _ecs_cache = ECSRedisCache()
+        import os
+
+        _ecs_cache = ECSRedisCache(
+            host=os.getenv("REDIS_HOST", "localhost"),
+            port=int(os.getenv("REDIS_PORT", "6379")),
+            db=int(os.getenv("REDIS_DB", "0")),
+            password=os.getenv("REDIS_PASSWORD"),
+            max_connections=int(os.getenv("REDIS_MAX_CONNECTIONS", "20")),
+            ssl=os.getenv("REDIS_TLS_ENABLED", "false").lower() == "true",
+            ssl_cert_reqs=os.getenv("REDIS_TLS_VERIFY_MODE", "required"),
+            ssl_ca_certs=os.getenv("REDIS_TLS_CA_CERT_FILE"),
+            ssl_certfile=os.getenv("REDIS_TLS_CERT_FILE"),
+            ssl_keyfile=os.getenv("REDIS_TLS_KEY_FILE"),
+        )
     return _ecs_cache
 
 
 # Cache decorators
-def cache_result(namespace: str, ttl: int = 3600, key_func: callable | None = None):
+def cache_result(namespace: str, ttl: int = 3600, key_func: callable = None):
     """Decorator to cache function results.
 
     Args:

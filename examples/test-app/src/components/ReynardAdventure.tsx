@@ -1,4 +1,4 @@
-import { Button, Card, TabPanel, Tabs } from "reynard-components";
+import { Button, Card, TabPanel, Tabs } from "reynard-primitives";
 import { createSignal, For, Show } from "solid-js";
 import { CodeBlock } from "./CodeBlock";
 import "./ReynardAdventure.css";

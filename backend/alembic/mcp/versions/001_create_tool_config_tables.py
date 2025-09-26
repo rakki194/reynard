@@ -1,12 +1,13 @@
 """Create tool configuration tables
 
 Revision ID: 001_create_tool_config_tables
-Revises: 
+Revises:
 Create Date: 2025-01-15 10:00:00.000000
 
 """
-from alembic import op
+
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
@@ -18,26 +19,65 @@ depends_on = None
 
 def upgrade() -> None:
     """Create tool configuration tables."""
-    
+
     # Create tool_categories table
-    op.create_table('tool_categories',
+    op.create_table(
+        'tool_categories',
         sa.Column('id', postgresql.UUID(as_uuid=True), nullable=False),
-        sa.Column('name', sa.Enum('AGENT', 'CHARACTER', 'ECS', 'SOCIAL', 'LINTING', 'FORMATTING', 'SEARCH', 'VISUALIZATION', 'SECURITY', 'UTILITY', 'VERSION', 'VSCODE', 'PLAYWRIGHT', 'MONOLITH', 'MANAGEMENT', 'SECRETS', 'RESEARCH', 'EMAIL', 'GIT', name='toolcategoryenum'), nullable=False),
+        sa.Column(
+            'name',
+            sa.Enum(
+                'AGENT',
+                'CHARACTER',
+                'ECS',
+                'SOCIAL',
+                'LINTING',
+                'FORMATTING',
+                'SEARCH',
+                'VISUALIZATION',
+                'SECURITY',
+                'UTILITY',
+                'VERSION',
+                'VSCODE',
+                'PLAYWRIGHT',
+                'MONOLITH',
+                'MANAGEMENT',
+                'SECRETS',
+                'RESEARCH',
+                'EMAIL',
+                'GIT',
+                name='toolcategoryenum',
+            ),
+            nullable=False,
+        ),
         sa.Column('display_name', sa.String(length=100), nullable=False),
         sa.Column('description', sa.Text(), nullable=True),
         sa.Column('icon', sa.String(length=50), nullable=True),
         sa.Column('color', sa.String(length=7), nullable=True),
         sa.Column('sort_order', sa.Integer(), nullable=True),
         sa.Column('is_active', sa.Boolean(), nullable=True),
-        sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-        sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
+        sa.Column(
+            'created_at',
+            sa.DateTime(timezone=True),
+            server_default=sa.text('now()'),
+            nullable=True,
+        ),
+        sa.Column(
+            'updated_at',
+            sa.DateTime(timezone=True),
+            server_default=sa.text('now()'),
+            nullable=True,
+        ),
         sa.PrimaryKeyConstraint('id'),
-        sa.UniqueConstraint('name')
+        sa.UniqueConstraint('name'),
     )
-    op.create_index(op.f('ix_tool_categories_name'), 'tool_categories', ['name'], unique=False)
+    op.create_index(
+        op.f('ix_tool_categories_name'), 'tool_categories', ['name'], unique=False
+    )
 
     # Create tools table
-    op.create_table('tools',
+    op.create_table(
+        'tools',
         sa.Column('id', postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column('name', sa.String(length=100), nullable=False),
         sa.Column('category_id', postgresql.UUID(as_uuid=True), nullable=False),
@@ -50,19 +90,37 @@ def upgrade() -> None:
         sa.Column('execution_type', sa.String(length=20), nullable=False),
         sa.Column('timeout_seconds', sa.Integer(), nullable=True),
         sa.Column('max_concurrent', sa.Integer(), nullable=True),
-        sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-        sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-        sa.ForeignKeyConstraint(['category_id'], ['tool_categories.id'], ),
+        sa.Column(
+            'created_at',
+            sa.DateTime(timezone=True),
+            server_default=sa.text('now()'),
+            nullable=True,
+        ),
+        sa.Column(
+            'updated_at',
+            sa.DateTime(timezone=True),
+            server_default=sa.text('now()'),
+            nullable=True,
+        ),
+        sa.ForeignKeyConstraint(
+            ['category_id'],
+            ['tool_categories.id'],
+        ),
         sa.PrimaryKeyConstraint('id'),
-        sa.UniqueConstraint('name')
+        sa.UniqueConstraint('name'),
     )
-    op.create_index('idx_tools_category_enabled', 'tools', ['category_id', 'enabled'], unique=False)
-    op.create_index('idx_tools_name_enabled', 'tools', ['name', 'enabled'], unique=False)
+    op.create_index(
+        'idx_tools_category_enabled', 'tools', ['category_id', 'enabled'], unique=False
+    )
+    op.create_index(
+        'idx_tools_name_enabled', 'tools', ['name', 'enabled'], unique=False
+    )
     op.create_index(op.f('ix_tools_enabled'), 'tools', ['enabled'], unique=False)
     op.create_index(op.f('ix_tools_name'), 'tools', ['name'], unique=False)
 
     # Create tool_config_history table
-    op.create_table('tool_config_history',
+    op.create_table(
+        'tool_config_history',
         sa.Column('id', postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column('tool_id', postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column('change_type', sa.String(length=20), nullable=False),
@@ -70,30 +128,65 @@ def upgrade() -> None:
         sa.Column('new_values', sa.JSON(), nullable=True),
         sa.Column('changed_by', sa.String(length=100), nullable=True),
         sa.Column('change_reason', sa.Text(), nullable=True),
-        sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-        sa.ForeignKeyConstraint(['tool_id'], ['tools.id'], ),
-        sa.PrimaryKeyConstraint('id')
+        sa.Column(
+            'created_at',
+            sa.DateTime(timezone=True),
+            server_default=sa.text('now()'),
+            nullable=True,
+        ),
+        sa.ForeignKeyConstraint(
+            ['tool_id'],
+            ['tools.id'],
+        ),
+        sa.PrimaryKeyConstraint('id'),
     )
-    op.create_index('idx_tool_history_change_type', 'tool_config_history', ['change_type'], unique=False)
-    op.create_index('idx_tool_history_tool_created', 'tool_config_history', ['tool_id', 'created_at'], unique=False)
+    op.create_index(
+        'idx_tool_history_change_type',
+        'tool_config_history',
+        ['change_type'],
+        unique=False,
+    )
+    op.create_index(
+        'idx_tool_history_tool_created',
+        'tool_config_history',
+        ['tool_id', 'created_at'],
+        unique=False,
+    )
 
     # Create tool_configuration table
-    op.create_table('tool_configuration',
+    op.create_table(
+        'tool_configuration',
         sa.Column('id', postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column('version', sa.String(length=20), nullable=False),
-        sa.Column('last_updated', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
+        sa.Column(
+            'last_updated',
+            sa.DateTime(timezone=True),
+            server_default=sa.text('now()'),
+            nullable=True,
+        ),
         sa.Column('auto_sync_enabled', sa.Boolean(), nullable=False),
         sa.Column('default_timeout', sa.Integer(), nullable=False),
         sa.Column('max_concurrent_tools', sa.Integer(), nullable=False),
         sa.Column('cache_ttl_seconds', sa.Integer(), nullable=False),
         sa.Column('settings', sa.JSON(), nullable=True),
-        sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-        sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=True),
-        sa.PrimaryKeyConstraint('id')
+        sa.Column(
+            'created_at',
+            sa.DateTime(timezone=True),
+            server_default=sa.text('now()'),
+            nullable=True,
+        ),
+        sa.Column(
+            'updated_at',
+            sa.DateTime(timezone=True),
+            server_default=sa.text('now()'),
+            nullable=True,
+        ),
+        sa.PrimaryKeyConstraint('id'),
     )
 
     # Insert default tool categories
-    op.execute("""
+    op.execute(
+        """
         INSERT INTO tool_categories (id, name, display_name, description, icon, color, sort_order, is_active) VALUES
         (gen_random_uuid(), 'AGENT', 'Agent Tools', 'Tools for agent management and naming', '🤖', '#FF6B6B', 1, true),
         (gen_random_uuid(), 'CHARACTER', 'Character Tools', 'Tools for character creation and management', '👤', '#4ECDC4', 2, true),
@@ -114,13 +207,16 @@ def upgrade() -> None:
         (gen_random_uuid(), 'RESEARCH', 'Research Tools', 'Academic and research paper tools', '📚', '#AED6F1', 17, true),
         (gen_random_uuid(), 'EMAIL', 'Email Tools', 'Email and communication tools', '📧', '#D5DBDB', 18, true),
         (gen_random_uuid(), 'GIT', 'Git Tools', 'Version control and Git tools', '🌿', '#FADBD8', 19, true);
-    """)
+    """
+    )
 
     # Insert default tool configuration
-    op.execute("""
+    op.execute(
+        """
         INSERT INTO tool_configuration (id, version, auto_sync_enabled, default_timeout, max_concurrent_tools, cache_ttl_seconds, settings) VALUES
         (gen_random_uuid(), '1.0.0', true, 30, 10, 300, '{}');
-    """)
+    """
+    )
 
 
 def downgrade() -> None:

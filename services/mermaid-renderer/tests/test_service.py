@@ -32,7 +32,7 @@ class TestMermaidRenderingService:
     def test_validate_diagram(self):
         """Test diagram validation."""
         is_valid, errors, warnings = self.service.validate_diagram(self.test_diagram)
-        
+
         # If service is available, diagram should be valid
         if self.service.available:
             assert is_valid is True
@@ -45,7 +45,7 @@ class TestMermaidRenderingService:
     def test_get_diagram_stats(self):
         """Test diagram statistics generation."""
         stats = self.service.get_diagram_stats(self.test_diagram)
-        
+
         assert "valid" in stats
         assert "diagram_length" in stats
         assert "lines" in stats
@@ -55,7 +55,7 @@ class TestMermaidRenderingService:
     def test_get_available_themes(self):
         """Test getting available themes."""
         themes = self.service.get_available_themes()
-        
+
         if self.service.available:
             assert len(themes) > 0
             assert "default" in themes
@@ -66,7 +66,7 @@ class TestMermaidRenderingService:
     def test_get_service_info(self):
         """Test getting service information."""
         info = self.service.get_service_info()
-        
+
         assert "available" in info
         assert "supported_formats" in info
         assert "svg" in info["supported_formats"]
@@ -76,7 +76,7 @@ class TestMermaidRenderingService:
     def test_health_check(self):
         """Test health check functionality."""
         health = self.service.health_check()
-        
+
         assert "status" in health
         assert "available" in health
         assert "service_info" in health
@@ -85,9 +85,9 @@ class TestMermaidRenderingService:
     def test_invalid_diagram(self):
         """Test handling of invalid diagrams."""
         invalid_diagram = "invalid mermaid syntax"
-        
+
         is_valid, errors, warnings = self.service.validate_diagram(invalid_diagram)
-        
+
         if self.service.available:
             # Should detect invalid syntax
             assert is_valid is False

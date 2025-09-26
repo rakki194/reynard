@@ -4,7 +4,7 @@
  */
 
 import { Component, createSignal, onMount, onCleanup } from "solid-js";
-import { Card, Button } from "reynard-components";
+import { Card, Button } from "reynard-primitives";
 import { PerformanceOptimizedEngine } from "../utils/animation/PerformanceOptimizedEngine";
 import { createAnimationCore } from "../utils/animation/AnimationCore";
 // import type { AnimationConfig } from "../utils/animation/AnimationTypes";

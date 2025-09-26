@@ -12,6 +12,8 @@ from typing import Any
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 
+from app.core.project_root import get_project_root
+
 from .service import get_rag_service
 
 logger = logging.getLogger("uvicorn")
@@ -34,7 +36,8 @@ async def index_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespo
             # Get configuration from environment
             reynard_root = Path(
                 os.getenv(
-                    "RAG_CONTINUOUS_INDEXING_WATCH_ROOT", "/home/kade/runeset/reynard",
+                    "RAG_CONTINUOUS_INDEXING_WATCH_ROOT",
+                    str(get_project_root()),
                 ),
             )
             batch_size = int(os.getenv("RAG_CONTINUOUS_INDEXING_BATCH_SIZE", "50"))
@@ -272,6 +275,7 @@ async def scan_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespon
 
         async def generate():
             import json
+
             from app.services.rag.services.core.codebase_scanner import CodebaseScanner
 
             # Use the modular codebase scanner
@@ -374,7 +378,9 @@ async def scan_codebase(rag_service=Depends(get_rag_service)) -> StreamingRespon
                     # Count lines
                     try:
                         with open(
-                            file_path, encoding="utf-8", errors="ignore",
+                            file_path,
+                            encoding="utf-8",
+                            errors="ignore",
                         ) as f:
                             lines = sum(1 for _ in f)
                             total_lines += lines

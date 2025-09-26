@@ -372,7 +372,9 @@ class KeyManager:
 
         # Encrypt the key
         cipher = Cipher(
-            algorithms.AES(encryption_key), modes.CBC(iv), backend=default_backend(),
+            algorithms.AES(encryption_key),
+            modes.CBC(iv),
+            backend=default_backend(),
         )
         encryptor = cipher.encryptor()
 
@@ -498,7 +500,9 @@ class KeyManager:
 
         # Decrypt the key
         cipher = Cipher(
-            algorithms.AES(decryption_key), modes.CBC(iv), backend=default_backend(),
+            algorithms.AES(decryption_key),
+            modes.CBC(iv),
+            backend=default_backend(),
         )
         decryptor = cipher.decryptor()
 
@@ -538,7 +542,9 @@ class KeyManager:
         if key_type in [KeyType.JWT_SIGNING, KeyType.SYSTEM_MASTER]:
             # Generate RSA key for signing
             private_key = rsa.generate_private_key(
-                public_exponent=65537, key_size=2048, backend=default_backend(),
+                public_exponent=65537,
+                key_size=2048,
+                backend=default_backend(),
             )
             key_data = private_key.private_bytes(
                 encoding=serialization.Encoding.PEM,
@@ -716,7 +722,9 @@ class KeyManager:
             logger.info(f"Revoked key {key_id}")
 
     def list_keys(
-        self, key_type: KeyType | None = None, status: KeyStatus | None = None,
+        self,
+        key_type: KeyType | None = None,
+        status: KeyStatus | None = None,
     ) -> list[KeyMetadata]:
         """List keys with optional filtering."""
         keys = list(self._metadata.values())
@@ -844,7 +852,9 @@ def get_key_manager() -> KeyManager:
 
 
 def get_key(
-    key_id: str, key_type: KeyType, update_usage: bool = True,
+    key_id: str,
+    key_type: KeyType,
+    update_usage: bool = True,
 ) -> bytes | None:
     """Get a key by ID and type."""
     key_manager = get_key_manager()
@@ -884,7 +894,8 @@ def revoke_key(key_id: str) -> None:
 
 
 def list_keys(
-    key_type: KeyType | None = None, status: KeyStatus | None = None,
+    key_type: KeyType | None = None,
+    status: KeyStatus | None = None,
 ) -> list[KeyMetadata]:
     """List keys with optional filtering."""
     key_manager = get_key_manager()

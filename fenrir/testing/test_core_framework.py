@@ -366,7 +366,8 @@ class TestVulnerabilityAnalyzer:
 
         # Test analyze_response method
         is_vulnerable, vuln_type = analyzer.analyze_response(
-            mock_response, "test payload",
+            mock_response,
+            "test payload",
         )
         assert isinstance(is_vulnerable, bool)
         assert vuln_type is None or isinstance(vuln_type, str)

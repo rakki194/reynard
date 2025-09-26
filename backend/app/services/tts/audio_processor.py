@@ -93,7 +93,8 @@ class AudioProcessor:
     async def _convert_to_ogg(self, input_path: Path, output_path: Path, quality: str):
         """Convert audio to OGG format."""
         quality_args = self._compression_levels.get(
-            quality, self._compression_levels["high"],
+            quality,
+            self._compression_levels["high"],
         )
         ogg_args = quality_args.get("ogg", "-q:a 8")
 
@@ -113,7 +114,8 @@ class AudioProcessor:
     async def _convert_to_opus(self, input_path: Path, output_path: Path, quality: str):
         """Convert audio to Opus format."""
         quality_args = self._compression_levels.get(
-            quality, self._compression_levels["high"],
+            quality,
+            self._compression_levels["high"],
         )
         opus_args = quality_args.get("opus", "-b:a 128k")
 
@@ -134,7 +136,9 @@ class AudioProcessor:
         """Run FFmpeg command asynchronously."""
         try:
             process = await asyncio.create_subprocess_exec(
-                *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
             )
 
             stdout, stderr = await process.communicate()
@@ -165,7 +169,9 @@ class AudioProcessor:
             ]
 
             process = await asyncio.create_subprocess_exec(
-                *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
             )
 
             stdout, stderr = await process.communicate()
@@ -208,7 +214,9 @@ class AudioProcessor:
             return input_path
 
     async def concatenate_audio(
-        self, input_paths: list[Path], output_path: Path,
+        self,
+        input_paths: list[Path],
+        output_path: Path,
     ) -> Path:
         """Concatenate multiple audio files."""
         if not self._enabled or not self._ffmpeg_available:
@@ -264,7 +272,9 @@ class AudioProcessor:
             ]
 
             process = await asyncio.create_subprocess_exec(
-                *cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE,
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
             )
 
             stdout, stderr = await process.communicate()

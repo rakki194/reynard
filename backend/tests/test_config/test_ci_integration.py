@@ -286,7 +286,8 @@ class TestCIIntegration:
 
         # Test authentication logging
         response = client.post(
-            "/api/auth/login", json={"username": "nonexistent", "password": "wrong"},
+            "/api/auth/login",
+            json={"username": "nonexistent", "password": "wrong"},
         )
         assert response.status_code == 401
 

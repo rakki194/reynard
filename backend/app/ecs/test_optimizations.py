@@ -89,7 +89,9 @@ async def test_input_validation():
     # Test Pydantic models
     try:
         request = ValidatedAgentCreateRequest(
-            agent_id="test-agent-123", spirit="fox", style="foundation",
+            agent_id="test-agent-123",
+            spirit="fox",
+            style="foundation",
         )
         print("   ✅ Pydantic validation working")
     except Exception as e:
@@ -177,7 +179,10 @@ async def test_performance_monitoring():
     start_time = time.time()
     for i in range(100):
         validate_endpoint_inputs(
-            "test_endpoint", agent_id=f"agent-{i}", spirit="fox", limit=10,
+            "test_endpoint",
+            agent_id=f"agent-{i}",
+            spirit="fox",
+            limit=10,
         )
     validation_time = time.time() - start_time
 
@@ -218,7 +223,10 @@ async def test_integration():
     try:
         # 1. Validate input
         validated = validate_endpoint_inputs(
-            "integration_test", agent_id="integration-agent-123", spirit="fox", limit=5,
+            "integration_test",
+            agent_id="integration-agent-123",
+            spirit="fox",
+            limit=5,
         )
         print(f"   ✅ Input validation: {validated}")
 

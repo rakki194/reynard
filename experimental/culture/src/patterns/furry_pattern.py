@@ -80,7 +80,9 @@ class FurryCulturalPattern(BaseCulturalPattern):
         ]
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel = SafetyLevel.SAFE,
+        self,
+        count: int,
+        safety_level: SafetyLevel = SafetyLevel.SAFE,
     ) -> list[CulturalScenario]:
         """Generate furry roleplay scenarios"""
         scenarios = []
@@ -134,17 +136,21 @@ class FurryCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate furry cultural appropriateness"""
         metrics = {
             "species_consistency": self._evaluate_species_consistency(
-                scenario, response,
+                scenario,
+                response,
             ),
             "roleplay_quality": self._evaluate_roleplay_quality(scenario, response),
             "consent_awareness": self._evaluate_consent_awareness(response),
             "cultural_authenticity": self._evaluate_cultural_authenticity(
-                scenario, response,
+                scenario,
+                response,
             ),
             "communication_clarity": self._evaluate_communication_clarity(response),
             "safety_compliance": self._evaluate_safety_compliance(response),
@@ -173,7 +179,9 @@ class FurryCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_species_consistency(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> float:
         """Evaluate consistency with character species"""
         species = scenario.cultural_rules.get("species", "unknown")
@@ -206,7 +214,9 @@ class FurryCulturalPattern(BaseCulturalPattern):
         return max(0.0, species_score - inappropriate_penalty)
 
     def _evaluate_roleplay_quality(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> float:
         """Evaluate roleplay quality and etiquette"""
         score = 0.0
@@ -266,7 +276,9 @@ class FurryCulturalPattern(BaseCulturalPattern):
         return min(1.0, consent_indicators / 3.0)
 
     def _evaluate_cultural_authenticity(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> float:
         """Evaluate cultural authenticity for furry community"""
         score = 0.0
@@ -350,7 +362,9 @@ class FurryCulturalPattern(BaseCulturalPattern):
         return max(0.0, score)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], scenario: CulturalScenario,
+        self,
+        metrics: dict[str, float],
+        scenario: CulturalScenario,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

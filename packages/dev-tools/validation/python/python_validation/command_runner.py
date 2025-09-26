@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Command execution utilities for Reynard validation scripts.
-"""
+"""Command execution utilities for Reynard validation scripts."""
 
 import subprocess
 

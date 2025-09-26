@@ -1,5 +1,4 @@
-"""Tests for the ChangelogParser class.
-"""
+"""Tests for the ChangelogParser class."""
 
 import os
 import tempfile

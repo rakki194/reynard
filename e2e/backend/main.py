@@ -53,7 +53,8 @@ def main() -> None:
         import importlib.util
 
         spec = importlib.util.spec_from_file_location(
-            "backend_main", backend_path / "main.py",
+            "backend_main",
+            backend_path / "main.py",
         )
         if spec is None or spec.loader is None:
             raise ImportError("Could not load backend main module")

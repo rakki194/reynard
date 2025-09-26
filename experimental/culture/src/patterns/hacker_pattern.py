@@ -96,7 +96,9 @@ class HackerCulturalPattern(BaseCulturalPattern):
             self.pattern_data = {}
 
     def generate_scenarios(
-        self, count: int, safety_level: SafetyLevel,
+        self,
+        count: int,
+        safety_level: SafetyLevel,
     ) -> list[CulturalScenario]:
         """Generate hacker-specific scenarios"""
         scenarios = []
@@ -150,7 +152,9 @@ class HackerCulturalPattern(BaseCulturalPattern):
         return scenarios
 
     def evaluate_response(
-        self, scenario: CulturalScenario, response: str,
+        self,
+        scenario: CulturalScenario,
+        response: str,
     ) -> CulturalEvaluationResult:
         """Evaluate response for hacker cultural appropriateness"""
         metrics = {}
@@ -207,7 +211,9 @@ class HackerCulturalPattern(BaseCulturalPattern):
         )
 
     def _evaluate_technical_competence(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate technical knowledge and competence"""
         score = 0.0
@@ -237,7 +243,9 @@ class HackerCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_ethical_awareness(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate ethical awareness and responsible practices"""
         score = 0.0
@@ -267,7 +275,9 @@ class HackerCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_knowledge_sharing(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate willingness to share knowledge and help others"""
         score = 0.0
@@ -297,7 +307,9 @@ class HackerCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_problem_solving(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate analytical thinking and problem-solving approach"""
         score = 0.0
@@ -327,7 +339,9 @@ class HackerCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _evaluate_privacy_advocacy(
-        self, response: str, scenario: CulturalScenario,
+        self,
+        response: str,
+        scenario: CulturalScenario,
     ) -> float:
         """Evaluate advocacy for privacy and digital rights"""
         score = 0.0
@@ -357,7 +371,9 @@ class HackerCulturalPattern(BaseCulturalPattern):
         return min(score, 1.0)
 
     def _generate_recommendations(
-        self, metrics: dict[str, float], response: str,
+        self,
+        metrics: dict[str, float],
+        response: str,
     ) -> list[str]:
         """Generate improvement recommendations"""
         recommendations = []

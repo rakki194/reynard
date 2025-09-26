@@ -94,7 +94,10 @@ class LearningSystem(System):
                 # Check if agents are in proximity
                 if self._are_agents_in_proximity(entity1, entity2):
                     self._attempt_knowledge_sharing(
-                        entity1, entity2, knowledge_comp1, knowledge_comp2,
+                        entity1,
+                        entity2,
+                        knowledge_comp1,
+                        knowledge_comp2,
                     )
 
     def _process_teaching_sessions(self, entities: list[Any]) -> None:
@@ -156,13 +159,18 @@ class LearningSystem(System):
         """Attempt to share knowledge between two agents."""
         # Find knowledge that entity1 can share with entity2
         shareable_knowledge = self._find_shareable_knowledge(
-            knowledge_comp1, knowledge_comp2,
+            knowledge_comp1,
+            knowledge_comp2,
         )
 
         if shareable_knowledge:
             # Attempt to transfer knowledge
             success = self._transfer_knowledge(
-                entity1, entity2, shareable_knowledge, knowledge_comp1, knowledge_comp2,
+                entity1,
+                entity2,
+                shareable_knowledge,
+                knowledge_comp1,
+                knowledge_comp2,
             )
 
             if success:
@@ -170,7 +178,9 @@ class LearningSystem(System):
                 logger.debug(f"Knowledge shared between {entity1.id} and {entity2.id}")
 
     def _find_shareable_knowledge(
-        self, source_comp: KnowledgeComponent, target_comp: KnowledgeComponent,
+        self,
+        source_comp: KnowledgeComponent,
+        target_comp: KnowledgeComponent,
     ) -> Knowledge | None:
         """Find knowledge that can be shared from source to target."""
         for knowledge in source_comp.knowledge.values():
@@ -191,7 +201,9 @@ class LearningSystem(System):
         return None
 
     def _target_has_knowledge(
-        self, target_comp: KnowledgeComponent, knowledge: Knowledge,
+        self,
+        target_comp: KnowledgeComponent,
+        knowledge: Knowledge,
     ) -> bool:
         """Check if target agent already has similar knowledge."""
         for existing_knowledge in target_comp.knowledge.values():
@@ -203,7 +215,9 @@ class LearningSystem(System):
         return False
 
     def _target_meets_prerequisites(
-        self, target_comp: KnowledgeComponent, knowledge: Knowledge,
+        self,
+        target_comp: KnowledgeComponent,
+        knowledge: Knowledge,
     ) -> bool:
         """Check if target agent meets knowledge prerequisites."""
         if not knowledge.prerequisites:
@@ -239,7 +253,8 @@ class LearningSystem(System):
         # Calculate final proficiency
         base_proficiency = 0.1  # Minimum proficiency from learning
         max_proficiency = min(
-            0.8, knowledge.proficiency * 0.9,
+            0.8,
+            knowledge.proficiency * 0.9,
         )  # Can't exceed teacher's level
         final_proficiency = (
             base_proficiency
@@ -326,7 +341,8 @@ class LearningSystem(System):
 
             # Find knowledge to teach
             teachable_knowledge = self._find_shareable_knowledge(
-                knowledge_comp, target_knowledge_comp,
+                knowledge_comp,
+                target_knowledge_comp,
             )
             if teachable_knowledge:
                 success = self._transfer_knowledge(
@@ -359,7 +375,8 @@ class LearningSystem(System):
 
             # Find knowledge to learn
             learnable_knowledge = self._find_shareable_knowledge(
-                source_knowledge_comp, knowledge_comp,
+                source_knowledge_comp,
+                knowledge_comp,
             )
             if learnable_knowledge:
                 success = self._transfer_knowledge(
@@ -415,7 +432,10 @@ class LearningSystem(System):
         }
 
     def force_knowledge_transfer(
-        self, source_agent_id: str, target_agent_id: str, knowledge_id: str,
+        self,
+        source_agent_id: str,
+        target_agent_id: str,
+        knowledge_id: str,
     ) -> bool:
         """Force a knowledge transfer between two agents.
 

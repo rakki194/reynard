@@ -127,14 +127,18 @@ class TestEdgeCases:
         # Test creating user with empty username
         with pytest.raises(ValueError):
             user_data = UserCreate(
-                username="", password="TestPass123!", email="test@example.com",
+                username="",
+                password="TestPass123!",
+                email="test@example.com",
             )
             await auth_manager.create_user(user_data)
 
         # Test creating user with None username
         with pytest.raises(ValueError):
             user_data = UserCreate(
-                username=None, password="TestPass123!", email="test@example.com",
+                username=None,
+                password="TestPass123!",
+                email="test@example.com",
             )
             await auth_manager.create_user(user_data)
 

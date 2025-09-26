@@ -240,12 +240,15 @@ class StreamingResponseMixin:
                 if hasattr(service, "stream_data"):
                     return EventSourceResponse(service.stream_data())
                 raise HTTPException(
-                    status_code=501, detail="Streaming not supported by this service",
+                    status_code=501,
+                    detail="Streaming not supported by this service",
                 )
             except Exception as e:
                 logger.error(f"Streaming failed for {self.service_name}: {e}")
                 return service_error_handler.handle_service_error(
-                    operation="stream_data", error=e, service_name=self.service_name,
+                    operation="stream_data",
+                    error=e,
+                    service_name=self.service_name,
                 )
 
         @self.router.websocket("/ws")
@@ -319,7 +322,9 @@ class StreamingResponseMixin:
             await self._remove_websocket_connection(connection_id)
 
     async def _handle_websocket_message(
-        self, connection: WebSocketConnection, message: str,
+        self,
+        connection: WebSocketConnection,
+        message: str,
     ):
         """Handle incoming WebSocket message."""
         try:
@@ -390,7 +395,9 @@ class StreamingResponseMixin:
         )
 
     def create_sse_response(
-        self, event_generator: AsyncGenerator, headers: dict[str, str] | None = None,
+        self,
+        event_generator: AsyncGenerator,
+        headers: dict[str, str] | None = None,
     ) -> EventSourceResponse:
         """Create an enhanced Server-Sent Events response.
 
@@ -477,7 +484,9 @@ class StreamingResponseMixin:
         return self.create_sse_response(enhanced_event_generator())
 
     def _apply_event_filters(
-        self, event: StreamingEvent, filters: dict[str, Any],
+        self,
+        event: StreamingEvent,
+        filters: dict[str, Any],
     ) -> bool:
         """Apply event filters."""
         for filter_key, filter_value in filters.items():
@@ -489,7 +498,9 @@ class StreamingResponseMixin:
         return True
 
     def _apply_event_transformers(
-        self, event: StreamingEvent, transformers: dict[str, Callable],
+        self,
+        event: StreamingEvent,
+        transformers: dict[str, Callable],
     ) -> StreamingEvent:
         """Apply event transformers."""
         for transformer_key, transformer_func in transformers.items():
@@ -519,7 +530,9 @@ class StreamingResponseMixin:
             await asyncio.gather(*send_tasks, return_exceptions=True)
 
     def add_event_filter(
-        self, name: str, filter_func: Callable[[StreamingEvent], bool],
+        self,
+        name: str,
+        filter_func: Callable[[StreamingEvent], bool],
     ):
         """Add a custom event filter."""
         self._event_filters[name] = filter_func

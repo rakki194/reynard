@@ -87,7 +87,9 @@ class TestCalendarIntegrationService:
 
     @pytest.mark.asyncio
     async def test_extract_meeting_requests_from_email_success(
-        self, calendar_service, sample_email_content,
+        self,
+        calendar_service,
+        sample_email_content,
     ):
         """Test successful meeting request extraction from email."""
         requests = await calendar_service.extract_meeting_requests_from_email(
@@ -346,7 +348,8 @@ class TestCalendarIntegrationService:
 
         # Get upcoming meetings for next 7 days
         upcoming_meetings = await calendar_service.get_upcoming_meetings(
-            user_email=user_email, days_ahead=7,
+            user_email=user_email,
+            days_ahead=7,
         )
 
         assert isinstance(upcoming_meetings, list)
@@ -355,7 +358,8 @@ class TestCalendarIntegrationService:
 
         # Get upcoming meetings for next 15 days
         upcoming_meetings = await calendar_service.get_upcoming_meetings(
-            user_email=user_email, days_ahead=15,
+            user_email=user_email,
+            days_ahead=15,
         )
 
         assert len(upcoming_meetings) == 2  # Both upcoming and far future events
@@ -364,7 +368,8 @@ class TestCalendarIntegrationService:
     async def test_get_upcoming_meetings_no_meetings(self, calendar_service):
         """Test getting upcoming meetings when user has no meetings."""
         upcoming_meetings = await calendar_service.get_upcoming_meetings(
-            user_email="nonexistent@example.com", days_ahead=7,
+            user_email="nonexistent@example.com",
+            days_ahead=7,
         )
 
         assert upcoming_meetings == []
@@ -389,7 +394,8 @@ class TestCalendarIntegrationService:
         original_updated_at = event.updated_at
 
         result = await calendar_service.cancel_meeting(
-            event.event_id, "Meeting cancelled",
+            event.event_id,
+            "Meeting cancelled",
         )
 
         assert result is True
@@ -428,7 +434,9 @@ class TestCalendarIntegrationService:
         original_updated_at = event.updated_at
 
         result = await calendar_service.reschedule_meeting(
-            event.event_id, new_start_time, new_duration_minutes,
+            event.event_id,
+            new_start_time,
+            new_duration_minutes,
         )
 
         assert result is True
@@ -462,7 +470,8 @@ class TestCalendarIntegrationService:
         new_start_time = datetime.now() + timedelta(hours=3)
 
         result = await calendar_service.reschedule_meeting(
-            event.event_id, new_start_time,
+            event.event_id,
+            new_start_time,
         )
 
         assert result is True
@@ -474,7 +483,8 @@ class TestCalendarIntegrationService:
     async def test_reschedule_meeting_not_found(self, calendar_service):
         """Test meeting rescheduling with non-existent event."""
         result = await calendar_service.reschedule_meeting(
-            "nonexistent_event_id", datetime.now() + timedelta(hours=1),
+            "nonexistent_event_id",
+            datetime.now() + timedelta(hours=1),
         )
         assert result is False
 
@@ -516,7 +526,8 @@ class TestCalendarIntegrationService:
         """
 
         attendees = calendar_service._extract_attendees(
-            text_with_emails, "sender@example.com",
+            text_with_emails,
+            "sender@example.com",
         )
         assert isinstance(attendees, list)
         assert "sender@example.com" in attendees  # Sender should be included
@@ -573,7 +584,10 @@ class TestCalendarIntegrationService:
         """Test working hours validation."""
         # Test within working hours (2 PM on Tuesday)
         working_time = datetime.now().replace(
-            hour=14, minute=0, second=0, microsecond=0,
+            hour=14,
+            minute=0,
+            second=0,
+            microsecond=0,
         )
         # Set to Tuesday (weekday 1)
         working_time = working_time.replace(
@@ -611,7 +625,8 @@ class TestCalendarIntegrationService:
 
         # Create new service instance to test loading
         new_service = CalendarIntegrationService(
-            config=calendar_service.config, data_dir=calendar_service.data_dir,
+            config=calendar_service.config,
+            data_dir=calendar_service.data_dir,
         )
 
         # Verify event was loaded
@@ -640,7 +655,8 @@ class TestCalendarIntegrationService:
 
         # Create new service instance to test loading
         new_service = CalendarIntegrationService(
-            config=calendar_service.config, data_dir=calendar_service.data_dir,
+            config=calendar_service.config,
+            data_dir=calendar_service.data_dir,
         )
 
         # Verify request was loaded
@@ -655,7 +671,9 @@ class TestCalendarIntegrationService:
         """Test error handling in various methods."""
         # Test with invalid data
         with patch.object(
-            calendar_service, "_save_events", side_effect=Exception("Save error"),
+            calendar_service,
+            "_save_events",
+            side_effect=Exception("Save error"),
         ):
             # Should not raise exception
             calendar_service._save_events()
@@ -669,7 +687,9 @@ class TestCalendarIntegrationService:
             calendar_service._save_meeting_requests()
 
         with patch.object(
-            calendar_service, "_load_events", side_effect=Exception("Load error"),
+            calendar_service,
+            "_load_events",
+            side_effect=Exception("Load error"),
         ):
             # Should handle gracefully
             calendar_service._load_events()

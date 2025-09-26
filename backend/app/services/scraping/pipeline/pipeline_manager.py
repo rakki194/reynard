@@ -61,7 +61,9 @@ class ProcessingPipelineManager:
             return False
 
     async def create_pipeline(
-        self, name: str, config: PipelineConfig,
+        self,
+        name: str,
+        config: PipelineConfig,
     ) -> ProcessingPipeline:
         """Create a new processing pipeline.
 
@@ -199,7 +201,8 @@ class ProcessingPipelineManager:
             )
 
             basic_pipeline = await self.create_pipeline(
-                "Basic Content Processing", basic_config,
+                "Basic Content Processing",
+                basic_config,
             )
 
             # Add default stages

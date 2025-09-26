@@ -1,5 +1,4 @@
-"""Wrapper to test the main script functions directly.
-"""
+"""Wrapper to test the main script functions directly."""
 
 import os
 import sys
@@ -13,7 +12,8 @@ import importlib.util
 
 # Load the main script as a module
 spec = importlib.util.spec_from_file_location(
-    "humility_detector", "humility-detector.py",
+    "humility_detector",
+    "humility-detector.py",
 )
 humility_detector = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(humility_detector)
@@ -81,7 +81,9 @@ def test_main_function():
                 import tempfile
 
                 with tempfile.NamedTemporaryFile(
-                    mode="w", suffix=".txt", delete=False,
+                    mode="w",
+                    suffix=".txt",
+                    delete=False,
                 ) as f:
                     f.write("This is a test file.")
                     temp_file = f.name

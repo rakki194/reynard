@@ -253,7 +253,8 @@ class HealthCheckAutomation:
         # Wait for tasks to complete
         if self.automation_tasks:
             await asyncio.gather(
-                *self.automation_tasks.values(), return_exceptions=True,
+                *self.automation_tasks.values(),
+                return_exceptions=True,
             )
 
         self.automation_tasks.clear()
@@ -319,7 +320,10 @@ class HealthCheckAutomation:
 
                 if self._evaluate_alert_condition(alert, health_result):
                     await self._trigger_alert(
-                        alert_id, alert, service_name, health_result,
+                        alert_id,
+                        alert,
+                        service_name,
+                        health_result,
                     )
 
     def _evaluate_alert_condition(self, alert: HealthAlert, health_result: Any) -> bool:
@@ -345,7 +349,11 @@ class HealthCheckAutomation:
             return False
 
     async def _trigger_alert(
-        self, alert_id: str, alert: HealthAlert, service_name: str, health_result: Any,
+        self,
+        alert_id: str,
+        alert: HealthAlert,
+        service_name: str,
+        health_result: Any,
     ) -> None:
         """Trigger an alert and execute associated action."""
         current_time = time.time()
@@ -404,7 +412,9 @@ class HealthCheckAutomation:
                 await self._execute_rule(rule_id, rule, all_health)
 
     def _evaluate_rule_conditions(
-        self, rule: AutomationRule, all_health: dict[str, Any],
+        self,
+        rule: AutomationRule,
+        all_health: dict[str, Any],
     ) -> bool:
         """Evaluate if all rule conditions are met."""
         try:
@@ -449,7 +459,10 @@ class HealthCheckAutomation:
             return False
 
     async def _execute_rule(
-        self, rule_id: str, rule: AutomationRule, all_health: dict[str, Any],
+        self,
+        rule_id: str,
+        rule: AutomationRule,
+        all_health: dict[str, Any],
     ) -> None:
         """Execute a rule and its associated actions."""
         current_time = time.time()
@@ -481,7 +494,10 @@ class HealthCheckAutomation:
             await self._execute_action(action, "*", None)  # Global action
 
     async def _execute_action(
-        self, action: AutomationAction, service_name: str, health_result: Any,
+        self,
+        action: AutomationAction,
+        service_name: str,
+        health_result: Any,
     ) -> None:
         """Execute an automation action."""
         try:
@@ -494,7 +510,9 @@ class HealthCheckAutomation:
             logger.error(f"Error executing action {action.value}: {e}")
 
     async def _handle_restart_service(
-        self, service_name: str, health_result: Any,
+        self,
+        service_name: str,
+        health_result: Any,
     ) -> None:
         """Handle service restart action."""
         if service_name == "*":
@@ -528,13 +546,17 @@ class HealthCheckAutomation:
         logger.info(f"📧 Notifying admin about service: {service_name}")
 
     async def _handle_switch_to_backup(
-        self, service_name: str, health_result: Any,
+        self,
+        service_name: str,
+        health_result: Any,
     ) -> None:
         """Handle switch to backup action."""
         logger.info(f"🔄 Switching to backup for service: {service_name}")
 
     async def _handle_isolate_service(
-        self, service_name: str, health_result: Any,
+        self,
+        service_name: str,
+        health_result: Any,
     ) -> None:
         """Handle service isolation action."""
         logger.info(f"🔒 Isolating service: {service_name}")

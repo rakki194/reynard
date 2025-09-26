@@ -66,28 +66,48 @@ logger = get_service_logger("ai")
 class AIConfigModel(BaseModel):
     """Configuration model for AI service."""
 
-    default_model: str = Field(default="llama3.1:latest", description="Default model to use")
-    default_provider: str = Field(default="ollama", description="Default provider to use")
+    default_model: str = Field(
+        default="llama3.1:latest", description="Default model to use"
+    )
+    default_provider: str = Field(
+        default="ollama", description="Default provider to use"
+    )
     max_tokens: int = Field(
-        default=2048, ge=1, le=8192, description="Maximum tokens per request",
+        default=2048,
+        ge=1,
+        le=8192,
+        description="Maximum tokens per request",
     )
     temperature: float = Field(
-        default=0.7, ge=0.0, le=2.0, description="Response creativity level",
+        default=0.7,
+        ge=0.0,
+        le=2.0,
+        description="Response creativity level",
     )
     timeout: int = Field(
-        default=30, ge=5, le=300, description="Request timeout in seconds",
+        default=30,
+        ge=5,
+        le=300,
+        description="Request timeout in seconds",
     )
     enable_streaming: bool = Field(
-        default=True, description="Enable streaming responses",
+        default=True,
+        description="Enable streaming responses",
     )
     enable_tools: bool = Field(default=True, description="Enable tool calling")
     max_concurrent_requests: int = Field(
-        default=10, ge=1, le=100, description="Max concurrent requests",
+        default=10,
+        ge=1,
+        le=100,
+        description="Max concurrent requests",
     )
 
 
 class AIServiceRouter(
-    BaseServiceRouter, ConfigEndpointMixin, StreamingResponseMixin, RateLimitingMixin,
+    BaseServiceRouter,
+    ConfigEndpointMixin,
+    StreamingResponseMixin,
+    RateLimitingMixin,
 ):
     """AI service router with enterprise-grade patterns.
 
@@ -103,7 +123,10 @@ class AIServiceRouter(
     def __init__(self):
         # Initialize all parent classes
         BaseServiceRouter.__init__(
-            self, service_name="ai", prefix="/api/ai", tags=["ai"],
+            self,
+            service_name="ai",
+            prefix="/api/ai",
+            tags=["ai"],
         )
         ConfigEndpointMixin.__init__(self)
         StreamingResponseMixin.__init__(self)
@@ -148,7 +171,7 @@ class AIServiceRouter(
     def get_service(self) -> AIService:
         """Get the AI service instance."""
         from ...core.service_registry import ServiceRegistry
-        
+
         service_registry = ServiceRegistry()
         return service_registry.get_service_instance("ai_service")
 
@@ -167,7 +190,10 @@ class AIServiceRouter(
 
             # Check if service is available and responsive
             available_providers = service.get_available_providers()
-            models_count = sum(len(provider.get_available_models()) for provider in available_providers.values())
+            models_count = sum(
+                len(provider.get_available_models())
+                for provider in available_providers.values()
+            )
 
             return {
                 "service_name": self.service_name,
@@ -200,7 +226,9 @@ class AIServiceRouter(
             self.check_rate_limit("/chat")
 
             return await self._standard_async_operation(
-                "chat", self._handle_chat_request, request,
+                "chat",
+                self._handle_chat_request,
+                request,
             )
 
         @self.router.post("/chat/stream")
@@ -210,7 +238,9 @@ class AIServiceRouter(
             self.check_rate_limit("/chat/stream")
 
             return await self._standard_async_operation(
-                "chat_stream", self._handle_chat_stream_request, request,
+                "chat_stream",
+                self._handle_chat_stream_request,
+                request,
             )
 
         @self.router.post("/assistant", response_model=AIAssistantResponse)
@@ -220,7 +250,9 @@ class AIServiceRouter(
             self.check_rate_limit("/assistant")
 
             return await self._standard_async_operation(
-                "assistant_chat", self._handle_assistant_request, request,
+                "assistant_chat",
+                self._handle_assistant_request,
+                request,
             )
 
         @self.router.post("/assistant/stream")
@@ -230,7 +262,9 @@ class AIServiceRouter(
             self.check_rate_limit("/assistant/stream")
 
             return await self._standard_async_operation(
-                "assistant_chat_stream", self._handle_assistant_stream_request, request,
+                "assistant_chat_stream",
+                self._handle_assistant_stream_request,
+                request,
             )
 
         @self.router.get("/models")
@@ -240,18 +274,23 @@ class AIServiceRouter(
             self.check_rate_limit("/models")
 
             return await self._standard_async_operation(
-                "get_models", self._handle_get_models_request,
+                "get_models",
+                self._handle_get_models_request,
             )
 
     async def _handle_chat_request(
-        self, request: AIChatRequest,
+        self,
+        request: AIChatRequest,
     ) -> AIChatResponse:
         """Handle chat request with standardized error handling."""
         service = self.get_service()
 
         # Create chat messages
         messages = [
-            ChatMessage(role="system", content=request.system_prompt or "You are a helpful AI assistant."),
+            ChatMessage(
+                role="system",
+                content=request.system_prompt or "You are a helpful AI assistant.",
+            ),
             ChatMessage(role="user", content=request.message),
         ]
 
@@ -262,6 +301,7 @@ class AIServiceRouter(
                 provider = ProviderType(request.provider)
             except ValueError:
                 from ...core.exceptions import ValidationError
+
                 raise ValidationError(f"Invalid provider: {request.provider}")
 
         # Generate chat completion
@@ -277,7 +317,11 @@ class AIServiceRouter(
             success=True,
             response=chat_result.message.content,
             model=chat_result.model_used,
-            provider=chat_result.provider_used.value if chat_result.provider_used else "unknown",
+            provider=(
+                chat_result.provider_used.value
+                if chat_result.provider_used
+                else "unknown"
+            ),
             processing_time=chat_result.processing_time_ms / 1000.0,
             tokens_generated=chat_result.tokens_generated,
             tools_used=[],  # TODO: Implement tool calling
@@ -290,7 +334,10 @@ class AIServiceRouter(
 
         # Create chat messages
         messages = [
-            ChatMessage(role="system", content=request.system_prompt or "You are a helpful AI assistant."),
+            ChatMessage(
+                role="system",
+                content=request.system_prompt or "You are a helpful AI assistant.",
+            ),
             ChatMessage(role="user", content=request.message),
         ]
 
@@ -301,6 +348,7 @@ class AIServiceRouter(
                 provider = ProviderType(request.provider)
             except ValueError:
                 from ...core.exceptions import ValidationError
+
                 raise ValidationError(f"Invalid provider: {request.provider}")
 
         async def event_generator():
@@ -317,7 +365,7 @@ class AIServiceRouter(
                     "timestamp": time.time(),
                     "metadata": {},
                 }
-            
+
             # Signal completion
             yield {
                 "type": "complete",
@@ -329,7 +377,8 @@ class AIServiceRouter(
         return self.create_sse_response(event_generator())
 
     async def _handle_assistant_request(
-        self, request: AIAssistantRequest,
+        self,
+        request: AIAssistantRequest,
     ) -> AIAssistantResponse:
         """Handle assistant request with standardized error handling."""
         service = self.get_service()
@@ -350,6 +399,7 @@ class AIServiceRouter(
                 provider = ProviderType(request.provider)
             except ValueError:
                 from ...core.exceptions import ValidationError
+
                 raise ValidationError(f"Invalid provider: {request.provider}")
 
         # Generate chat completion
@@ -366,7 +416,11 @@ class AIServiceRouter(
             response=chat_result.message.content,
             assistant_type=request.assistant_type,
             model=chat_result.model_used,
-            provider=chat_result.provider_used.value if chat_result.provider_used else "unknown",
+            provider=(
+                chat_result.provider_used.value
+                if chat_result.provider_used
+                else "unknown"
+            ),
             processing_time=chat_result.processing_time_ms / 1000.0,
             tokens_generated=chat_result.tokens_generated,
             tools_used=[],  # TODO: Implement tool calling
@@ -393,6 +447,7 @@ class AIServiceRouter(
                 provider = ProviderType(request.provider)
             except ValueError:
                 from ...core.exceptions import ValidationError
+
                 raise ValidationError(f"Invalid provider: {request.provider}")
 
         async def event_generator():
@@ -409,7 +464,7 @@ class AIServiceRouter(
                     "timestamp": time.time(),
                     "metadata": {},
                 }
-            
+
             # Signal completion
             yield {
                 "type": "complete",
@@ -424,7 +479,7 @@ class AIServiceRouter(
         """Handle get models request."""
         service = self.get_service()
         available_providers = service.get_available_providers()
-        
+
         models_info = {}
         for provider_name, provider in available_providers.items():
             try:
@@ -432,16 +487,16 @@ class AIServiceRouter(
                 models_info[provider_name] = {
                     "models": models,
                     "count": len(models),
-                    "status": "available"
+                    "status": "available",
                 }
             except Exception as e:
                 models_info[provider_name] = {
                     "models": [],
                     "count": 0,
                     "status": "error",
-                    "error": str(e)
+                    "error": str(e),
                 }
-        
+
         return {"providers": models_info}
 
     def _build_assistant_system_prompt(self, assistant_type: str) -> str:
@@ -454,7 +509,6 @@ class AIServiceRouter(
 - Professional yet approachable communication style
 
 You help users with complex problems by providing thoughtful, well-reasoned responses that demonstrate strategic thinking and practical wisdom.""",
-
             "codewolf": """You are CodeWolf, a technical AI assistant specializing in software development. You are known for your:
 - Deep technical expertise in programming and software architecture
 - Pack-oriented approach to problem-solving
@@ -462,7 +516,6 @@ You help users with complex problems by providing thoughtful, well-reasoned resp
 - Collaborative and protective nature
 
 You help developers with coding challenges, architecture decisions, and technical problem-solving with a focus on security and best practices.""",
-
             "general": """You are a helpful AI assistant. You provide:
 - Clear and accurate information
 - Helpful guidance and support
@@ -470,7 +523,6 @@ You help developers with coding challenges, architecture decisions, and technica
 - Thoughtful responses to user questions
 
 You aim to be useful, harmless, and honest in all your interactions.""",
-
             "creative": """You are a creative AI assistant. You excel at:
 - Creative writing and storytelling
 - Artistic and imaginative thinking
@@ -478,16 +530,15 @@ You aim to be useful, harmless, and honest in all your interactions.""",
 - Inspiring and motivating others
 
 You help users explore their creativity and develop innovative ideas.""",
-
             "analytical": """You are an analytical AI assistant. You specialize in:
 - Data analysis and interpretation
 - Logical reasoning and problem-solving
 - Research and fact-checking
 - Critical thinking and evaluation
 
-You help users understand complex information and make data-driven decisions."""
+You help users understand complex information and make data-driven decisions.""",
         }
-        
+
         return prompts.get(assistant_type, prompts["general"])
 
 

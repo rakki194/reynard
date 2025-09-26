@@ -1,5 +1,4 @@
-"""Type stub for python_validation module.
-"""
+"""Type stub for python_validation module."""
 
 # Color constants
 CYAN: str

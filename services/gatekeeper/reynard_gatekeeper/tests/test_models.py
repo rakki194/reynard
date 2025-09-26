@@ -327,7 +327,10 @@ class TestTokenModels:
         """Test TokenData metadata handling."""
         # Test with empty metadata
         token_data = TokenData(
-            sub="user123", role="regular", type="access", metadata={},
+            sub="user123",
+            role="regular",
+            type="access",
+            metadata={},
         )
         assert token_data.metadata == {}
 
@@ -349,6 +352,9 @@ class TestTokenModels:
             },
         }
         token_data = TokenData(
-            sub="user123", role="regular", type="access", metadata=complex_metadata,
+            sub="user123",
+            role="regular",
+            type="access",
+            metadata=complex_metadata,
         )
         assert token_data.metadata == complex_metadata

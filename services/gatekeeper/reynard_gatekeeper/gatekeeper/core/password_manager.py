@@ -198,7 +198,9 @@ class PasswordManager:
         return False
 
     def verify_and_update_password(
-        self, password: str, hashed_password: str,
+        self,
+        password: str,
+        hashed_password: str,
     ) -> tuple[bool, str | None]:
         """Verify a password and return updated hash if needed.
 
@@ -347,7 +349,9 @@ class PasswordManager:
         return secrets.token_bytes(length)
 
     def benchmark_hash_time(
-        self, password: str, iterations: int = 10,
+        self,
+        password: str,
+        iterations: int = 10,
     ) -> dict[str, float]:
         """Benchmark hash performance for different security levels.
 

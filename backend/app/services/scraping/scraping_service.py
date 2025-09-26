@@ -417,7 +417,8 @@ class ScrapingService:
             for result_data in results:
                 # Assess quality
                 quality = await self.quality_scorer.assess_quality(
-                    result_data.get("content", ""), result_data.get("metadata", {}),
+                    result_data.get("content", ""),
+                    result_data.get("metadata", {}),
                 )
 
                 # Create result
@@ -492,7 +493,9 @@ class ScrapingService:
 
             # Emit event
             await self._emit_event(
-                ScrapingEventType.JOB_FAILED, job.id, {"error": str(e)},
+                ScrapingEventType.JOB_FAILED,
+                job.id,
+                {"error": str(e)},
             )
 
             logger.error(f"Failed scraping job {job.id}: {e}")
@@ -525,12 +528,16 @@ class ScrapingService:
         return ScrapingType.GENERAL
 
     async def _get_scraper_config(
-        self, scraping_type: ScrapingType, config_override: dict[str, Any] | None = None,
+        self,
+        scraping_type: ScrapingType,
+        config_override: dict[str, Any] | None = None,
     ) -> ScrapingConfig | None:
         """Get scraper configuration for a type."""
         # TODO: Load from configuration store
         default_config = ScrapingConfig(
-            name=f"{scraping_type.value}_scraper", type=scraping_type, enabled=True,
+            name=f"{scraping_type.value}_scraper",
+            type=scraping_type,
+            enabled=True,
         )
 
         if config_override:
@@ -566,7 +573,10 @@ class ScrapingService:
             logger.error(f"Error setting up health monitoring: {e}")
 
     async def _emit_event(
-        self, event_type: ScrapingEventType, job_id: UUID, data: dict[str, Any],
+        self,
+        event_type: ScrapingEventType,
+        job_id: UUID,
+        data: dict[str, Any],
     ) -> None:
         """Emit a scraping event."""
         try:
@@ -615,7 +625,9 @@ class ScrapingService:
     # Gallery Integration Methods
 
     async def start_gallery_download(
-        self, url: str, config: dict[str, Any] | None = None,
+        self,
+        url: str,
+        config: dict[str, Any] | None = None,
     ):
         """Start a gallery download job"""
         if not self.gallery_integration:

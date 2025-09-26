@@ -13,11 +13,16 @@ from datetime import datetime, timedelta
 from typing import Any
 
 # Conditional numpy import
-from app.core.service_conditional_loading import is_numpy_enabled, can_load_service, load_service
+from app.core.service_conditional_loading import (
+    can_load_service,
+    is_numpy_enabled,
+    load_service,
+)
 
 if is_numpy_enabled() and can_load_service("numpy"):
     try:
         import numpy as np
+
         load_service("numpy")
     except ImportError:
         np = None
@@ -205,7 +210,10 @@ class EmbeddingVisualizationService:
 
             # Perform the actual reduction
             result = await self._perform_reduction_with_progress(
-                method, embeddings, parameters, job_id,
+                method,
+                embeddings,
+                parameters,
+                job_id,
             )
 
             # Update job with result
@@ -274,7 +282,10 @@ class EmbeddingVisualizationService:
         # Perform actual reduction
         reducer = self.reducers[method]
         return await self._perform_reduction_with_params(
-            reducer, embeddings, method, parameters,
+            reducer,
+            embeddings,
+            method,
+            parameters,
         )
 
     async def get_embedding_stats(self) -> EmbeddingStats:
@@ -442,7 +453,11 @@ class EmbeddingVisualizationService:
         try:
             # Generate cache key
             cache_key = self._generate_cache_key(
-                method, filters, parameters, max_samples, random_seed,
+                method,
+                filters,
+                parameters,
+                max_samples,
+                random_seed,
             )
 
             # Check cache first
@@ -468,7 +483,8 @@ class EmbeddingVisualizationService:
 
             # Get embeddings from vector database
             embeddings, original_indices = await self._get_embeddings(
-                filters, max_samples,
+                filters,
+                max_samples,
             )
 
             if len(embeddings) == 0:
@@ -484,7 +500,10 @@ class EmbeddingVisualizationService:
             # Perform reduction
             reducer = self.reducers[method]
             transformed_data = await self._perform_reduction_with_params(
-                reducer, embeddings_array, method, parameters,
+                reducer,
+                embeddings_array,
+                method,
+                parameters,
             )
 
             # Calculate processing time
@@ -543,7 +562,8 @@ class EmbeddingVisualizationService:
             )
 
     async def analyze_embedding_quality(
-        self, embeddings: list[list[float]],
+        self,
+        embeddings: list[list[float]],
     ) -> EmbeddingQualityMetrics:
         """Analyze the quality of embeddings using various metrics.
 
@@ -646,10 +666,12 @@ class EmbeddingVisualizationService:
             "cache_misses": self.cache_stats["misses"],
             "cache_evictions": self.cache_stats["evictions"],
             "oldest_entry": min(
-                (entry["timestamp"] for entry in self.cache.values()), default=None,
+                (entry["timestamp"] for entry in self.cache.values()),
+                default=None,
             ),
             "newest_entry": max(
-                (entry["timestamp"] for entry in self.cache.values()), default=None,
+                (entry["timestamp"] for entry in self.cache.values()),
+                default=None,
             ),
             "active_jobs": len(self.active_jobs),
             "worker_tasks": len(self.worker_tasks),
@@ -753,7 +775,9 @@ class EmbeddingVisualizationService:
         return f"reduction_{hash(json.dumps(key_data, sort_keys=True))}"
 
     def _is_cache_valid(
-        self, cached_entry: dict[str, Any], custom_ttl: int | None = None,
+        self,
+        cached_entry: dict[str, Any],
+        custom_ttl: int | None = None,
     ) -> bool:
         """Check if a cached entry is still valid."""
         ttl = custom_ttl or cached_entry.get("ttl", self.cache_ttl)
@@ -768,16 +792,20 @@ class EmbeddingVisualizationService:
         """Get embeddings from the vector database using pgvector."""
         try:
             # Get database connection from the vector store service
-            if not hasattr(self, '_vector_store_service') or not self._vector_store_service:
+            if (
+                not hasattr(self, '_vector_store_service')
+                or not self._vector_store_service
+            ):
                 # Try to get the vector store service from the RAG service
                 from app.services.rag.rag_service import RAGService
+
                 rag_service = RAGService()
                 await rag_service.initialize()
                 self._vector_store_service = rag_service.vector_store_service
-            
+
             if not self._vector_store_service or not self._vector_store_service._engine:
                 raise RuntimeError("Vector store service not available")
-            
+
             # Build the query with filters
             base_query = """
                 SELECT 
@@ -794,59 +822,60 @@ class EmbeddingVisualizationService:
                 JOIN files f ON e.file_id = f.id
                 JOIN datasets d ON f.dataset_id = d.id
             """
-            
+
             where_conditions = []
             params = {}
-            
+
             # Apply filters
             if filters:
                 if 'dataset_id' in filters:
                     where_conditions.append("d.id = :dataset_id")
                     params['dataset_id'] = filters['dataset_id']
-                
+
                 if 'modality' in filters:
                     where_conditions.append("e.modality = :modality")
                     params['modality'] = filters['modality']
-                
+
                 if 'model_id' in filters:
                     where_conditions.append("e.model_id = :model_id")
                     params['model_id'] = filters['model_id']
-                
+
                 if 'file_type' in filters:
                     where_conditions.append("f.file_type = :file_type")
                     params['file_type'] = filters['file_type']
-                
+
                 if 'min_quality' in filters:
                     where_conditions.append("e.quality_score >= :min_quality")
                     params['min_quality'] = filters['min_quality']
-                
+
                 if 'created_after' in filters:
                     where_conditions.append("e.created_at >= :created_after")
                     params['created_after'] = filters['created_after']
-                
+
                 if 'created_before' in filters:
                     where_conditions.append("e.created_at <= :created_before")
                     params['created_before'] = filters['created_before']
-            
+
             # Add WHERE clause if we have conditions
             if where_conditions:
                 base_query += " WHERE " + " AND ".join(where_conditions)
-            
+
             # Add ordering and limit
             base_query += " ORDER BY e.created_at DESC"
-            
+
             if max_samples:
                 base_query += " LIMIT :max_samples"
                 params['max_samples'] = max_samples
-            
+
             # Execute the query
             with self._vector_store_service._engine.connect() as conn:
                 from sqlalchemy import text
+
                 result = conn.execute(text(base_query), params)
-                
+
                 embeddings = []
                 original_indices = []
-                
+
                 for idx, row in enumerate(result):
                     # Convert vector to list of floats
                     embedding_vector = row[1]  # This is the VECTOR column
@@ -855,13 +884,15 @@ class EmbeddingVisualizationService:
                     else:
                         # Handle different vector representations
                         embedding_list = list(embedding_vector)
-                    
+
                     embeddings.append(embedding_list)
                     original_indices.append(idx)
-                
-                logger.info(f"Retrieved {len(embeddings)} embeddings from vector database")
+
+                logger.info(
+                    f"Retrieved {len(embeddings)} embeddings from vector database"
+                )
                 return embeddings, original_indices
-                
+
         except Exception as e:
             logger.error(f"Failed to get embeddings from vector database: {e}")
             raise RuntimeError(f"Vector database query failed: {e}")

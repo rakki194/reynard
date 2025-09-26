@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [0.23.0] - 2025-09-26
+
+### ⚠️ CRITICAL WARNING: RAG SYSTEM BROKEN ⚠️
+
+**🚨 IMPORTANT NOTICE**: The RAG (Retrieval-Augmented Generation) system is currently broken in this release. Users should avoid using RAG-related features until a hotfix is released.
+
+### Fixed
+
+- **Modal Component Architecture**: Fixed Modal component to use Button primitive instead of raw button element for close button, ensuring consistency with design system primitives (Patient-Atlas-Alpha)
+
 ## [0.22.0] - 2025-09-26
 
 ### Added
@@ -60,12 +70,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Enhanced error handling and logging systems
 - Package dependency updates and version synchronization
 
-### Changed
-
-### Fixed
-
-### Removed
-
 ## [0.19.0] - 2025-09-25
 
 ### Added
@@ -83,11 +87,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Database Security Hardening**: Implemented secure database user with strong password and proper access controls (Odonata-Oracle-6)
-- **Database User Isolation**: Created dedicated `reynard` database user with limited privileges for application access (Odonata-Oracle-6)        # Add items to queue
-        async with self.processing_lock:
-            for item in batch.items:
-                self.download_queue.append(item)
-                item.status = DownloadStatus.QUEUED
+- **Database User Isolation**: Created dedicated `reynard` database user with limited privileges for application access (Odonata-Oracle-6) # Add items to queue
+  async with self.processing_lock:
+  for item in batch.items:
+  self.download_queue.append(item)
+  item.status = DownloadStatus.QUEUED
 
         # Sort queue by priority
         self.download_queue.sort(key=lambda x: x.priority.value, reverse=True)
@@ -116,16 +120,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Attack Vector Testing**: SQL injection, XSS, path traversal, command injection, and other security attack patterns (Odonata-Oracle-6)
 - **Performance and Load Testing**: High load authentication, sustained load testing, and concurrent request handling validation (Odonata-Oracle-6)
 - **Quick Test Script**: Fast connectivity and basic authentication verification script (Odonata-Oracle-6)
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [0.18.0] - 2025-09-24
 
@@ -355,28 +349,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Prebuild Hook**: Automatic vitest config regeneration before every build via `prebuild` script
   - **VS Code Tasks**: Added 🦊 Generate Vitest Config, 🦊 Regenerate Vitest Config, and 🦊 Backup Vitest Config tasks
 - **Architecture-Driven Configuration**: Replaced 480-line manual vitest.global.config.ts with 3,469-line generated
-configuration
+  configuration
   - **Automatic Project Discovery**: Generates test configurations for all 102 testable projects automatically
   - **Backup System**: Automatic backup of existing configurations before regeneration
   - **Validation**: Built-in configuration validation and error handling
 - **Package Structure Reorganization**: Completely restructured packages folder from flat to semantically categorized
   layout (Vulpine)
 - **AI & Machine Learning** (`packages/ai/`): Consolidated all AI/ML packages including annotating, caption, comfy,
-model-management, multimodal, nlweb, rag, tool-calling
+  model-management, multimodal, nlweb, rag, tool-calling
   - **Algorithms** (`packages/algorithms/`): Moved algorithm implementations to dedicated category
 - **Core Framework** (`packages/core/`): Organized core packages including composables, config, connection, core,
-features, i18n, settings, testing, validation
-- **Data Processing** (`packages/data/`): Grouped data-related packages including file-processing, repository-*,
-scraping, unified-repository
+  features, i18n, settings, testing, validation
+- **Data Processing** (`packages/data/`): Grouped data-related packages including file-processing, repository-\*,
+  scraping, unified-repository
 - **Development Tools** (`packages/dev-tools/`): Consolidated dev tools including adr-system, code-quality,
-dev-server-management, git-automation, humility-parser, project-architecture, queue-watcher
-  - **Documentation** (`packages/docs/`): Organized documentation packages including diagram-generator, docs-*
+  dev-server-management, git-automation, humility-parser, project-architecture, queue-watcher
+  - **Documentation** (`packages/docs/`): Organized documentation packages including diagram-generator, docs-\*
 - **Media Processing** (`packages/media/`): Grouped media packages including 3d, audio, boundingbox, gallery, image,
-segmentation, video
+  segmentation, video
 - **Services** (`packages/services/`): Consolidated service packages including api-client, auth, chat, email,
-service-manager
-- **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-*,
-dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
+  service-manager
+- **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-\*,
+  dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
 
 ### Changed
 
@@ -426,12 +420,12 @@ dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes
   - **AI & Machine Learning** (`packages/ai/`): Consolidated all AI/ML packages including annotating, caption, comfy, model-management, multimodal, nlweb, rag, tool-calling
   - **Algorithms** (`packages/algorithms/`): Moved algorithm implementations to dedicated category
   - **Core Framework** (`packages/core/`): Organized core packages including composables, config, connection, core, features, i18n, settings, testing, validation
-  - **Data Processing** (`packages/data/`): Grouped data-related packages including file-processing, repository-*, scraping, unified-repository
+  - **Data Processing** (`packages/data/`): Grouped data-related packages including file-processing, repository-\*, scraping, unified-repository
   - **Development Tools** (`packages/dev-tools/`): Consolidated dev tools including adr-system, code-quality, dev-server-management, git-automation, humility-parser, project-architecture, queue-watcher
-  - **Documentation** (`packages/docs/`): Organized documentation packages including diagram-generator, docs-*
+  - **Documentation** (`packages/docs/`): Organized documentation packages including diagram-generator, docs-\*
   - **Media Processing** (`packages/media/`): Grouped media packages including 3d, audio, boundingbox, gallery, image, segmentation, video
   - **Services** (`packages/services/`): Consolidated service packages including api-client, auth, chat, email, service-manager
-  - **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-*, dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
+  - **UI & Components** (`packages/ui/`): Organized UI packages including animation, charts, colors, components-\*, dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes, ui
 - **Enhanced Git Workflow with Selective Staging**: Comprehensive Git workflow automation with pre-staging junk file detection, selective staging to prevent build artifact commits, post-staging validation for repository integrity, crisis management and hotfix protocols, and repository integrity management framework (Display-Sage-93)
 - **Humility Analysis System Enhancement**: New humility parser package with comprehensive analysis tools, enhanced documentation and testing infrastructure, and improved MCP server tool configurations (Display-Sage-93)
 - **Email and IMAP Services**: Comprehensive API endpoints for email functionality with agent email management, bulk email operations, and email template system (Display-Sage-93)
@@ -485,7 +479,7 @@ dashboard, error-boundaries, floating-panel, fluent-icons, games, monaco, themes
   environment activation (Agile-Strategist-5)
 - **Destiny Name Generator**: New Destiny-style name generator inspired by the Destiny and Destiny 2 universe, featuring
   epic cosmic names with guardian classes, weapons, locations, and mystical concepts (Brave-Keeper-8)
-- **Pylint Configuration Fix**: Resolved "Unrecognized option found: *.pyi" error by fixing invalid Pylint configuration
+- **Pylint Configuration Fix**: Resolved "Unrecognized option found: \*.pyi" error by fixing invalid Pylint configuration
   syntax in pyproject.toml (Snuggles-Grandmaster-35)
 - **Agent Naming System Refactoring**: Complete modular refactoring of the agent naming library with shared components,
   unique generators for each naming style, and clean architecture following the 140-line axiom (Stone-Analyst-40)

@@ -424,7 +424,8 @@ class SecurityMiddleware(BaseHTTPMiddleware):
         for pattern in self.command_patterns[:10]:  # Only check most dangerous patterns
             if re.search(pattern, content, re.IGNORECASE):
                 logger.warning(
-                    "Command injection attempt in AI content: %s...", content[:100],
+                    "Command injection attempt in AI content: %s...",
+                    content[:100],
                 )
                 return False
 
@@ -519,7 +520,9 @@ class SecurityMiddleware(BaseHTTPMiddleware):
 
         # Record security violation in rate limiter
         self.rate_limiter.record_security_violation(
-            request, threat_level, event_type.value,
+            request,
+            threat_level,
+            event_type.value,
         )
 
         # Use centralized security error handler

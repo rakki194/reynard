@@ -14,8 +14,7 @@ from .test_base import FenrirTestBase, SecurityTestResult
 
 
 class TestFinalCoveragePush(FenrirTestBase):
-    """*otter curiosity* Final test suite to push coverage to 95%
-    """
+    """*otter curiosity* Final test suite to push coverage to 95%"""
 
     async def test_zero_coverage_modules(self):
         """Test modules with 0% coverage"""

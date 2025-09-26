@@ -17,8 +17,7 @@ class MermaidService:
     """
 
     def __init__(self):
-        """Initialize the Mermaid service.
-        """
+        """Initialize the Mermaid service."""
         try:
             self.renderer = MermaidRenderer()
             self.available = True

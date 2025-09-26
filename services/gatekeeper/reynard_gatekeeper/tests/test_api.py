@@ -62,7 +62,9 @@ class TestDependencies:
 
         # Create user and get token
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
         await auth_manager.create_user(user_data)
         tokens = await auth_manager.authenticate("testuser", "TestPassword123!")
@@ -186,7 +188,9 @@ class TestDependencies:
 
         # Create user and get token
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
         await auth_manager.create_user(user_data)
         tokens = await auth_manager.authenticate("testuser", "TestPassword123!")
@@ -208,7 +212,9 @@ class TestDependencies:
 
         # Create user and get token
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
         await auth_manager.create_user(user_data)
         tokens = await auth_manager.authenticate("testuser", "TestPassword123!")
@@ -297,7 +303,9 @@ class TestAPIIntegration:
 
         # Create user and get token
         user_data = UserCreate(
-            username="testuser", password="TestPassword123!", email="test@example.com",
+            username="testuser",
+            password="TestPassword123!",
+            email="test@example.com",
         )
         await auth_manager.create_user(user_data)
         tokens = await auth_manager.authenticate("testuser", "TestPassword123!")

@@ -2,8 +2,8 @@
  * Validation for i18n Package Testing Setup
  */
 
-import { existsSync } from "fs";
-import { join } from "path";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 /**
  * Validate that all packages have proper i18n setup

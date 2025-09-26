@@ -257,7 +257,8 @@ class ContinuousIndexingService:
             try:
                 # Wait for files to index
                 file_path = await asyncio.wait_for(
-                    self.indexing_queue.get(), timeout=1.0,
+                    self.indexing_queue.get(),
+                    timeout=1.0,
                 )
 
                 # Wait a bit to batch multiple changes
@@ -292,7 +293,8 @@ class ContinuousIndexingService:
             try:
                 # Wait for files to remove
                 file_path = await asyncio.wait_for(
-                    self.removal_queue.get(), timeout=1.0,
+                    self.removal_queue.get(),
+                    timeout=1.0,
                 )
 
                 # Remove from index

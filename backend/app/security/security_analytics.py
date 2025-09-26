@@ -79,8 +79,7 @@ class SecurityEvent:
 
 
 class SecurityAnalytics:
-    """Security analytics engine for collecting, analyzing, and reporting security events.
-    """
+    """Security analytics engine for collecting, analyzing, and reporting security events."""
 
     def __init__(self, max_events: int = 10000, retention_hours: int = 24):
         self.max_events = max_events
@@ -287,7 +286,9 @@ class SecurityAnalytics:
 
         if format == "json":
             return json.dumps(
-                [e.to_dict() for e in recent_events], default=str, indent=2,
+                [e.to_dict() for e in recent_events],
+                default=str,
+                indent=2,
             )
         if format == "csv":
             return self._export_to_csv(recent_events)
@@ -340,7 +341,9 @@ class SecurityAnalytics:
             logger.info(f"Low threat security event: {log_data}")
 
     def _calculate_trends(
-        self, events: list[SecurityEvent], hours: int,
+        self,
+        events: list[SecurityEvent],
+        hours: int,
     ) -> dict[str, Any]:
         """Calculate trends in security events."""
         if len(events) < 2:
@@ -358,10 +361,12 @@ class SecurityAnalytics:
             return {"trend": "insufficient_data"}
 
         recent_avg = sum(hourly_counts[h] for h in hours_list[-3:]) / min(
-            3, len(hours_list),
+            3,
+            len(hours_list),
         )
         earlier_avg = sum(hourly_counts[h] for h in hours_list[:-3]) / max(
-            1, len(hours_list) - 3,
+            1,
+            len(hours_list) - 3,
         )
 
         if recent_avg > earlier_avg * 1.5:
@@ -383,7 +388,8 @@ class SecurityAnalytics:
         }
 
     def _calculate_threat_indicators(
-        self, events: list[SecurityEvent],
+        self,
+        events: list[SecurityEvent],
     ) -> dict[str, Any]:
         """Calculate threat indicators from events."""
         indicators = {
@@ -401,7 +407,9 @@ class SecurityAnalytics:
         indicators["high_risk_ips"] = [
             {"ip": ip, "count": count}
             for ip, count in sorted(
-                ip_counts.items(), key=lambda x: x[1], reverse=True,
+                ip_counts.items(),
+                key=lambda x: x[1],
+                reverse=True,
             )[:5]
             if count > 5
         ]
@@ -412,7 +420,8 @@ class SecurityAnalytics:
                 e.timestamp for e in events
             )
             indicators["attack_frequency"] = len(events) / max(
-                1, time_span / 3600,
+                1,
+                time_span / 3600,
             )  # events per hour
 
         # Calculate diversity of attacks
@@ -477,7 +486,8 @@ class SecurityAnalytics:
         return "low"
 
     def _identify_attack_vectors(
-        self, events: list[SecurityEvent],
+        self,
+        events: list[SecurityEvent],
     ) -> list[dict[str, Any]]:
         """Identify attack vectors from events."""
         vectors = []
@@ -532,7 +542,9 @@ class SecurityAnalytics:
         return anomalies
 
     def _generate_recommendations(
-        self, events: list[SecurityEvent], risk_score: float,
+        self,
+        events: list[SecurityEvent],
+        risk_score: float,
     ) -> list[str]:
         """Generate security recommendations based on events."""
         recommendations = []
@@ -633,7 +645,9 @@ class SecurityAnalytics:
         return sorted(timeline, key=lambda x: x["timestamp"])
 
     def _get_ip_recommendations(
-        self, events: list[SecurityEvent], threat_score: float,
+        self,
+        events: list[SecurityEvent],
+        threat_score: float,
     ) -> list[str]:
         """Get recommendations for a specific IP."""
         recommendations = []

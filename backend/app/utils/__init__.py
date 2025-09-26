@@ -1,5 +1,4 @@
-"""Backend utilities for Reynard
-"""
+"""Backend utilities for Reynard"""
 
 from .executor import (
     ThreadPoolExecutorManager,

@@ -143,7 +143,9 @@ class SemanticSearchService:
             return False
 
     async def research_related_concepts(
-        self, query: str, key_concepts: list[str],
+        self,
+        query: str,
+        key_concepts: list[str],
     ) -> dict[str, Any]:
         """Research related concepts using semantic search.
 
@@ -208,17 +210,24 @@ class SemanticSearchService:
             # Search using ChromaDB if available
             if self.chroma_collection:
                 results = await self._search_chromadb(
-                    query_embedding, limit, similarity_threshold, metadata_filter,
+                    query_embedding,
+                    limit,
+                    similarity_threshold,
+                    metadata_filter,
                 )
             # Fallback to FAISS
             elif self.faiss_index is not None:
                 results = await self._search_faiss(
-                    query_embedding, limit, similarity_threshold,
+                    query_embedding,
+                    limit,
+                    similarity_threshold,
                 )
             # Fallback to simple similarity
             else:
                 results = await self._search_fallback(
-                    query, limit, similarity_threshold,
+                    query,
+                    limit,
+                    similarity_threshold,
                 )
 
             logger.info(f"Found {len(results)} semantic search results")
@@ -229,7 +238,9 @@ class SemanticSearchService:
             return []
 
     async def add_documents(
-        self, documents: list[dict[str, Any]], batch_size: int = 100,
+        self,
+        documents: list[dict[str, Any]],
+        batch_size: int = 100,
     ) -> bool:
         """Add documents to the semantic search index.
 
@@ -257,7 +268,9 @@ class SemanticSearchService:
             return False
 
     def _generate_semantic_queries(
-        self, query: str, key_concepts: list[str],
+        self,
+        query: str,
+        key_concepts: list[str],
     ) -> list[str]:
         """Generate semantic search queries."""
         queries = [query]  # Original query
@@ -327,7 +340,8 @@ class SemanticSearchService:
                     zip(
                         results["documents"][0],
                         results["metadatas"][0],
-                        results["distances"][0], strict=False,
+                        results["distances"][0],
+                        strict=False,
                     ),
                 ):
                     # Convert distance to similarity score
@@ -351,7 +365,10 @@ class SemanticSearchService:
             return []
 
     async def _search_faiss(
-        self, query_embedding: np.ndarray, limit: int, similarity_threshold: float,
+        self,
+        query_embedding: np.ndarray,
+        limit: int,
+        similarity_threshold: float,
     ) -> list[SearchResult]:
         """Search using FAISS."""
         try:
@@ -387,7 +404,10 @@ class SemanticSearchService:
             return []
 
     async def _search_fallback(
-        self, query: str, limit: int, similarity_threshold: float,
+        self,
+        query: str,
+        limit: int,
+        similarity_threshold: float,
     ) -> list[SearchResult]:
         """Fallback search using simple text similarity."""
         try:
@@ -491,7 +511,9 @@ class SemanticSearchService:
         return unique_results
 
     def _rank_results(
-        self, results: list[SearchResult], query: str,
+        self,
+        results: list[SearchResult],
+        query: str,
     ) -> list[SearchResult]:
         """Rank results by relevance to the query."""
         # Sort by score (already done in search methods)
@@ -553,7 +575,8 @@ class SemanticSearchService:
         return list(concepts)[:15]  # Limit to 15 concepts
 
     def _analyze_concept_relationships(
-        self, results: list[SearchResult],
+        self,
+        results: list[SearchResult],
     ) -> dict[str, list[str]]:
         """Analyze relationships between concepts."""
         relationships = {}
@@ -621,7 +644,9 @@ class SemanticSearchService:
             return False
 
     async def research_related_concepts(
-        self, query: str, key_concepts: list[str] = None,
+        self,
+        query: str,
+        key_concepts: list[str] = None,
     ) -> dict[str, Any]:
         """Research related concepts using semantic search.
 

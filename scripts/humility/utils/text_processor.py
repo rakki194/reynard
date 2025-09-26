@@ -1,5 +1,4 @@
-"""Text processing utilities for the Enhanced Humility Detector.
-"""
+"""Text processing utilities for the Enhanced Humility Detector."""
 
 import re
 import string
@@ -190,7 +189,10 @@ class TextProcessor:
         return [word for word in words if word not in self.stop_words]
 
     def extract_phrases(
-        self, text: str, min_length: int = 2, max_length: int = 5,
+        self,
+        text: str,
+        min_length: int = 2,
+        max_length: int = 5,
     ) -> list[str]:
         """Extract n-grams from text."""
         words = self.extract_words(text)

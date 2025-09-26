@@ -128,7 +128,8 @@ class MetricsCalculator:
             target_val = target_performance[metric]
             recon_val = reconstructed_performance[metric]
             error = abs(target_val - recon_val) / max(
-                target_val, 0.001,
+                target_val,
+                0.001,
             )  # Avoid division by zero
             total_error += error
 
@@ -139,7 +140,8 @@ class MetricsCalculator:
 
     @staticmethod
     def calculate_behavioral_similarity(
-        target_responses: list[str], reconstructed_responses: list[str],
+        target_responses: list[str],
+        reconstructed_responses: list[str],
     ) -> float:
         """Calculate behavioral similarity score."""
         if len(target_responses) != len(reconstructed_responses):
@@ -147,10 +149,14 @@ class MetricsCalculator:
 
         # Simple similarity based on response length and content overlap
         similarities = []
-        for target_resp, recon_resp in zip(target_responses, reconstructed_responses, strict=False):
+        for target_resp, recon_resp in zip(
+            target_responses, reconstructed_responses, strict=False
+        ):
             # Length similarity
             len_sim = 1 - abs(len(target_resp) - len(recon_resp)) / max(
-                len(target_resp), len(recon_resp), 1,
+                len(target_resp),
+                len(recon_resp),
+                1,
             )
 
             # Content similarity (simple word overlap)
@@ -171,7 +177,8 @@ class MetricsCalculator:
 
     @staticmethod
     def calculate_knowledge_fidelity(
-        target_knowledge: dict[str, Any], reconstructed_knowledge: dict[str, Any],
+        target_knowledge: dict[str, Any],
+        reconstructed_knowledge: dict[str, Any],
     ) -> float:
         """Calculate knowledge fidelity score."""
         fidelity_scores = []

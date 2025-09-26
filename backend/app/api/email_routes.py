@@ -28,33 +28,59 @@ from ..services.email.core.multi_account_service import multi_account_service
 from ..services.email.integration.calendar_integration_service import (
     calendar_integration_service,
 )
-from ..services.email.integration.email_encryption_service import (
-    email_encryption_service,
-)
 from ..services.email.integration.database_email_encryption_service import (
     database_email_encryption_service,
 )
+from ..services.email.integration.email_encryption_service import (
+    email_encryption_service,
+)
+from ..services.email.rbac_email_service import RBACEmailService
+from ..services.email.team_email_service import TeamEmailService
 
 router = APIRouter(prefix="/api/email", tags=["email"])
 
 
+# RBAC service dependencies
+def get_rbac_email_service() -> RBACEmailService:
+    """Get RBAC email service."""
+    return RBACEmailService(multi_account_service)
+
+
+def get_team_email_service() -> TeamEmailService:
+    """Get team email service."""
+    rbac_service = get_rbac_email_service()
+    return TeamEmailService(multi_account_service, rbac_service)
+
+
 @router.post("/send", response_model=EmailSendResponse)
 async def send_email(
-    request: EmailSendRequest, current_user: dict = Depends(get_current_active_user),
+    request: EmailSendRequest,
+    current_user: dict = Depends(get_current_active_user),
+    rbac_service: RBACEmailService = Depends(get_rbac_email_service),
 ) -> EmailSendResponse:
-    """Send an email.
+    """Send an email with RBAC permission checking.
 
     Args:
         request: Email send request
         current_user: Current authenticated user
+        rbac_service: RBAC email service for permission checking
 
     Returns:
         EmailSendResponse: Send result
 
     """
     try:
-        # Log the email send attempt by the authenticated user
-        # user_id = current_user.get("id", "unknown")  # Available for future logging
+        # Check RBAC permission to send emails
+        user_id = current_user.get("id", "unknown")
+        can_send = await rbac_service.can_user_access_email_account(
+            user_id, "default", "send"
+        )
+
+        if not can_send:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied: insufficient permissions to send emails",
+            )
 
         # Convert attachments
         attachments = []
@@ -120,7 +146,10 @@ async def send_simple_email(
 
         email_service = get_email_service()
         result = await email_service.send_simple_email(
-            to_email=to_email, subject=subject, body=body, html_body=html_body,
+            to_email=to_email,
+            subject=subject,
+            body=body,
+            html_body=html_body,
         )
 
         return EmailSendResponse(
@@ -140,7 +169,8 @@ async def send_simple_email(
 
 @router.post("/send-bulk", response_model=EmailBulkResponse)
 async def send_bulk_email(
-    request: EmailBulkRequest, current_user: dict = Depends(get_current_active_user),
+    request: EmailBulkRequest,
+    current_user: dict = Depends(get_current_active_user),
 ) -> EmailBulkResponse:
     """Send bulk emails.
 
@@ -261,7 +291,8 @@ async def get_email_status(
             import smtplib
 
             server = smtplib.SMTP(
-                email_service.config.smtp_server, email_service.config.smtp_port,
+                email_service.config.smtp_server,
+                email_service.config.smtp_port,
             )
             if email_service.config.use_tls:
                 server.starttls()
@@ -317,7 +348,9 @@ Reynard System
 
         email_service = get_email_service()
         result = await email_service.send_simple_email(
-            to_email=current_user["email"], subject=test_subject, body=test_body,
+            to_email=current_user["email"],
+            subject=test_subject,
+            body=test_body,
         )
 
         return {
@@ -346,7 +379,8 @@ Reynard System
 @router.get("/analytics/metrics")
 async def get_email_analytics_metrics(
     period_start: datetime | None = Query(
-        None, description="Start of analysis period",
+        None,
+        description="Start of analysis period",
     ),
     period_end: datetime | None = Query(None, description="End of analysis period"),
     agent_id: str | None = Query(None, description="Specific agent to analyze"),
@@ -384,14 +418,16 @@ async def get_email_analytics_metrics(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get email metrics: {e!s}",
+            status_code=500,
+            detail=f"Failed to get email metrics: {e!s}",
         )
 
 
 @router.get("/analytics/insights")
 async def get_email_analytics_insights(
     period_start: datetime | None = Query(
-        None, description="Start of analysis period",
+        None,
+        description="Start of analysis period",
     ),
     period_end: datetime | None = Query(None, description="End of analysis period"),
     agent_id: str | None = Query(None, description="Specific agent to analyze"),
@@ -400,7 +436,9 @@ async def get_email_analytics_insights(
     """Generate insights from email data."""
     try:
         insights = await email_analytics_service.generate_insights(
-            period_start=period_start, period_end=period_end, agent_id=agent_id,
+            period_start=period_start,
+            period_end=period_end,
+            agent_id=agent_id,
         )
 
         return [
@@ -420,7 +458,8 @@ async def get_email_analytics_insights(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate insights: {e!s}",
+            status_code=500,
+            detail=f"Failed to generate insights: {e!s}",
         )
 
 
@@ -438,18 +477,23 @@ async def get_analytics_dashboard(
         import asyncio
 
         metrics_task = email_analytics_service.get_email_metrics(
-            period_start=start_date, period_end=end_date,
+            period_start=start_date,
+            period_end=end_date,
         )
         insights_task = email_analytics_service.generate_insights(
-            period_start=start_date, period_end=end_date,
+            period_start=start_date,
+            period_end=end_date,
         )
         volume_trends_task = email_analytics_service.get_email_trends(
-            metric="volume", period_days=period_days,
+            metric="volume",
+            period_days=period_days,
         )
 
         # Wait for all tasks to complete
         metrics, insights, volume_trends = await asyncio.gather(
-            metrics_task, insights_task, volume_trends_task,
+            metrics_task,
+            insights_task,
+            volume_trends_task,
         )
 
         # Convert metrics to dictionary
@@ -503,7 +547,8 @@ async def get_analytics_dashboard(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get analytics dashboard: {e!s}",
+            status_code=500,
+            detail=f"Failed to get analytics dashboard: {e!s}",
         )
 
 
@@ -519,7 +564,10 @@ async def generate_encryption_key(
     """Generate a new PGP encryption key."""
     try:
         key = await email_encryption_service.generate_pgp_key(
-            name=name, email=email, passphrase=passphrase, key_length=key_length,
+            name=name,
+            email=email,
+            passphrase=passphrase,
+            key_length=key_length,
         )
 
         return {
@@ -533,7 +581,8 @@ async def generate_encryption_key(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate encryption key: {e!s}",
+            status_code=500,
+            detail=f"Failed to generate encryption key: {e!s}",
         )
 
 
@@ -565,14 +614,16 @@ async def encrypt_email_content(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to encrypt email: {e!s}",
+            status_code=500,
+            detail=f"Failed to encrypt email: {e!s}",
         )
 
 
 @router.get("/encryption/keys")
 async def list_encryption_keys(
     key_type: str | None = Query(
-        None, description="Filter by key type ('pgp' or 'smime')",
+        None,
+        description="Filter by key type ('pgp' or 'smime')",
     ),
     current_user: dict = Depends(get_current_active_user),
 ) -> list[dict[str, Any]]:
@@ -597,7 +648,8 @@ async def list_encryption_keys(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to list encryption keys: {e!s}",
+            status_code=500,
+            detail=f"Failed to list encryption keys: {e!s}",
         )
 
 
@@ -641,7 +693,8 @@ async def extract_meeting_requests(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to extract meeting requests: {e!s}",
+            status_code=500,
+            detail=f"Failed to extract meeting requests: {e!s}",
         )
 
 
@@ -691,7 +744,8 @@ async def schedule_meeting_from_request(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to schedule meeting: {e!s}",
+            status_code=500,
+            detail=f"Failed to schedule meeting: {e!s}",
         )
 
 
@@ -704,7 +758,8 @@ async def get_upcoming_meetings(
     """Get upcoming meetings for a user."""
     try:
         meetings = await calendar_integration_service.get_upcoming_meetings(
-            user_email=user_email, days_ahead=days_ahead,
+            user_email=user_email,
+            days_ahead=days_ahead,
         )
 
         return [
@@ -725,14 +780,16 @@ async def get_upcoming_meetings(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get upcoming meetings: {e!s}",
+            status_code=500,
+            detail=f"Failed to get upcoming meetings: {e!s}",
         )
 
 
 # AI-Powered Response Routes
 @router.post("/ai/analyze-context")
 async def analyze_email_context(
-    email_data: dict[str, Any], current_user: dict = Depends(get_current_active_user),
+    email_data: dict[str, Any],
+    current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:
     """Analyze email to extract context for AI response generation."""
     try:
@@ -756,7 +813,8 @@ async def analyze_email_context(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to analyze email context: {e!s}",
+            status_code=500,
+            detail=f"Failed to analyze email context: {e!s}",
         )
 
 
@@ -799,7 +857,8 @@ async def generate_ai_response(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate AI response: {e!s}",
+            status_code=500,
+            detail=f"Failed to generate AI response: {e!s}",
         )
 
 
@@ -812,7 +871,8 @@ async def get_ai_response_history(
     """Get AI response history for an email address."""
     try:
         responses = await get_ai_email_response_service().get_response_history(
-            email_address=email_address, limit=limit,
+            email_address=email_address,
+            limit=limit,
         )
 
         return [
@@ -832,7 +892,8 @@ async def get_ai_response_history(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get response history: {e!s}",
+            status_code=500,
+            detail=f"Failed to get response history: {e!s}",
         )
 
 
@@ -849,13 +910,28 @@ async def create_email_account(
     ai_config: dict[str, Any] | None = None,
     is_primary: bool = False,
     current_user: dict = Depends(get_current_active_user),
+    rbac_service: RBACEmailService = Depends(get_rbac_email_service),
 ) -> dict[str, Any]:
-    """Create a new email account."""
+    """Create a new email account with RBAC permission checking."""
     try:
-        account = await multi_account_service.create_account(
+        # Check RBAC permission to create email accounts
+        user_id = current_user.get("id", "unknown")
+        can_create = await rbac_service.can_user_access_email_account(
+            user_id, "email_account", "create"
+        )
+
+        if not can_create:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied: insufficient permissions to create email accounts",
+            )
+
+        # Create account with RBAC
+        account = await rbac_service.create_email_account_with_rbac(
             account_type=account_type,
             email_address=email_address,
             display_name=display_name,
+            owner_id=user_id,
             smtp_config=smtp_config,
             imap_config=imap_config,
             encryption_config=encryption_config,
@@ -876,7 +952,8 @@ async def create_email_account(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to create account: {e!s}",
+            status_code=500,
+            detail=f"Failed to create account: {e!s}",
         )
 
 
@@ -889,7 +966,8 @@ async def list_email_accounts(
     """List all email accounts."""
     try:
         accounts = await multi_account_service.list_accounts(
-            account_type=account_type, active_only=active_only,
+            account_type=account_type,
+            active_only=active_only,
         )
 
         return [
@@ -908,13 +986,15 @@ async def list_email_accounts(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to list accounts: {e!s}",
+            status_code=500,
+            detail=f"Failed to list accounts: {e!s}",
         )
 
 
 @router.get("/accounts/{account_id}")
 async def get_account_details(
-    account_id: str, current_user: dict = Depends(get_current_active_user),
+    account_id: str,
+    current_user: dict = Depends(get_current_active_user),
 ) -> dict[str, Any]:
     """Get detailed account information."""
     try:
@@ -923,7 +1003,8 @@ async def get_account_details(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get account details: {e!s}",
+            status_code=500,
+            detail=f"Failed to get account details: {e!s}",
         )
 
 
@@ -938,7 +1019,8 @@ async def get_system_overview(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get system overview: {e!s}",
+            status_code=500,
+            detail=f"Failed to get system overview: {e!s}",
         )
 
 
@@ -971,7 +1053,8 @@ async def encrypt_email_content_database(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to encrypt email content: {e!s}",
+            status_code=500,
+            detail=f"Failed to encrypt email content: {e!s}",
         )
 
 
@@ -983,10 +1066,12 @@ async def decrypt_email_content_database(
 ) -> dict[str, Any]:
     """Decrypt email content using user's private key."""
     try:
-        decrypted_content = await database_email_encryption_service.decrypt_email_content(
-            encrypted_content=encrypted_content,
-            user_id=current_user["username"],
-            passphrase=passphrase,
+        decrypted_content = (
+            await database_email_encryption_service.decrypt_email_content(
+                encrypted_content=encrypted_content,
+                user_id=current_user["username"],
+                passphrase=passphrase,
+            )
         )
 
         return {
@@ -996,7 +1081,8 @@ async def decrypt_email_content_database(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to decrypt email content: {e!s}",
+            status_code=500,
+            detail=f"Failed to decrypt email content: {e!s}",
         )
 
 
@@ -1012,7 +1098,8 @@ async def get_user_public_key_database(
 
         if not public_key:
             raise HTTPException(
-                status_code=404, detail="No public key found for user",
+                status_code=404,
+                detail="No public key found for user",
             )
 
         return {
@@ -1024,7 +1111,8 @@ async def get_user_public_key_database(
         raise
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to get public key: {e!s}",
+            status_code=500,
+            detail=f"Failed to get public key: {e!s}",
         )
 
 
@@ -1036,9 +1124,11 @@ async def verify_email_signature_database(
 ) -> dict[str, Any]:
     """Verify email signature using database-stored keys."""
     try:
-        success, message = await database_email_encryption_service.verify_email_signature(
-            signed_content=signed_content,
-            sender_email=sender_email,
+        success, message = (
+            await database_email_encryption_service.verify_email_signature(
+                signed_content=signed_content,
+                sender_email=sender_email,
+            )
         )
 
         return {
@@ -1050,7 +1140,8 @@ async def verify_email_signature_database(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to verify signature: {e!s}",
+            status_code=500,
+            detail=f"Failed to verify signature: {e!s}",
         )
 
 
@@ -1088,7 +1179,8 @@ async def generate_pgp_key_database(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to generate PGP key: {e!s}",
+            status_code=500,
+            detail=f"Failed to generate PGP key: {e!s}",
         )
 
 
@@ -1126,5 +1218,188 @@ async def regenerate_pgp_key_database(
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"Failed to regenerate PGP key: {e!s}",
+            status_code=500,
+            detail=f"Failed to regenerate PGP key: {e!s}",
+        )
+
+
+# Team Email Management Routes with RBAC
+@router.post("/teams/{team_id}/accounts/create")
+async def create_team_email_account(
+    team_id: str,
+    email_address: str,
+    display_name: str,
+    smtp_config: dict[str, Any],
+    imap_config: dict[str, Any],
+    team_permissions: dict[str, Any] | None = None,
+    encryption_config: dict[str, Any] | None = None,
+    calendar_config: dict[str, Any] | None = None,
+    ai_config: dict[str, Any] | None = None,
+    current_user: dict = Depends(get_current_active_user),
+    team_service: TeamEmailService = Depends(get_team_email_service),
+) -> dict[str, Any]:
+    """Create a new team email account with RBAC permissions."""
+    try:
+        creator_id = current_user.get("id", "unknown")
+
+        account = await team_service.create_team_email_account(
+            team_id=team_id,
+            email_address=email_address,
+            display_name=display_name,
+            creator_id=creator_id,
+            smtp_config=smtp_config,
+            imap_config=imap_config,
+            team_permissions=team_permissions,
+            encryption_config=encryption_config,
+            calendar_config=calendar_config,
+            ai_config=ai_config,
+        )
+
+        return {
+            "account_id": account.account_id,
+            "team_id": team_id,
+            "email_address": account.email_address,
+            "display_name": account.display_name,
+            "is_active": account.is_active,
+            "created_at": account.created_at.isoformat(),
+        }
+
+    except PermissionError as e:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to create team email account: {e!s}",
+        )
+
+
+@router.post("/teams/{team_id}/accounts/{account_id}/share")
+async def share_team_email_account(
+    team_id: str,
+    account_id: str,
+    user_id: str,
+    permission_level: str,
+    current_user: dict = Depends(get_current_active_user),
+    team_service: TeamEmailService = Depends(get_team_email_service),
+) -> dict[str, Any]:
+    """Share a team email account with a user."""
+    try:
+        added_by = current_user.get("id", "unknown")
+
+        success = await team_service.add_team_member_to_account(
+            account_id=account_id,
+            team_id=team_id,
+            user_id=user_id,
+            permission_level=permission_level,
+            added_by=added_by,
+        )
+
+        if not success:
+            raise HTTPException(
+                status_code=400, detail="Failed to share team email account"
+            )
+
+        return {
+            "message": "Team email account shared successfully",
+            "account_id": account_id,
+            "team_id": team_id,
+            "user_id": user_id,
+            "permission_level": permission_level,
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to share team email account: {e!s}",
+        )
+
+
+@router.get("/teams/{team_id}/accounts")
+async def get_team_email_accounts(
+    team_id: str,
+    current_user: dict = Depends(get_current_active_user),
+    team_service: TeamEmailService = Depends(get_team_email_service),
+) -> list[dict[str, Any]]:
+    """Get all email accounts accessible to a team."""
+    try:
+        user_id = current_user.get("id", "unknown")
+
+        accounts = await team_service.get_team_email_accounts(
+            team_id=team_id,
+            user_id=user_id,
+        )
+
+        return accounts
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get team email accounts: {e!s}",
+        )
+
+
+@router.get("/teams/{team_id}/accounts/{account_id}/collaborators")
+async def get_team_account_collaborators(
+    team_id: str,
+    account_id: str,
+    current_user: dict = Depends(get_current_active_user),
+    team_service: TeamEmailService = Depends(get_team_email_service),
+) -> list[dict[str, Any]]:
+    """Get list of team members with access to an email account."""
+    try:
+        user_id = current_user.get("id", "unknown")
+
+        collaborators = await team_service.get_team_account_collaborators(
+            account_id=account_id,
+            team_id=team_id,
+            user_id=user_id,
+        )
+
+        return collaborators
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to get team account collaborators: {e!s}",
+        )
+
+
+@router.put("/teams/{team_id}/accounts/{account_id}/permissions/{user_id}")
+async def update_team_account_permissions(
+    team_id: str,
+    account_id: str,
+    user_id: str,
+    new_permission_level: str,
+    current_user: dict = Depends(get_current_active_user),
+    team_service: TeamEmailService = Depends(get_team_email_service),
+) -> dict[str, Any]:
+    """Update a team member's permissions for an email account."""
+    try:
+        updated_by = current_user.get("id", "unknown")
+
+        success = await team_service.update_team_account_permissions(
+            account_id=account_id,
+            team_id=team_id,
+            user_id=user_id,
+            new_permission_level=new_permission_level,
+            updated_by=updated_by,
+        )
+
+        if not success:
+            raise HTTPException(
+                status_code=400, detail="Failed to update team account permissions"
+            )
+
+        return {
+            "message": "Team account permissions updated successfully",
+            "account_id": account_id,
+            "team_id": team_id,
+            "user_id": user_id,
+            "new_permission_level": new_permission_level,
+        }
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update team account permissions: {e!s}",
         )

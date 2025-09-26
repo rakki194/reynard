@@ -22,7 +22,7 @@ from typing import Any
 
 from redis.asyncio import ConnectionPool, Redis
 
-from .debug_logging import log_cache_operation, debug_log
+from .debug_logging import debug_log, log_cache_operation
 
 logger = logging.getLogger(__name__)
 
@@ -206,7 +206,10 @@ class CacheManager:
         return self.cache_keys.get(full_key)
 
     def _update_cache_key_metadata(
-        self, full_key: str, namespace: str, ttl: int | None = None,
+        self,
+        full_key: str,
+        namespace: str,
+        ttl: int | None = None,
     ):
         """Update cache key metadata."""
         if full_key in self.cache_keys:
@@ -222,7 +225,10 @@ class CacheManager:
 
     @debug_log("cache_get", logger)
     async def get(
-        self, key: str, namespace: str = "default", default: Any = None,
+        self,
+        key: str,
+        namespace: str = "default",
+        default: Any = None,
     ) -> Any:
         """Get a value from cache."""
         if not self.redis:
@@ -240,16 +246,16 @@ class CacheManager:
                 # Cache miss
                 self.metrics.misses += 1
                 self.metrics.total_requests += 1
-                
+
                 # Log cache operation
                 log_cache_operation(
                     operation="get",
                     key=full_key,
                     hit=False,
                     duration_ms=duration_ms,
-                    namespace=namespace
+                    namespace=namespace,
                 )
-                
+
                 return default
 
             # Cache hit
@@ -262,7 +268,7 @@ class CacheManager:
                 key=full_key,
                 hit=True,
                 duration_ms=duration_ms,
-                namespace=namespace
+                namespace=namespace,
             )
 
             # Update metadata
@@ -275,7 +281,8 @@ class CacheManager:
             operation_time = duration_ms
             self.operation_times.append(operation_time)
             self.metrics.average_get_time_ms = sum(self.operation_times[-100:]) / min(
-                len(self.operation_times), 100,
+                len(self.operation_times),
+                100,
             )
 
             return deserialized_value
@@ -285,7 +292,7 @@ class CacheManager:
             logger.error(f"Cache get failed for key {full_key}: {e}")
             self.metrics.misses += 1
             self.metrics.total_requests += 1
-            
+
             # Log cache operation
             log_cache_operation(
                 operation="get",
@@ -293,9 +300,9 @@ class CacheManager:
                 hit=False,
                 duration_ms=duration_ms,
                 namespace=namespace,
-                error=str(e)
+                error=str(e),
             )
-            
+
             return default
 
     @debug_log("cache_set", logger)
@@ -317,7 +324,8 @@ class CacheManager:
         try:
             # Serialize value
             serialized_value = CacheSerializer.serialize(
-                value, compress=len(str(value)) > self.compression_threshold,
+                value,
+                compress=len(str(value)) > self.compression_threshold,
             )
 
             # Determine TTL
@@ -337,7 +345,8 @@ class CacheManager:
             operation_time = (time.time() - start_time) * 1000
             self.operation_times.append(operation_time)
             self.metrics.average_set_time_ms = sum(self.operation_times[-100:]) / min(
-                len(self.operation_times), 100,
+                len(self.operation_times),
+                100,
             )
 
             return True
@@ -439,7 +448,9 @@ class CacheManager:
             raise
 
     async def batch_get(
-        self, keys: list[str], namespace: str = "default",
+        self,
+        keys: list[str],
+        namespace: str = "default",
     ) -> dict[str, Any]:
         """Get multiple values from cache in batch."""
         if not self.redis or not keys:
@@ -485,7 +496,8 @@ class CacheManager:
             for key, value in items.items():
                 full_key = self._generate_key(namespace, key)
                 serialized_value = CacheSerializer.serialize(
-                    value, compress=len(str(value)) > self.compression_threshold,
+                    value,
+                    compress=len(str(value)) > self.compression_threshold,
                 )
 
                 if ttl:
@@ -651,7 +663,9 @@ async def main():
 
         # Example usage
         await cache_manager.set(
-            "user:123", {"name": "John", "email": "john@example.com"}, ttl=3600,
+            "user:123",
+            {"name": "John", "email": "john@example.com"},
+            ttl=3600,
         )
         user = await cache_manager.get("user:123")
         print(f"Retrieved user: {user}")
