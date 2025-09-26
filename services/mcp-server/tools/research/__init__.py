@@ -40,15 +40,16 @@ from typing import Any
 
 from protocol.tool_registry import register_tool
 
-# Import tool definitions
-from .definitions import get_research_tool_definitions
+from . import pdf_processing_tools
 
 # Import tool modules to register them
 from .academic import arxiv_tools
+
+# Import tool definitions
+from .definitions import get_research_tool_definitions
 from .paper_management import *
 from .rag_integration import *
 from .research_workflow import *
-from . import pdf_processing_tools
 
 # Initialize research tools
 __all__ = ["get_research_tool_definitions"]

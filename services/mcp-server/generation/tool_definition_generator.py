@@ -12,6 +12,7 @@ Follows the 140-line axiom and modular architecture principles.
 from typing import Any, Dict
 
 from protocol.tool_registry import ToolMetadata, ToolRegistry
+
 from validation.schema_validator import MCPSchemaValidator
 
 

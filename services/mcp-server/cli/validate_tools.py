@@ -13,6 +13,7 @@ import sys
 
 from protocol.tool_discovery import ToolDiscovery
 from protocol.tool_registry import get_tool_registry
+
 from validation.schema_validator import MCPSchemaValidator
 
 

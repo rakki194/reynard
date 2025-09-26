@@ -88,7 +88,6 @@ class ToolRegistry:
             f"✅ ToolConfigService initialized in {time.time() - service_start:.3f}s"
         )
 
-
         total_time = time.time() - start_time
         logger.debug(f"✅ ToolRegistry.__init__ completed in {total_time:.3f}s")
 
@@ -206,7 +205,9 @@ class ToolRegistry:
         if not await self._tool_config_service.get_tool_config(tool_name):
             return metadata.enabled
 
-        return metadata.enabled and await self._tool_config_service.is_tool_enabled(tool_name)
+        return metadata.enabled and await self._tool_config_service.is_tool_enabled(
+            tool_name
+        )
 
     def get_handler(self, tool_name: str) -> ToolMetadata:
         """Get handler for a tool."""

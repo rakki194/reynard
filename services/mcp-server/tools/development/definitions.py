@@ -127,16 +127,16 @@ def get_development_tool_definitions() -> dict[str, dict[str, Any]]:
     """Get all development tool definitions."""
     # Combine all development tool definitions
     definitions = {}
-    
+
     # Add linting tools
     definitions.update(get_linting_tool_definitions())
-    
+
     # Add version and VS Code tools
     definitions.update(get_version_vscode_tool_definitions())
     definitions.update(get_vscode_tasks_tool_definitions())
-    
+
     # Add git automation tools
     for tool_def in GIT_AUTOMATION_TOOL_DEFINITIONS:
         definitions[tool_def.name] = tool_def.to_dict()
-    
+
     return definitions

@@ -43,11 +43,11 @@ from typing import Any
 from protocol.tool_registry import register_tool
 from services.backend_agent_manager import BackendAgentManager
 
-from .base import BaseAgentTools
 from ..behavior.behavior import BehaviorAgentTools
 from ..behavior.breeding import BreedingAgentTools
-from ..ecs.ecs import ECSAgentTools
 from ..behavior.persona import PersonaAgentTools
+from ..ecs.ecs import ECSAgentTools
+from .base import BaseAgentTools
 
 # Initialize agent manager and tools
 agent_manager = BackendAgentManager()
@@ -287,12 +287,13 @@ async def agent_startup_sequence(**kwargs) -> dict[str, Any]:
         ```
     """
     import logging
+
     logger = logging.getLogger(__name__)
     logger.debug(f"agent_startup_sequence called with kwargs: {kwargs}")
-    
+
     arguments = kwargs.get("arguments", {})
     logger.debug(f"Extracted arguments: {arguments}")
-    
+
     return await ecs_tools.agent_startup_sequence(arguments)
 
 

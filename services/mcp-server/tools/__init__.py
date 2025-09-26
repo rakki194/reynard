@@ -4,11 +4,7 @@ import sys
 from pathlib import Path
 
 # Import tools from ultimate organized subdirectories to register them
-from . import agent
-from . import development
-from . import visualization
-from . import system
-from . import research
+from . import agent, development, research, system, visualization
 
 # Legacy agent-naming system removed - now using FastAPI ECS backend
 

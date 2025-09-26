@@ -2,8 +2,9 @@
 Test RAG integration functionality.
 """
 
+from unittest.mock import Mock, patch
+
 import pytest
-from unittest.mock import patch, Mock
 
 
 class TestRAGIntegration:
@@ -16,15 +17,14 @@ class TestRAGIntegration:
         mock_rag_service.ingest_paper.return_value = {
             "success": True,
             "ingested_documents": 1,
-            "total_chunks": 5
+            "total_chunks": 5,
         }
-        
+
         # Test
         result = await mock_rag_service.ingest_paper(
-            paper_path="/test/path/paper.pdf",
-            metadata={"title": "Test Paper"}
+            paper_path="/test/path/paper.pdf", metadata={"title": "Test Paper"}
         )
-        
+
         # Assertions
         assert result["success"] is True
         assert result["ingested_documents"] == 1
@@ -40,18 +40,16 @@ class TestRAGIntegration:
                 {
                     "text": "Test paper content",
                     "similarity": 0.95,
-                    "metadata": {"title": "Test Paper"}
+                    "metadata": {"title": "Test Paper"},
                 }
-            ]
+            ],
         }
-        
+
         # Test
         result = await mock_rag_service.search_papers(
-            query="test query",
-            search_type="hybrid",
-            top_k=10
+            query="test query", search_type="hybrid", top_k=10
         )
-        
+
         # Assertions
         assert result["total_results"] == 2
         assert len(result["results"]) == 1
@@ -63,12 +61,12 @@ class TestRAGIntegration:
         mock_rag_service.get_stats.return_value = {
             "total_documents": 150,
             "total_chunks": 1250,
-            "embedding_model": "text-embedding-ada-002"
+            "embedding_model": "text-embedding-ada-002",
         }
-        
+
         # Test
         result = mock_rag_service.get_stats()
-        
+
         # Assertions
         assert result["total_documents"] == 150
         assert result["total_chunks"] == 1250
@@ -77,7 +75,10 @@ class TestRAGIntegration:
     def test_rag_service_initialization(self):
         """Test RAG service initialization."""
         from tools.research.rag_integration import RAGIntegrationService
-        
-        with patch('tools.research.rag_integration.RAGIntegrationService.__init__', return_value=None):
+
+        with patch(
+            'tools.research.rag_integration.RAGIntegrationService.__init__',
+            return_value=None,
+        ):
             service = RAGIntegrationService()
             assert service is not None

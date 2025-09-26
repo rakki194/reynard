@@ -27,9 +27,15 @@ class ToolConfigService:
     def __init__(
         self, config_file_path: str = "tool_config.json", tool_registry: Any = None
     ) -> None:
-        logger.info("ToolConfigService is deprecated; use PostgreSQLToolConfigService instead")
+        logger.info(
+            "ToolConfigService is deprecated; use PostgreSQLToolConfigService instead"
+        )
         self.config_file_path = Path(config_file_path)
-        self.config_data: Dict[str, Any] = {"version": "1.0.0", "last_updated": datetime.now().isoformat(), "tools": {}}
+        self.config_data: Dict[str, Any] = {
+            "version": "1.0.0",
+            "last_updated": datetime.now().isoformat(),
+            "tools": {},
+        }
         self.tool_registry = tool_registry
 
     def _load_config(self) -> None:
@@ -38,7 +44,11 @@ class ToolConfigService:
 
     def _create_default_config(self) -> None:
         """No-op: JSON defaults deprecated."""
-        self.config_data = {"version": "1.0.0", "last_updated": datetime.now().isoformat(), "tools": {}}
+        self.config_data = {
+            "version": "1.0.0",
+            "last_updated": datetime.now().isoformat(),
+            "tools": {},
+        }
 
     def _save_config(self) -> None:
         """No-op: JSON persistence deprecated."""

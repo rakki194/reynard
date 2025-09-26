@@ -9,6 +9,7 @@ Now uses the new @register_tool decorator system for automatic registration.
 Follows the 140-line axiom and modular architecture principles.
 """
 
+from pathlib import Path
 from typing import Any
 
 from protocol.tool_registry import register_tool
@@ -47,6 +48,7 @@ def _format_result(result: dict[str, Any], operation: str) -> dict[str, Any]:
         }
         if result_data:
             import json
+
             output_lines.append(f"\n📋 Data:\n{json.dumps(result_data, indent=2)}")
 
     return {"content": [{"type": "text", "text": "\n".join(output_lines)}]}
@@ -64,18 +66,23 @@ def _format_result(result: dict[str, Any], operation: str) -> dict[str, Any]:
 def discover_vscode_tasks(**kwargs) -> dict[str, Any]:
     """Discover all available VS Code tasks."""
     import logging
+
     logger = logging.getLogger(__name__)
-    
+
     arguments = kwargs.get("arguments", {})
-    workspace_path = arguments.get("workspace_path", "/home/kade/runeset/reynard")
-    logger.debug(f"🔍 discover_vscode_tasks called with workspace_path: {workspace_path}")
-    
+    # Get default workspace path (project root)
+    default_workspace = str(Path(__file__).parent.parent.parent.parent.parent)
+    workspace_path = arguments.get("workspace_path", default_workspace)
+    logger.debug(
+        f"🔍 discover_vscode_tasks called with workspace_path: {workspace_path}"
+    )
+
     result = tasks_service.discover_tasks(workspace_path)
     logger.debug(f"🔍 Service result: {result}")
-    
+
     formatted_result = _format_result(result, "Discover VS Code Tasks")
     logger.debug(f"🔍 Formatted result: {formatted_result}")
-    
+
     return formatted_result
 
 

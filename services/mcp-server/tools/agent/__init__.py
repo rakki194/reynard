@@ -12,11 +12,11 @@ import os
 # Import the main AgentTools class and function from the parent module
 import sys
 
-from .core.base import BaseAgentTools
 from .behavior.behavior import BehaviorAgentTools
 from .behavior.breeding import BreedingAgentTools
-from .ecs.ecs import ECSAgentTools
 from .behavior.persona import PersonaAgentTools
+from .core.base import BaseAgentTools
+from .ecs.ecs import ECSAgentTools
 
 parent_dir = os.path.dirname(os.path.dirname(__file__))
 if parent_dir not in sys.path:

@@ -2,12 +2,13 @@
 Pytest configuration and shared fixtures for research system tests.
 """
 
-import pytest
-import tempfile
 import json
-from pathlib import Path
-from unittest.mock import Mock, AsyncMock, patch
+import tempfile
 from datetime import datetime
+from pathlib import Path
+from unittest.mock import AsyncMock, Mock, patch
+
+import pytest
 
 
 @pytest.fixture
@@ -22,13 +23,13 @@ def mock_papers_dir(temp_dir):
     """Create a mock papers directory structure."""
     papers_dir = temp_dir / "papers"
     papers_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Create subdirectories
     (papers_dir / "arxiv" / "cs.CL").mkdir(parents=True, exist_ok=True)
     (papers_dir / "arxiv" / "cs.AI").mkdir(parents=True, exist_ok=True)
     (papers_dir / "metadata").mkdir(parents=True, exist_ok=True)
     (papers_dir / "cache").mkdir(parents=True, exist_ok=True)
-    
+
     return papers_dir
 
 
@@ -45,7 +46,7 @@ def sample_paper_metadata():
         "source": "arxiv",
         "download_date": "2024-01-15T10:30:00",
         "file_size": 1024000,
-        "pdf_path": "/test/path/2509.01035.pdf"
+        "pdf_path": "/test/path/2509.01035.pdf",
     }
 
 
@@ -58,13 +59,17 @@ def sample_arxiv_search_result():
             {
                 "id": "2509.01035",
                 "title": "We Politely Insist: Your LLM Must Learn the Persian Art of Taarof",
-                "authors": ["Gohari Sadr, Nikta", "Heidariasl, Sahar", "Megerdoomian, Karine"],
+                "authors": [
+                    "Gohari Sadr, Nikta",
+                    "Heidariasl, Sahar",
+                    "Megerdoomian, Karine",
+                ],
                 "summary": "This paper presents a comprehensive study of the Persian art of Taarof...",
                 "published": "2025-09-01T00:00:00Z",
                 "categories": ["cs.CL"],
-                "pdf_url": "https://arxiv.org/pdf/2509.01035.pdf"
+                "pdf_url": "https://arxiv.org/pdf/2509.01035.pdf",
             }
-        ]
+        ],
     }
 
 
@@ -102,14 +107,7 @@ def mock_rag_service():
 @pytest.fixture
 def mock_mcp_tool_response():
     """Mock MCP tool response for testing."""
-    return {
-        "content": [
-            {
-                "type": "text",
-                "text": "Mock MCP tool response"
-            }
-        ]
-    }
+    return {"content": [{"type": "text", "text": "Mock MCP tool response"}]}
 
 
 @pytest.fixture(autouse=True)
@@ -160,11 +158,11 @@ def sample_rag_search_result():
                     "title": "Machine Learning in Computer Vision",
                     "authors": ["Alice Johnson", "Bob Wilson"],
                     "source": "arxiv",
-                    "paper_id": "2301.00001"
-                }
+                    "paper_id": "2301.00001",
+                },
             }
         ],
-        "search_time": 0.123
+        "search_time": 0.123,
     }
 
 
@@ -176,7 +174,7 @@ def sample_rag_stats():
         "total_chunks": 1250,
         "embedding_model": "text-embedding-ada-002",
         "vector_dimensions": 1536,
-        "last_updated": "2024-01-15T10:30:00"
+        "last_updated": "2024-01-15T10:30:00",
     }
 
 

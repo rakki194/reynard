@@ -34,7 +34,7 @@ class MCPAuthConfig:
     def __post_init__(self):
         """Load client secret from environment variables."""
         import os
-        
+
         # Map client IDs to environment variable names
         client_env_mapping = {
             "reynard-mcp-server": "MCP_CLIENT_REYNARD_MCP_SERVER_SECRET",
@@ -42,17 +42,19 @@ class MCPAuthConfig:
             "reynard-semantic-search": "MCP_CLIENT_REYNARD_SEMANTIC_SEARCH_SECRET",
             "reynard-indexing-tool": "MCP_CLIENT_REYNARD_INDEXING_TOOL_SECRET",
         }
-        
+
         # Get the environment variable name for this client
         env_var_name = client_env_mapping.get(self.client_id)
         if env_var_name:
             self.client_secret = os.getenv(env_var_name, "")
-        
+
         # Override with environment variables if available
         self.base_url = os.getenv("BACKEND_BASE_URL", self.base_url)
         self.client_id = os.getenv("MCP_CLIENT_ID", self.client_id)
         self.timeout = float(os.getenv("BACKEND_TIMEOUT", self.timeout))
-        self.token_refresh_threshold = float(os.getenv("MCP_TOKEN_REFRESH_THRESHOLD", self.token_refresh_threshold))
+        self.token_refresh_threshold = float(
+            os.getenv("MCP_TOKEN_REFRESH_THRESHOLD", self.token_refresh_threshold)
+        )
 
 
 class MCPAuthClient:
@@ -119,24 +121,28 @@ class MCPAuthClient:
             # Use bootstrap authentication for initial token generation
             bootstrap_request = {
                 "client_id": self.config.client_id,
-                "client_secret": self.config.client_secret
+                "client_secret": self.config.client_secret,
             }
 
             async with self._session.post(
                 f"{self._base_url}/api/mcp/bootstrap/authenticate",
                 json=bootstrap_request,
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
             ) as response:
                 if response.status == 200:
                     token_response = await response.json()
                     self._token = token_response.get("token")
                     self._token_expires_at = token_response.get("expires_at")
-                    
-                    logger.info(f"✅ MCP authentication successful for {self.config.client_id}")
+
+                    logger.info(
+                        f"✅ MCP authentication successful for {self.config.client_id}"
+                    )
                     return True
                 else:
                     error_text = await response.text()
-                    logger.warning(f"MCP authentication failed: {response.status} - {error_text}")
+                    logger.warning(
+                        f"MCP authentication failed: {response.status} - {error_text}"
+                    )
                     return False
 
         except Exception as e:
@@ -154,17 +160,19 @@ class MCPAuthClient:
         if not self._token or self._is_token_expired():
             logger.info("🔄 MCP token expired or missing, re-authenticating...")
             return await self.authenticate()
-        
+
         return True
 
     def _is_token_expired(self) -> bool:
         """Check if the current token is expired or near expiry."""
         if not self._token_expires_at:
             return True
-        
+
         # Check if token expires within the refresh threshold
         current_time = time.time()
-        return current_time >= (self._token_expires_at - self.config.token_refresh_threshold)
+        return current_time >= (
+            self._token_expires_at - self.config.token_refresh_threshold
+        )
 
     def get_auth_headers(self) -> Dict[str, str]:
         """
@@ -229,8 +237,7 @@ class MCPAuthClient:
             headers = self.get_auth_headers()
 
             async with self._session.get(
-                f"{self._base_url}/api/mcp/clients",
-                headers=headers
+                f"{self._base_url}/api/mcp/clients", headers=headers
             ) as response:
                 if response.status == 200:
                     clients = await response.json()

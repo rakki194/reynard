@@ -19,9 +19,8 @@ import logging
 from typing import Any, Dict, List, Optional
 
 import aiohttp
-from pydantic import BaseModel, Field
-
 from protocol.tool_registry import register_tool
+from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 

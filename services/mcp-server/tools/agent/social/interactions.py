@@ -317,7 +317,7 @@ async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
     try:
         # Extract the actual arguments from the wrapped structure
         actual_args = arguments.get("arguments", arguments)
-        
+
         query = actual_args.get("query")
         exact_match = actual_args.get("exact_match", False)
 
@@ -343,7 +343,9 @@ async def find_ecs_agent(arguments: dict[str, Any]) -> dict[str, Any]:
 
         # Format response - ECS API returns data directly
         if result and isinstance(result, dict):
-            matches = result.get("results", [])  # ECS API returns "results", not "matches"
+            matches = result.get(
+                "results", []
+            )  # ECS API returns "results", not "matches"
             if matches:
                 response_text = (
                     f"🔍 Found {len(matches)} matching agents for '{query}':\n\n"

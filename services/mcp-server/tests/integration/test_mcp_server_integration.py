@@ -6,7 +6,6 @@ Integration tests for MCP Server.
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-
 from main import MCPServer
 
 

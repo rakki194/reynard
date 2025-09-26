@@ -9,7 +9,6 @@ Follows the 140-line axiom and modular architecture principles.
 """
 
 import pytest
-
 from protocol.tool_registry import register_tool
 
 

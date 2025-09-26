@@ -163,14 +163,14 @@ def get_image_viewer_tool_definitions() -> dict[str, dict[str, Any]]:
 def get_visualization_tool_definitions() -> dict[str, dict[str, Any]]:
     """Get all visualization tool definitions."""
     definitions = {}
-    
+
     # Add mermaid tools
     definitions.update(get_mermaid_tool_definitions())
-    
+
     # Add image viewer tools
     definitions.update(get_image_viewer_tool_definitions())
-    
+
     # Add playwright tools
     definitions.update(get_playwright_tool_definitions())
-    
+
     return definitions

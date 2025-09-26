@@ -135,17 +135,17 @@ def get_management_tool_definitions() -> dict[str, dict[str, Any]]:
 def get_system_tool_definitions() -> dict[str, dict[str, Any]]:
     """Get all system tool definitions."""
     definitions = {}
-    
+
     # Add utility tools
     definitions.update(get_utility_tool_definitions())
-    
+
     # Add secrets tools
     definitions.update(get_secrets_tool_definitions())
-    
+
     # Add config tools
     definitions.update(get_config_tool_definitions())
-    
+
     # Add management tools
     definitions.update(get_management_tool_definitions())
-    
+
     return definitions

@@ -30,11 +30,13 @@ class ToolRouter:
             all_tools = self.tool_registry.list_all_tools()
             logger.debug(f"🔍 Available tools in registry: {len(all_tools)}")
             if tool_name not in all_tools:
-                logger.error(f"❌ Tool '{tool_name}' not found in registry. Available tools: {list(all_tools.keys())}")
-            
+                logger.error(
+                    f"❌ Tool '{tool_name}' not found in registry. Available tools: {list(all_tools.keys())}"
+                )
+
             # Get the tool handler from registry
             handler = self.tool_registry.get_handler(tool_name)
-            
+
             logger.debug(f"Routing tool call {tool_name} with arguments: {arguments}")
             logger.debug(f"Handler method: {handler.handler_method}")
             logger.debug(f"Execution type: {handler.execution_type}")
@@ -42,10 +44,13 @@ class ToolRouter:
             # Execute the tool based on its execution type
             # Check if the function expects **kwargs or direct arguments
             import inspect
+
             sig = inspect.signature(handler.handler_method)
             logger.debug(f"Function signature: {sig}")
-            
-            if any(param.kind == param.VAR_KEYWORD for param in sig.parameters.values()):
+
+            if any(
+                param.kind == param.VAR_KEYWORD for param in sig.parameters.values()
+            ):
                 # Function expects **kwargs, pass arguments as keyword argument
                 logger.debug("Function expects **kwargs, passing arguments=arguments")
                 try:
@@ -59,7 +64,9 @@ class ToolRouter:
                     raise
             else:
                 # Function expects direct arguments
-                logger.debug("Function expects direct arguments, passing arguments directly")
+                logger.debug(
+                    "Function expects direct arguments, passing arguments directly"
+                )
                 if handler.execution_type == ToolExecutionType.ASYNC:
                     result = await handler.handler_method(arguments)
                 else:

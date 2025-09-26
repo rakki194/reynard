@@ -27,12 +27,14 @@ class ToolDefinition:
 
 # Import from ultimate organized subdirectories
 from .agent.definitions import get_agent_tool_definitions
-from .development.definitions import get_development_tool_definitions
-from .visualization.definitions import get_visualization_tool_definitions
-from .development.code_quality.monolith_detection.definitions import get_monolith_detection_tool_definitions
 from .agent.social.definitions import get_social_tool_definitions
-from .system.definitions import get_system_tool_definitions
+from .development.code_quality.monolith_detection.definitions import (
+    get_monolith_detection_tool_definitions,
+)
+from .development.definitions import get_development_tool_definitions
 from .research.definitions import get_research_tool_definitions
+from .system.definitions import get_system_tool_definitions
+from .visualization.definitions import get_visualization_tool_definitions
 
 # Search tools now use @register_tool decorators, no separate definitions needed
 

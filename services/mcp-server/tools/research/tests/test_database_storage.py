@@ -2,9 +2,10 @@
 Test database storage functionality.
 """
 
-import pytest
 import json
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
+
+import pytest
 
 
 class TestDatabaseStorage:
@@ -22,15 +23,15 @@ class TestDatabaseStorage:
         mock_cursor = Mock()
         mock_cursor.fetchone.return_value = {"count": 1}
         mock_database_connection.execute.return_value = mock_cursor
-        
+
         # Test
         insert_sql = "INSERT INTO papers (paper_id, title) VALUES (?, ?)"
-        mock_database_connection.execute(insert_sql, (
-            sample_paper_metadata["paper_id"],
-            sample_paper_metadata["title"]
-        ))
+        mock_database_connection.execute(
+            insert_sql,
+            (sample_paper_metadata["paper_id"], sample_paper_metadata["title"]),
+        )
         mock_database_connection.commit()
-        
+
         # Assertions
         mock_database_connection.execute.assert_called_once()
         mock_database_connection.commit.assert_called_once()
@@ -41,14 +42,16 @@ class TestDatabaseStorage:
         mock_cursor = Mock()
         mock_cursor.fetchone.return_value = {
             "paper_id": sample_paper_metadata["paper_id"],
-            "title": sample_paper_metadata["title"]
+            "title": sample_paper_metadata["title"],
         }
         mock_database_connection.execute.return_value = mock_cursor
-        
+
         # Test
         select_sql = "SELECT * FROM papers WHERE paper_id = ?"
-        mock_database_connection.execute(select_sql, (sample_paper_metadata["paper_id"],))
-        
+        mock_database_connection.execute(
+            select_sql, (sample_paper_metadata["paper_id"],)
+        )
+
         # Assertions
         mock_database_connection.execute.assert_called_once()
         result = mock_cursor.fetchone()
@@ -59,7 +62,7 @@ class TestDatabaseStorage:
         # Test authors serialization
         authors_json = json.dumps(sample_paper_metadata["authors"])
         assert isinstance(authors_json, str)
-        
+
         # Test deserialization
         deserialized_authors = json.loads(authors_json)
         assert deserialized_authors == sample_paper_metadata["authors"]

@@ -16,11 +16,12 @@ services_path = Path(__file__).parent.parent.parent / "services"
 sys.path.insert(0, str(services_path))
 
 from services.backend_agent_manager import BackendAgentManager
-from .base import BaseAgentTools
+
 from ..behavior.behavior import BehaviorAgentTools
 from ..behavior.breeding import BreedingAgentTools
-from ..ecs.ecs import ECSAgentTools
 from ..behavior.persona import PersonaAgentTools
+from ..ecs.ecs import ECSAgentTools
+from .base import BaseAgentTools
 
 
 class AgentTools:
