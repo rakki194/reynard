@@ -16,13 +16,13 @@ fi
 
 # Fall back to system python3
 if command -v python3 >/dev/null 2>&1; then
-    echo "$(which python3)"
+    command -v python3
     exit 0
 fi
 
 # Last resort: system python
 if command -v python >/dev/null 2>&1; then
-    echo "$(which python)"
+    command -v python
     exit 0
 fi
 
