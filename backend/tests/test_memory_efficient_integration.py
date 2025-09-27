@@ -518,7 +518,7 @@ class TestMemoryEfficiencyBenchmarks:
         await efficient_service.initialize()
         
         try:
-            async def mock_callback(file_path: str) -> Dict[str, Any]:
+            def mock_callback(file_path: str) -> Dict[str, Any]:
                 return {"success": True, "result": f"processed_{file_path}"}
             
             result = await efficient_service.perform_indexing(
@@ -563,8 +563,8 @@ class TestMemoryEfficiencyBenchmarks:
             import time
             start_time = time.time()
             
-            async def mock_callback(file_path: str) -> Dict[str, Any]:
-                await asyncio.sleep(0.01)  # Simulate processing
+            def mock_callback(file_path: str) -> Dict[str, Any]:
+                time.sleep(0.01)  # Simulate processing
                 return {"success": True, "result": f"processed_{file_path}"}
             
             result = await indexing_service.perform_indexing(

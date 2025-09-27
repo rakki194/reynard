@@ -30,7 +30,7 @@ export interface BackupOptions {
   timestamp?: boolean;
 }
 
-export interface ValidationResult {
+export interface CLIValidationResult {
   valid: boolean;
   errors: string[];
   warnings?: string[];

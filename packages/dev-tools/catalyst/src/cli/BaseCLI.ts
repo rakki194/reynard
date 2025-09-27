@@ -100,7 +100,7 @@ export abstract class BaseCLI {
       return true;
     } else {
       this.logger.error("❌ Validation failed:");
-      validation.errors.forEach(error => this.logger.error(`  - ${error}`));
+      validation.errors.forEach((error: string) => this.logger.error(`  - ${error}`));
       return false;
     }
   }

@@ -7,7 +7,9 @@ Author: Reynard Development Team
 Version: 1.0.0
 """
 
+import asyncio
 import logging
+import os
 import re
 import time
 from typing import Any, AsyncGenerator, Dict, List, Optional
@@ -202,10 +204,10 @@ class ASTDocumentProcessor(IDocumentIndexer):
         total_docs = len(documents)
         processed_docs = 0
         
-        # Memory-efficient batch processing
-        batch_size = self.config.get("memory_efficient_batch_size", 5)
-        max_memory_mb = self.config.get("max_memory_mb", 1024)
-        memory_cleanup_threshold = self.config.get("memory_cleanup_threshold", 0.8)
+        # Memory-efficient batch processing (using environment variables)
+        batch_size = self.config.get("memory_efficient_batch_size", int(os.getenv("INDEXING_BATCH_SIZE", "5")))
+        max_memory_mb = self.config.get("max_memory_mb", int(os.getenv("INDEXING_MAX_MEMORY_MB", "1024")))
+        memory_cleanup_threshold = self.config.get("memory_cleanup_threshold", float(os.getenv("INDEXING_MEMORY_CLEANUP_THRESHOLD", "0.8")))
 
         try:
             # Process documents in memory-efficient batches
@@ -888,9 +890,12 @@ class ASTDocumentProcessor(IDocumentIndexer):
             # Detect language
             language = self._detect_language(document.file_path, document.content)
 
+            # Extract metadata
+            metadata = await self.extract_metadata(document)
+            
             # Process based on language
             if language in self.supported_languages:
-                chunks = await self._process_structured_document(document, language)
+                chunks = await self._process_structured_document(document, language, metadata)
             else:
                 chunks = await self._process_text_document(document)
 

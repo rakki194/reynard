@@ -1,0 +1,62 @@
+{
+  "name": "FOXY",
+  "description": "Flexible Orchestration for Xenial Yield - Git Hooks System",
+  "version": "1.0.0",
+  "hooks": {
+    "pre-commit": {
+      "enabled": true,
+      "scripts": [
+        {
+          "name": "Format Check",
+          "command": "pnpm run format:check",
+          "failOnError": true
+        },
+        {
+          "name": "Linter",
+          "command": "pnpm run lint",
+          "failOnError": true
+        },
+        {
+          "name": "File Line Count Check",
+          "command": "pnpm run check:lines",
+          "failOnError": true
+        },
+        {
+          "name": "Type Check",
+          "command": "pnpm run type-check",
+          "failOnError": true
+        },
+        {
+          "name": "Test Check",
+          "command": "pnpm run test:check",
+          "failOnError": true
+        }
+      ]
+    },
+    "commit-msg": {
+      "enabled": true,
+      "scripts": [
+        {
+          "name": "Commit Message Lint",
+          "command": "pnpm exec npx --no -- commitlint --edit",
+          "failOnError": true
+        }
+      ]
+    },
+    "pre-push": {
+      "enabled": true,
+      "scripts": [
+        {
+          "name": "Full Test Suite",
+          "command": "pnpm run test",
+          "failOnError": true
+        },
+        {
+          "name": "Build Check",
+          "command": "pnpm run build",
+          "failOnError": true
+        }
+      ]
+    }
+  }
+}

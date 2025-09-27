@@ -35,6 +35,19 @@ export default defineConfig({
           outputFile: ".vitest-reports/global-report.json",
         },
       ],
+      [
+        "./packages/core/testing/src/vitest-db-reporter.ts",
+        {
+          apiBaseUrl: process.env.TESTING_API_URL || "http://localhost:8000",
+          environment: process.env.NODE_ENV || "development",
+          branch: process.env.GIT_BRANCH || "unknown",
+          commit: process.env.GIT_COMMIT || "unknown",
+          testSuite: "vitest-global",
+          storeIndividualTests: true,
+          storeCoverage: true,
+          storePerformance: true,
+        },
+      ],
     ],
     coverage: {
       provider: "v8",

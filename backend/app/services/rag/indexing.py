@@ -47,12 +47,17 @@ class IndexingService:
     def __init__(self, config: Dict[str, Any]):
         """Initialize the indexing service."""
         self.config = config
-        self.batch_size = config.get("memory_efficient_batch_size", DEFAULT_BATCH_SIZE)
-        self.max_memory_mb = config.get("max_memory_mb", DEFAULT_MAX_MEMORY_MB)
-        self.memory_cleanup_threshold = config.get(
-            "memory_cleanup_threshold", DEFAULT_MEMORY_CLEANUP_THRESHOLD
-        )
-        self.gc_frequency = config.get("gc_frequency", DEFAULT_GC_FREQUENCY)
+        batch_size = config.get("memory_efficient_batch_size", config.get("batch_size", DEFAULT_BATCH_SIZE))
+        self.batch_size = batch_size if batch_size > 0 else DEFAULT_BATCH_SIZE
+        
+        max_memory_mb = config.get("max_memory_mb", DEFAULT_MAX_MEMORY_MB)
+        self.max_memory_mb = max_memory_mb if max_memory_mb > 0 else DEFAULT_MAX_MEMORY_MB
+        
+        memory_cleanup_threshold = config.get("memory_cleanup_threshold", DEFAULT_MEMORY_CLEANUP_THRESHOLD)
+        self.memory_cleanup_threshold = memory_cleanup_threshold if 0 < memory_cleanup_threshold <= 1 else DEFAULT_MEMORY_CLEANUP_THRESHOLD
+        
+        gc_frequency = config.get("gc_frequency", DEFAULT_GC_FREQUENCY)
+        self.gc_frequency = gc_frequency if gc_frequency > 0 else DEFAULT_GC_FREQUENCY
         
         # Initialize profiling and monitoring
         self.memory_profiler = MemoryProfiler(check_interval=DEFAULT_MEMORY_PROFILER_INTERVAL)

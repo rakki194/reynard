@@ -51,6 +51,7 @@
     "chokidar": "4.0.3",
     "commander": "14.0.1",
     "solid-js": "1.9.9",
+    "reynard-dev-tools-catalyst": "workspace:*",
     "reynard-ui": "workspace:*",
     "reynard-charts": "workspace:*",
     "reynard-primitives": "workspace:*",

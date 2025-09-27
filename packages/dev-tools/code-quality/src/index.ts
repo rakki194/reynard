@@ -28,6 +28,15 @@ export type {
 export { FileAnalyzer } from "./FileAnalyzer";
 export { FileDiscoveryService } from "./FileDiscoveryService";
 export { IssueDetector } from "./IssueDetector";
+
+// Validation services
+export * from "./validation/index";
+
+// Incremental linting services
+export * from "./incremental-linting/index";
+
+// Git workflow services
+export * from "./git-workflow/index";
 export { LanguageAnalyzer } from "./LanguageAnalyzer";
 export { MetricsCalculator } from "./MetricsCalculator";
 export { QualityGateEvaluator } from "./QualityGateEvaluator";

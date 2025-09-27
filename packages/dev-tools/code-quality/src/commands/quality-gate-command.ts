@@ -8,7 +8,7 @@
 
 import { readFile } from "fs/promises";
 import { CodeQualityAnalyzer } from "../CodeQualityAnalyzer";
-import { QualityGateManager } from "../QualityGateManager";
+import { DatabaseQualityGateManager } from "../DatabaseQualityGateManager";
 
 export interface QualityGateOptions {
   project: string;
@@ -64,11 +64,25 @@ async function loadMetrics(options: QualityGateOptions): Promise<any> {
 
 export async function handleQualityGateCommand(options: QualityGateOptions): Promise<void> {
   try {
-    const qualityGateManager = new QualityGateManager(options.project);
+    // Get backend URL from environment or use default
+    const backendUrl = process.env.REYNARD_BACKEND_URL || "http://localhost:8000";
+    const apiKey = process.env.REYNARD_API_KEY;
+    
+    const qualityGateManager = new DatabaseQualityGateManager(backendUrl, apiKey);
+    
+    // Check connectivity to backend
+    const isConnected = await qualityGateManager.checkConnectivity();
+    if (!isConnected) {
+      console.warn("⚠️ Could not connect to Reynard backend, using fallback mode");
+      console.warn("   Set REYNARD_BACKEND_URL environment variable to connect to backend");
+      console.warn("   Falling back to local analysis without quality gates...");
+      process.exit(0);
+    }
+
     await qualityGateManager.loadConfiguration();
 
     const metrics = await loadMetrics(options);
-    const results = qualityGateManager.evaluateQualityGates(metrics, options.environment);
+    const results = await qualityGateManager.evaluateQualityGates(metrics, options.environment);
 
     console.log("🦊 Quality Gate Evaluation Results:");
     console.log("=====================================");

@@ -153,6 +153,15 @@ application development—where different tools and services work together to re
     - [🎨 Media Processing (`packages/media/`)](#-media-processing-packagesmedia)
     - [🔧 Services (`packages/services/`)](#-services-packagesservices)
     - [🎨 UI \& Components (`packages/ui/`)](#-ui--components-packagesui)
+  - [🤖 AI Services Architecture](#-ai-services-architecture)
+    - [AI Services Architecture Overview](#ai-services-architecture-overview)
+    - [AI Data Flow Architecture](#ai-data-flow-architecture)
+    - [Backend AI Services](#backend-ai-services)
+    - [AI Service Interaction Flow](#ai-service-interaction-flow)
+    - [Technical Implementation Details](#technical-implementation-details)
+    - [Configuration Management](#configuration-management)
+    - [Monitoring and Observability](#monitoring-and-observability)
+    - [Future Enhancements](#future-enhancements)
   - [📧 Advanced Email Features](#-advanced-email-features)
     - [🏗️ Email System Architecture](#️-email-system-architecture)
     - [🚀 Email System Capabilities](#-email-system-capabilities)
@@ -383,8 +392,12 @@ function App() {
 
 ## ✨ Key Features
 
+- **🤖 Comprehensive AI Ecosystem** - 17 specialized AI packages, 8 backend services, and 4 major AI providers
 - **🎯 Multi-Modal Content Management** - Images, videos, audio, documents, and specialized formats
-- **🤖 AI/ML Integration** - Caption generation, RAG system, object detection, and TTS
+- **🔍 Advanced RAG System** - Retrieval-Augmented Generation with semantic search and vector databases
+- **💬 AI-Powered Caption Generation** - Multiple model support (Florence2, Joy, JTP2, WDV3)
+- **🎨 ComfyUI Integration** - Image generation workflows and batch processing
+- **🌐 Natural Language Web Processing** - Web content extraction and analysis
 - **📧 Advanced Email System** - AI-powered responses, encryption, analytics, and multi-account support
 - **🌍 Single Authoritative ECS World** - Centralized agent simulation with trait inheritance and breeding
 - **🔗 MCP Server Integration** - Comprehensive MCP tools for agent management and world simulation
@@ -402,23 +415,29 @@ while other packages can be added as needed. All packages are published to npm a
 
 ### 🤖 AI & Machine Learning (`packages/ai/`)
 
-- **`ai-shared`** - Shared AI utilities and types
-- **`annotating-core`** - Core annotation functionality
-- **`annotating-florence2`** - Florence2 model integration
-- **`annotating-joy`** - Joy model integration
-- **`annotating-jtp2`** - JTP2 model integration
-- **`annotating-ui`** - Annotation UI components
-- **`annotating-wdv3`** - WDV3 model integration
-- **`caption`** - Image captioning functionality
-- **`caption-core`** - Core captioning functionality
-- **`caption-multimodal`** - Multimodal captioning
-- **`caption-ui`** - Caption UI components
-- **`comfy`** - ComfyUI integration
-- **`model-management`** - AI model management
-- **`multimodal`** - Multimodal AI capabilities
-- **`nlweb`** - Natural language web processing
-- **`rag`** - Retrieval-Augmented Generation
-- **`tool-calling`** - AI tool calling utilities
+Reynard's AI ecosystem is a sophisticated, multi-layered architecture that provides comprehensive artificial intelligence capabilities across multiple domains. The system includes 17 specialized AI packages, 8 backend services, and support for 4 major AI providers.
+
+#### Frontend AI Packages
+
+- **`ai-shared`** (v0.1.3) - Shared AI utilities, base classes, and type definitions
+- **`rag`** (v0.2.0) - Retrieval-Augmented Generation with semantic search
+- **`model-management`** (v0.1.2) - AI model lifecycle and loading management
+- **`multimodal`** (v0.2.0) - Multimodal media processing and gallery management
+- **`comfy`** (v0.1.0) - ComfyUI integration for image generation workflows
+- **`tool-calling`** (v0.1.2) - AI function execution and tool management
+- **`nlweb`** (v0.1.0) - Natural language web processing and assistant tooling
+
+#### Annotation & Caption Services
+
+- **`annotating-core`** (v0.2.0) - Core annotation functionality with model management
+- **`annotating-ui`** - Annotation UI components and interfaces
+- **`annotating-florence2`** - Microsoft Florence2 vision-language model integration
+- **`annotating-joy`** - Joy specialized annotation model integration
+- **`annotating-jtp2`** - JTP2 joint text-picture processing integration
+- **`annotating-wdv3`** - WDV3 web data visualization model integration
+- **`caption-core`** (v0.1.0) - Core caption generation logic and state management
+- **`caption-ui`** - Caption editing UI components with tag management
+- **`caption-multimodal`** - Multimodal caption generation capabilities
 
 ### 🏗️ Core Framework (`packages/core/`)
 
@@ -445,13 +464,13 @@ while other packages can be added as needed. All packages are published to npm a
 
 ### 🛠️ Development Tools (`packages/dev-tools/`)
 
-- **`adr-system`** - Architecture Decision Records
-- **`code-quality`** - Code quality tools and utilities
+- **`catalyst`** - Core development utilities and shared components (CLI, logging, file management, git hooks, linting, validation)
+- **`code-quality`** - Comprehensive code quality tools (validation, incremental linting, git workflow management)
 - **`dev-server-management`** - Development server management
-- **`git-automation`** - Git workflow automation
 - **`humility-parser`** - Humility parser for documentation
 - **`project-architecture`** - Project architecture tools
 - **`queue-watcher`** - Queue monitoring and management
+- **`vscode-linting`** - VS Code extension for integrated linting
 
 ### 📚 Documentation (`packages/docs/`)
 
@@ -502,6 +521,601 @@ while other packages can be added as needed. All packages are published to npm a
 - **`ui`** - UI utilities and layout components
 
 _[View complete package list and documentation →](./docs/packages.md)_
+
+## 🤖 AI Services Architecture
+
+Reynard's AI ecosystem provides a comprehensive, multi-layered architecture for artificial intelligence capabilities across multiple domains. The system integrates 17 specialized AI packages, 8 backend services, and support for 4 major AI providers.
+
+### AI Services Architecture Overview
+
+```mermaid
+graph TB
+    subgraph "Frontend AI Packages"
+        AIShared["🦊 AI Shared<br/>reynard-ai-shared<br/>v0.1.3"]
+        RAG["🔍 RAG System<br/>reynard-rag<br/>v0.2.0"]
+        ModelMgmt["⚙️ Model Management<br/>reynard-model-management<br/>v0.1.2"]
+        Multimodal["🎭 Multimodal<br/>reynard-multimodal<br/>v0.2.0"]
+        Comfy["🎨 ComfyUI Integration<br/>reynard-comfy<br/>v0.1.0"]
+        ToolCalling["🔧 Tool Calling<br/>reynard-tool-calling<br/>v0.1.2"]
+        NLWeb["🌐 NLWeb Assistant<br/>reynard-nlweb<br/>v0.1.0"]
+    end
+
+    subgraph "Annotation & Caption Services"
+        AnnotatingCore["📝 Annotating Core<br/>reynard-annotating-core<br/>v0.2.0"]
+        AnnotatingUI["🎨 Annotating UI<br/>reynard-annotating-ui"]
+        AnnotatingFlorence2["🖼️ Florence2 Integration<br/>reynard-annotating-florence2"]
+        AnnotatingJoy["😊 Joy Integration<br/>reynard-annotating-joy"]
+        AnnotatingJTP2["🔍 JTP2 Integration<br/>reynard-annotating-jtp2"]
+        AnnotatingWDV3["📊 WDV3 Integration<br/>reynard-annotating-wdv3"]
+        CaptionCore["💬 Caption Core<br/>reynard-caption-core<br/>v0.1.0"]
+        CaptionUI["🎨 Caption UI<br/>reynard-caption-ui"]
+        CaptionMultimodal["🎭 Caption Multimodal<br/>reynard-caption-multimodal"]
+    end
+
+    subgraph "Backend AI Services"
+        AIRouter["🤖 AI Router<br/>Multi-Provider Support"]
+        RAGService["🔍 RAG Service<br/>Document Processing"]
+        CaptionService["💬 Caption Service<br/>Image Captioning"]
+        TTSService["🔊 TTS Service<br/>Text-to-Speech"]
+        SummarizationService["📄 Summarization<br/>Document Analysis"]
+        SearchService["🔍 Search Service<br/>Vector Search"]
+        ComfyService["🎨 ComfyUI Service<br/>Image Generation"]
+        NLWebService["🌐 NLWeb Service<br/>Natural Language Web"]
+    end
+
+    subgraph "AI Providers"
+        Ollama["🦙 Ollama<br/>Local LLM Inference"]
+        VLLM["⚡ vLLM<br/>High-Performance Inference"]
+        SGLang["🚀 SGLang<br/>Structured Generation"]
+        LLaMACpp["🦙 LLaMA.cpp<br/>C++ Implementation"]
+    end
+
+    subgraph "Core Dependencies"
+        Core["🏗️ Reynard Core<br/>reynard-core"]
+        Connection["🔗 Connection<br/>reynard-connection"]
+        Validation["✅ Validation<br/>reynard-validation"]
+        ServiceManager["⚙️ Service Manager<br/>reynard-service-manager"]
+        APIClient["🌐 API Client<br/>reynard-api-client"]
+    end
+
+    %% Frontend Package Dependencies
+    AIShared --> Core
+    AIShared --> Connection
+    AIShared --> Validation
+
+    RAG --> APIClient
+    RAG --> Core
+    RAG --> ModelMgmt
+
+    ModelMgmt --> Core
+    ModelMgmt --> ServiceManager
+
+    Multimodal --> Core
+    Multimodal --> APIClient
+
+    Comfy --> APIClient
+    Comfy --> Core
+
+    ToolCalling --> Core
+
+    NLWeb --> Core
+    NLWeb --> ToolCalling
+    NLWeb --> ServiceManager
+    NLWeb --> Connection
+
+    %% Annotation Services Dependencies
+    AnnotatingCore --> Core
+    AnnotatingCore --> ServiceManager
+    AnnotatingCore --> AIShared
+
+    AnnotatingFlorence2 --> AnnotatingCore
+    AnnotatingJoy --> AnnotatingCore
+    AnnotatingJTP2 --> AnnotatingCore
+    AnnotatingWDV3 --> AnnotatingCore
+
+    CaptionCore --> Core
+    CaptionCore --> AnnotatingCore
+
+    CaptionUI --> CaptionCore
+    CaptionMultimodal --> CaptionCore
+
+    %% Backend Service Connections
+    AIRouter --> Ollama
+    AIRouter --> VLLM
+    AIRouter --> SGLang
+    AIRouter --> LLaMACpp
+
+    RAGService --> RAG
+    CaptionService --> CaptionCore
+    TTSService --> Core
+    SummarizationService --> Core
+    SearchService --> RAG
+    ComfyService --> Comfy
+    NLWebService --> NLWeb
+
+    %% API Connections
+    RAG --> RAGService
+    CaptionUI --> CaptionService
+    Comfy --> ComfyService
+    NLWeb --> NLWebService
+
+    classDef frontend fill:#00bcd4,stroke:#000000,stroke-width:3px,color:#000000
+    classDef backend fill:#9c27b0,stroke:#000000,stroke-width:3px,color:#000000
+    classDef provider fill:#4caf50,stroke:#000000,stroke-width:3px,color:#000000
+    classDef core fill:#ff9800,stroke:#000000,stroke-width:3px,color:#000000
+    classDef annotation fill:#e91e63,stroke:#000000,stroke-width:3px,color:#000000
+
+    class AIShared,RAG,ModelMgmt,Multimodal,Comfy,ToolCalling,NLWeb frontend
+    class AIRouter,RAGService,CaptionService,TTSService,SummarizationService,SearchService,ComfyService,NLWebService backend
+    class Ollama,VLLM,SGLang,LLaMACpp provider
+    class Core,Connection,Validation,ServiceManager,APIClient core
+    class AnnotatingCore,AnnotatingUI,AnnotatingFlorence2,AnnotatingJoy,AnnotatingJTP2,AnnotatingWDV3,CaptionCore,CaptionUI,CaptionMultimodal annotation
+```
+
+### AI Data Flow Architecture
+
+```mermaid
+flowchart TD
+    subgraph "User Interface Layer"
+        UI["🖥️ User Interface<br/>SolidJS Components"]
+        API["🌐 API Client<br/>reynard-api-client"]
+    end
+
+    subgraph "AI Package Layer"
+        subgraph "Core AI Services"
+            AIShared["🦊 AI Shared<br/>Base Classes & Types"]
+            ModelMgmt["⚙️ Model Management<br/>Lifecycle & Loading"]
+            ToolCalling["🔧 Tool Calling<br/>Function Execution"]
+        end
+
+        subgraph "Specialized AI Services"
+            RAG["🔍 RAG System<br/>Retrieval-Augmented Generation"]
+            Multimodal["🎭 Multimodal<br/>Media Processing"]
+            Comfy["🎨 ComfyUI<br/>Image Generation"]
+            NLWeb["🌐 NLWeb<br/>Natural Language Web"]
+        end
+
+        subgraph "Annotation Services"
+            AnnotatingCore["📝 Annotating Core<br/>Base Annotation Logic"]
+            CaptionCore["💬 Caption Core<br/>Caption Generation"]
+        end
+    end
+
+    subgraph "Backend Service Layer"
+        subgraph "AI API Services"
+            AIRouter["🤖 AI Router<br/>Multi-Provider Chat"]
+            RAGService["🔍 RAG Service<br/>Document Processing"]
+            CaptionService["💬 Caption Service<br/>Image Captioning"]
+            TTSService["🔊 TTS Service<br/>Text-to-Speech"]
+        end
+
+        subgraph "Processing Services"
+            SummarizationService["📄 Summarization<br/>Document Analysis"]
+            SearchService["🔍 Search Service<br/>Vector Search"]
+            ComfyService["🎨 ComfyUI Service<br/>Image Generation"]
+            NLWebService["🌐 NLWeb Service<br/>Web Processing"]
+        end
+    end
+
+    subgraph "AI Provider Layer"
+        Ollama["🦙 Ollama<br/>Local LLM Inference"]
+        VLLM["⚡ vLLM<br/>High-Performance Inference"]
+        SGLang["🚀 SGLang<br/>Structured Generation"]
+        LLaMACpp["🦙 LLaMA.cpp<br/>C++ Implementation"]
+    end
+
+    subgraph "Data Storage Layer"
+        VectorDB["🗄️ Vector Database<br/>Embeddings & Search"]
+        ModelCache["💾 Model Cache<br/>Model Storage"]
+        FileStorage["📁 File Storage<br/>Media & Documents"]
+    end
+
+    %% Data Flow Connections
+    UI --> API
+    API --> AIShared
+    API --> RAG
+    API --> Multimodal
+    API --> Comfy
+    API --> NLWeb
+    API --> CaptionCore
+
+    AIShared --> ModelMgmt
+    AIShared --> ToolCalling
+
+    RAG --> RAGService
+    Multimodal --> CaptionService
+    Comfy --> ComfyService
+    NLWeb --> NLWebService
+    CaptionCore --> CaptionService
+
+    AIRouter --> Ollama
+    AIRouter --> VLLM
+    AIRouter --> SGLang
+    AIRouter --> LLaMACpp
+
+    RAGService --> VectorDB
+    CaptionService --> ModelCache
+    TTSService --> ModelCache
+    SummarizationService --> VectorDB
+    SearchService --> VectorDB
+    ComfyService --> ModelCache
+    NLWebService --> FileStorage
+
+    ModelMgmt --> ModelCache
+    AnnotatingCore --> ModelCache
+
+    classDef ui fill:#2196f3,stroke:#000000,stroke-width:3px,color:#000000
+    classDef package fill:#4caf50,stroke:#000000,stroke-width:3px,color:#000000
+    classDef service fill:#ff9800,stroke:#000000,stroke-width:3px,color:#000000
+    classDef provider fill:#e91e63,stroke:#000000,stroke-width:3px,color:#000000
+    classDef storage fill:#9c27b0,stroke:#000000,stroke-width:3px,color:#000000
+
+    class UI,API ui
+    class AIShared,ModelMgmt,ToolCalling,RAG,Multimodal,Comfy,NLWeb,AnnotatingCore,CaptionCore package
+    class AIRouter,RAGService,CaptionService,TTSService,SummarizationService,SearchService,ComfyService,NLWebService service
+    class Ollama,VLLM,SGLang,LLaMACpp provider
+    class VectorDB,ModelCache,FileStorage storage
+```
+
+### Backend AI Services
+
+#### 🤖 AI Router (Multi-Provider Support)
+
+**Purpose**: Comprehensive AI model interaction across multiple providers.
+
+**Supported Providers**:
+- **Ollama**: Local LLM inference with model management
+- **vLLM**: High-performance inference engine
+- **SGLang**: Structured generation language
+- **LLaMA.cpp**: C++ implementation for efficiency
+
+**Key Features**:
+- Multi-provider chat interface
+- Streaming response support
+- Tool calling capabilities
+- Model configuration management
+- Performance monitoring
+
+**API Endpoints**:
+- `POST /api/ai/chat`: Standard chat interface
+- `POST /api/ai/assistant`: Assistant-style interactions
+- `GET /api/ai/stream`: Streaming chat responses
+- `GET /api/ai/models`: Model information
+- `POST /api/ai/generate`: Direct text generation
+
+#### 🔍 RAG Service
+
+**Purpose**: Document processing and retrieval-augmented generation.
+
+**Key Features**:
+- Document ingestion and indexing
+- Vector embedding generation
+- Semantic search capabilities
+- Document chunking and processing
+- Real-time search and retrieval
+
+**Components**:
+- `DocumentIndexer`: Document processing and indexing
+- `EmbeddingService`: Vector embedding generation
+- `VectorStoreService`: Vector database management
+
+#### 💬 Caption Service
+
+**Purpose**: Image caption generation with multiple model support.
+
+**Key Features**:
+- Single and batch image processing
+- Multiple caption generator support
+- Quality assessment and validation
+- Progress tracking for batch operations
+
+**Supported Generators**:
+- Florence2: Microsoft's vision-language model
+- Joy: Specialized caption model
+- JTP2: Joint text-picture processing
+- WDV3: Web data visualization model
+
+#### 🔊 TTS Service
+
+**Purpose**: Text-to-speech synthesis with multiple voice options.
+
+**Key Features**:
+- Multiple voice synthesis
+- Audio format conversion
+- Streaming audio generation
+- Voice customization options
+
+#### 📄 Summarization Service
+
+**Purpose**: Document summarization and analysis.
+
+**Key Features**:
+- Multi-document summarization
+- Extractive and abstractive summarization
+- Key point extraction
+- Summary quality assessment
+
+#### 🔍 Search Service
+
+**Purpose**: Vector-based search and retrieval.
+
+**Key Features**:
+- Semantic search capabilities
+- Hybrid search (vector + keyword)
+- Search result ranking
+- Query expansion and optimization
+
+#### 🎨 ComfyUI Service
+
+**Purpose**: Image generation and processing via ComfyUI workflows.
+
+**Key Features**:
+- Workflow execution
+- Batch image generation
+- Custom workflow support
+- Image post-processing
+
+#### 🌐 NLWeb Service
+
+**Purpose**: Natural language web processing and content analysis.
+
+**Key Features**:
+- Web content extraction
+- Natural language understanding
+- Content summarization
+- Web scraping integration
+
+### AI Service Interaction Flow
+
+```mermaid
+sequenceDiagram
+    participant User as 👤 User
+    participant UI as 🖥️ Frontend UI
+    participant API as 🌐 API Client
+    participant AIService as 🤖 AI Service
+    participant RAGService as 🔍 RAG Service
+    participant CaptionService as 💬 Caption Service
+    participant ModelMgmt as ⚙️ Model Management
+    participant Provider as 🦙 AI Provider
+    participant Storage as 🗄️ Storage
+
+    Note over User,Storage: AI Chat Interaction Flow
+
+    User->>UI: Send chat message
+    UI->>API: POST /api/ai/chat
+    API->>AIService: Process chat request
+    AIService->>ModelMgmt: Get model instance
+    ModelMgmt->>Storage: Load model from cache
+    Storage-->>ModelMgmt: Return model
+    ModelMgmt-->>AIService: Model ready
+    AIService->>Provider: Generate response
+    Provider-->>AIService: Stream response
+    AIService-->>API: Stream chat response
+    API-->>UI: Stream to user
+    UI-->>User: Display response
+
+    Note over User,Storage: RAG Document Processing Flow
+
+    User->>UI: Upload document
+    UI->>API: POST /api/rag/ingest
+    API->>RAGService: Process document
+    RAGService->>ModelMgmt: Get embedding model
+    ModelMgmt->>Storage: Load embedding model
+    Storage-->>ModelMgmt: Return model
+    ModelMgmt-->>RAGService: Model ready
+    RAGService->>RAGService: Generate embeddings
+    RAGService->>Storage: Store embeddings
+    Storage-->>RAGService: Embeddings stored
+    RAGService-->>API: Processing complete
+    API-->>UI: Success response
+    UI-->>User: Document indexed
+
+    Note over User,Storage: Image Caption Generation Flow
+
+    User->>UI: Upload image
+    UI->>API: POST /api/caption/generate
+    API->>CaptionService: Process image
+    CaptionService->>ModelMgmt: Get caption model
+    ModelMgmt->>Storage: Load caption model
+    Storage-->>ModelMgmt: Return model
+    ModelMgmt-->>CaptionService: Model ready
+    CaptionService->>CaptionService: Generate caption
+    CaptionService-->>API: Caption result
+    API-->>UI: Return caption
+    UI-->>User: Display caption
+```
+
+### Technical Implementation Details
+
+#### Service Architecture Patterns
+
+**1. Service Registry Pattern**
+- **Initialization**: Services register themselves during startup
+- **Health Monitoring**: Real-time status tracking and diagnostics
+- **Graceful Shutdown**: Proper resource cleanup with timeout handling
+
+**2. Dependency Injection**
+- **Service Managers**: Centralized service instance management
+- **Configuration Injection**: Environment-based configuration
+- **Interface Segregation**: Clean separation of concerns
+
+**3. Multi-Provider Support**
+- **Provider Registry**: Dynamic provider registration
+- **Fallback Mechanisms**: Automatic failover between providers
+- **Performance Monitoring**: Provider-specific metrics collection
+
+#### Data Flow Patterns
+
+**1. Request-Response Flow**
+```
+User Request → API Client → Service Router → AI Provider → Response Processing → User
+```
+
+**2. Streaming Flow**
+```
+User Request → API Client → Service Router → AI Provider → Stream Processing → Real-time User Updates
+```
+
+**3. Batch Processing Flow**
+```
+Batch Request → Queue System → Worker Pool → AI Provider → Result Aggregation → Batch Response
+```
+
+#### Security Considerations
+
+**1. Input Validation**
+- **Message Sanitization**: XSS and injection prevention
+- **File Upload Security**: Malware scanning and type validation
+- **Rate Limiting**: Request throttling and abuse prevention
+
+**2. Authentication & Authorization**
+- **JWT Integration**: Token-based authentication
+- **Role-Based Access**: Granular permission control
+- **API Key Management**: Secure key storage and rotation
+
+**3. Data Protection**
+- **Encryption**: Data encryption in transit and at rest
+- **Privacy Controls**: User data anonymization options
+- **Audit Logging**: Comprehensive activity tracking
+
+#### Performance Optimization
+
+**1. Caching Strategies**
+- **Model Caching**: In-memory model storage
+- **Response Caching**: Intelligent response caching
+- **CDN Integration**: Static asset optimization
+
+**2. Concurrency Management**
+- **Async Processing**: Non-blocking I/O operations
+- **Connection Pooling**: Efficient resource utilization
+- **Load Balancing**: Request distribution across instances
+
+**3. Resource Management**
+- **Memory Optimization**: Efficient memory usage patterns
+- **GPU Utilization**: Optimized GPU resource allocation
+- **Model Quantization**: Reduced model size and inference time
+
+### Configuration Management
+
+#### Environment Variables
+
+```bash
+# AI Provider Settings
+AI_DEFAULT_PROVIDER=ollama
+AI_DEFAULT_MODEL=llama3.1:latest
+AI_MAX_TOKENS=2048
+AI_TEMPERATURE=0.7
+AI_TIMEOUT=30
+
+# Model Management
+MODEL_CACHE_DIR=/app/models
+MODEL_DOWNLOAD_TIMEOUT=300
+MODEL_MAX_SIZE_GB=10
+
+# RAG Configuration
+RAG_VECTOR_DB_URL=postgresql://user:pass@localhost/vectordb
+RAG_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+RAG_CHUNK_SIZE=1000
+RAG_CHUNK_OVERLAP=200
+
+# TTS Configuration
+TTS_PROVIDER=elevenlabs
+TTS_VOICE_ID=default
+TTS_OUTPUT_FORMAT=mp3
+TTS_SAMPLE_RATE=22050
+```
+
+#### Provider-Specific Configuration
+
+```bash
+# Ollama Configuration
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL_PATH=/app/models/ollama
+OLLAMA_GPU_LAYERS=32
+
+# vLLM Configuration
+VLLM_BASE_URL=http://localhost:8000
+VLLM_MODEL_PATH=/app/models/vllm
+VLLM_GPU_MEMORY_UTILIZATION=0.8
+
+# ComfyUI Configuration
+COMFYUI_BASE_URL=http://localhost:8188
+COMFYUI_WORKFLOW_PATH=/app/workflows
+COMFYUI_OUTPUT_PATH=/app/outputs
+```
+
+### Monitoring and Observability
+
+#### Service Metrics
+- **Request Count**: Total requests per service
+- **Response Time**: Average and percentile response times
+- **Error Rate**: Error percentage by service
+- **Throughput**: Requests per second
+
+#### AI-Specific Metrics
+- **Token Usage**: Tokens consumed per request
+- **Model Performance**: Inference time per model
+- **Cache Hit Rate**: Model and response cache efficiency
+- **Provider Health**: Provider availability and performance
+
+#### Structured Logging
+
+```json
+{
+  "timestamp": "2025-09-25T16:24:32.548Z",
+  "level": "INFO",
+  "service": "ai-router",
+  "provider": "ollama",
+  "model": "llama3.1:latest",
+  "request_id": "req_123456",
+  "user_id": "user_789",
+  "tokens_used": 150,
+  "response_time_ms": 1250,
+  "message": "AI chat request completed successfully"
+}
+```
+
+### Future Enhancements
+
+#### Planned Features
+
+**1. Advanced AI Capabilities**
+- **Multi-Modal Reasoning**: Cross-modal understanding
+- **Agent Orchestration**: Multi-agent collaboration
+- **Fine-Tuning Support**: Custom model training
+- **Edge Deployment**: Local AI inference
+
+**2. Performance Improvements**
+- **Model Optimization**: Quantization and pruning
+- **Distributed Inference**: Multi-node processing
+- **Smart Caching**: Predictive model loading
+- **Resource Scaling**: Dynamic resource allocation
+
+**3. Developer Experience**
+- **AI SDK**: Comprehensive development toolkit
+- **Visual Workflow Builder**: Drag-and-drop AI workflows
+- **Model Marketplace**: Community model sharing
+- **Debugging Tools**: AI-specific debugging utilities
+
+#### Integration Roadmap
+
+**Phase 1: Core Stabilization**
+- Service reliability improvements
+- Performance optimization
+- Security hardening
+- Documentation completion
+
+**Phase 2: Advanced Features**
+- Multi-modal capabilities
+- Agent orchestration
+- Advanced analytics
+- Custom model support
+
+**Phase 3: Ecosystem Expansion**
+- Third-party integrations
+- Community contributions
+- Enterprise features
+- Global deployment
 
 ## 📧 Advanced Email Features
 
@@ -1874,11 +2488,39 @@ Built-in i18n support with:
 
 ## 🛠️ Development Tools
 
+Reynard includes a comprehensive development toolkit with consolidated packages for maximum efficiency:
+
+### Core Development Utilities (`catalyst`)
+
+The `catalyst` package provides essential development utilities:
+
+- **🦊 FOXY Git Hooks System** - Flexible Orchestration for Xenial Yield - Native git hooks replacing husky with custom validation
+- **🔍 Unified Linting** - ESLint, Prettier, and custom linting orchestration
+- **✅ Validation Framework** - File content validation with regex, line count, and custom rules
+- **📁 File Management** - File discovery, junk detection, and project utilities
+- **📝 Logging System** - Structured logging with color-coded output
+- **⚡ CLI Framework** - Command-line interface utilities and helpers
+
+### Code Quality Tools (`code-quality`)
+
+The `code-quality` package consolidates all quality assurance tools:
+
+- **🔍 Validation Orchestrator** - Comprehensive project validation with Python/JavaScript support
+- **⚡ Incremental Linting** - Real-time linting with file watching and queue management
+- **🔄 Git Workflow Manager** - Automated git workflows with change analysis and commit generation
+- **📊 Quality Gates** - Security scanning, dependency auditing, and compliance checking
+
 ### CLI Tools
 
 ```bash
-# Create new Reynard project
-npx reynard-tools create my-app
+# Install FOXY git hooks - Flexible Orchestration for Xenial Yield
+pnpm foxy:install
+
+# Run comprehensive validation
+pnpm validation:run
+
+# Run incremental linting
+pnpm --filter reynard-code-quality analyze:watch
 
 # Generate component
 npx reynard-tools generate component MyComponent
@@ -2161,6 +2803,8 @@ contributors who make this framework possible.
   JavaScript
 - **[ESLint](https://eslint.org)** ([GitHub](https://github.com/eslint/eslint)) - Pluggable JavaScript linter
 - **[Prettier](https://prettier.io)** ([GitHub](https://github.com/prettier/prettier)) - Opinionated code formatter
+- **Reynard Catalyst** - Core development utilities (git hooks, linting, validation, file management)
+- **Reynard Code Quality** - Comprehensive quality assurance tools (validation, incremental linting, git workflows)
 
 ### **🎯 Research and Development**
 

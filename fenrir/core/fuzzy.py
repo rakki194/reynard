@@ -19,6 +19,7 @@ from ..exploits.attacks import (
 from .base_fuzzer import BaseFuzzer
 from .endpoint_orchestrator import create_endpoint_orchestrator
 from .results import AuthBypassResult, FuzzResult, MLFuzzResult, WebSocketResult
+from .profiler import FenrirProfiler
 
 console = Console()
 
@@ -96,6 +97,10 @@ class Fuzzy(BaseFuzzer):
         self.ml_results: list[MLFuzzResult] = []
         self.auth_bypass_results: list[AuthBypassResult] = []
         self.specialized_endpoint_results: dict[str, list[FuzzResult]] = {}
+
+        # Memory profiling integration
+        self.profiler: FenrirProfiler | None = None
+        self.profiling_enabled = False
 
     async def __aenter__(self):
         """Async context manager entry."""
@@ -299,6 +304,119 @@ class Fuzzy(BaseFuzzer):
         self.specialized_endpoint_results[category] = results
 
         return results
+
+    def enable_profiling(self, session_id: str | None = None) -> None:
+        """Enable memory profiling for fuzzing operations.
+
+        *fox strategic analysis* Enables comprehensive memory profiling
+        to identify performance bottlenecks and optimization opportunities.
+
+        Args:
+            session_id: Optional session identifier for tracking
+        """
+        self.profiler = FenrirProfiler()
+        self.profiling_enabled = True
+        console.print("[green]🦊 Memory profiling enabled for fuzzing session[/green]")
+
+    def disable_profiling(self) -> None:
+        """Disable memory profiling."""
+        self.profiling_enabled = False
+        self.profiler = None
+        console.print("[yellow]🦊 Memory profiling disabled[/yellow]")
+
+    async def run_memory_analysis(self, session_id: str | None = None) -> dict:
+        """Run comprehensive memory analysis using Fenrir profiler.
+
+        *whiskers twitch with analytical precision* Performs strategic
+        memory analysis of the backend systems.
+
+        Args:
+            session_id: Optional session identifier
+
+        Returns:
+            Dict with profiling results
+        """
+        if not self.profiler:
+            self.enable_profiling(session_id)
+
+        console.print(Panel.fit(
+            "[bold blue]🦊 FENRIR MEMORY ANALYSIS MODE[/bold blue]\n"
+            "Strategic memory profiling and optimization analysis",
+            border_style="blue"
+        ))
+
+        session = await self.profiler.run_memory_analysis(session_id)
+
+        return {
+            "session_id": session.session_id,
+            "duration": (session.end_time - session.start_time).total_seconds() if session.end_time else 0,
+            "snapshots": len(session.snapshots),
+            "issues_found": len(session.results),
+            "backend_analysis": session.backend_analysis,
+            "database_analysis": session.database_analysis,
+            "service_analysis": session.service_analysis
+        }
+
+    async def run_startup_analysis(self, session_id: str | None = None) -> dict:
+        """Run focused startup profiling analysis.
+
+        *fox cunning analysis* Analyzes backend startup sequence
+        for memory optimization opportunities.
+
+        Args:
+            session_id: Optional session identifier
+
+        Returns:
+            Dict with startup analysis results
+        """
+        if not self.profiler:
+            self.enable_profiling(session_id)
+
+        console.print(Panel.fit(
+            "[bold cyan]🦊 FENRIR STARTUP ANALYSIS MODE[/bold cyan]\n"
+            "Strategic backend startup profiling",
+            border_style="cyan"
+        ))
+
+        return await self.profiler.run_startup_profiling(session_id)
+
+    async def run_database_analysis(self, session_id: str | None = None) -> dict:
+        """Run focused database profiling analysis.
+
+        *fox strategic database analysis* Analyzes database connection
+        pools and performance for optimization opportunities.
+
+        Args:
+            session_id: Optional session identifier
+
+        Returns:
+            Dict with database analysis results
+        """
+        if not self.profiler:
+            self.enable_profiling(session_id)
+
+        console.print(Panel.fit(
+            "[bold magenta]🦊 FENRIR DATABASE ANALYSIS MODE[/bold magenta]\n"
+            "Strategic database connection and performance analysis",
+            border_style="magenta"
+        ))
+
+        return await self.profiler.run_database_profiling(session_id)
+
+    def save_profiling_session(self, output_path: str | None = None) -> str | None:
+        """Save the current profiling session to file.
+
+        Args:
+            output_path: Optional path to save file
+
+        Returns:
+            Path where session was saved, or None if no session
+        """
+        if self.profiler:
+            from pathlib import Path
+            path = self.profiler.save_last_session(Path(output_path) if output_path else None)
+            return str(path) if path else None
+        return None
 
     def generate_fuzz_report(self) -> None:
         """Generate a comprehensive fuzzing report.

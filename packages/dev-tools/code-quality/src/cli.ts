@@ -17,6 +17,7 @@ import {
   createDocstringCommand,
   createEmojiRoleplayCommand,
 } from "./commands";
+import { handleQualityGateManagementCommand } from "./commands/quality-gate-management-command";
 
 const program = new Command();
 
@@ -95,6 +96,28 @@ program.addCommand(createDocstringCommand());
 
 // Emoji and roleplay scanning command
 program.addCommand(createEmojiRoleplayCommand());
+
+// Quality gate management command
+program
+  .command("quality-gate-mgmt")
+  .description("Manage quality gates (create, update, delete, list)")
+  .option("-p, --project <path>", "Project root path", process.cwd())
+  .option("-a, --action <action>", "Action to perform (list, show, create, update, delete, init, stats, history)", "list")
+  .option("--gate-id <id>", "Quality gate ID")
+  .option("--name <name>", "Quality gate name")
+  .option("-e, --environment <env>", "Environment (development, staging, production, all)")
+  .option("--description <desc>", "Quality gate description")
+  .option("--enabled", "Enable the quality gate")
+  .option("--disabled", "Disable the quality gate")
+  .option("--backend-url <url>", "Backend URL", "http://localhost:8000")
+  .option("--api-key <key>", "API key for authentication")
+  .action(async (options) => {
+    // Convert enabled/disabled flags to boolean
+    if (options.enabled) options.enabled = true;
+    if (options.disabled) options.enabled = false;
+    
+    await handleQualityGateManagementCommand(options);
+  });
 
 // Handle uncaught errors
 process.on("uncaughtException", error => {

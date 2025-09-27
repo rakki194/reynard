@@ -5,17 +5,18 @@
  */
 
 import { defineConfig, devices } from "@playwright/test";
-import { createResultsManager, TEST_TYPES } from "../core/utils/results-manager";
+import { createResultsManagerDB, TEST_TYPES } from "../core/utils/results-manager-db";
 
-// 🦊 Initialize results manager for DOM tests
-const resultsManager = createResultsManager(TEST_TYPES.DOM, {
+// 🦦 Initialize database results manager for DOM tests
+const resultsManager = createResultsManagerDB(TEST_TYPES.DOM, {
   environment: process.env.NODE_ENV || "development",
   branch: process.env.GIT_BRANCH || "unknown",
   commit: process.env.GIT_COMMIT || "unknown",
+  apiBaseUrl: process.env.TESTING_API_URL || "http://localhost:8000",
 });
 
-// Create directories and get paths
-const resultsPaths = resultsManager.createDirectories();
+// Initialize the test run
+await resultsManager.startTestRun();
 
 export default defineConfig({
   testDir: "../suites",
@@ -33,6 +34,7 @@ export default defineConfig({
   reporter: [
     ["html", { open: "never" }],
     ["json", { outputFile: "dom-assertions-results.json" }],
+    ["list"],
   ],
 
   use: {
@@ -56,5 +58,5 @@ export default defineConfig({
     timeout: 10 * 1000,
   },
 
-  outputDir: resultsPaths.artifactsDir,
+  outputDir: ".playwright-results/dom",
 });

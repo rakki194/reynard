@@ -16,6 +16,9 @@ __description__ = (
 # Import core modules
 from . import core
 
+# Import profiling module
+from .core.profiler import FenrirProfiler
+
 # Import exploit modules
 from .exploits import (
     api_exploits,
@@ -46,4 +49,6 @@ __all__ = [
     "sql_injection",
     "ssrf_exploits",
     "unicode_exploits",
+    # Profiling
+    "FenrirProfiler",
 ]

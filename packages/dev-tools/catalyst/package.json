@@ -5,6 +5,9 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "foxy": "./dist/git-hooks/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -22,6 +25,18 @@
       "types": "./dist/file-utils/index.d.ts",
       "import": "./dist/file-utils/index.js"
     },
+    "./git-hooks": {
+      "types": "./dist/git-hooks/index.d.ts",
+      "import": "./dist/git-hooks/index.js"
+    },
+    "./linting": {
+      "types": "./dist/linting/index.d.ts",
+      "import": "./dist/linting/index.js"
+    },
+    "./validation": {
+      "types": "./dist/validation/index.d.ts",
+      "import": "./dist/validation/index.js"
+    },
     "./types": {
       "types": "./dist/types/index.d.ts",
       "import": "./dist/types/index.js"
@@ -33,6 +48,8 @@
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "clean": "rm -rf dist"
   },
   "keywords": ["reynard", "dev-tools", "cli", "logger", "file-utils", "catalyst", "utilities", "shared"],

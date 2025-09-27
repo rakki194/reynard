@@ -35,6 +35,16 @@ def mock_service():
     return Mock()
 
 
+def override_dependency(client, mock_service):
+    """Helper function to override the dependency for testing."""
+    from app.api.quality_gates.endpoints import get_quality_gates_service
+    
+    def override_get_quality_gates_service():
+        return mock_service
+    
+    client.app.dependency_overrides[get_quality_gates_service] = override_get_quality_gates_service
+
+
 @pytest.fixture
 def sample_gate_data():
     """Sample quality gate data for testing."""
@@ -89,28 +99,30 @@ class TestQualityGatesAPI:
 
     def test_create_quality_gate_success(self, client, mock_service, sample_gate_data, sample_gate_response):
         """Test successful quality gate creation."""
-        from app.api.quality_gates.endpoints import get_quality_gates_service
+        # Set up the mock service
+        mock_gate = Mock()
+        mock_gate.id = uuid.uuid4()
+        mock_gate.gate_id = sample_gate_data["gate_id"]
+        mock_gate.name = sample_gate_data["name"]
+        mock_gate.description = sample_gate_data["description"]
+        mock_gate.environment = EnvironmentType.DEVELOPMENT
+        mock_gate.enabled = sample_gate_data["enabled"]
+        mock_gate.is_default = sample_gate_data["is_default"]
+        mock_gate.created_at = datetime.now(timezone.utc)
+        mock_gate.updated_at = datetime.now(timezone.utc)
+        mock_gate.conditions = []
         
-        # Override the dependency for this test
-        def override_service():
-            mock_service.create_quality_gate = AsyncMock(return_value=Mock(
-                id=uuid.uuid4(),
-                gate_id=sample_gate_data["gate_id"],
-                name=sample_gate_data["name"],
-                description=sample_gate_data["description"],
-                environment=EnvironmentType.DEVELOPMENT,
-                enabled=sample_gate_data["enabled"],
-                is_default=sample_gate_data["is_default"],
-                created_at=datetime.now(timezone.utc),
-                updated_at=datetime.now(timezone.utc),
-                conditions=[]
-            ))
-            return mock_service
+        mock_service.create_quality_gate = AsyncMock(return_value=mock_gate)
         
-        client.app.dependency_overrides[get_quality_gates_service] = override_service
+        # Override the dependency
+        override_dependency(client, mock_service)
 
         response = client.post("/api/quality-gates/", json=sample_gate_data)
 
+        if response.status_code != status.HTTP_201_CREATED:
+            print(f"Response status: {response.status_code}")
+            print(f"Response body: {response.text}")
+        
         assert response.status_code == status.HTTP_201_CREATED
         data = response.json()
         assert data["gate_id"] == sample_gate_data["gate_id"]

@@ -6,12 +6,15 @@ Catalyst provides unified utilities and base classes for all Reynard dev-tools, 
 
 ## 🎯 **Features**
 
+- **🦊 FOXY Git Hooks System**: Flexible Orchestration for Xenial Yield - Native git hooks replacing husky with custom validation and orchestration
+- **🔍 Unified Linting**: ESLint, Prettier, and custom linting orchestration with file discovery
+- **✅ Validation Framework**: File content validation with regex, line count, and custom rules
+- **📁 File Management**: File discovery, junk detection, and project utilities
 - **🖥️ Unified CLI System**: Base classes and utilities for consistent command-line interfaces
 - **📝 Unified Logging**: Consistent color schemes and formatting across all tools
-- **📁 File Utilities**: Common file operations, type detection, and exclusion patterns
 - **🔧 Type Definitions**: Shared interfaces and type definitions
 - **⚡ Performance**: Optimized for speed and memory efficiency
-- **🧪 Well Tested**: Comprehensive test coverage
+- **🧪 Well Tested**: Comprehensive test coverage with Vitest
 
 ## 📦 **Installation**
 
@@ -128,6 +131,50 @@ Unified logging system with consistent colors and formatting.
 - `section(title: string)`: Create section headers
 - `header(title: string)`: Create main headers
 - `summary(stats: Record<string, number>)`: Display statistics
+
+### FOXY Git Hooks Module
+
+#### `HookManager`
+
+Manage git hooks with custom validation and orchestration.
+
+**Methods:**
+
+- `installHooks()`: Install git hooks into .git/hooks directory
+- `uninstallHooks()`: Remove git hooks from .git/hooks directory
+- `runHook(hookType: GitHookType, args: string[])`: Run specific git hook
+- `runPreCommit()`: Run pre-commit validation
+- `runCommitMsg(messageFilePath: string)`: Run commit message validation
+- `runPrePush()`: Run pre-push validation
+
+### Linting Module
+
+#### `LintingOrchestrator`
+
+Unified linting system with file discovery and processor management.
+
+**Methods:**
+
+- `discoverFiles()`: Discover files matching include/exclude patterns
+- `runLinting()`: Execute linting on discovered files
+- `shouldInclude(filePath: string, patterns: string[])`: Check if file should be included
+- `shouldExclude(filePath: string, patterns: string[])`: Check if file should be excluded
+- `getProcessorForFile(filePath: string)`: Get appropriate processor for file
+
+### Validation Module
+
+#### `ValidationEngine`
+
+Comprehensive file validation with custom rules and patterns.
+
+**Methods:**
+
+- `validateFileContent()`: Validate all files against configured rules
+- `findFiles(globPattern: string)`: Find files matching glob patterns
+- `validateRegex(content: string, regex: string, filePath: string, ruleId: string)`: Validate regex patterns
+- `validateForbiddenStrings(content: string, strings: string[], filePath: string, ruleId: string)`: Validate forbidden strings
+- `validateLineCount(content: string, options: LineCountOptions, filePath: string, ruleId: string)`: Validate line counts
+- `shouldExcludeFile(filePath: string, patterns: string[])`: Check file exclusion
 
 ### File Utils Module
 

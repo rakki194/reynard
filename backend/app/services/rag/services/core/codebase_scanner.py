@@ -9,6 +9,7 @@ without duplication.
 exactly where to look and what to find!
 """
 
+import asyncio
 import logging
 import os
 import time
@@ -118,7 +119,12 @@ class CodebaseScanner:
         )
 
         self.max_file_size_mb = self.config.get("max_file_size_mb", 10)
-        self.batch_size = self.config.get("batch_size", 100)
+        self.batch_size = self.config.get("batch_size", int(os.getenv("INDEXING_BATCH_SIZE", "100")))
+        
+        # Memory-efficient indexing configuration
+        self.memory_efficient_batch_size = self.config.get("memory_efficient_batch_size", int(os.getenv("INDEXING_BATCH_SIZE", "5")))
+        self.max_memory_mb = self.config.get("max_memory_mb", int(os.getenv("INDEXING_MAX_MEMORY_MB", "1024")))
+        self.memory_cleanup_threshold = self.config.get("memory_cleanup_threshold", float(os.getenv("INDEXING_MEMORY_CLEANUP_THRESHOLD", "0.8")))
 
         # Language detection mapping
         self.language_map = {
@@ -420,3 +426,120 @@ class CodebaseScanner:
     def get_language_map(self) -> Dict[str, str]:
         """Get the language detection mapping."""
         return self.language_map.copy()
+
+    async def scan_and_index_memory_efficient(
+        self,
+        root_path: Optional[str] = None,
+        document_processor: Optional[Any] = None,
+        vector_store: Optional[Any] = None,
+        embedding_service: Optional[Any] = None,
+    ) -> AsyncGenerator[Dict[str, Any], None]:
+        """Scan the codebase and index documents using memory-efficient processing.
+        
+        This method uses the IndexingService for memory-efficient batch processing
+        with automatic memory management and cleanup.
+        
+        Args:
+            root_path: Root directory to scan
+            document_processor: Document processor for content processing
+            vector_store: Vector store for document storage
+            embedding_service: Embedding service for vector generation
+            
+        Yields:
+            Dictionary with indexing progress and results
+        """
+        try:
+            # Import IndexingService when needed to avoid circular imports
+            from ...indexing import IndexingService
+            
+            # Collect all files to index
+            files_to_index = []
+            async for item in self.scan_codebase(root_path):
+                if item["type"] == "file":
+                    files_to_index.append(Path(item["data"]["path"]))
+                elif item["type"] in ["progress", "complete", "error"]:
+                    yield item
+            
+            if not files_to_index:
+                yield {"type": "complete", "message": "No files found to index"}
+                return
+            
+            # Create indexing callback
+            def indexing_callback(file_path: str) -> Dict[str, Any]:
+                """Synchronous callback for file processing."""
+                try:
+                    # Read file content
+                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
+                        content = f.read()
+                    
+                    # Create document
+                    file_path_obj = Path(file_path)
+                    document = {
+                        "id": str(file_path_obj.relative_to(Path(root_path or "."))),
+                        "content": content,
+                        "file_path": file_path,
+                        "file_type": file_path_obj.suffix[1:] if file_path_obj.suffix else 'text',
+                        "language": self._detect_language(file_path_obj.suffix),
+                        "metadata": {
+                            "file_path": file_path,
+                            "file_type": file_path_obj.suffix[1:] if file_path_obj.suffix else 'text',
+                            "language": self._detect_language(file_path_obj.suffix),
+                            "size": len(content),
+                        },
+                    }
+                    
+                    return {"success": True, "document": document}
+                    
+                except Exception as e:
+                    logger.error(f"Failed to process file {file_path}: {e}")
+                    return {"success": False, "error": str(e)}
+            
+            # Initialize memory-efficient indexing service
+            indexing_config = {
+                "memory_efficient_batch_size": self.memory_efficient_batch_size,
+                "max_memory_mb": self.max_memory_mb,
+                "memory_cleanup_threshold": self.memory_cleanup_threshold,
+                "gc_frequency": int(os.getenv("INDEXING_GC_FREQUENCY", "3")),
+            }
+            
+            indexing_service = IndexingService(indexing_config)
+            await indexing_service.initialize()
+            
+            try:
+                # Perform memory-efficient indexing
+                result = await indexing_service.perform_indexing(
+                    files_to_index, indexing_callback, force=False
+                )
+                
+                # Process results through document processor and vector store
+                if result.get("status") == "completed":
+                    processed_files = result.get("processed_files", 0)
+                    failed_files = result.get("failed_files", 0)
+                    
+                    yield {
+                        "type": "complete",
+                        "message": f"Memory-efficient indexing completed: {processed_files} processed, {failed_files} failed",
+                        "processed": processed_files,
+                        "failed": failed_files,
+                        "memory_stats": result.get("memory_stats", {}),
+                        "performance_stats": result.get("performance_stats", {}),
+                    }
+                else:
+                    yield {
+                        "type": "error",
+                        "error": f"Indexing failed: {result.get('error', 'Unknown error')}",
+                        "progress": result.get("progress", {}),
+                    }
+                    
+            finally:
+                # Cleanup
+                await indexing_service.shutdown()
+                
+        except ImportError as e:
+            logger.warning(f"Could not import IndexingService: {e}. Falling back to regular indexing.")
+            # Fallback to regular indexing
+            async for item in self.scan_and_index(root_path, document_processor, vector_store, embedding_service):
+                yield item
+        except Exception as e:
+            logger.error(f"Memory-efficient indexing failed: {e}")
+            yield {"type": "error", "error": f"Memory-efficient indexing failed: {e}"}

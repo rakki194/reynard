@@ -55,6 +55,9 @@ from .mutations import LearningBasedMutations
 from .results import AuthBypassResult, FuzzResult, MLFuzzResult, WebSocketResult
 from .wrappers.exploit_wrappers import run_fenrir_exploit
 
+# Memory profiling module
+from .profiler import FenrirProfiler, MemoryProfiler, ProfilingSession
+
 __all__ = [
     # Main framework
     "Fuzzy",
@@ -84,4 +87,8 @@ __all__ = [
     "MLFuzzer",
     "AuthBypassFuzzer",
     "TraditionalFuzzer",
+    # Memory profiling
+    "FenrirProfiler",
+    "MemoryProfiler",
+    "ProfilingSession",
 ]

@@ -5,7 +5,7 @@
 
 import fs from "fs";
 import path from "path";
-import type { BackupOptions, ValidationResult } from "../types/CLI.js";
+import type { BackupOptions, CLIValidationResult } from "../types/CLI.js";
 
 export class CLIUtils {
   /**
@@ -50,7 +50,7 @@ export class CLIUtils {
   /**
    * Validate a configuration object
    */
-  static validateConfig(config: any, requiredFields: string[]): ValidationResult {
+  static validateConfig(config: any, requiredFields: string[]): CLIValidationResult {
     const errors: string[] = [];
 
     for (const field of requiredFields) {

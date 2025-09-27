@@ -5,4 +5,4 @@
 
 export { BaseCLI } from "./BaseCLI.js";
 export { CLIUtils } from "./CLIUtils.js";
-export type { CLIOptions, BaseCLIConfig, CLICommand, BackupOptions, ValidationResult } from "../types/CLI.js";
+export type { CLIOptions, BaseCLIConfig, CLICommand, BackupOptions, CLIValidationResult } from "../types/CLI.js";

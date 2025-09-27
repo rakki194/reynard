@@ -133,6 +133,7 @@ class ContinuousIndexingService:
         self.observer = None
         self.change_handler = None
         self.running = False
+        self.initialized = False
         
         # Memory-efficient indexing service (imported when needed to avoid circular imports)
         self.indexing_service: Optional[Any] = None
@@ -194,6 +195,7 @@ class ContinuousIndexingService:
             )
 
             self.stats["start_time"] = time.time()
+            self.initialized = True
             logger.info("✅ Continuous indexing service initialized successfully")
             return True
 
@@ -228,6 +230,32 @@ class ContinuousIndexingService:
             self.observer.join()
 
         logger.info("🛑 Stopped watching for changes")
+
+    async def health_check(self) -> Dict[str, Any]:
+        """Perform health check for the continuous indexing service."""
+        try:
+            return {
+                "status": "healthy" if self.initialized else "stopped",
+                "running": self.running,
+                "initialized": self.initialized,
+                "indexing_service": "available" if self.indexing_service is not None else "unavailable",
+                "integrated_services": {
+                    "rag_service": "available" if self.rag_service is not None else "unavailable",
+                    "indexing_service": "available" if self.indexing_service is not None else "unavailable",
+                    "observer": "alive" if self.observer and self.observer.is_alive() else "stopped",
+                },
+                "observer_alive": self.observer.is_alive() if self.observer else False,
+                "queue_size": self.indexing_queue.qsize(),
+                "stats": self.stats,
+            }
+        except Exception as e:
+            logger.error(f"Health check failed: {e}")
+            return {
+                "status": "error",
+                "error": str(e),
+                "running": False,
+                "initialized": False,
+            }
 
     async def shutdown(self):
         """Shutdown the continuous indexing service."""

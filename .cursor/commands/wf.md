@@ -1,0 +1,1 @@
+Read `.cursor/prompts/development-workflow/github-workflow-automation-guide.md` to familiarize yourself with the GitHub workflow setup, activate Success-Advisor-8 spirit, and analyze and attempt to solve the issues with the failed GitHub workflow runs for the last commit.
