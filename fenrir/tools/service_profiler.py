@@ -93,6 +93,7 @@ class ServiceProfiler:
         """Get list of enabled services from environment variables."""
         enabled = []
         service_mappings = {
+            # Core services
             'GATEKEEPER_ENABLED': 'gatekeeper',
             'RAG_ENABLED': 'rag',
             'OLLAMA_ENABLED': 'ollama',
@@ -106,6 +107,23 @@ class ServiceProfiler:
             'CACHING_ENABLED': 'caching',
             'FILE_INDEXING_ENABLED': 'file_indexing',
             'DEBUG_LOGGING_ENABLED': 'debug_logging',
+            # AI/ML services
+            'PYTORCH_ENABLED': 'pytorch',
+            'TRANSFORMERS_ENABLED': 'transformers',
+            'EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED': 'sentence_transformers',
+            'EMBEDDING_OLLAMA_ENABLED': 'embedding_ollama',
+            'EMBEDDING_OPENAI_ENABLED': 'embedding_openai',
+            'EMBEDDING_HUGGINGFACE_ENABLED': 'embedding_huggingface',
+            # Processing services
+            'PDF_PROCESSING_ENABLED': 'pdf_processing',
+            'MARKER_PACKAGE_ENABLED': 'marker_package',
+            'MARKER_LLM_ENHANCEMENT_ENABLED': 'marker_llm_enhancement',
+            'SECURITY_THREAT_DETECTION_ENABLED': 'security_threat_detection',
+            # Infrastructure services
+            'DIFFUSION_PIPE_ENABLED': 'diffusion_pipe',
+            'CONTINUOUS_INDEXING_ENABLED': 'continuous_indexing',
+            'INDEXING_MEMORY_PROFILER_ENABLED': 'indexing_memory_profiler',
+            'RAG_CONTINUOUS_INDEXING_ENABLED': 'rag_continuous_indexing',
         }
 
         for env_var, service_name in service_mappings.items():
@@ -382,6 +400,7 @@ class ServiceProfiler:
                 'RAG_ENABLED': os.getenv('RAG_ENABLED'),
                 'RAG_CONTINUOUS_INDEXING_ENABLED': os.getenv('RAG_CONTINUOUS_INDEXING_ENABLED'),
                 'INDEXING_MEMORY_PROFILER_ENABLED': os.getenv('INDEXING_MEMORY_PROFILER_ENABLED'),
+                'EMBEDDING_BACKENDS_ENABLED': os.getenv('EMBEDDING_BACKENDS_ENABLED'),
             },
             'ollama': {
                 'OLLAMA_ENABLED': os.getenv('OLLAMA_ENABLED'),
@@ -389,10 +408,59 @@ class ServiceProfiler:
             },
             'gatekeeper': {
                 'GATEKEEPER_ENABLED': os.getenv('GATEKEEPER_ENABLED'),
+                'GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES': os.getenv('GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES'),
+                'GATEKEEPER_REFRESH_TOKEN_EXPIRE_DAYS': os.getenv('GATEKEEPER_REFRESH_TOKEN_EXPIRE_DAYS'),
             },
             'redis': {
                 'REDIS_ENABLED': os.getenv('REDIS_ENABLED'),
                 'REDIS_URL': os.getenv('REDIS_URL'),
+            },
+            'pytorch': {
+                'PYTORCH_ENABLED': os.getenv('PYTORCH_ENABLED'),
+                'PYTORCH_CUDA_ALLOC_CONF': os.getenv('PYTORCH_CUDA_ALLOC_CONF'),
+                'CUDA_LAUNCH_BLOCKING': os.getenv('CUDA_LAUNCH_BLOCKING'),
+            },
+            'transformers': {
+                'TRANSFORMERS_ENABLED': os.getenv('TRANSFORMERS_ENABLED'),
+                'TOKENIZERS_PARALLELISM': os.getenv('TOKENIZERS_PARALLELISM'),
+            },
+            'sentence_transformers': {
+                'EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED': os.getenv('EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED'),
+            },
+            'embedding_ollama': {
+                'EMBEDDING_OLLAMA_ENABLED': os.getenv('EMBEDDING_OLLAMA_ENABLED'),
+            },
+            'embedding_openai': {
+                'EMBEDDING_OPENAI_ENABLED': os.getenv('EMBEDDING_OPENAI_ENABLED'),
+            },
+            'embedding_huggingface': {
+                'EMBEDDING_HUGGINGFACE_ENABLED': os.getenv('EMBEDDING_HUGGINGFACE_ENABLED'),
+            },
+            'pdf_processing': {
+                'PDF_PROCESSING_ENABLED': os.getenv('PDF_PROCESSING_ENABLED'),
+            },
+            'marker_package': {
+                'MARKER_PACKAGE_ENABLED': os.getenv('MARKER_PACKAGE_ENABLED'),
+            },
+            'marker_llm_enhancement': {
+                'MARKER_LLM_ENHANCEMENT_ENABLED': os.getenv('MARKER_LLM_ENHANCEMENT_ENABLED'),
+            },
+            'security_threat_detection': {
+                'SECURITY_THREAT_DETECTION_ENABLED': os.getenv('SECURITY_THREAT_DETECTION_ENABLED'),
+            },
+            'diffusion_pipe': {
+                'DIFFUSION_PIPE_ENABLED': os.getenv('DIFFUSION_PIPE_ENABLED'),
+                'DIFFUSION_PIPE_DEBUG': os.getenv('DIFFUSION_PIPE_DEBUG'),
+                'DIFFUSION_PIPE_TIMEOUT': os.getenv('DIFFUSION_PIPE_TIMEOUT'),
+            },
+            'continuous_indexing': {
+                'CONTINUOUS_INDEXING_ENABLED': os.getenv('CONTINUOUS_INDEXING_ENABLED'),
+            },
+            'indexing_memory_profiler': {
+                'INDEXING_MEMORY_PROFILER_ENABLED': os.getenv('INDEXING_MEMORY_PROFILER_ENABLED'),
+            },
+            'rag_continuous_indexing': {
+                'RAG_CONTINUOUS_INDEXING_ENABLED': os.getenv('RAG_CONTINUOUS_INDEXING_ENABLED'),
             },
         }
 
@@ -418,6 +486,7 @@ class ServiceProfiler:
     def _import_service_module(self, service_name: str):
         """Import a service module."""
         module_mappings = {
+            # Core services
             'rag': 'app.services.rag.rag_service',
             'ollama': 'app.services.ai.ollama_service',
             'gatekeeper': 'app.services.gatekeeper.gatekeeper_service',
@@ -431,11 +500,32 @@ class ServiceProfiler:
             'comfy': 'app.services.comfy.comfy_service',
             'nlweb': 'app.services.nlweb.nlweb_service',
             'tts': 'app.services.tts.tts_service',
+            # AI/ML services
+            'pytorch': 'torch',
+            'transformers': 'transformers',
+            'sentence_transformers': 'sentence_transformers',
+            'embedding_ollama': 'app.services.rag.services.core.ai_embedding',
+            'embedding_openai': 'app.services.rag.services.core.ai_embedding',
+            'embedding_huggingface': 'app.services.rag.services.core.ai_embedding',
+            # Processing services
+            'pdf_processing': 'app.services.pdf_processor',
+            'marker_package': 'app.services.rag.services.core.document_processor',
+            'marker_llm_enhancement': 'app.services.rag.services.core.document_processor',
+            'security_threat_detection': 'app.security.security_config',
+            # Infrastructure services
+            'diffusion_pipe': 'app.services.diffusion_pipe',
+            'continuous_indexing': 'app.services.rag.file_indexing_service',
+            'indexing_memory_profiler': 'app.services.rag.services.monitoring.rag_profiler',
+            'rag_continuous_indexing': 'app.services.rag.file_indexing_service',
         }
 
         module_path = module_mappings.get(service_name)
         if module_path:
-            return importlib.import_module(module_path)
+            try:
+                return importlib.import_module(module_path)
+            except ImportError as e:
+                logger.warning(f"Could not import module {module_path}: {e}")
+                return None
         return None
 
     def _initialize_service(self, service_name: str, service_module):
@@ -456,12 +546,13 @@ class ServiceProfiler:
     def _get_service_dependencies(self, service_name: str) -> List[str]:
         """Get dependencies for a service."""
         dependency_mappings = {
-            'rag': ['database', 'redis', 'embedding_backends'],
+            # Core services
+            'rag': ['database', 'redis', 'embedding_backends', 'file_indexing'],
             'ollama': ['requests', 'aiohttp'],
             'gatekeeper': ['database', 'redis'],
             'redis': [],
             'caching': ['redis'],
-            'file_indexing': ['rag', 'database'],
+            'file_indexing': ['rag', 'database', 'pdf_processing'],
             'debug_logging': [],
             'security': ['database'],
             'ecs_world': ['database', 'redis'],
@@ -469,6 +560,23 @@ class ServiceProfiler:
             'comfy': ['requests', 'aiohttp'],
             'nlweb': ['requests', 'aiohttp'],
             'tts': ['requests', 'aiohttp'],
+            # AI/ML services
+            'pytorch': ['numpy', 'cuda'],
+            'transformers': ['torch', 'tokenizers'],
+            'sentence_transformers': ['transformers', 'torch'],
+            'embedding_ollama': ['ollama', 'rag'],
+            'embedding_openai': ['openai', 'rag'],
+            'embedding_huggingface': ['transformers', 'rag'],
+            # Processing services
+            'pdf_processing': ['marker_package', 'file_indexing'],
+            'marker_package': ['torch', 'transformers'],
+            'marker_llm_enhancement': ['ollama', 'marker_package'],
+            'security_threat_detection': ['security', 'database'],
+            # Infrastructure services
+            'diffusion_pipe': ['torch', 'transformers'],
+            'continuous_indexing': ['rag', 'file_indexing', 'database'],
+            'indexing_memory_profiler': ['rag', 'file_indexing'],
+            'rag_continuous_indexing': ['rag', 'continuous_indexing'],
         }
 
         return dependency_mappings.get(service_name, [])
@@ -583,7 +691,7 @@ class ServiceProfiler:
         return (memory_score + complexity_score) / 2
 
     def _generate_summary(self) -> Dict[str, Any]:
-        """Generate summary statistics."""
+        """Generate summary statistics with specific recommendations."""
         total_services = len(self.service_metrics)
         total_packages = len(self.package_metrics)
         total_features = len(self.feature_metrics)
@@ -611,6 +719,9 @@ class ServiceProfiler:
             reverse=True
         )[:5]
 
+        # Generate specific recommendations
+        recommendations = self._generate_specific_recommendations()
+
         return {
             "total_services": total_services,
             "total_packages": total_packages,
@@ -623,7 +734,8 @@ class ServiceProfiler:
                 {
                     "name": service.name,
                     "memory_mb": service.memory_mb,
-                    "performance_score": service.performance_score
+                    "performance_score": service.performance_score,
+                    "recommendation": self._get_service_specific_recommendation(service.name, "memory")
                 }
                 for service in top_memory_services
             ],
@@ -631,11 +743,13 @@ class ServiceProfiler:
                 {
                     "name": service.name,
                     "startup_time_ms": service.startup_time_ms,
-                    "performance_score": service.performance_score
+                    "performance_score": service.performance_score,
+                    "recommendation": self._get_service_specific_recommendation(service.name, "startup")
                 }
                 for service in slowest_services
             ],
-            "system_health": self._calculate_system_health()
+            "system_health": self._calculate_system_health(),
+            "specific_recommendations": recommendations
         }
 
     def _calculate_system_health(self) -> Dict[str, Any]:
@@ -664,6 +778,112 @@ class ServiceProfiler:
             "average_startup_time_ms": avg_startup_time,
             "health_status": "excellent" if health_score >= 90 else "good" if health_score >= 70 else "fair" if health_score >= 50 else "poor"
         }
+
+    def _generate_specific_recommendations(self) -> List[Dict[str, Any]]:
+        """Generate specific, actionable recommendations based on actual data."""
+        recommendations = []
+        
+        # Memory-based recommendations
+        high_memory_services = [s for s in self.service_metrics.values() if s.memory_mb > 50]
+        if high_memory_services:
+            recommendations.append({
+                "category": "memory_optimization",
+                "priority": "high",
+                "issue": f"{len(high_memory_services)} services consuming >50MB each",
+                "services_affected": [s.name for s in high_memory_services],
+                "recommendation": "Implement lazy loading for high-memory services",
+                "action_items": [
+                    "Enable LazyRAGService for RAG components",
+                    "Use conditional imports for ML libraries",
+                    "Implement service-level memory monitoring"
+                ]
+            })
+
+        # Startup time recommendations
+        slow_services = [s for s in self.service_metrics.values() if s.startup_time_ms > 1000]
+        if slow_services:
+            recommendations.append({
+                "category": "startup_optimization",
+                "priority": "medium",
+                "issue": f"{len(slow_services)} services taking >1s to start",
+                "services_affected": [s.name for s in slow_services],
+                "recommendation": "Optimize service initialization sequence",
+                "action_items": [
+                    "Implement parallel service initialization",
+                    "Cache heavy computations during startup",
+                    "Use async initialization patterns"
+                ]
+            })
+
+        # Performance score recommendations
+        low_performance_services = [s for s in self.service_metrics.values() if s.performance_score < 50]
+        if low_performance_services:
+            recommendations.append({
+                "category": "performance_optimization",
+                "priority": "high",
+                "issue": f"{len(low_performance_services)} services with performance score <50",
+                "services_affected": [s.name for s in low_performance_services],
+                "recommendation": "Address performance bottlenecks in critical services",
+                "action_items": [
+                    "Profile individual service methods",
+                    "Optimize database queries and connections",
+                    "Implement caching strategies"
+                ]
+            })
+
+        # Dependency optimization
+        complex_services = [s for s in self.service_metrics.values() if len(s.dependencies) > 3]
+        if complex_services:
+            recommendations.append({
+                "category": "dependency_optimization",
+                "priority": "medium",
+                "issue": f"{len(complex_services)} services with >3 dependencies",
+                "services_affected": [s.name for s in complex_services],
+                "recommendation": "Simplify service dependencies",
+                "action_items": [
+                    "Review and eliminate unnecessary dependencies",
+                    "Implement dependency injection patterns",
+                    "Consider service decomposition"
+                ]
+            })
+
+        return recommendations
+
+    def _get_service_specific_recommendation(self, service_name: str, issue_type: str) -> str:
+        """Get specific recommendation for a service based on issue type."""
+        recommendations = {
+            "pytorch": {
+                "memory": "Consider using torch.jit.script for model optimization and enable CUDA memory pooling",
+                "startup": "Pre-load models in background threads and use model caching"
+            },
+            "transformers": {
+                "memory": "Use model quantization and implement model sharing between services",
+                "startup": "Cache tokenizers and use lazy model loading"
+            },
+            "rag": {
+                "memory": "Implement LazyRAGService and use vector store compression",
+                "startup": "Initialize embedding models asynchronously and cache vector indices"
+            },
+            "ollama": {
+                "memory": "Use model streaming and implement connection pooling",
+                "startup": "Pre-warm model connections and implement health checks"
+            },
+            "gatekeeper": {
+                "memory": "Optimize JWT token storage and implement token cleanup",
+                "startup": "Cache user permissions and use async database connections"
+            },
+            "redis": {
+                "memory": "Configure memory limits and implement key expiration policies",
+                "startup": "Use connection pooling and implement health monitoring"
+            },
+            "ecs_world": {
+                "memory": "Implement entity pooling and optimize component storage",
+                "startup": "Use parallel system initialization and cache world state"
+            }
+        }
+
+        service_recs = recommendations.get(service_name, {})
+        return service_recs.get(issue_type, "Review service configuration and optimize based on usage patterns")
 
 
 async def main():

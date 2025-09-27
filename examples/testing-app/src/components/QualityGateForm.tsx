@@ -236,8 +236,8 @@ export const QualityGateForm: Component<QualityGateFormProps> = (props) => {
                     onChange={(e) => updateCondition(index(), 'operator', e.currentTarget.value)}
                     class="condition-operator"
                   >
-                    <option value="GT">Greater Than (>)</option>
-                    <option value="LT">Less Than (<)</option>
+                    <option value="GT">Greater Than (&gt;)</option>
+                    <option value="LT">Less Than (&lt;)</option>
                     <option value="EQ">Equal (=)</option>
                     <option value="NE">Not Equal (≠)</option>
                     <option value="GTE">Greater or Equal (≥)</option>
@@ -301,8 +301,8 @@ export const QualityGateForm: Component<QualityGateFormProps> = (props) => {
               onChange={(e) => setNewCondition(prev => ({ ...prev, operator: e.currentTarget.value as any }))}
               class="condition-operator"
             >
-              <option value="GT">Greater Than (>)</option>
-              <option value="LT">Less Than (<)</option>
+              <option value="GT">Greater Than (&gt;)</option>
+              <option value="LT">Less Than (&lt;)</option>
               <option value="EQ">Equal (=)</option>
               <option value="NE">Not Equal (≠)</option>
               <option value="GTE">Greater or Equal (≥)</option>
