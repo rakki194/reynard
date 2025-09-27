@@ -25,6 +25,7 @@ class WikipediaScraper(BaseScraper):
         super().__init__(logger)
         self.scraper_type = ScrapingType.WIKIPEDIA
         self.supported_domains = ["wikipedia.org", "wikimedia.org"]
+        self.name = "wikipedia_scraper"
         self.language = language
         self.api_base_url = f"https://{language}.wikipedia.org/w/api.php"
 

@@ -189,6 +189,13 @@ class ScrapingRouter:
             "arstechnica.com": ScrapingType.ARS_TECHNICA,
             "techcrunch.com": ScrapingType.TECHCRUNCH,
             "wired.com": ScrapingType.WIRED,
+            # WordPress sites (will be handled by WordPress scraper)
+            "wordpress.com": ScrapingType.WORDPRESS,
+            "wp.com": ScrapingType.WORDPRESS,
+            # Multi-tier extraction for complex sites
+            "reddit.com": ScrapingType.MULTI_TIER,
+            "youtube.com": ScrapingType.MULTI_TIER,
+            "instagram.com": ScrapingType.MULTI_TIER,
         }
 
     def get_info(self) -> dict[str, Any]:

@@ -3,7 +3,7 @@
 Data models and schemas for the scraping service.
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 from uuid import UUID, uuid4
@@ -24,9 +24,11 @@ class ScrapingType(str, Enum):
     WIKIFUR = "wikifur"
     E621_WIKI = "e621_wiki"
     ARS_TECHNICA = "arstechnica"
+    WORDPRESS = "wordpress"
     TECHCRUNCH = "techcrunch"
     WIRED = "wired"
     GALLERY_DL = "gallery_dl"
+    MULTI_TIER = "multi_tier"
 
 
 class ScrapingStatus(str, Enum):
@@ -121,7 +123,7 @@ class ScrapingResult(BaseModel):
     title: str | None = None
     content: str
     metadata: dict[str, Any] = Field(default_factory=dict)
-    extracted_at: datetime = Field(default_factory=datetime.utcnow)
+    extracted_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     quality: ContentQuality | dict[str, Any] = Field(default_factory=dict)
     category: ContentCategory | None = None
 
@@ -174,8 +176,8 @@ class ScrapingJob(BaseModel):
     type: ScrapingType
     status: ScrapingStatus = Field(default=ScrapingStatus.PENDING)
     progress: float = Field(default=0, ge=0, le=100)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: datetime | None = None
     error: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)
@@ -214,7 +216,7 @@ class GalleryResult(BaseModel):
     url: str
     filename: str
     size: int = Field(ge=0)
-    downloaded_at: datetime = Field(default_factory=datetime.utcnow)
+    downloaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -237,8 +239,8 @@ class GalleryDownloadJob(BaseModel):
     config: GalleryConfig = Field(default_factory=GalleryConfig)
     results: list[GalleryResult] = Field(default_factory=list)
     error: str | None = None
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ScrapingEvent(BaseModel):
@@ -247,7 +249,7 @@ class ScrapingEvent(BaseModel):
     type: ScrapingEventType
     job_id: UUID
     data: dict[str, Any] = Field(default_factory=dict)
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class CategoryStats(BaseModel):
@@ -297,7 +299,7 @@ class ScrapingApiResponse(BaseModel):
     data: Any | None = None
     error: str | None = None
     message: str | None = None
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ProcessingStage(BaseModel):

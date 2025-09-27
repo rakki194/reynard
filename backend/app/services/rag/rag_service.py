@@ -46,13 +46,14 @@ Version: 1.0.0
 
 import logging
 import time
-from typing import Any
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from app.core.debug_logging import debug_log, log_rag_operation
 
 from ..email.infrastructure.continuous_indexing import ContinuousIndexingService
 from .file_indexing_service import get_file_indexing_service
-from .initial_indexing import InitialIndexingService
+from .indexing import IndexingService
 from .progress_monitor import get_progress_monitor
 from .services.core import DocumentIndexer, SearchEngine, VectorStoreService
 from .services.core.document_categorization import DocumentCategorizationService
@@ -131,7 +132,7 @@ class RAGService:
         self.documentation_service: AutoDocumentationService | None = None
         self.model_evaluator: ModelEvaluationService | None = None
         self.continuous_indexing: ContinuousIndexingService | None = None
-        self.initial_indexing_service: InitialIndexingService | None = None
+        self.indexing_service: IndexingService | None = None
 
         # Service status
         self.initialized = False
@@ -298,13 +299,10 @@ class RAGService:
                 self.continuous_indexing.set_rag_service(self)
                 logger.info("Continuous indexing service initialized")
 
-                # Initialize initial indexing service
-                self.initial_indexing_service = InitialIndexingService(self.config)
-                await self.initial_indexing_service.initialize(
-                    self.continuous_indexing,
-                    self.vector_store_service,
-                )
-                logger.info("Initial indexing service initialized")
+                # Initialize indexing service
+                self.indexing_service = IndexingService(self.config)
+                await self.indexing_service.initialize()
+                logger.info("Indexing service initialized")
 
                 if self.config.get("rag_continuous_indexing_auto_start", True):
                     await self.continuous_indexing.start_watching()
@@ -321,31 +319,90 @@ class RAGService:
     async def _trigger_initial_indexing(self) -> None:
         """Trigger initial indexing of the entire codebase at startup."""
         try:
-            if not self.initial_indexing_service:
-                logger.warning("Initial indexing service not available")
+            if not self.indexing_service:
+                logger.warning("Indexing service not available")
                 return
 
             logger.info("🔄 Starting initial codebase indexing...")
 
-            # Check if database is empty
-            is_empty = await self.initial_indexing_service.is_database_empty()
-            if not is_empty:
-                logger.info("Database already has content, skipping initial indexing")
+            # Discover files to index
+            files_to_index = await self._discover_files_to_index()
+            if not files_to_index:
+                logger.info("No files found to index")
                 return
 
             # Start progress monitoring
             progress_monitor = get_progress_monitor()
-            await progress_monitor.start_monitoring(self.initial_indexing_service)
+            await progress_monitor.start_monitoring(self.indexing_service)
 
-            # Start initial indexing in background
+            # Start indexing in background with memory management
             import asyncio
 
             asyncio.create_task(
-                self.initial_indexing_service.perform_initial_indexing(force=False),
+                self.indexing_service.perform_indexing(files_to_index, self._index_file_callback, force=False),
             )
 
         except Exception as e:
             logger.error(f"❌ Failed to trigger initial indexing: {e}")
+
+    async def _discover_files_to_index(self) -> List[Path]:
+        """Discover files to index using the file indexing service."""
+        try:
+            from pathlib import Path
+            from app.core.project_root import get_project_root
+            
+            watch_root = Path(
+                self.config.get(
+                    "rag_continuous_indexing_watch_root",
+                    str(get_project_root()),
+                ),
+            )
+
+            if not watch_root.exists():
+                logger.warning(f"Watch root does not exist: {watch_root}")
+                return []
+
+            logger.info(f"🔍 Discovering files: {watch_root}")
+
+            # Use file indexing service for fast file discovery
+            file_types = [".py", ".ts", ".tsx", ".js", ".jsx", ".md", ".txt"]
+            result = await self.file_indexing_service.index_files(
+                [str(watch_root)],
+                file_types,
+            )
+
+            if result.get("success"):
+                indexed_files = result.get("files", [])
+                files_to_index = [Path(file_path) for file_path in indexed_files]
+                logger.info(f"📁 Found {len(files_to_index)} files to index")
+                return files_to_index
+            else:
+                logger.error(f"Failed to discover files: {result.get('error')}")
+                return []
+
+        except Exception as e:
+            logger.error(f"Error discovering files: {e}")
+            return []
+
+    async def _index_file_callback(self, file_path: str) -> Dict[str, Any]:
+        """Callback function for indexing individual files."""
+        try:
+            from pathlib import Path
+            
+            file_path_obj = Path(file_path)
+            if not file_path_obj.exists():
+                return {"success": False, "error": "File does not exist"}
+
+            # Use continuous indexing service to process the file
+            if self.continuous_indexing:
+                result = await self.continuous_indexing.process_file(file_path_obj)
+                return {"success": True, "result": result}
+            else:
+                return {"success": False, "error": "Continuous indexing service not available"}
+
+        except Exception as e:
+            logger.error(f"Error indexing file {file_path}: {e}")
+            return {"success": False, "error": str(e)}
 
     def _setup_service_dependencies(self) -> None:
         """Set up dependencies between services."""

@@ -89,28 +89,68 @@ def get_export_count() -> int:
     return len(_export_registry)
 
 
-# ML Package convenience exports
-ml_packages = {
-    "torch": create_lazy_export("torch", "torch", ExportType.MODULE),
-    "transformers": create_lazy_export(
-        "transformers",
-        "transformers",
-        ExportType.MODULE,
-    ),
-    "numpy": create_lazy_export("numpy", "numpy", ExportType.MODULE),
-    "pandas": create_lazy_export("pandas", "pandas", ExportType.MODULE),
-    "scikit_learn": create_lazy_export("scikit_learn", "sklearn", ExportType.MODULE),
-    "pillow": create_lazy_export("pillow", "PIL", ExportType.MODULE),
-    "opencv": create_lazy_export("opencv", "cv2", ExportType.MODULE),
-    "matplotlib": create_lazy_export("matplotlib", "matplotlib", ExportType.MODULE),
-    "seaborn": create_lazy_export("seaborn", "seaborn", ExportType.MODULE),
-    "plotly": create_lazy_export("plotly", "plotly", ExportType.MODULE),
+# ML Package convenience exports - only create if enabled
+def _is_package_enabled(package_name: str) -> bool:
+    """Check if a package is enabled based on environment variables."""
+    import os
+    
+    env_var_map = {
+        "torch": "PYTORCH_ENABLED",
+        "transformers": "TRANSFORMERS_ENABLED",
+        "numpy": "NUMPY_ENABLED",
+        "pandas": "PANDAS_ENABLED",
+        "scikit_learn": "SCIKIT_LEARN_ENABLED",
+        "pillow": "PILLOW_ENABLED",
+        "opencv": "OPENCV_ENABLED",
+        "matplotlib": "MATPLOTLIB_ENABLED",
+        "seaborn": "SEABORN_ENABLED",
+        "plotly": "PLOTLY_ENABLED",
+        "sentence_transformers": "EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED",
+    }
+    
+    env_var = env_var_map.get(package_name)
+    if not env_var:
+        # Core packages are always enabled
+        return True
+    
+    return os.getenv(env_var, "false").lower() == "true"
+
+
+ml_packages = {}
+
+# Only create lazy exports for enabled packages
+package_configs = {
+    "torch": ("torch", "torch"),
+    "transformers": ("transformers", "transformers"),
+    "numpy": ("numpy", "numpy"),
+    "pandas": ("pandas", "pandas"),
+    "scikit_learn": ("scikit_learn", "sklearn"),
+    "pillow": ("pillow", "PIL"),
+    "opencv": ("opencv", "cv2"),
+    "matplotlib": ("matplotlib", "matplotlib"),
+    "seaborn": ("seaborn", "seaborn"),
+    "plotly": ("plotly", "plotly"),
+    "sentence_transformers": ("sentence_transformers", "sentence_transformers"),
+}
+
+for package_name, (import_name, _) in package_configs.items():
+    if _is_package_enabled(package_name):
+        ml_packages[package_name] = create_lazy_export(package_name, import_name, ExportType.MODULE)
+        logger.info(f"Created lazy export for enabled package: {package_name}")
+    else:
+        logger.info(f"Skipped lazy export for disabled package: {package_name}")
+
+# Core packages that are always enabled
+core_packages = {
     "requests": create_lazy_export("requests", "requests", ExportType.MODULE),
     "aiohttp": create_lazy_export("aiohttp", "aiohttp", ExportType.MODULE),
     "fastapi": create_lazy_export("fastapi", "fastapi", ExportType.MODULE),
     "uvicorn": create_lazy_export("uvicorn", "uvicorn", ExportType.MODULE),
     "pydantic": create_lazy_export("pydantic", "pydantic", ExportType.MODULE),
 }
+
+# Add core packages to ml_packages
+ml_packages.update(core_packages)
 
 
 class LazyLoadingSystem:

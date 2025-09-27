@@ -11,7 +11,7 @@ from urllib.parse import urljoin, urlparse
 import aiohttp
 from bs4 import BeautifulSoup
 
-from ..models import ScrapingConfig, ScrapingType
+from ..models import ScrapingConfig, ScrapingResult, ScrapingType
 from .base_scraper import BaseScraper
 
 logger = logging.getLogger(__name__)
@@ -24,11 +24,18 @@ class GeneralScraper(BaseScraper):
     Uses BeautifulSoup for HTML parsing and aiohttp for async requests.
     """
 
-    def __init__(self):
-        """Initialize the general scraper."""
-        super().__init__(ScrapingType.GENERAL, "general_scraper")
+    def __init__(self, logger: logging.Logger | None = None):
+        """Initialize the general scraper.
+        
+        Args:
+            logger: Logger instance
+        """
+        super().__init__(logger)
+        self.scraper_type = ScrapingType.GENERAL
+        self.supported_domains = []  # General scraper can handle any domain
         self.session: aiohttp.ClientSession | None = None
         self.user_agent = "Mozilla/5.0 (compatible; ReynardScraper/1.0)"
+        self.name = "general_scraper"
 
     async def initialize(self) -> bool:
         """Initialize the scraper with HTTP session."""
@@ -70,7 +77,7 @@ class GeneralScraper(BaseScraper):
             logger.error(f"Error shutting down general scraper: {e}")
             return False
 
-    def can_handle_url(self, url: str) -> bool:
+    async def can_handle_url(self, url: str) -> bool:
         """Check if this scraper can handle the given URL.
 
         Args:
@@ -82,9 +89,84 @@ class GeneralScraper(BaseScraper):
         """
         try:
             parsed = urlparse(url)
-            return parsed.scheme in ("http", "https") and parsed.netloc
+            return parsed.scheme in ("http", "https") and bool(parsed.netloc)
         except Exception:
             return False
+
+    async def scrape_content(self, url: str) -> ScrapingResult:
+        """Scrape content from a URL (abstract method implementation).
+
+        Args:
+            url: URL to scrape
+
+        Returns:
+            ScrapingResult with extracted content
+
+        """
+        
+        if not self.session:
+            raise RuntimeError("Scraper not initialized")
+
+        try:
+            # Validate URL
+            if not await self.validate_url(url):
+                raise ValueError(f"Invalid URL: {url}")
+
+            # Respect rate limiting
+            delay = await self.get_rate_limit_delay()
+            if delay > 0:
+                await asyncio.sleep(delay)
+
+            # Fetch the page
+            async with self.session.get(url) as response:
+                if response.status != 200:
+                    raise ValueError(f"HTTP {response.status}: {response.reason}")
+
+                content = await response.text()
+                content_type = response.headers.get("content-type", "")
+
+                # Only process HTML content
+                if "text/html" not in content_type:
+                    logger.warning(f"Non-HTML content type: {content_type}")
+                    return ScrapingResult(
+                        url=url,
+                        content="",
+                        metadata={"error": "Non-HTML content type", "content_type": content_type}
+                    )
+
+                # Parse HTML
+                soup = BeautifulSoup(content, "html.parser")
+
+                # Extract basic content
+                title = soup.find("title")
+                title_text = title.get_text().strip() if title else ""
+
+                # Remove script and style elements
+                for script in soup(["script", "style"]):
+                    script.decompose()
+
+                # Get text content
+                text_content = soup.get_text()
+                # Clean up whitespace
+                lines = (line.strip() for line in text_content.splitlines())
+                chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+                text_content = " ".join(chunk for chunk in chunks if chunk)
+
+                logger.info(f"Successfully scraped {url}")
+                return ScrapingResult(
+                    url=url,
+                    title=title_text,
+                    content=text_content,
+                    metadata={"extraction_method": "general_scraper"}
+                )
+
+        except Exception as e:
+            logger.error(f"Error scraping {url}: {e}")
+            return ScrapingResult(
+                url=url,
+                content="",
+                metadata={"error": str(e), "extraction_method": "general_scraper"}
+            )
 
     async def scrape_url(
         self,

@@ -425,8 +425,18 @@ class RAGServiceManager:
 _service_manager = RAGServiceManager()
 
 
-def get_rag_service() -> RAGService:
-    """Get the RAG service instance."""
+def get_rag_service() -> Any:
+    """Get the RAG service instance from the service registry."""
+    from ...core.service_registry import get_service_registry
+    
+    # Try to get the lazy RAG service from the service registry first
+    service_registry = get_service_registry()
+    rag_service = service_registry.get_service_instance("rag")
+    
+    if rag_service is not None:
+        return rag_service
+    
+    # Fallback to the local service manager if registry doesn't have it
     return _service_manager.get_service()
 
 

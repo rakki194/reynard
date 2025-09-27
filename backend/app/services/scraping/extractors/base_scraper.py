@@ -132,7 +132,7 @@ class BaseScraper(ABC):
         if not self.enabled:
             return False
 
-        if not self.can_handle_url(url):
+        if not await self.can_handle_url(url):
             return False
 
         # Additional validation can be added here

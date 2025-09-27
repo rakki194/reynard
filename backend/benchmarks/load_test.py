@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""FastAPI ECS Search Load Testing Suite
+"""FastAPI ECS Search Load Testing Suite - Database Version
+
+🦊 *whiskers twitch with strategic precision* Refactored load testing suite
+that stores all results in PostgreSQL instead of scattered files.
 
 Comprehensive load testing for the Reynard FastAPI ECS search system using Locust.
 This script provides realistic load testing scenarios including:
@@ -8,6 +11,11 @@ This script provides realistic load testing scenarios including:
 - RAG service performance testing
 - Database connection pool testing
 - Memory and CPU monitoring
+
+All results are stored in the unified testing ecosystem database.
+
+Author: Strategic-Fox-42 (Reynard Fox Specialist)
+Version: 2.0.0
 """
 
 import asyncio
@@ -15,6 +23,7 @@ import logging
 import random
 import statistics
 import sys
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -27,6 +36,8 @@ from locust.env import Environment
 
 # Add backend to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
+
+from app.services.testing.testing_ecosystem_service import TestingEcosystemService
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -440,13 +451,39 @@ class RAGLoadTestUser(HttpUser):
                 )
 
 
-class LoadTestRunner:
-    """Load test runner with comprehensive monitoring."""
+class LoadTestRunnerDB:
+    """Load test runner with comprehensive monitoring and database storage."""
 
     def __init__(self, host: str = "http://localhost:8000"):
         self.host = host
         self.monitor = SystemMonitor()
         self.results: list[LoadTestResult] = []
+        self.testing_service = TestingEcosystemService()
+        self.test_run_id: uuid.UUID | None = None
+
+    async def start_load_test_run(self, test_name: str) -> uuid.UUID:
+        """Start a new load test run in the database."""
+        run_id = f"load_test_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+        
+        self.test_run_id = await self.testing_service.create_test_run(
+            run_id=run_id,
+            test_type="load_test",
+            test_suite=test_name,
+            environment="development",
+            branch="main",
+            commit_hash="unknown",
+            metadata={
+                "host": self.host,
+                "load_test_version": "2.0.0",
+                "system_info": {
+                    "cpu_count": psutil.cpu_count(),
+                    "memory_total_gb": psutil.virtual_memory().total / (1024**3),
+                }
+            }
+        )
+        
+        logger.info(f"Started load test run: {run_id} (ID: {self.test_run_id})")
+        return self.test_run_id
 
     async def run_search_load_test(
         self, users: int = 50, spawn_rate: int = 10, run_time: str = "5m",
@@ -479,6 +516,10 @@ class LoadTestRunner:
         stats = env.runner.stats
         result = self._collect_test_results("Search Load Test", stats)
         self.results.append(result)
+
+        # Store in database
+        if self.test_run_id:
+            await self._store_load_test_result(result, "search_load_test")
 
         return result
 
@@ -514,6 +555,10 @@ class LoadTestRunner:
         result = self._collect_test_results("ECS Load Test", stats)
         self.results.append(result)
 
+        # Store in database
+        if self.test_run_id:
+            await self._store_load_test_result(result, "ecs_load_test")
+
         return result
 
     async def run_rag_load_test(
@@ -547,6 +592,10 @@ class LoadTestRunner:
         stats = env.runner.stats
         result = self._collect_test_results("RAG Load Test", stats)
         self.results.append(result)
+
+        # Store in database
+        if self.test_run_id:
+            await self._store_load_test_result(result, "rag_load_test")
 
         return result
 
@@ -612,8 +661,59 @@ class LoadTestRunner:
             error_rate_percent=error_rate,
         )
 
-    def generate_load_test_report(self) -> str:
-        """Generate comprehensive load test report."""
+    async def _store_load_test_result(self, result: LoadTestResult, benchmark_name: str):
+        """Store load test result in the database."""
+        if not self.test_run_id:
+            return
+
+        # Store benchmark result
+        await self.testing_service.add_benchmark_result(
+            test_run_id=self.test_run_id,
+            benchmark_name=benchmark_name,
+            benchmark_type="load_test",
+            total_requests=result.total_requests,
+            successful_requests=result.successful_requests,
+            failed_requests=result.failed_requests,
+            avg_response_time_ms=result.average_response_time_ms,
+            median_response_time_ms=result.median_response_time_ms,
+            p95_response_time_ms=result.p95_response_time_ms,
+            p99_response_time_ms=result.p99_response_time_ms,
+            requests_per_second=result.requests_per_second,
+            error_rate_percent=result.error_rate_percent,
+            metadata={
+                "scenario_name": result.scenario_name,
+                "timestamp": result.timestamp.isoformat(),
+            }
+        )
+
+        # Store system metrics
+        peak_metrics = self.monitor.get_peak_metrics()
+        if peak_metrics:
+            await self.testing_service.add_performance_metric(
+                test_run_id=self.test_run_id,
+                metric_name="peak_memory_usage",
+                metric_type="memory",
+                value=peak_metrics.get("peak_memory_mb", 0),
+                unit="mb",
+                metadata=peak_metrics
+            )
+
+            await self.testing_service.add_performance_metric(
+                test_run_id=self.test_run_id,
+                metric_name="peak_cpu_usage",
+                metric_type="cpu",
+                value=peak_metrics.get("peak_cpu_percent", 0),
+                unit="percent",
+                metadata=peak_metrics
+            )
+
+        logger.info(f"Stored load test result for {benchmark_name} in database")
+
+    async def generate_and_store_report(self) -> str:
+        """Generate comprehensive load test report and store it in the database."""
+        if not self.test_run_id:
+            raise ValueError("No active test run. Call start_load_test_run() first.")
+
         report = []
         report.append("=" * 80)
         report.append("FASTAPI ECS SEARCH LOAD TEST REPORT")
@@ -684,12 +784,41 @@ class LoadTestRunner:
             report.append("")
 
         report.append("=" * 80)
-        return "\n".join(report)
+        report_content = "\n".join(report)
+
+        # Store the report in the database
+        await self.testing_service.add_test_report(
+            test_run_id=self.test_run_id,
+            report_type="load_test",
+            report_format="text",
+            report_title="FastAPI ECS Search Load Test Report",
+            report_content=report_content,
+            metadata={
+                "results_count": len(self.results),
+                "total_requests": sum(r.total_requests for r in self.results),
+                "total_successful": sum(r.successful_requests for r in self.results),
+                "total_failed": sum(r.failed_requests for r in self.results),
+            }
+        )
+
+        logger.info("Load test report stored in database")
+        return report_content
+
+    async def complete_load_test_run(self):
+        """Complete the load test run and update status."""
+        if not self.test_run_id:
+            raise ValueError("No active test run. Call start_load_test_run() first.")
+
+        await self.testing_service.update_test_run_status(
+            test_run_id=self.test_run_id,
+            status="completed"
+        )
+        logger.info(f"Completed load test run: {self.test_run_id}")
 
 
 async def main():
-    """Main load test execution."""
-    logger.info("Starting FastAPI ECS Search Load Testing Suite")
+    """Main load test execution with database storage."""
+    logger.info("Starting FastAPI ECS Search Load Testing Suite (Database Version)")
 
     # Check if server is running
     try:
@@ -703,9 +832,12 @@ async def main():
         logger.info("Please ensure the FastAPI server is running on localhost:8000")
         return
 
-    runner = LoadTestRunner()
+    runner = LoadTestRunnerDB()
 
     try:
+        # Start load test run
+        await runner.start_load_test_run("comprehensive_load_test")
+
         # Run load tests
         logger.info("Running comprehensive load tests...")
 
@@ -733,21 +865,21 @@ async def main():
             f"RAG load test completed: {rag_result.requests_per_second:.2f} req/s",
         )
 
-        # Generate and save report
-        report = runner.generate_load_test_report()
+        # Generate and store report
+        report = await runner.generate_and_store_report()
         print(report)
+        logger.info("Load test completed successfully - all data stored in database")
 
-        # Save report to file
-        report_file = (
-            Path(__file__).parent
-            / f"load_test_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-        )
-        with open(report_file, "w") as f:
-            f.write(report)
-        logger.info(f"Load test report saved to: {report_file}")
+        # Complete the load test run
+        await runner.complete_load_test_run()
 
     except Exception as e:
         logger.error(f"Load test failed: {e}")
+        if runner.test_run_id:
+            await runner.testing_service.update_test_run_status(
+                test_run_id=runner.test_run_id,
+                status="failed"
+            )
         raise
 
 

@@ -21,8 +21,9 @@ class HackerNewsScraper(BaseScraper):
     def __init__(self, logger: logging.Logger | None = None):
         """Initialize the HackerNews scraper."""
         super().__init__(logger)
-        self.scraper_type = ScrapingType.HACKERNEWS
+        self.scraper_type = ScrapingType.HACKER_NEWS
         self.supported_domains = ["news.ycombinator.com", "hackernews.com"]
+        self.name = "hackernews_scraper"
         self.api_base_url = "https://hacker-news.firebaseio.com/v0"
 
     async def can_handle_url(self, url: str) -> bool:

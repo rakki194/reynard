@@ -25,6 +25,7 @@ class GitHubScraper(BaseScraper):
         super().__init__(logger)
         self.scraper_type = ScrapingType.GITHUB
         self.supported_domains = ["github.com"]
+        self.name = "github_scraper"
         self.api_base_url = "https://api.github.com"
 
         # GitHub URL patterns

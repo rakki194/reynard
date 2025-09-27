@@ -128,17 +128,27 @@ class AIService:
 
     async def _initialize_providers(self) -> None:
         """Initialize all configured providers."""
-        from .providers.llamacpp_provider import LLaMACppConfig, LLaMACppProvider
-        from .providers.ollama_provider import OllamaConfig, OllamaProvider
-        from .providers.sglang_provider import SGLangConfig, SGLangProvider
-        from .providers.vllm_provider import VLLMConfig, VLLMProvider
-
-        provider_classes = {
-            ProviderType.OLLAMA: (OllamaProvider, OllamaConfig),
-            ProviderType.VLLM: (VLLMProvider, VLLMConfig),
-            ProviderType.SGLANG: (SGLangProvider, SGLangConfig),
-            ProviderType.LLAMACPP: (LLaMACppProvider, LLaMACppConfig),
-        }
+        # Only import and initialize providers that are enabled
+        enabled_providers = set(self.config.provider_configs.keys())
+        
+        # Import provider classes only for enabled providers
+        provider_classes = {}
+        
+        if ProviderType.OLLAMA in enabled_providers:
+            from .providers.ollama_provider import OllamaConfig, OllamaProvider
+            provider_classes[ProviderType.OLLAMA] = (OllamaProvider, OllamaConfig)
+            
+        if ProviderType.VLLM in enabled_providers:
+            from .providers.vllm_provider import VLLMConfig, VLLMProvider
+            provider_classes[ProviderType.VLLM] = (VLLMProvider, VLLMConfig)
+            
+        if ProviderType.SGLANG in enabled_providers:
+            from .providers.sglang_provider import SGLangConfig, SGLangProvider
+            provider_classes[ProviderType.SGLANG] = (SGLangProvider, SGLangConfig)
+            
+        if ProviderType.LLAMACPP in enabled_providers:
+            from .providers.llamacpp_provider import LLaMACppConfig, LLaMACppProvider
+            provider_classes[ProviderType.LLAMACPP] = (LLaMACppProvider, LLaMACppConfig)
 
         for provider_type, (provider_class, config_class) in provider_classes.items():
             if provider_type in self.config.provider_configs:

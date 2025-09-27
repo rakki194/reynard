@@ -422,3 +422,10 @@ def close_all_databases():
     for manager in _db_managers.values():
         manager.close()
     _db_managers.clear()
+
+
+def get_e2e_session():
+    """Get E2E database session."""
+    e2e_url = os.getenv("E2E_DATABASE_URL", "postgresql://postgres:password@localhost:5432/reynard_e2e")
+    e2e_manager = get_database_manager(e2e_url, "e2e")
+    return e2e_manager.SessionLocal()

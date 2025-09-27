@@ -198,41 +198,60 @@ class ASTDocumentProcessor(IDocumentIndexer):
     async def process_documents(
         self, documents: List[Document], **kwargs
     ) -> AsyncGenerator[Dict[str, Any], None]:
-        """Process multiple documents with progress updates."""
+        """Process multiple documents with memory-efficient batching and progress updates."""
         total_docs = len(documents)
         processed_docs = 0
+        
+        # Memory-efficient batch processing
+        batch_size = self.config.get("memory_efficient_batch_size", 5)
+        max_memory_mb = self.config.get("max_memory_mb", 1024)
+        memory_cleanup_threshold = self.config.get("memory_cleanup_threshold", 0.8)
 
         try:
-            for i, document in enumerate(documents):
-                try:
-                    # Process document
-                    chunks = await self.process_document(document)
+            # Process documents in memory-efficient batches
+            for batch_start in range(0, total_docs, batch_size):
+                batch_end = min(batch_start + batch_size, total_docs)
+                batch_documents = documents[batch_start:batch_end]
+                
+                logger.info(f"Processing document batch {batch_start//batch_size + 1}: "
+                          f"documents {batch_start+1}-{batch_end} of {total_docs}")
+                
+                # Process batch
+                for i, document in enumerate(batch_documents):
+                    try:
+                        # Process document
+                        chunks = await self.process_document(document)
 
-                    # Yield progress update
-                    processed_docs += 1
-                    yield {
-                        "type": "progress",
-                        "document_id": document.id,
-                        "chunks_created": len(chunks),
-                        "processed": processed_docs,
-                        "total": total_docs,
-                        "progress_percent": (processed_docs / total_docs) * 100,
-                    }
+                        # Yield progress update
+                        processed_docs += 1
+                        yield {
+                            "type": "progress",
+                            "document_id": document.id,
+                            "chunks_created": len(chunks),
+                            "processed": processed_docs,
+                            "total": total_docs,
+                            "progress_percent": (processed_docs / total_docs) * 100,
+                        }
 
-                    # Yield document result
-                    yield {
-                        "type": "document_result",
-                        "document_id": document.id,
-                        "chunks": chunks,
-                    }
+                        # Yield document result
+                        yield {
+                            "type": "document_result",
+                            "document_id": document.id,
+                            "chunks": chunks,
+                        }
 
-                except Exception as e:
-                    self.logger.error(f"Failed to process document {document.id}: {e}")
-                    yield {
-                        "type": "error",
-                        "document_id": document.id,
-                        "error": str(e),
-                    }
+                    except Exception as e:
+                        self.logger.error(f"Failed to process document {document.id}: {e}")
+                        yield {
+                            "type": "error",
+                            "document_id": document.id,
+                            "error": str(e),
+                        }
+                
+                # Memory management between batches
+                await self._manage_memory_between_batches(
+                    batch_start, batch_size, max_memory_mb, memory_cleanup_threshold
+                )
 
             # Yield completion
             yield {
@@ -250,6 +269,34 @@ class ASTDocumentProcessor(IDocumentIndexer):
                 "type": "error",
                 "error": str(e),
             }
+
+    async def _manage_memory_between_batches(
+        self, batch_start: int, batch_size: int, max_memory_mb: int, cleanup_threshold: float
+    ) -> None:
+        """Manage memory between document processing batches."""
+        try:
+            import psutil
+            import gc
+            
+            # Check current memory usage
+            process = psutil.Process()
+            current_memory_mb = process.memory_info().rss / 1024 / 1024
+            
+            # Force garbage collection every few batches
+            if batch_start % (batch_size * 3) == 0:
+                collected = gc.collect()
+                logger.debug(f"Garbage collection after batch {batch_start//batch_size + 1}: {collected} objects collected")
+            
+            # Check if memory cleanup is needed
+            if current_memory_mb > max_memory_mb * cleanup_threshold:
+                logger.warning(f"High memory usage detected: {current_memory_mb:.1f}MB, forcing cleanup")
+                collected = gc.collect()
+                await asyncio.sleep(0.1)  # Allow system to reclaim memory
+                new_memory_mb = process.memory_info().rss / 1024 / 1024
+                logger.info(f"Memory cleanup completed: {current_memory_mb:.1f}MB -> {new_memory_mb:.1f}MB")
+            
+        except Exception as e:
+            logger.error(f"Error managing memory between batches: {e}")
 
     def detect_language(self, content: str, file_path: str) -> str:
         """Detect programming language from content and file path."""

@@ -1,4 +1,4 @@
-"""Enhanced content extraction pipeline with multi-tier fallback strategy.
+"""Content extraction pipeline with multi-tier fallback strategy.
 
 This module provides a sophisticated content extraction system that tries
 multiple extraction methods in order of preference, falling back to simpler
@@ -13,7 +13,7 @@ from .base_scraper import BaseScraper
 
 
 class ContentExtractor(BaseScraper):
-    """Enhanced content extractor with multi-tier fallback strategy.
+    """Content extractor with multi-tier fallback strategy.
 
     Extraction strategy:
     1. Primary: Site-specific scrapers (Twitter, Wikipedia, GitHub, etc.)
@@ -30,6 +30,7 @@ class ContentExtractor(BaseScraper):
         super().__init__(logger)
         self.scraper_type = ScrapingType.ENHANCED
         self.supported_domains = []  # Supports all domains
+        self.name = "content_extractor"
 
         # Initialize specialized scrapers
         self._initialize_scrapers()
@@ -67,15 +68,78 @@ class ContentExtractor(BaseScraper):
             self.logger.warning("GitHub scraper not available")
 
         try:
+            from .arstechnica_scraper import ArsTechnicaScraper
+
+            self.scrapers["arstechnica"] = ArsTechnicaScraper(self.logger)
+        except ImportError:
+            self.logger.warning("Ars Technica scraper not available")
+
+        try:
             from .general_scraper import GeneralScraper
 
             self.scrapers["general"] = GeneralScraper(self.logger)
         except ImportError:
             self.logger.warning("General scraper not available")
 
+        # Initialize multi-tier extractor
+        try:
+            from .multi_tier_extractor import MultiTierExtractor
+
+            self.multi_tier_extractor = MultiTierExtractor(self.logger)
+        except ImportError:
+            self.logger.warning("Multi-tier extractor not available")
+            self.multi_tier_extractor = None
+
+        # Initialize intelligent content filter
+        try:
+            from .intelligent_content_filter import IntelligentContentFilter
+
+            self.content_filter = IntelligentContentFilter(logger=self.logger)
+        except ImportError:
+            self.logger.warning("Intelligent content filter not available")
+            self.content_filter = None
+
         self.logger.info(
             f"Initialized {len(self.scrapers)} scrapers: {list(self.scrapers.keys())}",
         )
+
+    async def initialize(self) -> bool:
+        """Initialize the enhanced content extractor."""
+        try:
+            # Initialize all scrapers
+            for scraper in self.scrapers.values():
+                if hasattr(scraper, "initialize"):
+                    await scraper.initialize()
+
+            # Initialize multi-tier extractor
+            if self.multi_tier_extractor:
+                await self.multi_tier_extractor.initialize()
+
+            self.logger.info("Enhanced content extractor initialized successfully")
+            return True
+
+        except Exception as e:
+            self.logger.error(f"Failed to initialize enhanced content extractor: {e}")
+            return False
+
+    async def shutdown(self) -> bool:
+        """Shutdown the enhanced content extractor."""
+        try:
+            # Shutdown all scrapers
+            for scraper in self.scrapers.values():
+                if hasattr(scraper, "shutdown"):
+                    await scraper.shutdown()
+
+            # Shutdown multi-tier extractor
+            if self.multi_tier_extractor:
+                await self.multi_tier_extractor.shutdown()
+
+            self.logger.info("Enhanced content extractor shutdown successfully")
+            return True
+
+        except Exception as e:
+            self.logger.error(f"Error shutting down enhanced content extractor: {e}")
+            return False
 
     async def can_handle_url(self, url: str) -> bool:
         """Check if this extractor can handle the given URL."""
@@ -107,6 +171,37 @@ class ContentExtractor(BaseScraper):
                             f"enhanced_{scraper_name}"
                         )
                         return result
+
+            # Try multi-tier extractor if available
+            if self.multi_tier_extractor:
+                self.logger.info(f"Using multi-tier extractor for {url}")
+                try:
+                    content_data = await self.multi_tier_extractor.extract_content(url)
+                    if content_data and content_data.get("extraction_success"):
+                        # Apply intelligent content filtering if available
+                        if self.content_filter:
+                            filtering_result = await self.content_filter.filter_content(
+                                content_data.get("content", ""), 
+                                source=url
+                            )
+                            content_data["content"] = filtering_result.filtered_content
+                            content_data["quality_score"] = filtering_result.quality_score
+
+                        # Convert to ScrapingResult
+                        result = ScrapingResult(
+                            url=url,
+                            title=content_data.get("title", ""),
+                            content=content_data.get("content", ""),
+                            metadata={
+                                "extraction_method": f"multi_tier_{content_data.get('extraction_method', 'unknown')}",
+                                "quality_score": content_data.get("quality_score", 0.0),
+                                "content_length": content_data.get("content_length", 0),
+                                "word_count": content_data.get("word_count", 0),
+                            },
+                        )
+                        return result
+                except Exception as e:
+                    self.logger.warning(f"Multi-tier extraction failed: {e}")
 
             # Fallback to general scraper
             if "general" in self.scrapers:

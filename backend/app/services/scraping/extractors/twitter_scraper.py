@@ -24,6 +24,7 @@ class TwitterScraper(BaseScraper):
         super().__init__(logger)
         self.scraper_type = ScrapingType.TWITTER
         self.supported_domains = ["twitter.com", "x.com"]
+        self.name = "twitter_scraper"
         self.playwright_available = self._check_playwright_available()
         self.gallery_dl_available = self._check_gallery_dl_available()
 

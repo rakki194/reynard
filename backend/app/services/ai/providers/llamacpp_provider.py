@@ -42,7 +42,7 @@ class LLaMACppConfig(ModelProviderConfig):
 
     provider_type: ProviderType = ProviderType.LLAMACPP
     base_url: str = "http://localhost:8080"
-    model_path: Optional[str] = None
+    llama_model_path: Optional[str] = None
     n_ctx: int = 2048  # Context window size
     n_batch: int = 512  # Batch size for prompt processing
     n_threads: int = 4  # Number of threads for CPU inference

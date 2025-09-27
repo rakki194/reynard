@@ -27,50 +27,54 @@ class TestScrapingService:
     @pytest.fixture
     def sample_job(self):
         """Create a sample scraping job"""
+        from uuid import uuid4
         return ScrapingJob(
-            id="test-job-1",
+            id=uuid4(),
             url="https://example.com",
             type=ScrapingType.GENERAL,
             status=ScrapingStatus.PENDING,
             progress=0,
-            createdAt=datetime.now(),
-            updatedAt=datetime.now(),
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
         )
 
     @pytest.fixture
     def sample_config(self):
         """Create a sample scraping configuration"""
         return ScrapingConfig(
-            maxDepth=3,
+            name="test-config",
+            type=ScrapingType.GENERAL,
+            enabled=True,
+            max_depth=3,
             concurrency=5,
-            userAgent="Reynard Test Scraper",
+            user_agent="Reynard Test Scraper",
             timeout=30000,
-            retryAttempts=3,
-            retryDelay=1000,
-            respectRobotsTxt=True,
-            followRedirects=True,
-            extractImages=True,
-            extractLinks=True,
-            extractMetadata=True,
-            qualityThreshold=0.7,
-            enableCaching=True,
-            cacheExpiry=3600,
+            retry_attempts=3,
+            retry_delay=1000,
+            respect_robots_txt=True,
+            follow_redirects=True,
+            extract_images=True,
+            extract_links=True,
+            extract_metadata=True,
+            quality_threshold=0.7,
+            enable_caching=True,
+            cache_expiry=3600,
         )
 
     @pytest.mark.asyncio
     async def test_initialize(self, service):
         """Test service initialization"""
         await service.initialize()
-        assert service.is_initialized is True
-        assert service.scraping_manager is not None
-        assert service.scraping_router is not None
+        assert service.initialized is True
+        assert service.manager is not None
+        assert service.router is not None
 
     @pytest.mark.asyncio
     async def test_shutdown(self, service):
         """Test service shutdown"""
         await service.initialize()
         await service.shutdown()
-        assert service.is_initialized is False
+        assert service.initialized is False
 
     @pytest.mark.asyncio
     async def test_create_job(self, service, sample_job):
@@ -78,7 +82,7 @@ class TestScrapingService:
         await service.initialize()
 
         with patch.object(
-            service.scraping_manager,
+            service.manager,
             "create_job",
             return_value=sample_job,
         ) as mock_create:
@@ -96,7 +100,7 @@ class TestScrapingService:
         await service.initialize()
 
         with patch.object(
-            service.scraping_manager,
+            service.manager,
             "get_job",
             return_value=sample_job,
         ) as mock_get:
@@ -112,7 +116,7 @@ class TestScrapingService:
 
         jobs = [sample_job]
         with patch.object(
-            service.scraping_manager,
+            service.manager,
             "get_jobs",
             return_value=jobs,
         ) as mock_get:
@@ -127,7 +131,7 @@ class TestScrapingService:
         await service.initialize()
 
         with patch.object(
-            service.scraping_manager,
+            service.manager,
             "cancel_job",
             return_value=True,
         ) as mock_cancel:
@@ -142,7 +146,7 @@ class TestScrapingService:
         await service.initialize()
 
         with patch.object(
-            service.scraping_manager,
+            service.manager,
             "delete_job",
             return_value=True,
         ) as mock_delete:
@@ -204,7 +208,7 @@ class TestScrapingService:
         }
 
         with patch.object(
-            service.scraping_manager,
+            service.manager,
             "get_statistics",
             return_value=expected_stats,
         ) as mock_stats:
@@ -218,9 +222,10 @@ class TestScrapingService:
         """Test event emission"""
         await service.initialize()
 
+        from uuid import uuid4
         event = ScrapingEvent(
-            jobId="test-job-1",
-            type="job_completed",
+            job_id=uuid4(),
+            type=ScrapingEventType.JOB_COMPLETED,
             data={"status": "completed"},
             timestamp=datetime.now(),
         )
@@ -234,7 +239,7 @@ class TestScrapingService:
         """Test health check"""
         await service.initialize()
 
-        result = await service.health_check()
+        result = await service.get_health_status()
 
         assert result["status"] == "healthy"
         assert result["service"] == "scraping"
@@ -243,7 +248,7 @@ class TestScrapingService:
     @pytest.mark.asyncio
     async def test_health_check_not_initialized(self, service):
         """Test health check when not initialized"""
-        result = await service.health_check()
+        result = await service.get_health_status()
 
         assert result["status"] == "unhealthy"
         assert result["service"] == "scraping"
@@ -268,50 +273,83 @@ class TestGeneralScraper:
     @pytest.mark.asyncio
     async def test_scrape_content(self, scraper):
         """Test content scraping"""
-        with patch("aiohttp.ClientSession.get") as mock_get:
-            # Mock the response
-            mock_response = AsyncMock()
-            mock_response.status = 200
-            mock_response.text.return_value = """
-            <html>
-                <head><title>Test Page</title></head>
-                <body>
-                    <h1>Test Content</h1>
-                    <p>This is test content.</p>
-                    <img src="test.jpg" alt="Test Image">
-                    <a href="test.html">Test Link</a>
-                </body>
-            </html>
-            """
-            mock_get.return_value.__aenter__.return_value = mock_response
+        # Initialize the scraper session
+        mock_session = AsyncMock()
+        mock_response = AsyncMock()
+        mock_response.status = 200
+        mock_response.headers = {"content-type": "text/html"}
+        mock_response.text.return_value = """
+        <html>
+            <head><title>Test Page</title></head>
+            <body>
+                <h1>Test Content</h1>
+                <p>This is test content.</p>
+                <img src="test.jpg" alt="Test Image">
+                <a href="test.html">Test Link</a>
+            </body>
+        </html>
+        """
+        
+        # Create a proper async context manager using MagicMock
+        from unittest.mock import MagicMock
+        mock_context_manager = MagicMock()
+        mock_context_manager.__aenter__ = AsyncMock(return_value=mock_response)
+        mock_context_manager.__aexit__ = AsyncMock(return_value=None)
+        
+        # Mock the session.get method to return the context manager
+        mock_session.get = MagicMock(return_value=mock_context_manager)
+        scraper.session = mock_session
 
-            result = await scraper.scrape_content("https://example.com")
+        result = await scraper.scrape_content("https://example.com")
 
-            assert result is not None
-            assert result.url == "https://example.com"
-            assert "Test Content" in result.content
-            assert result.metadata["title"] == "Test Page"
+        assert result is not None
+        assert result.url == "https://example.com"
+        assert "Test Content" in result.content
+        assert result.title == "Test Page"
 
     @pytest.mark.asyncio
     async def test_scrape_content_error(self, scraper):
         """Test content scraping with error"""
-        with patch("aiohttp.ClientSession.get") as mock_get:
-            mock_get.side_effect = Exception("Network error")
+        # Initialize the scraper session
+        mock_session = AsyncMock()
+        
+        # Create a context manager that raises an exception
+        from unittest.mock import MagicMock
+        mock_context_manager = MagicMock()
+        mock_context_manager.__aenter__ = AsyncMock(side_effect=Exception("Network error"))
+        mock_context_manager.__aexit__ = AsyncMock(return_value=None)
+        
+        # Mock the session.get method to return the context manager
+        mock_session.get = MagicMock(return_value=mock_context_manager)
+        scraper.session = mock_session
 
-            with pytest.raises(Exception, match="Network error"):
-                await scraper.scrape_content("https://example.com")
+        result = await scraper.scrape_content("https://example.com")
+        assert result is not None
+        assert "Network error" in result.metadata["error"]
 
     @pytest.mark.asyncio
     async def test_scrape_content_http_error(self, scraper):
         """Test content scraping with HTTP error"""
-        with patch("aiohttp.ClientSession.get") as mock_get:
-            mock_response = AsyncMock()
-            mock_response.status = 404
-            mock_response.text.return_value = "Not Found"
-            mock_get.return_value.__aenter__.return_value = mock_response
+        # Initialize the scraper session
+        mock_session = AsyncMock()
+        mock_response = AsyncMock()
+        mock_response.status = 404
+        mock_response.reason = "Not Found"
+        mock_response.text.return_value = "Not Found"
+        
+        # Create a proper async context manager using MagicMock
+        from unittest.mock import MagicMock
+        mock_context_manager = MagicMock()
+        mock_context_manager.__aenter__ = AsyncMock(return_value=mock_response)
+        mock_context_manager.__aexit__ = AsyncMock(return_value=None)
+        
+        # Mock the session.get method to return the context manager
+        mock_session.get = MagicMock(return_value=mock_context_manager)
+        scraper.session = mock_session
 
-            with pytest.raises(Exception, match="HTTP 404"):
-                await scraper.scrape_content("https://example.com")
+        result = await scraper.scrape_content("https://example.com")
+        assert result is not None
+        assert "HTTP 404" in result.metadata["error"]
 
 
 class TestScrapingManager:

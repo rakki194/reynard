@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
-"""FastAPI ECS Search Performance Benchmark Suite
+"""FastAPI ECS Search Performance Benchmark Suite - Database Version
 
-Comprehensive performance testing and bottleneck identification for the Reynard
-FastAPI ECS search system. This suite provides detailed analysis of:
+🦊 *whiskers twitch with strategic precision* Refactored performance testing suite
+that stores all results in PostgreSQL instead of scattered files.
+
+This suite provides detailed analysis of:
 - API endpoint performance
 - Database query optimization
 - Caching effectiveness
 - Memory usage patterns
 - Concurrent request handling
+
+All results are stored in the unified testing ecosystem database.
+
+Author: Strategic-Fox-42 (Reynard Fox Specialist)
+Version: 2.0.0
 """
 
 import asyncio
@@ -15,6 +22,7 @@ import logging
 import statistics
 import sys
 import time
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -25,6 +33,7 @@ import psutil
 # Add backend to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
 
+from app.services.testing.testing_ecosystem_service import TestingEcosystemService
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -83,13 +92,15 @@ class PerformanceMonitor:
         }
 
 
-class FastAPIBenchmark:
-    """FastAPI ECS Search Performance Benchmark Suite."""
+class FastAPIBenchmarkDB:
+    """FastAPI ECS Search Performance Benchmark Suite with Database Storage."""
 
     def __init__(self, base_url: str = "http://localhost:8000"):
         self.base_url = base_url
         self.monitor = PerformanceMonitor()
         self.session: aiohttp.ClientSession | None = None
+        self.testing_service = TestingEcosystemService()
+        self.test_run_id: uuid.UUID | None = None
 
     async def __aenter__(self):
         """Async context manager entry."""
@@ -103,6 +114,30 @@ class FastAPIBenchmark:
         """Async context manager exit."""
         if self.session:
             await self.session.close()
+
+    async def start_benchmark_run(self, benchmark_name: str) -> uuid.UUID:
+        """Start a new benchmark run in the database."""
+        run_id = f"benchmark_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
+        
+        self.test_run_id = await self.testing_service.create_test_run(
+            run_id=run_id,
+            test_type="benchmark",
+            test_suite=benchmark_name,
+            environment="development",
+            branch="main",
+            commit_hash="unknown",
+            metadata={
+                "base_url": self.base_url,
+                "benchmark_version": "2.0.0",
+                "system_info": {
+                    "cpu_count": psutil.cpu_count(),
+                    "memory_total_gb": psutil.virtual_memory().total / (1024**3),
+                }
+            }
+        )
+        
+        logger.info(f"Started benchmark run: {run_id} (ID: {self.test_run_id})")
+        return self.test_run_id
 
     async def make_request(
         self,
@@ -274,6 +309,53 @@ class FastAPIBenchmark:
             results=results,
         )
 
+    async def store_benchmark_results(self, suite: BenchmarkSuite, benchmark_name: str):
+        """Store benchmark results in the database."""
+        if not self.test_run_id:
+            raise ValueError("No active test run. Call start_benchmark_run() first.")
+
+        # Store benchmark result
+        benchmark_result = await self.testing_service.add_benchmark_result(
+            test_run_id=self.test_run_id,
+            benchmark_name=benchmark_name,
+            benchmark_type="performance",
+            total_requests=suite.total_tests,
+            successful_requests=suite.successful_tests,
+            failed_requests=suite.failed_tests,
+            avg_response_time_ms=suite.average_response_time_ms,
+            median_response_time_ms=suite.median_response_time_ms,
+            p95_response_time_ms=suite.p95_response_time_ms,
+            p99_response_time_ms=suite.p99_response_time_ms,
+            requests_per_second=suite.requests_per_second,
+            peak_memory_mb=suite.total_memory_usage_mb,
+            peak_cpu_percent=suite.peak_cpu_usage_percent,
+            metadata={
+                "suite_name": suite.suite_name,
+                "timestamp": suite.timestamp.isoformat(),
+            }
+        )
+
+        # Store individual performance metrics
+        for result in suite.results:
+            await self.testing_service.add_performance_metric(
+                test_run_id=self.test_run_id,
+                benchmark_result_id=benchmark_result.id,
+                metric_name=f"{result.method}_{result.endpoint}",
+                metric_type="response_time",
+                value=result.duration_ms,
+                unit="ms",
+                timestamp=result.timestamp,
+                metadata={
+                    "status_code": result.status_code,
+                    "response_size_bytes": result.response_size_bytes,
+                    "memory_usage_mb": result.memory_usage_mb,
+                    "cpu_usage_percent": result.cpu_usage_percent,
+                    "error_message": result.error_message,
+                }
+            )
+
+        logger.info(f"Stored benchmark results for {benchmark_name} in database")
+
     async def benchmark_search_endpoints(self) -> BenchmarkSuite:
         """Benchmark all search endpoints."""
         logger.info("Starting search endpoints benchmark")
@@ -350,7 +432,9 @@ class FastAPIBenchmark:
                 )
                 all_results.extend(concurrent_results)
 
-        return self.analyze_results(all_results)
+        suite = self.analyze_results(all_results)
+        await self.store_benchmark_results(suite, "search_endpoints")
+        return suite
 
     async def benchmark_ecs_endpoints(self) -> BenchmarkSuite:
         """Benchmark ECS world simulation endpoints."""
@@ -404,7 +488,9 @@ class FastAPIBenchmark:
                 )
                 all_results.extend(concurrent_results)
 
-        return self.analyze_results(all_results)
+        suite = self.analyze_results(all_results)
+        await self.store_benchmark_results(suite, "ecs_endpoints")
+        return suite
 
     async def benchmark_rag_endpoints(self) -> BenchmarkSuite:
         """Benchmark RAG service endpoints."""
@@ -460,10 +546,15 @@ class FastAPIBenchmark:
                 )
                 all_results.extend(concurrent_results)
 
-        return self.analyze_results(all_results)
+        suite = self.analyze_results(all_results)
+        await self.store_benchmark_results(suite, "rag_endpoints")
+        return suite
 
-    def generate_report(self, suites: list[BenchmarkSuite]) -> str:
-        """Generate a comprehensive performance report."""
+    async def generate_and_store_report(self, suites: list[BenchmarkSuite]) -> str:
+        """Generate a comprehensive performance report and store it in the database."""
+        if not self.test_run_id:
+            raise ValueError("No active test run. Call start_benchmark_run() first.")
+
         report = []
         report.append("=" * 80)
         report.append("FASTAPI ECS SEARCH PERFORMANCE BENCHMARK REPORT")
@@ -535,12 +626,41 @@ class FastAPIBenchmark:
                 report.append("")
 
         report.append("=" * 80)
-        return "\n".join(report)
+        report_content = "\n".join(report)
+
+        # Store the report in the database
+        await self.testing_service.add_test_report(
+            test_run_id=self.test_run_id,
+            report_type="performance",
+            report_format="text",
+            report_title="FastAPI ECS Search Performance Benchmark Report",
+            report_content=report_content,
+            metadata={
+                "suites_count": len(suites),
+                "total_tests": sum(suite.total_tests for suite in suites),
+                "total_successful": sum(suite.successful_tests for suite in suites),
+                "total_failed": sum(suite.failed_tests for suite in suites),
+            }
+        )
+
+        logger.info("Performance report stored in database")
+        return report_content
+
+    async def complete_benchmark_run(self):
+        """Complete the benchmark run and update status."""
+        if not self.test_run_id:
+            raise ValueError("No active test run. Call start_benchmark_run() first.")
+
+        await self.testing_service.update_test_run_status(
+            test_run_id=self.test_run_id,
+            status="completed"
+        )
+        logger.info(f"Completed benchmark run: {self.test_run_id}")
 
 
 async def main():
-    """Main benchmark execution."""
-    logger.info("Starting FastAPI ECS Search Performance Benchmark")
+    """Main benchmark execution with database storage."""
+    logger.info("Starting FastAPI ECS Search Performance Benchmark (Database Version)")
 
     # Check if server is running
     try:
@@ -556,7 +676,10 @@ async def main():
         logger.info("Please ensure the FastAPI server is running on localhost:8000")
         return
 
-    async with FastAPIBenchmark() as benchmark:
+    async with FastAPIBenchmarkDB() as benchmark:
+        # Start benchmark run
+        await benchmark.start_benchmark_run("comprehensive_performance_benchmark")
+        
         # Run all benchmark suites
         suites = []
 
@@ -581,21 +704,16 @@ async def main():
         except Exception as e:
             logger.error(f"RAG benchmark failed: {e}")
 
-        # Generate and save report
+        # Generate and store report
         if suites:
-            report = benchmark.generate_report(suites)
+            report = await benchmark.generate_and_store_report(suites)
             print(report)
-
-            # Save report to file
-            report_file = (
-                Path(__file__).parent
-                / f"benchmark_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-            )
-            with open(report_file, "w") as f:
-                f.write(report)
-            logger.info(f"Report saved to: {report_file}")
+            logger.info("Benchmark completed successfully - all data stored in database")
         else:
             logger.error("No benchmark suites completed successfully")
+
+        # Complete the benchmark run
+        await benchmark.complete_benchmark_run()
 
 
 if __name__ == "__main__":

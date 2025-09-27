@@ -47,10 +47,11 @@ from .provider_registry import (
     get_config_manager,
     get_provider_registry,
 )
-from .providers.llamacpp_provider import LLaMACppConfig, LLaMACppProvider
-from .providers.ollama_provider import OllamaConfig, OllamaProvider
-from .providers.sglang_provider import SGLangConfig, SGLangProvider, SGLangWorkflow
-from .providers.vllm_provider import VLLMConfig, VLLMProvider
+# Provider imports are now done conditionally in ai_service.py to avoid loading disabled providers
+# from .providers.llamacpp_provider import LLaMACppConfig, LLaMACppProvider
+# from .providers.ollama_provider import OllamaConfig, OllamaProvider
+# from .providers.sglang_provider import SGLangConfig, SGLangProvider, SGLangWorkflow
+# from .providers.vllm_provider import VLLMConfig, VLLMProvider
 
 # Import service access functions - moved to avoid circular import
 # from app.core.ai_service_initializer import get_ai_service
@@ -71,16 +72,16 @@ __all__ = [
     "AIServiceConfig",
     "ProviderRegistry",
     "ProviderConfigManager",
-    # Providers
-    "OllamaProvider",
-    "OllamaConfig",
-    "VLLMProvider",
-    "VLLMConfig",
-    "SGLangProvider",
-    "SGLangConfig",
-    "SGLangWorkflow",
-    "LLaMACppProvider",
-    "LLaMACppConfig",
+    # Providers (imported conditionally to avoid loading disabled providers)
+    # "OllamaProvider",
+    # "OllamaConfig",
+    # "VLLMProvider",
+    # "VLLMConfig",
+    # "SGLangProvider",
+    # "SGLangConfig",
+    # "SGLangWorkflow",
+    # "LLaMACppProvider",
+    # "LLaMACppConfig",
     # Registry functions
     "get_provider_registry",
     "get_config_manager",

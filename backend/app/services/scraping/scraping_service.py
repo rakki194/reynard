@@ -54,7 +54,7 @@ class ScrapingService:
         self.quality_scorer = ContentQualityScorer()
         self.pipeline_manager = ProcessingPipelineManager()
         self.enhanced_pipeline = EnhancedContentPipeline()
-        self.enhanced_extractor = ContentExtractor()
+        self.extractor = ContentExtractor()
         self.gallery_integration: GalleryIntegration | None = None
         self.initialized = False
         self.enabled = self.configuration.get("enabled", True)
@@ -551,13 +551,46 @@ class ScrapingService:
     async def _register_default_scrapers(self) -> None:
         """Register default scrapers."""
         try:
-            # Register scrapers with the router
-            await self.router.register_scraper(ScrapingType.GENERAL, GeneralScraper())
+            from .extractors import (
+                ArsTechnicaScraper,
+                GeneralScraper,
+                GitHubScraper,
+                HackerNewsScraper,
+                MultiTierExtractor,
+                TwitterScraper,
+                WikipediaScraper,
+                WordPressScraper,
+            )
 
-            # TODO: Register other scrapers as they are implemented
-            # await self.router.register_scraper(ScrapingType.HACKER_NEWS, HackerNewsScraper())
-            # await self.router.register_scraper(ScrapingType.GITHUB, GitHubScraper())
-            # etc.
+            # Register core scrapers
+            await self.router.register_scraper(ScrapingType.GENERAL, GeneralScraper())
+            await self.router.register_scraper(ScrapingType.ENHANCED, self.extractor)
+
+            # Register specialized scrapers
+            await self.router.register_scraper(ScrapingType.ARS_TECHNICA, ArsTechnicaScraper())
+            await self.router.register_scraper(ScrapingType.WORDPRESS, WordPressScraper("https://example.com"))
+            await self.router.register_scraper(ScrapingType.MULTI_TIER, MultiTierExtractor())
+
+            # Register other available scrapers
+            try:
+                await self.router.register_scraper(ScrapingType.HACKER_NEWS, HackerNewsScraper())
+            except Exception as e:
+                logger.warning(f"HackerNews scraper not available: {e}")
+
+            try:
+                await self.router.register_scraper(ScrapingType.GITHUB, GitHubScraper())
+            except Exception as e:
+                logger.warning(f"GitHub scraper not available: {e}")
+
+            try:
+                await self.router.register_scraper(ScrapingType.TWITTER, TwitterScraper())
+            except Exception as e:
+                logger.warning(f"Twitter scraper not available: {e}")
+
+            try:
+                await self.router.register_scraper(ScrapingType.WIKIPEDIA, WikipediaScraper())
+            except Exception as e:
+                logger.warning(f"Wikipedia scraper not available: {e}")
 
             logger.info("Registered default scrapers")
 
@@ -705,7 +738,7 @@ class ScrapingService:
         """
         try:
             # Extract content using enhanced extractor
-            result = await self.enhanced_extractor.scrape_content(url)
+            result = await self.extractor.scrape_content(url)
 
             # Process through enhanced pipeline
             result = await self.enhanced_pipeline.process_content(result)
@@ -730,8 +763,8 @@ class ScrapingService:
     async def get_enhanced_extraction_methods(self) -> list[dict[str, Any]]:
         """Get available enhanced extraction methods."""
         methods = []
-        for method_name in self.enhanced_extractor.get_available_methods():
-            method_info = self.enhanced_extractor.get_method_info(method_name)
+        for method_name in self.extractor.get_available_methods():
+            method_info = self.extractor.get_method_info(method_name)
             methods.append(method_info)
         return methods
 
@@ -745,7 +778,7 @@ class ScrapingService:
             Dictionary mapping method names to results
 
         """
-        return await self.enhanced_extractor.test_extraction_methods(url)
+        return await self.extractor.test_extraction_methods(url)
 
     async def get_best_extraction_method(self, url: str) -> str:
         """Determine the best extraction method for a URL.
@@ -757,7 +790,7 @@ class ScrapingService:
             Name of the best extraction method
 
         """
-        return await self.enhanced_extractor.get_best_method(url)
+        return await self.extractor.get_best_method(url)
 
     def get_enhanced_pipeline_stats(self) -> dict[str, Any]:
         """Get enhanced pipeline processing statistics."""

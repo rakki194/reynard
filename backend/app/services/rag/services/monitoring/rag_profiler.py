@@ -475,6 +475,40 @@ class RAGProfiler(BaseService):
         self.memory_samples.clear()
         self.cpu_samples.clear()
         logger.info("🦊 [PROFILER] All metrics cleared")
+    
+    async def get_stats(self) -> Dict[str, Any]:
+        """Get service statistics (required by BaseService)."""
+        return await self.get_statistics()
+    
+    async def get_statistics(self) -> Dict[str, Any]:
+        """Get comprehensive profiling statistics."""
+        return {
+            "rag_operations": len(self.profile_history),
+            "active_operations": len(self.active_operations),
+            "service_metrics": {
+                name: {
+                    "total_operations": metrics.total_operations,
+                    "successful_operations": metrics.successful_operations,
+                    "failed_operations": metrics.failed_operations,
+                    "average_duration_ms": metrics.average_duration_ms,
+                    "error_rate": metrics.error_rate,
+                }
+                for name, metrics in self.service_metrics.items()
+            },
+            "recent_alerts": self.alerts[-10:],
+            "system_resources": {
+                "avg_memory_mb": (
+                    sum(self.memory_samples) / len(self.memory_samples)
+                    if self.memory_samples
+                    else 0
+                ),
+                "avg_cpu_percent": (
+                    sum(self.cpu_samples) / len(self.cpu_samples)
+                    if self.cpu_samples
+                    else 0
+                ),
+            },
+        }
 
 
 # Global profiler instance

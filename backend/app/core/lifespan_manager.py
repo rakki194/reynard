@@ -162,76 +162,65 @@ async def lifespan(app: FastAPI):
     service_configs = get_service_configs()
     registry = get_service_registry()
 
-    # Initialize all services using the unified service manager
-    service_manager = get_service_manager()
-    success = await service_manager.initialize_all_services()
-
-    if not success:
-        logger.error("❌ Service initialization failed")
-        raise RuntimeError("Service initialization failed")
-
-    # Register image processing service
-    registry.register_service(
-        "image_processing",
-        {"enabled": True},  # Simple config for now
-        _init_image_processing_service,
-        _shutdown_image_processing_service,
-        _health_check_image_processing_service,
-        startup_priority=75,  # High priority for image support
-    )
-
-    # Register ECS world service
-    registry.register_service(
-        "ecs_world",
-        {"enabled": True},  # Simple config for now
-        _init_ecs_world_service,
-        _shutdown_ecs_world_service,
-        _health_check_ecs_world_service,
-        startup_priority=90,  # High priority for agent simulation
-    )
-
-    # Register AI email response service (after Ollama is initialized)
-    registry.register_service(
-        "ai_email_response",
-        {"enabled": True},  # Simple config for now
-        _init_ai_email_response_service,
-        _shutdown_ai_email_response_service,
-        _health_check_ai_email_response_service,
-        startup_priority=15,  # Lower priority than Ollama (25) to ensure Ollama starts first
-    )
-
-    # Auto-fix database issues before service initialization
-    logger.info("🔧 Auto-fixing database issues...")
     try:
-        auto_fix_results = auto_fix_all_databases()
-        if auto_fix_results:
-            fixed_dbs = [db for db, success in auto_fix_results.items() if success]
-            if fixed_dbs:
-                logger.info(f"✅ Auto-fixed databases: {', '.join(fixed_dbs)}")
-    except Exception as e:
-        logger.warning(f"⚠️ Database auto-fix had issues: {e}")
+        # Initialize all services using the unified service manager
+        service_manager = get_service_manager()
+        success = await service_manager.initialize_all_services()
 
-    # Initialize all services
-    logger.info("🚀 Starting Reynard API services...")
-    start_time = time.time()
-
-    try:
-        success = await registry.initialize_all(timeout=config.startup_timeout)
         if not success:
+            logger.error("❌ Service initialization failed")
             raise RuntimeError("Service initialization failed")
 
-        total_time = time.time() - start_time
-        logger.info(f"✅ All services initialized successfully in {total_time:.2f}s")
+        # Register image processing service
+        registry.register_service(
+            "image_processing",
+            {"enabled": True},  # Simple config for now
+            _init_image_processing_service,
+            _shutdown_image_processing_service,
+            _health_check_image_processing_service,
+            startup_priority=75,  # High priority for image support
+        )
+
+        # Register ECS world service
+        registry.register_service(
+            "ecs_world",
+            {"enabled": True},  # Simple config for now
+            _init_ecs_world_service,
+            _shutdown_ecs_world_service,
+            _health_check_ecs_world_service,
+            startup_priority=90,  # High priority for agent simulation
+        )
+
+        # Register AI email response service (after Ollama is initialized)
+        registry.register_service(
+            "ai_email_response",
+            {"enabled": True},  # Simple config for now
+            _init_ai_email_response_service,
+            _shutdown_ai_email_response_service,
+            _health_check_ai_email_response_service,
+            startup_priority=15,  # Lower priority than Ollama (25) to ensure Ollama starts first
+        )
+
+        # Auto-fix database issues before service initialization
+        logger.info("🔧 Auto-fixing database issues...")
+        try:
+            auto_fix_results = auto_fix_all_databases()
+            if auto_fix_results:
+                fixed_dbs = [db for db, success in auto_fix_results.items() if success]
+                if fixed_dbs:
+                    logger.info(f"✅ Auto-fixed databases: {', '.join(fixed_dbs)}")
+        except Exception as e:
+            logger.warning(f"⚠️ Database auto-fix had issues: {e}")
+
+        # Services are already initialized by the service manager above
+        logger.info("🚀 Reynard API services ready...")
+        start_time = time.time()
 
         # Set up secure routers now that services are initialized
         await _setup_secure_routers(app, registry)
 
         # FastAPI expects a mapping/dictionary, not a ServiceRegistry object
         yield {"service_registry": registry}
-
-    except Exception as e:
-        logger.error(f"❌ Service initialization failed: {e}")
-        raise
 
     finally:
         # Graceful shutdown
