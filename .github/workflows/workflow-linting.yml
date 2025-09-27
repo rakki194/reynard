@@ -56,8 +56,10 @@ jobs:
         run: |
           echo "🧪 Testing workflow syntax..."
           for workflow in .github/workflows/*.yml; do
-            echo "Testing ${workflow}..."
-            actionlint "${workflow}" --format github
+            if [[ -f "${workflow}" ]]; then
+              echo "Testing ${workflow}..."
+              actionlint "${workflow}" --format github
+            fi
           done
 
       - name: 📊 Generate workflow report

@@ -35,7 +35,7 @@ DATABASES=(
 echo -e "${BLUE}🔧 Installing PostgreSQL Extensions...${NC}"
 
 # Check if running as root or with sudo
-if [[ $EUID -ne 0 ]]; then
+if [[ ${EUID} -ne 0 ]]; then
    echo -e "${YELLOW}⚠️ This script should be run as root or with sudo for best results${NC}"
 fi
 
@@ -44,16 +44,16 @@ install_extension_in_db() {
     local db_name="$1"
     local extension="$2"
     
-    echo -e "${YELLOW}Installing $extension in database $db_name...${NC}"
+    echo -e "${YELLOW}Installing ${extension} in database ${db_name}...${NC}"
     
     # Use PGPASSWORD to avoid password prompts
-    export PGPASSWORD="$POSTGRES_PASSWORD"
+    export PGPASSWORD="${POSTGRES_PASSWORD}"
     
-    if psql -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER" -d "$db_name" -c "CREATE EXTENSION IF NOT EXISTS \"$extension\";" 2>/dev/null; then
-        echo -e "${GREEN}✅ Successfully installed $extension in $db_name${NC}"
+    if psql -h "${POSTGRES_HOST}" -p "${POSTGRES_PORT}" -U "${POSTGRES_USER}" -d "${db_name}" -c "CREATE EXTENSION IF NOT EXISTS \"${extension}\";" 2>/dev/null; then
+        echo -e "${GREEN}✅ Successfully installed ${extension} in ${db_name}${NC}"
         return 0
     else
-        echo -e "${RED}❌ Failed to install $extension in $db_name${NC}"
+        echo -e "${RED}❌ Failed to install ${extension} in ${db_name}${NC}"
         return 1
     fi
 }
