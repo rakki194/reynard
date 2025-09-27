@@ -30,13 +30,17 @@ from .core.fuzzy import Fuzzy
 console = Console()
 
 
-async def run_profiling_mode(mode: str, session_id: str = None, output_path: str = None, verbose: bool = False):
+async def run_profiling_mode(mode: str, session_id: str = None, output_path: str = None,
+                           storage_method: str = "postgresql", fallback_to_json: bool = True,
+                           verbose: bool = False):
     """Run Fenrir in profiling mode.
 
     Args:
         mode: Profiling mode (memory, startup, database, all)
         session_id: Optional session identifier
         output_path: Optional output file path
+        storage_method: Storage method ("postgresql", "json", or "both")
+        fallback_to_json: Whether to fallback to JSON if database fails
         verbose: Enable verbose output
     """
     console.print(Panel.fit(
@@ -47,8 +51,8 @@ async def run_profiling_mode(mode: str, session_id: str = None, output_path: str
     ))
 
     async with Fuzzy() as fuzzer:
-        # Enable profiling
-        fuzzer.enable_profiling(session_id)
+        # Enable profiling with storage configuration
+        fuzzer.enable_profiling(session_id, storage_method, fallback_to_json)
 
         results = {}
 

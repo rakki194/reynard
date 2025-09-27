@@ -64,7 +64,10 @@ class UserModel(Base):
 
     # RBAC relationships
     user_roles = relationship(
-        "UserRoleModel", back_populates="user", cascade="all, delete-orphan"
+        "UserRoleModel", 
+        foreign_keys="UserRoleModel.user_id",
+        back_populates="user", 
+        cascade="all, delete-orphan"
     )
 
 
@@ -145,7 +148,11 @@ class RolePermissionModel(Base):
     # Relationships
     role = relationship("RoleModel", back_populates="role_permissions")
     permission = relationship("PermissionModel", back_populates="role_permissions")
-    granted_by_user = relationship("UserModel", foreign_keys=[granted_by])
+    granted_by_user = relationship(
+        "UserModel", 
+        foreign_keys=[granted_by],
+        overlaps="role,permission"
+    )
 
 
 class UserRoleModel(Base):
@@ -171,10 +178,16 @@ class UserRoleModel(Base):
 
     # Relationships
     user = relationship(
-        "UserModel", foreign_keys=[user_id], back_populates="user_roles"
+        "UserModel", 
+        foreign_keys=[user_id], 
+        back_populates="user_roles"
     )
     role = relationship("RoleModel", back_populates="user_roles")
-    assigned_by_user = relationship("UserModel", foreign_keys=[assigned_by])
+    assigned_by_user = relationship(
+        "UserModel", 
+        foreign_keys=[assigned_by],
+        overlaps="user,user_roles"
+    )
 
 
 class ResourceAccessControlModel(Base):

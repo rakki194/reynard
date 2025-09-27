@@ -196,7 +196,7 @@ const QualityGates: Component = () => {
   };
 
   return (
-    <div class="quality-gates-page" dir={isRTL() ? "rtl" : "ltr"}>
+    <div class="quality-gates-page" dir={isRTL ? "rtl" : "ltr"}>
       <header class="page-header">
         <h1>🦊 Quality Gates Management</h1>
         <p>Configure and manage quality gates for different environments</p>

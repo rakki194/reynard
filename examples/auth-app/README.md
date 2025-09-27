@@ -1,14 +1,18 @@
-# Reynard Auth Demo App
+# 🦊 Reynard Auth Demo App - RBAC Integrated
 
 A comprehensive authentication demonstration app built with the Reynard framework,
-featuring PostgreSQL backend integration with the Gatekeeper authentication library.
+featuring full RBAC (Role-Based Access Control) integration with the Gatekeeper authentication library.
 
 ## Features
 
 - **Complete Authentication**: Login, registration, and session management
+- **Full RBAC Integration**: Role-based access control with permissions
 - **PostgreSQL Backend**: Persistent user storage with Gatekeeper library
 - **Reynard UI**: Beautiful, responsive interface with Reynard components
 - **JWT Security**: Secure token-based authentication with refresh tokens
+- **Permission Management**: Granular permission system with role assignment
+- **Audit Logging**: Comprehensive security audit trails
+- **Demo Users**: Pre-configured users with different access levels
 - **Responsive Design**: Mobile-first design with modern UI/UX
 - **Real-time Updates**: Live authentication state management
 
@@ -21,12 +25,13 @@ featuring PostgreSQL backend integration with the Gatekeeper authentication libr
 - **reynard-components**: UI components
 - **Vite**: Fast development server with hot reload
 
-### Backend (FastAPI + Gatekeeper)
+### Backend (FastAPI + Gatekeeper + RBAC)
 
 - **FastAPI**: Modern Python web framework
 - **Gatekeeper**: Authentication and authorization library
-- **PostgreSQL**: Persistent database storage
-- **JWT**: Secure token management
+- **RBAC System**: Role-based access control with permissions
+- **PostgreSQL**: Persistent database storage with RBAC schema
+- **JWT**: Secure token management with role information
 
 ## Prerequisites
 
@@ -56,37 +61,74 @@ sudo systemctl enable postgresql
 #### Create Database and User
 
 ```bash
-# Create database
-sudo -u postgres createdb yipyap
+# Create database for RBAC demo
+sudo -u postgres createdb reynard_auth_demo
 
-# Create user
-sudo -u postgres psql -c "CREATE USER yipyap WITH PASSWORD 'yipyap';"
+# Create user with secure password (replace with your own)
+sudo -u postgres psql -c "CREATE USER your_username WITH PASSWORD 'your_secure_password';" 2>/dev/null || echo "User already exists"
 
 # Grant privileges
-sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE yipyap TO yipyap;"
+sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE reynard_auth_demo TO your_username;"
 ```
 
-#### Initialize Database Schema
+**⚠️ Security Note**: Replace `your_username` and `your_secure_password` with actual secure credentials.
+
+#### Initialize Database Schema with RBAC
 
 ```bash
 # Install Python dependencies
 pip install -r backend/requirements.txt
 
-# Setup database and create initial users
+# Setup database with RBAC system and create demo users
 python setup_database.py
 ```
 
+This will:
+- Initialize the RBAC system with roles and permissions
+- Create demo users with different access levels
+- Set up the complete authentication schema
+
 ### 3. Environment Configuration
 
-Create a `.env` file (optional):
+**⚠️ SECURITY WARNING**: Never commit real credentials to version control!
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` with your actual database credentials:
 
 ```bash
-# Database
-DATABASE_URL=postgresql://yipyap:yipyap@localhost:5432/yipyap
+# Database for RBAC demo - REPLACE WITH YOUR ACTUAL CREDENTIALS
+AUTH_APP_DATABASE_URL=postgresql://your_username:your_password@localhost:5432/reynard_auth_demo
 
-# Security
+# Security - CHANGE THESE IN PRODUCTION
 SECRET_KEY=your-secret-key-here-change-in-production
+JWT_SECRET_KEY=your-jwt-secret-key-here-change-in-production
+
+# RBAC Configuration
+GATEKEEPER_USE_MEMORY_BACKEND=false
+GATEKEEPER_ACCESS_TOKEN_EXPIRE_MINUTES=30
+GATEKEEPER_REFRESH_TOKEN_EXPIRE_DAYS=7
 ```
+
+**Security Best Practices:**
+- Use strong, unique passwords for database users
+- Generate secure random keys for SECRET_KEY and JWT_SECRET_KEY
+- Never use default or example credentials in production
+- Consider using environment-specific configuration files
+
+## Demo Credentials
+
+The application comes with pre-configured demo users with different RBAC roles:
+
+| Username  | Password      | Role      | RBAC Role    | Permissions                    |
+|-----------|---------------|-----------|--------------|--------------------------------|
+| admin     | Admin123!     | Admin     | demo_admin   | Full access, user management   |
+| moderator | Moderator123! | Moderator | demo_moderator | Content moderation, user support |
+| user      | User123!      | Regular   | demo_user    | Read/write content, profile    |
+| guest     | Guest123!     | Regular   | demo_guest   | Read-only access               |
 
 ## 🚀 Running the Application
 

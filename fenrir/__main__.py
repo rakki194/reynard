@@ -82,6 +82,19 @@ Examples:
     )
 
     parser.add_argument(
+        "--storage-method",
+        choices=["postgresql", "json", "both"],
+        default="postgresql",
+        help="Storage method for profiling results (default: postgresql)"
+    )
+
+    parser.add_argument(
+        "--no-fallback",
+        action="store_true",
+        help="Disable fallback to JSON when database fails"
+    )
+
+    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose output"
@@ -102,6 +115,8 @@ Examples:
                 mode=args.profile_type,
                 session_id=args.session_id,
                 output_path=args.output,
+                storage_method=args.storage_method,
+                fallback_to_json=not args.no_fallback,
                 verbose=args.verbose
             ))
 

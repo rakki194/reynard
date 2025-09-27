@@ -1,8 +1,8 @@
 {
   "name": "reynard-auth-app",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
-  "description": "A comprehensive authentication demo app built with Reynard framework and Gatekeeper backend",
+  "description": "A comprehensive authentication demo app with RBAC integration built with Reynard framework and Gatekeeper backend",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -29,7 +29,7 @@
     "vite": "7.1.7",
     "vite-plugin-solid": "2.11.8"
   },
-  "keywords": ["reynard", "solidjs", "authentication", "gatekeeper", "postgresql", "jwt"],
+  "keywords": ["reynard", "solidjs", "authentication", "gatekeeper", "postgresql", "jwt", "rbac", "role-based-access-control"],
   "author": "Reynard Framework",
   "license": "MIT"
 }

@@ -5,15 +5,7 @@ All notable changes to the Reynard framework will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.25.0] - 2025-09-27
-
-## [0.26.0] - 2025-09-27
-
-### Fixed
-
-- **GitHub Actions pnpm Version Mismatch**: Fixed critical pnpm version mismatch between package.json (10.17.1) and GitHub Actions workflows (8.15.1) that was causing all CI/CD pipeline failures (Success-Advisor-8)
-- **ShellCheck Issues**: Fixed all ShellCheck issues across backend scripts and shell utilities with pedantic attention to detail (Success-Advisor-8)
-- **i18n Validation Failures**: Created missing i18n test file and translation files for auth package to resolve validation failures (Success-Advisor-8)
+## [0.27.0] - 2025-09-27
 
 ## [Unreleased]
 
@@ -25,9 +17,84 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+### Fixed
+
 ### Security
 
+
+### Added
+- **Authentication System**: Comprehensive authentication system with RBAC (Role-Based Access Control) implementation
+- **Fenrir Profiling Enhancements**: Enhanced Fenrir profiling tools with PostgreSQL integration and comprehensive testing
+- **Quality Gates System**: Advanced quality gates management with database integration and API endpoints
+- **Testing Infrastructure**: Enhanced testing app with quality gates management and evaluation history tracking
+
+### Changed
+- **Backend Architecture**: Modernized backend services with improved error handling and configuration management
+- **Database Integration**: Enhanced database service integration with Alembic migrations and profiling capabilities
+- **Service Configuration**: Streamlined service configuration management across all backend services
+
 ### Fixed
+- **Database Migrations**: Fixed Alembic migration issues and created proper quality gates table migrations
+- **Service Profiling**: Resolved service profiling integration issues and enhanced monitoring capabilities
+- **Authentication Flow**: Fixed authentication system initialization and RBAC setup
+
+## [0.26.0] - 2025-09-27
+
+### Fixed
+
+- **GitHub Actions pnpm Version Mismatch**: Fixed critical pnpm version mismatch between package.json (10.17.1) and GitHub Actions workflows (8.15.1) that was causing all CI/CD pipeline failures (Success-Advisor-8)
+- **ShellCheck Issues**: Fixed all ShellCheck issues across backend scripts and shell utilities with pedantic attention to detail, including:
+  - Variable reference braces in ALL shell scripts across the entire codebase
+  - Conditional statements to use `[[ ]]` instead of `[ ]` for better shell compatibility
+  - Declare and assign separately issues (SC2155) in project-root.sh
+  - Unused variable issues by using `_` instead of `i` in loops
+  - Useless echo issues by using direct command execution
+  - Function invocation in if conditions (SC2310) where appropriate
+  - Exit code checking patterns (SC2181) for better shell practices
+  - Systematic fixes applied to all backend scripts, utility scripts, package scripts, examples, and e2e scripts (Success-Advisor-8)
+- **i18n Validation Failures**: Created missing i18n test file and translation files for auth package to resolve validation failures:
+  - Created missing i18n test file: `packages/services/auth/src/__tests__/i18n.test.ts`
+  - Created missing translation files in correct directory structure:
+    - `packages/services/auth/src/lang/en/auth.ts`
+    - `packages/services/auth/src/lang/en/common.ts`
+    - `packages/services/auth/src/locales/en/auth.json`
+    - `packages/services/auth/src/locales/en/common.json`
+  - All i18n workflows should now pass validation (Success-Advisor-8)
+
+## [0.25.0] - 2025-09-27
+
+### Added
+
+- **Comprehensive Documentation Cleanup**: Removed 21 obsolete documentation files and analysis reports for cleaner codebase
+- **Enhanced Backend API Endpoints**: Improved error handling and modernized API endpoints across all backend services
+- **Modernized Testing Infrastructure**: Enhanced pytest configuration and testing capabilities with better integration
+- **Streamlined Service Configuration**: Improved service configuration management with better error handling
+- **Enhanced Fenrir Profiling Tools**: Advanced profiling capabilities with database integration and comprehensive testing
+- **Comprehensive Testing App Example**: Added modern UI testing application with quality gates management
+- **Enhanced Database Reporter**: Improved quality gates functionality and database integration
+- **Core Testing Utilities**: Better Vitest integration and testing infrastructure improvements
+
+### Changed
+
+- **Backend Modernization**: Comprehensive backend infrastructure modernization while maintaining backward compatibility
+- **Service Architecture**: Streamlined service configuration management and improved error handling
+- **Testing Framework**: Enhanced testing infrastructure with better pytest configuration and Vitest integration
+- **Database Integration**: Improved database service integration with enhanced profiling capabilities
+
+### Fixed
+
+- **Lockfile Synchronization**: Resolved pnpm lockfile synchronization issues after dev-tools consolidation
+- **TypeScript Compilation**: Fixed TypeScript compilation and pnpm setup issues across the codebase
+- **Workflow Failures**: Resolved remaining workflow failures systematically across all GitHub Actions
+- **Actionlint Issues**: Fixed actionlint workflow syntax validation issues
+- **Auth Package Tests**: Ensured auth package test directory is properly tracked by git
+- **Shell Script Linting**: Resolved shell script linting issues across all backend and utility scripts
+
+### Removed
+
+- **Obsolete Documentation**: Removed 21 obsolete documentation files and analysis reports
+- **Temporary Test Files**: Cleaned up temporary test files and configuration examples
+- **Legacy Configuration**: Removed legacy configuration files and outdated examples
 
 ## [0.24.0] - 2025-09-27
 

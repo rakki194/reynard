@@ -42,7 +42,7 @@ class TestEnhancedServiceProfiler:
     def test_get_enabled_services_comprehensive(self):
         """Test that all service types are detected correctly."""
         profiler = ServiceProfiler()
-        
+
         # Test with mock environment variables
         with patch.dict(os.environ, {
             'RAG_ENABLED': 'true',
@@ -55,7 +55,7 @@ class TestEnhancedServiceProfiler:
             'CONTINUOUS_INDEXING_ENABLED': 'true',
         }):
             enabled = profiler._get_enabled_services()
-            
+
             # Should include various service types
             assert 'rag' in enabled
             assert 'ollama' in enabled
@@ -69,7 +69,7 @@ class TestEnhancedServiceProfiler:
     def test_service_configuration_comprehensive(self):
         """Test that service configurations are comprehensive."""
         profiler = ServiceProfiler()
-        
+
         # Test RAG configuration
         rag_config = profiler._get_service_configuration('rag')
         assert 'RAG_ENABLED' in rag_config
@@ -92,7 +92,7 @@ class TestEnhancedServiceProfiler:
     def test_service_dependencies_comprehensive(self):
         """Test that service dependencies are comprehensive."""
         profiler = ServiceProfiler()
-        
+
         # Test RAG dependencies
         rag_deps = profiler._get_service_dependencies('rag')
         assert 'database' in rag_deps
@@ -113,7 +113,7 @@ class TestEnhancedServiceProfiler:
     def test_service_specific_recommendations(self):
         """Test that service-specific recommendations are provided."""
         profiler = ServiceProfiler()
-        
+
         # Test PyTorch memory recommendation
         pytorch_memory_rec = profiler._get_service_specific_recommendation('pytorch', 'memory')
         assert 'torch.jit.script' in pytorch_memory_rec
@@ -132,7 +132,7 @@ class TestEnhancedServiceProfiler:
     def test_generate_specific_recommendations(self):
         """Test that specific recommendations are generated based on actual data."""
         profiler = ServiceProfiler()
-        
+
         # Mock some service metrics
         profiler.service_metrics = {
             'high_memory_service': ServiceMetrics(
@@ -166,9 +166,9 @@ class TestEnhancedServiceProfiler:
                 performance_score=80.0
             )
         }
-        
+
         recommendations = profiler._generate_specific_recommendations()
-        
+
         # Should have memory optimization recommendation
         memory_rec = next((r for r in recommendations if r['category'] == 'memory_optimization'), None)
         assert memory_rec is not None
@@ -201,7 +201,7 @@ class TestEnhancedServiceProfiler:
     async def test_profile_all_services_comprehensive(self):
         """Test comprehensive service profiling."""
         profiler = ServiceProfiler()
-        
+
         # Mock environment to have some services enabled
         with patch.dict(os.environ, {
             'RAG_ENABLED': 'true',
@@ -211,25 +211,25 @@ class TestEnhancedServiceProfiler:
             # Mock the import and initialization methods to avoid actual imports
             with patch.object(profiler, '_import_service_module') as mock_import, \
                  patch.object(profiler, '_initialize_service') as mock_init:
-                
+
                 mock_import.return_value = MagicMock()
                 mock_init.return_value = MagicMock()
-                
+
                 results = await profiler.profile_all_services()
-                
+
                 # Check that results have the expected structure
                 assert 'profiling_session' in results
                 assert 'services' in results
                 assert 'packages' in results
                 assert 'features' in results
                 assert 'summary' in results
-                
+
                 # Check that summary has enhanced features
                 summary = results['summary']
                 assert 'specific_recommendations' in summary
                 assert 'top_memory_consumers' in summary
                 assert 'slowest_services' in summary
-                
+
                 # Check that recommendations are included in top consumers
                 if summary['top_memory_consumers']:
                     for consumer in summary['top_memory_consumers']:
@@ -240,7 +240,7 @@ class TestEnhancedServiceProfiler:
     def test_calculate_service_performance_score(self):
         """Test service performance score calculation."""
         profiler = ServiceProfiler()
-        
+
         # Test with good performance metrics
         good_score = profiler._calculate_service_performance_score(
             memory_mb=10.0,  # Low memory
@@ -248,7 +248,7 @@ class TestEnhancedServiceProfiler:
             import_time_ms=50.0  # Fast import
         )
         assert good_score > 80  # Should be high score
-        
+
         # Test with poor performance metrics
         poor_score = profiler._calculate_service_performance_score(
             memory_mb=100.0,  # High memory
@@ -260,7 +260,7 @@ class TestEnhancedServiceProfiler:
     def test_calculate_feature_performance_score(self):
         """Test feature performance score calculation."""
         profiler = ServiceProfiler()
-        
+
         # Test with good performance metrics
         good_score = profiler._calculate_feature_performance_score(
             memory_mb=5.0,  # Low memory
@@ -268,7 +268,7 @@ class TestEnhancedServiceProfiler:
             endpoints_count=3  # Few endpoints
         )
         assert good_score > 80  # Should be high score
-        
+
         # Test with poor performance metrics
         poor_score = profiler._calculate_feature_performance_score(
             memory_mb=150.0,  # High memory
@@ -280,7 +280,7 @@ class TestEnhancedServiceProfiler:
     def test_system_health_calculation(self):
         """Test system health calculation."""
         profiler = ServiceProfiler()
-        
+
         # Mock service metrics for health calculation
         profiler.service_metrics = {
             'service1': ServiceMetrics(
@@ -314,9 +314,9 @@ class TestEnhancedServiceProfiler:
                 performance_score=90.0
             )
         }
-        
+
         health = profiler._calculate_system_health()
-        
+
         assert 'overall_health_score' in health
         assert 'active_services' in health
         assert 'total_services' in health
@@ -324,7 +324,7 @@ class TestEnhancedServiceProfiler:
         assert 'average_memory_usage_mb' in health
         assert 'average_startup_time_ms' in health
         assert 'health_status' in health
-        
+
         # With good metrics, health should be excellent
         assert health['overall_health_score'] >= 90
         assert health['health_status'] == 'excellent'
@@ -341,23 +341,23 @@ class TestServiceProfilerIntegration:
     async def test_fenrir_profiler_integration(self):
         """Test that service profiler integrates correctly with Fenrir profiler."""
         from fenrir.core.profiler import FenrirProfiler
-        
+
         profiler = FenrirProfiler()
-        
+
         # Mock environment to have some services enabled
         with patch.dict(os.environ, {
             'RAG_ENABLED': 'true',
             'OLLAMA_ENABLED': 'true',
         }):
             results = await profiler.run_detailed_service_profiling('test-integration')
-            
+
             # Check that results have the expected structure
             assert 'profiling_session' in results
             assert 'services' in results
             assert 'summary' in results
             assert 'session_id' in results
             assert 'timestamp' in results
-            
+
             # Check that summary has enhanced features
             summary = results['summary']
             assert 'specific_recommendations' in summary

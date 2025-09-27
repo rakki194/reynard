@@ -782,7 +782,7 @@ class ServiceProfiler:
     def _generate_specific_recommendations(self) -> List[Dict[str, Any]]:
         """Generate specific, actionable recommendations based on actual data."""
         recommendations = []
-        
+
         # Memory-based recommendations
         high_memory_services = [s for s in self.service_metrics.values() if s.memory_mb > 50]
         if high_memory_services:

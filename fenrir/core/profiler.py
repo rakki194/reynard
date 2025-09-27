@@ -111,13 +111,17 @@ class ProfilingSession:
 class MemoryProfiler:
     """Strategic memory profiler for Reynard backend analysis."""
 
-    def __init__(self, session_id: Optional[str] = None):
+    def __init__(self, session_id: Optional[str] = None, storage_method: str = "postgresql", fallback_to_json: bool = True):
         """Initialize the memory profiler.
 
         Args:
             session_id: Optional session identifier for tracking
+            storage_method: Storage method ("postgresql", "json", or "both")
+            fallback_to_json: Whether to fallback to JSON if database fails
         """
         self.session_id = session_id or f"profile_{int(time.time())}"
+        self.storage_method = storage_method
+        self.fallback_to_json = fallback_to_json
         self.session = ProfilingSession(
             session_id=self.session_id,
             start_time=datetime.now(timezone.utc)
@@ -125,8 +129,11 @@ class MemoryProfiler:
         self.process = psutil.Process()
         self.tracemalloc_enabled = False
 
-        # Database service for persistence
-        self.db_service = get_database_service()
+        # Database service for persistence (only if using postgresql or both)
+        if self.storage_method in ["postgresql", "both"]:
+            self.db_service = get_database_service()
+        else:
+            self.db_service = None
         self.db_session_id = None
 
         # Backend analyzers
@@ -556,19 +563,113 @@ class MemoryProfiler:
             border_style="green"
         ))
 
-    def save_session(self, output_path: Optional[Path] = None) -> Path:
-        """Save profiling session to file.
+    def save_session(self, output_path: Optional[Path] = None) -> str:
+        """Save profiling session to configured storage method.
 
         Args:
-            output_path: Optional path to save file
+            output_path: Optional path for JSON output (used when storage_method is "json" or "both")
 
         Returns:
-            Path where session was saved
+            Session ID or file path where session was saved
         """
+        # Handle different storage methods
+        if self.storage_method == "json":
+            return self._save_to_json(output_path)
+        elif self.storage_method == "both":
+            # Save to both PostgreSQL and JSON
+            db_result = self._save_to_postgresql()
+            json_result = self._save_to_json(output_path)
+            console.print(f"[green]Session saved to both PostgreSQL ({db_result}) and JSON ({json_result})[/green]")
+            return db_result
+        else:  # Default: postgresql
+            return self._save_to_postgresql()
+
+    def _save_to_postgresql(self) -> str:
+        """Save profiling session to PostgreSQL database."""
+        if self.db_service is None:
+            raise ValueError("Database service not available. Check E2E_DATABASE_URL environment variable.")
+
+        try:
+            # Use existing database service from initialization
+            db_service = self.db_service
+
+            # Check if session already exists, if not create it
+            existing_session = db_service.get_profiling_session(self.session.session_id)
+            if existing_session:
+                db_session_id = existing_session["id"]
+                console.print(f"[blue]Using existing session: {db_session_id}[/blue]")
+            else:
+                # Create profiling session in database
+                db_session_id = db_service.create_profiling_session(
+                    session_id=self.session.session_id,
+                    session_type="memory",  # Default type, could be made configurable
+                    environment="development"  # Could be made configurable
+                )
+
+            # Save memory snapshots
+            for snapshot in self.session.snapshots:
+                db_service.create_memory_snapshot(
+                    profiling_session_id=db_session_id,
+                    timestamp=snapshot.timestamp,
+                    context=snapshot.context,
+                    rss_mb=snapshot.rss_mb,
+                    vms_mb=snapshot.vms_mb,
+                    percent=snapshot.percent,
+                    available_mb=snapshot.available_mb,
+                    tracemalloc_mb=snapshot.tracemalloc_mb,
+                    gc_objects=snapshot.gc_objects
+                )
+
+            # Save profiling results
+            for result in self.session.results:
+                db_service.create_profiling_result(
+                    profiling_session_id=db_session_id,
+                    category=result.category,
+                    severity=result.severity,
+                    issue=result.issue,
+                    recommendation=result.recommendation,
+                    memory_impact_mb=result.memory_impact_mb,
+                    performance_impact=result.performance_impact
+                )
+
+            # Calculate duration if not set
+            if self.session.end_time:
+                duration_seconds = (self.session.end_time - self.session.start_time).total_seconds()
+            else:
+                duration_seconds = (datetime.now(timezone.utc) - self.session.start_time).total_seconds()
+
+            # Update session with analysis data and completion
+            db_service.update_profiling_session(
+                session_id=self.session.session_id,
+                status="completed",
+                completed_at=self.session.end_time or datetime.now(timezone.utc),
+                duration_seconds=duration_seconds,
+                total_snapshots=len(self.session.snapshots),
+                issues_found=len(self.session.results),
+                peak_memory_mb=max([s.rss_mb for s in self.session.snapshots]) if self.session.snapshots else None,
+                final_memory_mb=self.session.snapshots[-1].rss_mb if self.session.snapshots else None,
+                memory_delta_mb=(self.session.snapshots[-1].rss_mb - self.session.snapshots[0].rss_mb) if len(self.session.snapshots) > 1 else None,
+                backend_analysis=self.session.backend_analysis,
+                database_analysis=self.session.database_analysis,
+                service_analysis=self.session.service_analysis
+            )
+
+            console.print(f"[green]Session saved to database with ID: {db_session_id}[/green]")
+            return db_session_id
+
+        except Exception as e:
+            console.print(f"[red]Failed to save session to database: {e}[/red]")
+            if self.fallback_to_json:
+                console.print(f"[yellow]Falling back to JSON storage...[/yellow]")
+                return self._save_to_json()
+            else:
+                raise e
+
+    def _save_to_json(self, output_path: Optional[Path] = None) -> str:
+        """Save profiling session to JSON file."""
         if output_path is None:
             output_path = Path(f"fenrir_profile_{self.session_id}.json")
 
-        # Convert dataclasses to dictionaries for JSON serialization
         session_data = {
             "session_id": self.session.session_id,
             "start_time": self.session.start_time.isoformat(),
@@ -605,15 +706,22 @@ class MemoryProfiler:
         with open(output_path, 'w') as f:
             json.dump(session_data, f, indent=2)
 
-        console.print(f"[green]Session saved to: {output_path}[/green]")
-        return output_path
+        console.print(f"[green]Session saved to JSON file: {output_path}[/green]")
+        return str(output_path)
 
 
 class FenrirProfiler:
     """Main Fenrir profiling interface."""
 
-    def __init__(self):
-        """Initialize Fenrir profiler."""
+    def __init__(self, storage_method: str = "postgresql", fallback_to_json: bool = True):
+        """Initialize Fenrir profiler.
+
+        Args:
+            storage_method: Storage method ("postgresql", "json", or "both")
+            fallback_to_json: Whether to fallback to JSON if database fails
+        """
+        self.storage_method = storage_method
+        self.fallback_to_json = fallback_to_json
         self.profiler = None
 
     async def run_memory_analysis(self, session_id: Optional[str] = None) -> ProfilingSession:
@@ -625,7 +733,7 @@ class FenrirProfiler:
         Returns:
             Complete profiling session
         """
-        self.profiler = MemoryProfiler(session_id)
+        self.profiler = MemoryProfiler(session_id, self.storage_method, self.fallback_to_json)
         return await self.profiler.run_comprehensive_analysis()
 
     async def run_startup_profiling(self, session_id: Optional[str] = None) -> Dict[str, Any]:
@@ -637,7 +745,7 @@ class FenrirProfiler:
         Returns:
             Startup profiling results
         """
-        self.profiler = MemoryProfiler(session_id)
+        self.profiler = MemoryProfiler(session_id, self.storage_method, self.fallback_to_json)
         self.profiler.start_tracemalloc()
         results = await self.profiler.profile_backend_startup()
         self.profiler.stop_tracemalloc()

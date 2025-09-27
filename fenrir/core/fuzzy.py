@@ -305,7 +305,7 @@ class Fuzzy(BaseFuzzer):
 
         return results
 
-    def enable_profiling(self, session_id: str | None = None) -> None:
+    def enable_profiling(self, session_id: str | None = None, storage_method: str = "postgresql", fallback_to_json: bool = True) -> None:
         """Enable memory profiling for fuzzing operations.
 
         *fox strategic analysis* Enables comprehensive memory profiling
@@ -313,10 +313,12 @@ class Fuzzy(BaseFuzzer):
 
         Args:
             session_id: Optional session identifier for tracking
+            storage_method: Storage method ("postgresql", "json", or "both")
+            fallback_to_json: Whether to fallback to JSON if database fails
         """
-        self.profiler = FenrirProfiler()
+        self.profiler = FenrirProfiler(storage_method, fallback_to_json)
         self.profiling_enabled = True
-        console.print("[green]🦊 Memory profiling enabled for fuzzing session[/green]")
+        console.print(f"[green]🦊 Memory profiling enabled for fuzzing session (storage: {storage_method})[/green]")
 
     def disable_profiling(self) -> None:
         """Disable memory profiling."""

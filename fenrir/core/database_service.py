@@ -140,6 +140,7 @@ class FenrirDatabaseService:
         self,
         session_id: str,
         status: str = "completed",
+        completed_at: Optional[datetime] = None,
         duration_seconds: Optional[float] = None,
         total_snapshots: int = 0,
         issues_found: int = 0,
@@ -162,7 +163,7 @@ class FenrirDatabaseService:
                     return False
 
                 db_session.status = status
-                db_session.completed_at = datetime.now(timezone.utc)
+                db_session.completed_at = completed_at or datetime.now(timezone.utc)
                 db_session.duration_seconds = duration_seconds
                 db_session.total_snapshots = total_snapshots
                 db_session.issues_found = issues_found
@@ -216,6 +217,41 @@ class FenrirDatabaseService:
             raise
 
     # Memory Snapshot Methods
+
+    def create_memory_snapshot(
+        self,
+        profiling_session_id: str,
+        timestamp: datetime,
+        context: str,
+        rss_mb: float,
+        vms_mb: float,
+        percent: float,
+        available_mb: float,
+        tracemalloc_mb: float = 0.0,
+        gc_objects: int = 0,
+        metadata: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """Create a memory snapshot with specific timestamp."""
+        try:
+            with self.get_session() as session:
+                snapshot = DBMemorySnapshot(
+                    profiling_session_id=profiling_session_id,
+                    timestamp=timestamp,
+                    context=context,
+                    rss_mb=rss_mb,
+                    vms_mb=vms_mb,
+                    percent=percent,
+                    available_mb=available_mb,
+                    tracemalloc_mb=tracemalloc_mb,
+                    gc_objects=gc_objects,
+                    meta_data=metadata
+                )
+                session.add(snapshot)
+                session.flush()
+                return str(snapshot.id)
+        except SQLAlchemyError as e:
+            logger.error(f"Failed to create memory snapshot: {e}")
+            raise
 
     def save_memory_snapshot(
         self,
@@ -295,6 +331,37 @@ class FenrirDatabaseService:
             raise
 
     # Profiling Result Methods
+
+    def create_profiling_result(
+        self,
+        profiling_session_id: str,
+        category: str,
+        severity: str,
+        issue: str,
+        recommendation: str,
+        memory_impact_mb: float = 0.0,
+        performance_impact: str = "unknown",
+        metadata: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """Create a profiling result with direct session ID."""
+        try:
+            with self.get_session() as session:
+                result = DBProfilingResult(
+                    profiling_session_id=profiling_session_id,
+                    category=category,
+                    severity=severity,
+                    issue=issue,
+                    recommendation=recommendation,
+                    memory_impact_mb=memory_impact_mb,
+                    performance_impact=performance_impact,
+                    meta_data=metadata
+                )
+                session.add(result)
+                session.flush()
+                return str(result.id)
+        except SQLAlchemyError as e:
+            logger.error(f"Failed to create profiling result: {e}")
+            raise
 
     def save_profiling_result(
         self,

@@ -6,12 +6,24 @@
  */
 
 import { Component } from 'solid-js';
-import { Router, Route } from '@solidjs/router';
+import { Router, RouteDefinition } from '@solidjs/router';
 import { ReynardProvider } from 'reynard-themes';
 import { NotificationsProvider, createNotificationsModule } from 'reynard-core';
 import './styles/app.css';
 import Dashboard from './pages/Dashboard';
 import QualityGates from './pages/QualityGates';
+
+// Route definitions
+const routes: RouteDefinition[] = [
+  {
+    path: "/",
+    component: Dashboard,
+  },
+  {
+    path: "/quality-gates",
+    component: QualityGates,
+  },
+];
 
 const App: Component = () => {
   const notificationsModule = createNotificationsModule();
@@ -19,12 +31,7 @@ const App: Component = () => {
   return (
     <ReynardProvider defaultTheme="light" defaultLocale="en">
       <NotificationsProvider value={notificationsModule}>
-        <Router>
-          <div class="app">
-            <Route path="/" component={Dashboard} />
-            <Route path="/quality-gates" component={QualityGates} />
-          </div>
-        </Router>
+        <Router>{routes}</Router>
       </NotificationsProvider>
     </ReynardProvider>
   );

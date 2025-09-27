@@ -48,6 +48,7 @@ from app.api.summarization import router as summarization_router
 from app.api.todos import endpoints as todos_endpoints
 from app.api.tts import router as tts_router
 from app.api.testing import endpoints as testing_endpoints
+from app.api.quality_gates import endpoints as quality_gates_endpoints
 
 # Core API endpoints
 from app.core.api_endpoints import router as core_router
@@ -223,3 +224,6 @@ def _setup_routers(app: FastAPI) -> None:
 
     # Testing Ecosystem Router
     app.include_router(testing_endpoints.router)
+    
+    # Quality Gates Router
+    app.include_router(quality_gates_endpoints.router, prefix="/api")
