@@ -1537,6 +1537,64 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(jiti@2.6.0)(jsdom@20.0.3(canvas@2.11.2))(tsx@4.20.5)(yaml@2.8.1)
 
+  examples/testing-app:
+    dependencies:
+      reynard-api-client:
+        specifier: workspace:*
+        version: link:../../packages/services/api-client
+      reynard-charts:
+        specifier: workspace:*
+        version: link:../../packages/ui/charts
+      reynard-components-charts:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-charts
+      reynard-components-core:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-core
+      reynard-components-dashboard:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-dashboard
+      reynard-components-themes:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-themes
+      reynard-components-utils:
+        specifier: workspace:*
+        version: link:../../packages/ui/components-utils
+      reynard-core:
+        specifier: workspace:*
+        version: link:../../packages/core/core
+      reynard-fluent-icons:
+        specifier: workspace:*
+        version: link:../../packages/ui/fluent-icons
+      reynard-themes:
+        specifier: workspace:*
+        version: link:../../packages/ui/themes
+      solid-js:
+        specifier: 1.9.9
+        version: 1.9.9
+    devDependencies:
+      '@solidjs/testing-library':
+        specifier: 0.8.10
+        version: 0.8.10(@solidjs/router@0.15.3(solid-js@1.9.9))(solid-js@1.9.9)
+      '@types/node':
+        specifier: 24.5.2
+        version: 24.5.2
+      prettier:
+        specifier: 3.6.2
+        version: 3.6.2
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+      vite:
+        specifier: 7.1.7
+        version: 7.1.7(@types/node@24.5.2)(jiti@2.6.0)(tsx@4.20.5)(yaml@2.8.1)
+      vite-plugin-solid:
+        specifier: 2.11.8
+        version: 2.11.8(@testing-library/jest-dom@6.8.0)(solid-js@1.9.9)(vite@7.1.7(@types/node@24.5.2)(jiti@2.6.0)(tsx@4.20.5)(yaml@2.8.1))
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@24.5.2)(@vitest/ui@3.2.4)(happy-dom@18.0.1)(jiti@2.6.0)(jsdom@20.0.3(canvas@2.11.2))(tsx@4.20.5)(yaml@2.8.1)
+
   examples/tutorial-app:
     dependencies:
       reynard-components-charts:
