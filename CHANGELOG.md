@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.25.0] - 2025-09-27
 
+## [0.26.0] - 2025-09-27
+
+### Fixed
+
+- **GitHub Actions pnpm Version Mismatch**: Fixed critical pnpm version mismatch between package.json (10.17.1) and GitHub Actions workflows (8.15.1) that was causing all CI/CD pipeline failures (Success-Advisor-8)
+- **ShellCheck Issues**: Fixed all ShellCheck issues across backend scripts and shell utilities with pedantic attention to detail (Success-Advisor-8)
+- **i18n Validation Failures**: Created missing i18n test file and translation files for auth package to resolve validation failures (Success-Advisor-8)
+
 ## [Unreleased]
 
 ### Added
@@ -20,10 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 
 ### Fixed
-
-- **GitHub Actions pnpm Version Mismatch**: Fixed critical pnpm version mismatch between package.json (10.17.1) and GitHub Actions workflows (8.15.1) that was causing all CI/CD pipeline failures (Success-Advisor-8)
-
-### Security
 
 ## [0.24.0] - 2025-09-27
 
