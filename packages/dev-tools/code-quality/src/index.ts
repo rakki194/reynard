@@ -58,7 +58,8 @@ import { AnalysisOrchestrator } from "./AnalysisOrchestrator";
 import { BehavioralAnalysisEngine } from "./BehavioralAnalysisEngine";
 import { CodeQualityAnalyzer } from "./CodeQualityAnalyzer";
 import { EnhancedSecurityEngine } from "./EnhancedSecurityEngine";
-import { QualityGateManager, QualityGateResult } from "./QualityGateManager";
+import { DatabaseQualityGateManager } from "./DatabaseQualityGateManager";
+import { QualityGateResult } from "./types";
 import { SecurityAnalysisIntegration } from "./SecurityAnalysisIntegration";
 import { FileAnalysis } from "./types";
 
