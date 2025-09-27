@@ -41,7 +41,11 @@ class TestRunCreate(BaseModel):
     environment: str = "development"
     branch: Optional[str] = None
     commit_hash: Optional[str] = None
-    metadata: Optional[Dict[str, Any]] = None
+    total_tests: int = 0
+    passed_tests: int = 0
+    failed_tests: int = 0
+    skipped_tests: int = 0
+    meta_data: Optional[Dict[str, Any]] = None
 
 
 class TestRunUpdate(BaseModel):
@@ -60,11 +64,13 @@ class TestResultCreate(BaseModel):
     test_class: Optional[str] = None
     test_method: Optional[str] = None
     duration_ms: Optional[float] = None
+    started_at: Optional[str] = None
+    completed_at: Optional[str] = None
     error_message: Optional[str] = None
     error_traceback: Optional[str] = None
     stdout: Optional[str] = None
     stderr: Optional[str] = None
-    metadata: Optional[Dict[str, Any]] = None
+    meta_data: Optional[Dict[str, Any]] = None
 
 
 class BenchmarkResultCreate(BaseModel):
@@ -161,7 +167,11 @@ async def create_test_run(
             environment=test_run_data.environment,
             branch=test_run_data.branch,
             commit_hash=test_run_data.commit_hash,
-            metadata=test_run_data.metadata
+            total_tests=test_run_data.total_tests,
+            passed_tests=test_run_data.passed_tests,
+            failed_tests=test_run_data.failed_tests,
+            skipped_tests=test_run_data.skipped_tests,
+            meta_data=test_run_data.meta_data
         )
         return {
             "id": str(test_run.id),
@@ -317,7 +327,7 @@ async def add_test_result(
             error_traceback=test_result_data.error_traceback,
             stdout=test_result_data.stdout,
             stderr=test_result_data.stderr,
-            metadata=test_result_data.metadata
+            meta_data=test_result_data.meta_data
         )
         return {
             "id": str(test_result.id),

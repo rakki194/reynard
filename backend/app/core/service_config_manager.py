@@ -13,7 +13,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, ConfigDict
 
 logger = logging.getLogger(__name__)
 
@@ -84,8 +84,7 @@ class ServiceConfigModel(BaseModel):
     metrics_interval: float = Field(60.0, description="Metrics collection interval")
     health_check_interval: float = Field(30.0, description="Health check interval")
 
-    class Config:
-        extra = "allow"  # Allow additional fields
+    model_config = ConfigDict(extra="allow")  # Allow additional fields
 
 
 class ServiceConfigManager:

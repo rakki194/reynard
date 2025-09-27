@@ -1,0 +1,42 @@
+{
+  "name": "reynard-testing-dashboard",
+  "version": "0.1.0",
+  "description": "🦦 Reynard Testing Dashboard - Comprehensive view of all test results, benchmarks, and profiling data",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write 'src/**/*.{ts,tsx,css,json}'",
+    "format:check": "prettier --check 'src/**/*.{ts,tsx,css,json}'"
+  },
+  "dependencies": {
+    "reynard-api-client": "workspace:*",
+    "reynard-core": "workspace:*",
+    "reynard-fluent-icons": "workspace:*",
+    "reynard-themes": "workspace:*",
+    "reynard-i18n": "workspace:*",
+    "reynard-animation": "workspace:*",
+    "reynard-charts": "workspace:*",
+    "reynard-components-core": "workspace:*",
+    "reynard-components-charts": "workspace:*",
+    "reynard-components-dashboard": "workspace:*",
+    "reynard-components-themes": "workspace:*",
+    "reynard-components-utils": "workspace:*",
+    "solid-js": "1.9.9"
+  },
+  "devDependencies": {
+    "@solidjs/testing-library": "0.8.10",
+    "@types/node": "24.5.2",
+    "prettier": "3.6.2",
+    "typescript": "5.9.2",
+    "vite": "7.1.7",
+    "vite-plugin-solid": "2.11.8",
+    "vitest": "3.2.4"
+  }
+}

@@ -12,19 +12,13 @@
  */
 
 import type { Reporter } from 'vitest/reporters';
-import type { Task, Test, Suite } from 'vitest';
-
-// Type aliases to suppress deprecation warnings while maintaining functionality
-// These types are deprecated but still functional in current Vitest versions
-type TaskType = Task;
-type TestType = Test;
-type SuiteType = Suite;
+import type { RunnerTask, RunnerTestCase, RunnerTestSuite } from 'vitest';
 
 // File type is deprecated in newer Vitest versions
 // Based on usage patterns, File has at least these properties:
 interface File {
   filepath: string;
-  tasks: TaskType[];
+  tasks: RunnerTask[];
 }
 import { writeFileSync } from 'fs';
 import { join } from 'path';
@@ -175,7 +169,7 @@ export class VitestDBReporter implements Reporter {
     return count;
   }
 
-  private countTestsInTask(task: TaskType): number {
+  private countTestsInTask(task: RunnerTask): number {
     if (task.type === 'test') {
       return 1;
     }
@@ -206,9 +200,9 @@ export class VitestDBReporter implements Reporter {
     return { passed, failed, skipped };
   }
 
-  private calculateStatsInTask(task: TaskType): { passed: number; failed: number; skipped: number } {
+  private calculateStatsInTask(task: RunnerTask): { passed: number; failed: number; skipped: number } {
     if (task.type === 'test') {
-      const test = task as TestType;
+      const test = task as RunnerTestCase;
       if (test.result?.state === 'pass') return { passed: 1, failed: 0, skipped: 0 };
       if (test.result?.state === 'fail') return { passed: 0, failed: 1, skipped: 0 };
       if (test.result?.state === 'skip') return { passed: 0, failed: 0, skipped: 1 };
@@ -313,9 +307,9 @@ export class VitestDBReporter implements Reporter {
     }
   }
 
-  private async storeTestResultsInTask(testRunId: string, task: TaskType, filePath: string): Promise<void> {
+  private async storeTestResultsInTask(testRunId: string, task: RunnerTask, filePath: string): Promise<void> {
     if (task.type === 'test') {
-      const test = task as TestType;
+      const test = task as RunnerTestCase;
       const result = test.result;
       
       if (!result) return;
@@ -439,11 +433,11 @@ export class VitestDBReporter implements Reporter {
     console.log(`📁 Fallback: Results stored in file: ${outputPath}`);
   }
 
-  private serializeTasks(tasks: TaskType[]): any[] {
+  private serializeTasks(tasks: RunnerTask[]): any[] {
     return tasks.map(task => {
       switch (task.type) {
         case 'test': {
-          const test = task as TestType;
+          const test = task as RunnerTestCase;
           return {
             type: 'test',
             name: test.name,
@@ -456,7 +450,7 @@ export class VitestDBReporter implements Reporter {
         }
         
         case 'suite': {
-          const suite = task as SuiteType;
+          const suite = task as RunnerTestSuite;
           return {
             type: 'suite',
             name: suite.name,

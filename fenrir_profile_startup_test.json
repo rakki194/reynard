@@ -1,0 +1,31 @@
+{
+  "session_id": "startup_test",
+  "start_time": "2025-09-27T10:38:40.160915+00:00",
+  "end_time": null,
+  "snapshots": [
+    {
+      "timestamp": "2025-09-27T10:38:40.166851+00:00",
+      "rss_mb": 107.546875,
+      "vms_mb": 201.73046875,
+      "percent": 1.3932696166218739,
+      "available_mb": 895.328125,
+      "tracemalloc_mb": 0.024148941040039062,
+      "gc_objects": 62300,
+      "context": "startup_begin"
+    },
+    {
+      "timestamp": "2025-09-27T10:38:40.171985+00:00",
+      "rss_mb": 108.05859375,
+      "vms_mb": 202.44140625,
+      "percent": 1.3998480879167146,
+      "available_mb": 887.39453125,
+      "tracemalloc_mb": 0.025681495666503906,
+      "gc_objects": 62306,
+      "context": "startup_complete"
+    }
+  ],
+  "results": [],
+  "backend_analysis": null,
+  "database_analysis": null,
+  "service_analysis": null
+}

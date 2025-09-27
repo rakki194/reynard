@@ -65,7 +65,7 @@ class CaptionConfigModel(BaseModel):
         le=20,
         description="Maximum number of loaded models",
     )
-    model_unload_timeout: int = Field(
+    unload_timeout_seconds: int = Field(
         1800,
         ge=300,
         le=7200,
@@ -147,7 +147,7 @@ class CaptionConfigModel(BaseModel):
         le=50,
         description="Batch requests per minute",
     )
-    model_management_rate_limit: int = Field(
+    management_rate_limit: int = Field(
         20,
         ge=1,
         le=100,

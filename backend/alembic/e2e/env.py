@@ -20,8 +20,20 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 # Note: E2E database mirrors the main database structure
-# This is a placeholder for any future main application models
-target_metadata = None
+# Import all models to ensure they are registered with SQLAlchemy
+import sys
+from pathlib import Path
+
+# Add the app directory to the path
+app_path = Path(__file__).parent.parent.parent / "app"
+sys.path.insert(0, str(app_path))
+
+# Import all models to ensure they are registered
+from app.models.base import Base
+from app.models.fenrir_profiling import *
+from app.models.testing_ecosystem import *
+
+target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

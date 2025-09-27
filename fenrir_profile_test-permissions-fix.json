@@ -1,0 +1,212 @@
+{
+  "session_id": "test-permissions-fix",
+  "start_time": "2025-09-27T11:24:09.833773+00:00",
+  "end_time": "2025-09-27T11:25:03.061865+00:00",
+  "snapshots": [
+    {
+      "timestamp": "2025-09-27T11:24:09.908594+00:00",
+      "rss_mb": 145.48828125,
+      "vms_mb": 162.23828125,
+      "percent": 1.8847320259718046,
+      "available_mb": 620.4296875,
+      "tracemalloc_mb": 0.000949859619140625,
+      "gc_objects": 128664,
+      "context": "analysis_start"
+    },
+    {
+      "timestamp": "2025-09-27T11:24:09.935483+00:00",
+      "rss_mb": 146.5390625,
+      "vms_mb": 244.7265625,
+      "percent": 1.89834440118959,
+      "available_mb": 614.6953125,
+      "tracemalloc_mb": 0.17064285278320312,
+      "gc_objects": 129700,
+      "context": "startup_begin"
+    },
+    {
+      "timestamp": "2025-09-27T11:25:02.940604+00:00",
+      "rss_mb": 797.08203125,
+      "vms_mb": 3677.86328125,
+      "percent": 10.325821562508382,
+      "available_mb": 484.9375,
+      "tracemalloc_mb": 297.7348937988281,
+      "gc_objects": 769523,
+      "context": "startup_complete"
+    },
+    {
+      "timestamp": "2025-09-27T11:25:03.045299+00:00",
+      "rss_mb": 803.26171875,
+      "vms_mb": 3689.39453125,
+      "percent": 10.405876497804057,
+      "available_mb": 483.671875,
+      "tracemalloc_mb": 297.7743787765503,
+      "gc_objects": 769597,
+      "context": "analysis_complete"
+    }
+  ],
+  "results": [
+    {
+      "category": "memory",
+      "severity": "high",
+      "issue": "High memory growth during analysis: 651.6MB",
+      "recommendation": "Investigate memory leaks in service initialization",
+      "memory_impact_mb": 651.59375,
+      "performance_impact": "high"
+    },
+    {
+      "category": "imports",
+      "severity": "medium",
+      "issue": "High memory modules detected: 6",
+      "recommendation": "Consider lazy loading for high-memory modules",
+      "memory_impact_mb": 0.0,
+      "performance_impact": "medium"
+    }
+  ],
+  "backend_analysis": {
+    "import_analysis": {
+      "modules": {
+        "app.core.config": {
+          "description": "Core Configuration",
+          "import_time_ms": 384.8130702972412,
+          "memory_delta_mb": 0.62890625,
+          "status": "success"
+        },
+        "app.core.service_manager": {
+          "description": "Service Manager",
+          "import_time_ms": 12.509346008300781,
+          "memory_delta_mb": 0.203125,
+          "status": "success"
+        },
+        "app.core.database": {
+          "description": "Database Core",
+          "import_time_ms": 27.530193328857422,
+          "memory_delta_mb": 1.10546875,
+          "status": "success"
+        },
+        "app.services.ai.ai_service": {
+          "description": "AI Service",
+          "import_time_ms": 18.76664161682129,
+          "memory_delta_mb": 0.7265625,
+          "status": "success"
+        },
+        "app.services.rag.rag_service": {
+          "description": "RAG Service",
+          "import_time_ms": 2749.854564666748,
+          "memory_delta_mb": 51.11328125,
+          "status": "success"
+        },
+        "app.core.health_checks": {
+          "description": "Health Checks",
+          "import_time_ms": 6.601572036743164,
+          "memory_delta_mb": 0.35546875,
+          "status": "success"
+        }
+      },
+      "total_import_time": 3200.075387954712,
+      "memory_impact": {
+        "app.core.config": 0.62890625,
+        "app.core.service_manager": 0.203125,
+        "app.core.database": 1.10546875,
+        "app.services.ai.ai_service": 0.7265625,
+        "app.services.rag.rag_service": 51.11328125,
+        "app.core.health_checks": 0.35546875
+      },
+      "recommendations": [
+        "Slow import: app.core.config (384.8ms) - consider lazy loading",
+        "Slow import: app.services.rag.rag_service (2749.9ms) - consider lazy loading",
+        "High memory import: app.services.rag.rag_service (51.1MB) - consider optimization"
+      ]
+    },
+    "service_analysis": {
+      "error": "ServiceTracker.track_service_startup() takes 1 positional argument but 3 were given"
+    },
+    "memory_hotspots": {
+      "high_memory_modules": [
+        {
+          "module": "numpy",
+          "display_name": "NumPy",
+          "memory_mb": 11.9921875
+        },
+        {
+          "module": "pandas",
+          "display_name": "Pandas",
+          "memory_mb": 74.4296875
+        },
+        {
+          "module": "torch",
+          "display_name": "PyTorch",
+          "memory_mb": 203.421875
+        },
+        {
+          "module": "sklearn",
+          "display_name": "Scikit-learn",
+          "memory_mb": 21.47265625
+        },
+        {
+          "module": "chromadb",
+          "display_name": "ChromaDB",
+          "memory_mb": 45.1015625
+        },
+        {
+          "module": "sentence_transformers",
+          "display_name": "Sentence Transformers",
+          "memory_mb": 238.16015625
+        }
+      ],
+      "memory_by_category": {
+        "total_memory_mb": 201.08203125,
+        "high_memory_modules_count": 6,
+        "gc_objects": 186860
+      },
+      "gc_analysis": {
+        "total_objects": 186860,
+        "gc_stats": [
+          {
+            "collections": 143,
+            "collected": 9774,
+            "uncollectable": 0
+          },
+          {
+            "collections": 13,
+            "collected": 3139,
+            "uncollectable": 0
+          },
+          {
+            "collections": 1,
+            "collected": 62,
+            "uncollectable": 0
+          }
+        ],
+        "memory_mb": 201.08203125
+      },
+      "recommendations": [
+        "Multiple high-memory modules detected - consider lazy loading strategy",
+        "High object count (186,860) - consider garbage collection optimization",
+        "High memory usage (201.1MB) - investigate memory leaks"
+      ]
+    },
+    "memory_delta": {
+      "initial_mb": 146.5390625,
+      "final_mb": 797.08203125,
+      "delta_mb": 650.54296875,
+      "gc_objects_delta": 639823
+    }
+  },
+  "database_analysis": {
+    "pool_analysis": {
+      "error": "'DatabaseDebugger' object has no attribute 'analyze_connection_pools'"
+    },
+    "query_analysis": {
+      "error": "'DatabaseDebugger' object has no attribute 'analyze_query_performance'"
+    },
+    "health_analysis": {
+      "error": "'DatabaseDebugger' object has no attribute 'check_connection_health'"
+    },
+    "optimization_recommendations": {
+      "error": "'DatabaseDebugger' object has no attribute 'get_optimization_recommendations'"
+    }
+  },
+  "service_analysis": {
+    "error": "'ServiceTracker' object has no attribute 'get_service_status'"
+  }
+}

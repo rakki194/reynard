@@ -27,15 +27,15 @@ logger = logging.getLogger(__name__)
 
 class DatabaseDebugger:
     """Database call debugging and monitoring system."""
-    
+
     def __init__(self):
         """Initialize the database debugger."""
         self.calls: List[Dict[str, Any]] = []
         self.connections: Dict[str, Dict[str, Any]] = {}
         self.performance_stats: Dict[str, Dict[str, Any]] = {}
         self.error_log: List[Dict[str, Any]] = []
-    
-    def track_call(self, operation: str, database: str, duration_ms: float, 
+
+    def track_call(self, operation: str, database: str, duration_ms: float,
                    query: str = None, params: Dict = None, error: str = None,
                    service: str = None):
         """Track a database call."""
@@ -49,13 +49,13 @@ class DatabaseDebugger:
             "error": error,
             "service": service,
         }
-        
+
         self.calls.append(call)
-        
+
         # Track errors
         if error:
             self.error_log.append(call)
-        
+
         # Update performance stats
         if database not in self.performance_stats:
             self.performance_stats[database] = {
@@ -64,41 +64,41 @@ class DatabaseDebugger:
                 "error_count": 0,
                 "operations": {},
             }
-        
+
         stats = self.performance_stats[database]
         stats["total_calls"] += 1
         stats["total_duration_ms"] += duration_ms
         if error:
             stats["error_count"] += 1
-        
+
         if operation not in stats["operations"]:
             stats["operations"][operation] = {
                 "count": 0,
                 "total_duration_ms": 0.0,
                 "avg_duration_ms": 0.0,
             }
-        
+
         op_stats = stats["operations"][operation]
         op_stats["count"] += 1
         op_stats["total_duration_ms"] += duration_ms
         op_stats["avg_duration_ms"] = op_stats["total_duration_ms"] / op_stats["count"]
-    
-    def track_connection(self, database: str, connection_type: str, 
+
+    def track_connection(self, database: str, connection_type: str,
                         status: str, details: Dict[str, Any] = None):
         """Track database connection status."""
         if database not in self.connections:
             self.connections[database] = {}
-        
+
         self.connections[database][connection_type] = {
             "status": status,
             "timestamp": time.time(),
             "details": details or {},
         }
-    
+
     def get_performance_summary(self) -> Dict[str, Any]:
         """Get performance summary for all databases."""
         summary = {}
-        
+
         for database, stats in self.performance_stats.items():
             summary[database] = {
                 "total_calls": stats["total_calls"],
@@ -108,48 +108,48 @@ class DatabaseDebugger:
                 "error_rate": stats["error_count"] / stats["total_calls"] if stats["total_calls"] > 0 else 0,
                 "operations": stats["operations"],
             }
-        
+
         return summary
-    
+
     def get_slow_queries(self, threshold_ms: float = 100.0) -> List[Dict[str, Any]]:
         """Get queries that took longer than threshold."""
         return [call for call in self.calls if call["duration_ms"] > threshold_ms]
-    
+
     def get_error_summary(self) -> Dict[str, Any]:
         """Get error summary."""
         if not self.error_log:
             return {"total_errors": 0, "errors_by_database": {}, "errors_by_operation": {}}
-        
+
         errors_by_db = {}
         errors_by_op = {}
-        
+
         for error_call in self.error_log:
             db = error_call["database"]
             op = error_call["operation"]
-            
+
             errors_by_db[db] = errors_by_db.get(db, 0) + 1
             errors_by_op[op] = errors_by_op.get(op, 0) + 1
-        
+
         return {
             "total_errors": len(self.error_log),
             "errors_by_database": errors_by_db,
             "errors_by_operation": errors_by_op,
             "recent_errors": self.error_log[-10:] if self.error_log else [],
         }
-    
+
     def get_connection_health(self) -> Dict[str, Any]:
         """Get connection health status."""
         health = {}
-        
+
         for database, connections in self.connections.items():
             health[database] = {
                 "connections": connections,
                 "healthy_connections": len([c for c in connections.values() if c["status"] == "healthy"]),
                 "total_connections": len(connections),
             }
-        
+
         return health
-    
+
     def generate_report(self) -> Dict[str, Any]:
         """Generate comprehensive database debugging report."""
         return {
@@ -171,26 +171,26 @@ def get_database_debugger() -> DatabaseDebugger:
     return _db_debugger
 
 
-def track_database_call(operation: str, database: str, duration_ms: float, 
+def track_database_call(operation: str, database: str, duration_ms: float,
                        query: str = None, params: Dict = None, error: str = None,
                        service: str = None):
     """Track a database call."""
     _db_debugger.track_call(operation, database, duration_ms, query, params, error, service)
 
 
-def track_database_connection(database: str, connection_type: str, 
+def track_database_connection(database: str, connection_type: str,
                              status: str, details: Dict[str, Any] = None):
     """Track database connection status."""
     _db_debugger.track_connection(database, connection_type, status, details)
 
 
 @contextmanager
-def monitor_database_call(operation: str, database: str, query: str = None, 
+def monitor_database_call(operation: str, database: str, query: str = None,
                          params: Dict = None, service: str = None):
     """Context manager to monitor database calls."""
     start_time = time.time()
     error = None
-    
+
     try:
         yield
     except Exception as e:
@@ -208,7 +208,7 @@ def database_call_monitor(operation: str, database: str, service: str = None):
         async def async_wrapper(*args, **kwargs):
             start_time = time.time()
             error = None
-            
+
             try:
                 result = await func(*args, **kwargs)
                 return result
@@ -217,15 +217,15 @@ def database_call_monitor(operation: str, database: str, service: str = None):
                 raise
             finally:
                 duration_ms = (time.time() - start_time) * 1000
-                track_database_call(operation, database, duration_ms, 
-                                  query=getattr(func, '__name__', None), 
+                track_database_call(operation, database, duration_ms,
+                                  query=getattr(func, '__name__', None),
                                   error=error, service=service)
-        
+
         @wraps(func)
         def sync_wrapper(*args, **kwargs):
             start_time = time.time()
             error = None
-            
+
             try:
                 result = func(*args, **kwargs)
                 return result
@@ -234,22 +234,22 @@ def database_call_monitor(operation: str, database: str, service: str = None):
                 raise
             finally:
                 duration_ms = (time.time() - start_time) * 1000
-                track_database_call(operation, database, duration_ms, 
-                                  query=getattr(func, '__name__', None), 
+                track_database_call(operation, database, duration_ms,
+                                  query=getattr(func, '__name__', None),
                                   error=error, service=service)
-        
+
         return async_wrapper if asyncio.iscoroutinefunction(func) else sync_wrapper
-    
+
     return decorator
 
 
 async def analyze_database_usage():
     """Analyze database usage patterns."""
     debugger = get_database_debugger()
-    
+
     logger.info("🗄️ Starting database usage analysis...")
     logger.info("=" * 60)
-    
+
     # Simulate some database calls for testing
     test_calls = [
         ("SELECT", "reynard", 50.0, "SELECT * FROM users", None, None, "gatekeeper"),
@@ -259,22 +259,22 @@ async def analyze_database_usage():
         ("SELECT", "reynard_ecs", 30.0, "SELECT * FROM agents", None, None, "ecs"),
         ("INSERT", "reynard_ecs", 40.0, "INSERT INTO interactions", None, None, "ecs"),
     ]
-    
+
     for operation, database, duration, query, params, error, service in test_calls:
         debugger.track_call(operation, database, duration, query, params, error, service)
         await asyncio.sleep(0.1)  # Simulate time between calls
-    
+
     # Track some connections
     debugger.track_connection("reynard", "postgresql", "healthy", {"pool_size": 5})
     debugger.track_connection("reynard_rag", "postgresql", "healthy", {"pool_size": 3})
     debugger.track_connection("reynard_ecs", "postgresql", "healthy", {"pool_size": 2})
-    
+
     # Generate and display report
     logger.info("\n📊 Database Analysis Results")
     logger.info("=" * 60)
-    
+
     report = debugger.generate_report()
-    
+
     # Performance summary
     logger.info("Performance Summary:")
     for database, stats in report["performance_summary"].items():
@@ -282,10 +282,10 @@ async def analyze_database_usage():
         logger.info(f"    Total calls: {stats['total_calls']}")
         logger.info(f"    Avg duration: {stats['avg_duration_ms']:.1f}ms")
         logger.info(f"    Error rate: {stats['error_rate']:.1%}")
-        
+
         for operation, op_stats in stats["operations"].items():
             logger.info(f"    {operation}: {op_stats['count']} calls, {op_stats['avg_duration_ms']:.1f}ms avg")
-    
+
     # Error summary
     error_summary = report["error_summary"]
     if error_summary["total_errors"] > 0:
@@ -295,12 +295,12 @@ async def analyze_database_usage():
         logger.info(f"  Errors by operation: {error_summary['errors_by_operation']}")
     else:
         logger.info(f"\n✅ No database errors detected")
-    
+
     # Connection health
     logger.info(f"\nConnection Health:")
     for database, health in report["connection_health"].items():
         logger.info(f"  {database}: {health['healthy_connections']}/{health['total_connections']} healthy")
-    
+
     # Slow queries
     slow_queries = report["slow_queries"]
     if slow_queries:
@@ -309,40 +309,186 @@ async def analyze_database_usage():
             logger.info(f"  {query['database']}: {query['operation']} - {query['duration_ms']:.1f}ms")
     else:
         logger.info(f"\n✅ No slow queries detected")
-    
+
     return report
+
+    async def analyze_connection_pools(self) -> Dict[str, Any]:
+        """Analyze database connection pool health and performance."""
+        analysis = {
+            "databases": {},
+            "connection_issues": [],
+            "optimization_recommendations": []
+        }
+
+        # Simulate connection pool analysis for known databases
+        databases = [
+            ("reynard", "postgresql", 5, 2, 0, 0),
+            ("reynard_rag", "postgresql", 3, 1, 0, 0),
+            ("reynard_ecs", "postgresql", 2, 0, 0, 0),
+            ("reynard_auth", "postgresql", 4, 1, 0, 0),
+            ("reynard_mcp", "postgresql", 3, 0, 0, 0),
+            ("reynard_keys", "postgresql", 2, 0, 0, 0),
+            ("reynard_e2e", "postgresql", 2, 0, 0, 0),
+        ]
+
+        for db_name, db_type, pool_size, checked_out, overflow, invalid in databases:
+            pool_analysis = {
+                "pool_size": pool_size,
+                "checked_in": pool_size - checked_out,
+                "checked_out": checked_out,
+                "overflow": overflow,
+                "invalid": invalid,
+                "utilization_percent": (checked_out / pool_size) * 100 if pool_size > 0 else 0
+            }
+
+            analysis["databases"][db_name] = pool_analysis
+
+            # Check for connection issues
+            if pool_analysis["utilization_percent"] > 80:
+                analysis["connection_issues"].append({
+                    "database": db_name,
+                    "issue": "High connection utilization",
+                    "utilization_percent": pool_analysis["utilization_percent"],
+                    "recommendation": "Consider increasing pool size"
+                })
+
+            if invalid > 0:
+                analysis["connection_issues"].append({
+                    "database": db_name,
+                    "issue": "Invalid connections detected",
+                    "invalid_count": invalid,
+                    "recommendation": "Check connection health and configuration"
+                })
+
+        # Generate optimization recommendations
+        if len(analysis["connection_issues"]) > 0:
+            analysis["optimization_recommendations"].append(
+                f"Found {len(analysis['connection_issues'])} connection issues that need attention"
+            )
+
+        total_pools = len(analysis["databases"])
+        healthy_pools = len([db for db in analysis["databases"].values() if db["invalid"] == 0])
+
+        if healthy_pools < total_pools:
+            analysis["optimization_recommendations"].append(
+                f"Only {healthy_pools}/{total_pools} connection pools are healthy"
+            )
+
+        return analysis
+
+    async def analyze_query_performance(self) -> Dict[str, Any]:
+        """Monitor database query performance and identify bottlenecks."""
+        performance_data = {
+            "slow_queries": [],
+            "frequent_queries": [],
+            "connection_metrics": {},
+            "recommendations": []
+        }
+
+        # Simulate query performance analysis
+        slow_queries = [
+            {
+                "query": "SELECT * FROM documents WHERE content LIKE '%complex_search%'",
+                "avg_duration_ms": 250.0,
+                "execution_count": 15,
+                "database": "reynard_rag",
+                "service": "rag_service"
+            },
+            {
+                "query": "SELECT * FROM agents WHERE traits @> '{\"dominance\": 0.9}'",
+                "avg_duration_ms": 180.0,
+                "execution_count": 8,
+                "database": "reynard_ecs",
+                "service": "ecs_world"
+            },
+            {
+                "query": "SELECT * FROM interactions WHERE created_at > NOW() - INTERVAL '1 day'",
+                "avg_duration_ms": 120.0,
+                "execution_count": 25,
+                "database": "reynard_ecs",
+                "service": "ecs_world"
+            }
+        ]
+
+        frequent_queries = [
+            {
+                "query": "SELECT * FROM users WHERE id = $1",
+                "execution_count": 1500,
+                "avg_duration_ms": 5.0,
+                "database": "reynard",
+                "service": "gatekeeper"
+            },
+            {
+                "query": "INSERT INTO sessions (user_id, token, expires_at) VALUES ($1, $2, $3)",
+                "execution_count": 800,
+                "avg_duration_ms": 8.0,
+                "database": "reynard",
+                "service": "gatekeeper"
+            },
+            {
+                "query": "SELECT * FROM memory_snapshots WHERE profiling_session_id = $1",
+                "execution_count": 600,
+                "avg_duration_ms": 12.0,
+                "database": "reynard_e2e",
+                "service": "fenrir"
+            }
+        ]
+
+        performance_data["slow_queries"] = slow_queries
+        performance_data["frequent_queries"] = frequent_queries
+
+        # Connection metrics
+        performance_data["connection_metrics"] = {
+            "total_connections": 19,
+            "active_connections": 4,
+            "idle_connections": 15,
+            "connection_utilization": 21.1
+        }
+
+        # Generate recommendations
+        if len(slow_queries) > 0:
+            performance_data["recommendations"].append(
+                f"Found {len(slow_queries)} slow queries (>100ms) - consider optimization"
+            )
+
+        if len(frequent_queries) > 0:
+            performance_data["recommendations"].append(
+                f"Found {len(frequent_queries)} frequently executed queries - consider caching"
+            )
+
+        return performance_data
 
 
 async def main():
     """Main function."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(description="Database Debugger")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose logging")
     parser.add_argument("--output", type=str, help="Output file for analysis")
     parser.add_argument("--threshold", type=float, default=100.0, help="Slow query threshold in ms")
-    
+
     args = parser.parse_args()
-    
+
     # Setup logging
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(
         level=log_level,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
-    
+
     try:
         # Run analysis
         report = await analyze_database_usage()
-        
+
         # Save analysis if requested
         if args.output:
             with open(args.output, 'w') as f:
                 json.dump(report, f, indent=2, default=str)
             logger.info(f"📁 Analysis saved to {args.output}")
-        
+
         logger.info("\n🎉 Database analysis completed!")
-        
+
     except KeyboardInterrupt:
         logger.info("Analysis interrupted by user")
     except Exception as e:

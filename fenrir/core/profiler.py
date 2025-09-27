@@ -59,6 +59,9 @@ except ImportError as e:
         logging.warning(f"Backend tools not available: {e}")
         BACKEND_TOOLS_AVAILABLE = False
 
+# Import database service
+from .database_service import get_database_service
+
 console = Console()
 logger = logging.getLogger(__name__)
 
@@ -119,6 +122,10 @@ class MemoryProfiler:
         )
         self.process = psutil.Process()
         self.tracemalloc_enabled = False
+
+        # Database service for persistence
+        self.db_service = get_database_service()
+        self.db_session_id = None
 
         # Backend analyzers
         self.backend_analyzer = None
@@ -181,6 +188,23 @@ class MemoryProfiler:
         )
 
         self.session.snapshots.append(snapshot)
+
+        # Save to database if we have a database session
+        if self.db_session_id:
+            try:
+                self.db_service.save_memory_snapshot(
+                    profiling_session_id=self.session_id,
+                    context=context,
+                    rss_mb=snapshot.rss_mb,
+                    vms_mb=snapshot.vms_mb,
+                    percent=snapshot.percent,
+                    available_mb=snapshot.available_mb,
+                    tracemalloc_mb=snapshot.tracemalloc_mb,
+                    gc_objects=snapshot.gc_objects
+                )
+            except Exception as e:
+                logger.warning(f"Failed to save memory snapshot to database: {e}")
+
         return snapshot
 
     async def profile_backend_startup(self) -> Dict[str, Any]:
@@ -304,6 +328,17 @@ class MemoryProfiler:
             border_style="red"
         ))
 
+        # Initialize database session
+        try:
+            self.db_session_id = self.db_service.create_profiling_session(
+                session_id=self.session_id,
+                session_type="all",
+                environment="development"
+            )
+            logger.info(f"Created database profiling session: {self.db_session_id}")
+        except Exception as e:
+            logger.warning(f"Failed to create database session: {e}")
+
         # Start memory tracing
         self.start_tracemalloc()
         initial_snapshot = self.take_memory_snapshot("analysis_start")
@@ -333,6 +368,46 @@ class MemoryProfiler:
 
         # Stop tracing
         self.stop_tracemalloc()
+
+        # Save results to database
+        if self.db_session_id:
+            try:
+                # Calculate session metrics
+                duration = (self.session.end_time - self.session.start_time).total_seconds()
+                peak_memory = max(snapshot.rss_mb for snapshot in self.session.snapshots) if self.session.snapshots else 0
+                final_memory = self.session.snapshots[-1].rss_mb if self.session.snapshots else 0
+                memory_delta = final_memory - initial_snapshot.rss_mb if self.session.snapshots else 0
+
+                # Update database session
+                self.db_service.update_profiling_session(
+                    session_id=self.session_id,
+                    status="completed",
+                    duration_seconds=duration,
+                    total_snapshots=len(self.session.snapshots),
+                    issues_found=len(self.session.results),
+                    peak_memory_mb=peak_memory,
+                    final_memory_mb=final_memory,
+                    memory_delta_mb=memory_delta,
+                    backend_analysis=self.session.backend_analysis,
+                    database_analysis=self.session.database_analysis,
+                    service_analysis=self.session.service_analysis
+                )
+
+                # Save profiling results
+                for result in self.session.results:
+                    self.db_service.save_profiling_result(
+                        profiling_session_id=self.session_id,
+                        category=result.category,
+                        severity=result.severity,
+                        issue=result.issue,
+                        recommendation=result.recommendation,
+                        memory_impact_mb=result.memory_impact_mb,
+                        performance_impact=result.performance_impact
+                    )
+
+                logger.info(f"Saved profiling session {self.session_id} to database")
+            except Exception as e:
+                logger.warning(f"Failed to save profiling session to database: {e}")
 
         # Generate report
         self.generate_profiling_report()

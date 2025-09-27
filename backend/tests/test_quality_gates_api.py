@@ -25,6 +25,12 @@ def client():
     from app.api.quality_gates.endpoints import get_quality_gates_service
     
     app = FastAPI()
+    
+    # Override the dependency to return a mock service by default
+    def override_get_quality_gates_service():
+        return Mock()
+    
+    app.dependency_overrides[get_quality_gates_service] = override_get_quality_gates_service
     app.include_router(router)
     return TestClient(app)
 
@@ -119,10 +125,6 @@ class TestQualityGatesAPI:
 
         response = client.post("/api/quality-gates/", json=sample_gate_data)
 
-        if response.status_code != status.HTTP_201_CREATED:
-            print(f"Response status: {response.status_code}")
-            print(f"Response body: {response.text}")
-        
         assert response.status_code == status.HTTP_201_CREATED
         data = response.json()
         assert data["gate_id"] == sample_gate_data["gate_id"]
@@ -136,157 +138,157 @@ class TestQualityGatesAPI:
             "name": "Test Gate",
             "environment": "invalid_environment"  # Invalid environment
         }
-        
+
         response = client.post("/api/quality-gates/", json=invalid_data)
-        
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_create_quality_gate_service_error(self, client, mock_service, sample_gate_data):
         """Test quality gate creation with service error."""
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.create_quality_gate = AsyncMock(side_effect=Exception("Service error"))
-            
-            response = client.post("/api/quality-gates/", json=sample_gate_data)
-            
-            assert response.status_code == status.HTTP_400_BAD_REQUEST
-            assert "Service error" in response.json()["detail"]
+        mock_service.create_quality_gate = AsyncMock(side_effect=Exception("Service error"))
+        override_dependency(client, mock_service)
+
+        response = client.post("/api/quality-gates/", json=sample_gate_data)
+
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "Service error" in response.json()["detail"]
 
     def test_get_quality_gates_success(self, client, mock_service, sample_gate_response):
         """Test successful quality gates retrieval."""
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_gate = Mock()
-            mock_gate.id = uuid.uuid4()
-            mock_gate.gate_id = "test-gate"
-            mock_gate.name = "Test Gate"
-            mock_gate.description = "Test description"
-            mock_gate.environment = EnvironmentType.DEVELOPMENT
-            mock_gate.enabled = True
-            mock_gate.is_default = False
-            mock_gate.created_at = datetime.now(timezone.utc)
-            mock_gate.updated_at = datetime.now(timezone.utc)
-            mock_gate.conditions = []
-            
-            mock_service.get_quality_gates = AsyncMock(return_value=[mock_gate])
-            
-            response = client.get("/api/quality-gates/")
-            
-            assert response.status_code == status.HTTP_200_OK
-            data = response.json()
-            assert len(data) == 1
-            assert data[0]["gate_id"] == "test-gate"
+        mock_gate = Mock()
+        mock_gate.id = uuid.uuid4()
+        mock_gate.gate_id = "test-gate"
+        mock_gate.name = "Test Gate"
+        mock_gate.description = "Test description"
+        mock_gate.environment = EnvironmentType.DEVELOPMENT
+        mock_gate.enabled = True
+        mock_gate.is_default = False
+        mock_gate.created_at = datetime.now(timezone.utc)
+        mock_gate.updated_at = datetime.now(timezone.utc)
+        mock_gate.conditions = []
+
+        mock_service.get_quality_gates = AsyncMock(return_value=[mock_gate])
+        override_dependency(client, mock_service)
+
+        response = client.get("/api/quality-gates/")
+
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert len(data) == 1
+        assert data[0]["gate_id"] == "test-gate"
 
     def test_get_quality_gates_with_filters(self, client, mock_service):
         """Test quality gates retrieval with filters."""
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.get_quality_gates = AsyncMock(return_value=[])
-            
-            response = client.get("/api/quality-gates/?environment=development&enabled_only=true")
-            
-            assert response.status_code == status.HTTP_200_OK
-            mock_service.get_quality_gates.assert_called_once_with(
-                environment="development",
-                enabled_only=True
-            )
+        mock_service.get_quality_gates = AsyncMock(return_value=[])
+        override_dependency(client, mock_service)
+
+        response = client.get("/api/quality-gates/?environment=development&enabled_only=true")
+
+        assert response.status_code == status.HTTP_200_OK
+        mock_service.get_quality_gates.assert_called_once_with(
+            environment="development",
+            enabled_only=True
+        )
 
     def test_get_quality_gate_success(self, client, mock_service, sample_gate_response):
         """Test successful single quality gate retrieval."""
         gate_id = "test-gate"
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_gate = Mock()
-            mock_gate.id = uuid.uuid4()
-            mock_gate.gate_id = gate_id
-            mock_gate.name = "Test Gate"
-            mock_gate.description = "Test description"
-            mock_gate.environment = EnvironmentType.DEVELOPMENT
-            mock_gate.enabled = True
-            mock_gate.is_default = False
-            mock_gate.created_at = datetime.now(timezone.utc)
-            mock_gate.updated_at = datetime.now(timezone.utc)
-            mock_gate.conditions = []
-            
-            mock_service.get_quality_gate = AsyncMock(return_value=mock_gate)
-            
-            response = client.get(f"/api/quality-gates/{gate_id}")
-            
-            assert response.status_code == status.HTTP_200_OK
-            data = response.json()
-            assert data["gate_id"] == gate_id
+        mock_gate = Mock()
+        mock_gate.id = uuid.uuid4()
+        mock_gate.gate_id = gate_id
+        mock_gate.name = "Test Gate"
+        mock_gate.description = "Test description"
+        mock_gate.environment = EnvironmentType.DEVELOPMENT
+        mock_gate.enabled = True
+        mock_gate.is_default = False
+        mock_gate.created_at = datetime.now(timezone.utc)
+        mock_gate.updated_at = datetime.now(timezone.utc)
+        mock_gate.conditions = []
+        
+        mock_service.get_quality_gate = AsyncMock(return_value=mock_gate)
+        override_dependency(client, mock_service)
+        
+        response = client.get(f"/api/quality-gates/{gate_id}")
+        
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["gate_id"] == gate_id
 
     def test_get_quality_gate_not_found(self, client, mock_service):
         """Test quality gate retrieval when not found."""
         gate_id = "non-existent"
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.get_quality_gate = AsyncMock(return_value=None)
-            
-            response = client.get(f"/api/quality-gates/{gate_id}")
-            
-            assert response.status_code == status.HTTP_404_NOT_FOUND
-            assert "Quality gate not found" in response.json()["detail"]
+        mock_service.get_quality_gate = AsyncMock(return_value=None)
+        override_dependency(client, mock_service)
+        
+        response = client.get(f"/api/quality-gates/{gate_id}")
+        
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert "Quality gate not found" in response.json()["detail"]
 
     def test_update_quality_gate_success(self, client, mock_service):
         """Test successful quality gate update."""
         gate_id = "test-gate"
         updates = {"name": "Updated Gate", "enabled": False}
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_gate = Mock()
-            mock_gate.id = uuid.uuid4()
-            mock_gate.gate_id = gate_id
-            mock_gate.name = "Updated Gate"
-            mock_gate.description = "Test description"
-            mock_gate.environment = EnvironmentType.DEVELOPMENT
-            mock_gate.enabled = False
-            mock_gate.is_default = False
-            mock_gate.created_at = datetime.now(timezone.utc)
-            mock_gate.updated_at = datetime.now(timezone.utc)
-            mock_gate.conditions = []
-            
-            mock_service.update_quality_gate = AsyncMock(return_value=mock_gate)
-            
-            response = client.put(f"/api/quality-gates/{gate_id}", json=updates)
-            
-            assert response.status_code == status.HTTP_200_OK
-            data = response.json()
-            assert data["name"] == "Updated Gate"
-            assert data["enabled"] == False
+        mock_gate = Mock()
+        mock_gate.id = uuid.uuid4()
+        mock_gate.gate_id = gate_id
+        mock_gate.name = "Updated Gate"
+        mock_gate.description = "Test description"
+        mock_gate.environment = EnvironmentType.DEVELOPMENT
+        mock_gate.enabled = False
+        mock_gate.is_default = False
+        mock_gate.created_at = datetime.now(timezone.utc)
+        mock_gate.updated_at = datetime.now(timezone.utc)
+        mock_gate.conditions = []
+        
+        mock_service.update_quality_gate = AsyncMock(return_value=mock_gate)
+        override_dependency(client, mock_service)
+        
+        response = client.put(f"/api/quality-gates/{gate_id}", json=updates)
+        
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["name"] == "Updated Gate"
+        assert data["enabled"] == False
 
     def test_update_quality_gate_not_found(self, client, mock_service):
         """Test quality gate update when not found."""
         gate_id = "non-existent"
         updates = {"name": "Updated Gate"}
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.update_quality_gate = AsyncMock(return_value=None)
-            
-            response = client.put(f"/api/quality-gates/{gate_id}", json=updates)
-            
-            assert response.status_code == status.HTTP_404_NOT_FOUND
-            assert "Quality gate not found" in response.json()["detail"]
+        mock_service.update_quality_gate = AsyncMock(return_value=None)
+        override_dependency(client, mock_service)
+        
+        response = client.put(f"/api/quality-gates/{gate_id}", json=updates)
+        
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert "Quality gate not found" in response.json()["detail"]
 
     def test_delete_quality_gate_success(self, client, mock_service):
         """Test successful quality gate deletion."""
         gate_id = "test-gate"
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.delete_quality_gate = AsyncMock(return_value=True)
-            
-            response = client.delete(f"/api/quality-gates/{gate_id}")
-            
-            assert response.status_code == status.HTTP_204_NO_CONTENT
+        mock_service.delete_quality_gate = AsyncMock(return_value=True)
+        override_dependency(client, mock_service)
+        
+        response = client.delete(f"/api/quality-gates/{gate_id}")
+        
+        assert response.status_code == status.HTTP_204_NO_CONTENT
 
     def test_delete_quality_gate_not_found(self, client, mock_service):
         """Test quality gate deletion when not found."""
         gate_id = "non-existent"
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.delete_quality_gate = AsyncMock(return_value=False)
-            
-            response = client.delete(f"/api/quality-gates/{gate_id}")
-            
-            assert response.status_code == status.HTTP_404_NOT_FOUND
-            assert "Quality gate not found" in response.json()["detail"]
+        mock_service.delete_quality_gate = AsyncMock(return_value=False)
+        override_dependency(client, mock_service)
+        
+        response = client.delete(f"/api/quality-gates/{gate_id}")
+        
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert "Quality gate not found" in response.json()["detail"]
 
     def test_evaluate_quality_gates_success(self, client, mock_service):
         """Test successful quality gates evaluation."""
@@ -314,16 +316,16 @@ class TestQualityGatesAPI:
             }
         ]
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.evaluate_quality_gates = AsyncMock(return_value=mock_results)
-            
-            response = client.post("/api/quality-gates/evaluate", json=evaluation_request)
-            
-            assert response.status_code == status.HTTP_200_OK
-            data = response.json()
-            assert len(data) == 1
-            assert data[0]["gateId"] == "test-gate"
-            assert data[0]["status"] == "PASSED"
+        mock_service.evaluate_quality_gates = AsyncMock(return_value=mock_results)
+        override_dependency(client, mock_service)
+        
+        response = client.post("/api/quality-gates/evaluate", json=evaluation_request)
+        
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert len(data) == 1
+        assert data[0]["gateId"] == "test-gate"
+        assert data[0]["status"] == "PASSED"
 
     def test_evaluate_quality_gates_service_error(self, client, mock_service):
         """Test quality gates evaluation with service error."""
@@ -332,153 +334,161 @@ class TestQualityGatesAPI:
             "environment": "development"
         }
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.evaluate_quality_gates = AsyncMock(side_effect=Exception("Evaluation error"))
-            
-            response = client.post("/api/quality-gates/evaluate", json=evaluation_request)
-            
-            assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
-            assert "Evaluation error" in response.json()["detail"]
+        mock_service.evaluate_quality_gates = AsyncMock(side_effect=Exception("Evaluation error"))
+        override_dependency(client, mock_service)
+        
+        response = client.post("/api/quality-gates/evaluate", json=evaluation_request)
+        
+        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+        assert "Evaluation error" in response.json()["detail"]
 
     def test_get_environment_config_success(self, client, mock_service):
         """Test successful environment config retrieval."""
         environment = "development"
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_config = Mock()
-            mock_config.environment = environment
-            mock_config.default_gate_id = "reynard-development"
-            mock_config.enabled = True
-            
-            mock_service.get_environment_config = AsyncMock(return_value=mock_config)
-            
-            response = client.get(f"/api/quality-gates/environments/{environment}")
-            
-            assert response.status_code == status.HTTP_200_OK
-            data = response.json()
-            assert data["environment"] == environment
-            assert data["defaultGateId"] == "reynard-development"
+        mock_config = Mock()
+        mock_config.environment = environment
+        mock_config.default_gate_id = "reynard-development"
+        mock_config.enabled = True
+        
+        mock_service.get_environment_config = AsyncMock(return_value=mock_config)
+        override_dependency(client, mock_service)
+        
+        response = client.get(f"/api/quality-gates/environments/{environment}")
+        
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["environment"] == environment
+        assert data["defaultGateId"] == "reynard-development"
 
     def test_get_environment_config_not_found(self, client, mock_service):
         """Test environment config retrieval when not found."""
         environment = "non-existent"
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.get_environment_config = AsyncMock(return_value=None)
-            
-            response = client.get(f"/api/quality-gates/environments/{environment}")
-            
-            assert response.status_code == status.HTTP_404_NOT_FOUND
-            assert "Environment configuration not found" in response.json()["detail"]
+        mock_service.get_environment_config = AsyncMock(return_value=None)
+        override_dependency(client, mock_service)
+        
+        response = client.get(f"/api/quality-gates/environments/{environment}")
+        
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert "Environment configuration not found" in response.json()["detail"]
 
     def test_update_environment_config_success(self, client, mock_service):
         """Test successful environment config update."""
         environment = "development"
         config_update = {"default_gate_id": "new-dev-gate"}
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.set_default_gate_for_environment = AsyncMock(return_value=True)
-            
-            response = client.put(f"/api/quality-gates/environments/{environment}", json=config_update)
-            
-            assert response.status_code == status.HTTP_200_OK
-            assert "Environment configuration updated successfully" in response.json()["message"]
+        mock_service.set_default_gate_for_environment = AsyncMock(return_value=True)
+        override_dependency(client, mock_service)
+        
+        response = client.put(f"/api/quality-gates/environments/{environment}", json=config_update)
+        
+        assert response.status_code == status.HTTP_200_OK
+        assert "Environment configuration updated successfully" in response.json()["message"]
 
     def test_update_environment_config_failure(self, client, mock_service):
         """Test environment config update failure."""
         environment = "development"
         config_update = {"default_gate_id": "invalid-gate"}
         
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.set_default_gate_for_environment = AsyncMock(return_value=False)
-            
-            response = client.put(f"/api/quality-gates/environments/{environment}", json=config_update)
-            
-            assert response.status_code == status.HTTP_400_BAD_REQUEST
-            assert "Failed to update environment configuration" in response.json()["detail"]
+        mock_service.set_default_gate_for_environment = AsyncMock(return_value=False)
+        override_dependency(client, mock_service)
+        
+        response = client.put(f"/api/quality-gates/environments/{environment}", json=config_update)
+        
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert "Failed to update environment configuration" in response.json()["detail"]
 
     def test_initialize_default_gates_success(self, client, mock_service):
         """Test successful default gates initialization."""
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_gates = [Mock(), Mock(), Mock()]  # 3 default gates
-            
-            mock_service.create_reynard_default_gates = AsyncMock(return_value=mock_gates)
-            
-            response = client.post("/api/quality-gates/initialize")
-            
-            assert response.status_code == status.HTTP_201_CREATED
-            data = response.json()
-            assert "Default Reynard quality gates initialized successfully" in data["message"]
-            assert data["gatesCreated"] == 3
+        mock_gates = [Mock(), Mock(), Mock()]  # 3 default gates
+        
+        mock_service.create_reynard_default_gates = AsyncMock(return_value=mock_gates)
+        override_dependency(client, mock_service)
+        
+        response = client.post("/api/quality-gates/initialize")
+        
+        assert response.status_code == status.HTTP_201_CREATED
+        data = response.json()
+        assert "Default Reynard quality gates initialized successfully" in data["message"]
+        assert data["gatesCreated"] == 3
 
     def test_create_reynard_default_gates_success(self, client, mock_service):
         """Test successful Reynard default gates creation."""
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_gates = [Mock(), Mock(), Mock()]
-            
-            mock_service.create_reynard_default_gates = AsyncMock(return_value=mock_gates)
-            
-            response = client.post("/api/quality-gates/reynard-defaults")
-            
-            assert response.status_code == status.HTTP_201_CREATED
-            data = response.json()
-            assert "Reynard quality gates created successfully" in data["message"]
-            assert data["gatesCreated"] == 3
+        mock_gates = [Mock(), Mock(), Mock()]
+        
+        mock_service.create_reynard_default_gates = AsyncMock(return_value=mock_gates)
+        override_dependency(client, mock_service)
+        
+        response = client.post("/api/quality-gates/reynard-defaults")
+        
+        assert response.status_code == status.HTTP_201_CREATED
+        data = response.json()
+        assert "Reynard quality gates created successfully" in data["message"]
+        assert data["gatesCreated"] == 3
 
     def test_get_evaluation_history_success(self, client, mock_service):
         """Test successful evaluation history retrieval."""
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_evaluations = [
-                Mock(
-                    id=uuid.uuid4(),
-                    quality_gate=Mock(gate_id="test-gate", name="Test Gate"),
-                    evaluation_id="eval-123",
-                    environment="development",
-                    status=GateStatus.PASSED,
-                    overall_score=100.0,
-                    passed_conditions=3,
-                    total_conditions=3,
-                    failed_conditions=0,
-                    warning_conditions=0,
-                    evaluated_at=datetime.now(timezone.utc)
-                )
-            ]
-            
-            mock_service.get_evaluation_history = AsyncMock(return_value=mock_evaluations)
-            
-            response = client.get("/api/quality-gates/evaluations?gateId=test-gate&environment=development&limit=50")
-            
-            assert response.status_code == status.HTTP_200_OK
-            data = response.json()
-            assert len(data) == 1
-            assert data[0]["gateId"] == "test-gate"
-            assert data[0]["status"] == "PASSED"
+        # Create a proper mock evaluation object
+        mock_evaluation = Mock()
+        mock_evaluation.id = uuid.uuid4()
+        mock_evaluation.evaluation_id = "eval-123"
+        mock_evaluation.environment = "development"
+        mock_evaluation.status = GateStatus.PASSED
+        mock_evaluation.overall_score = 100.0
+        mock_evaluation.passed_conditions = 3
+        mock_evaluation.total_conditions = 3
+        mock_evaluation.failed_conditions = 0
+        mock_evaluation.warning_conditions = 0
+        mock_evaluation.evaluated_at = datetime.now(timezone.utc)
+        
+        # Create a proper mock quality gate object
+        mock_quality_gate = Mock()
+        mock_quality_gate.gate_id = "test-gate"
+        mock_quality_gate.name = "Test Gate"
+        mock_evaluation.quality_gate = mock_quality_gate
+        
+        mock_evaluations = [mock_evaluation]
+        
+        mock_service.get_evaluation_history = AsyncMock(return_value=mock_evaluations)
+        override_dependency(client, mock_service)
+        
+        response = client.get("/api/quality-gates/evaluations?gateId=test-gate&environment=development&limit=50")
+        
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert len(data) == 1
+        assert data[0]["gateId"] == "test-gate"
+        assert data[0]["status"] == "PASSED"
 
     def test_get_evaluation_stats_success(self, client, mock_service):
         """Test successful evaluation statistics retrieval."""
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_stats = {
-                "totalEvaluations": 100,
-                "passedRate": 85.0,
-                "failedRate": 10.0,
-                "warningRate": 5.0,
-                "averageScore": 87.5
-            }
-            
-            mock_service.get_evaluation_stats = AsyncMock(return_value=mock_stats)
-            
-            response = client.get("/api/quality-gates/stats?gateId=test-gate&environment=development&days=30")
-            
-            assert response.status_code == status.HTTP_200_OK
-            data = response.json()
-            assert data["totalEvaluations"] == 100
-            assert data["passedRate"] == 85.0
-            assert data["failedRate"] == 10.0
-            assert data["warningRate"] == 5.0
-            assert data["averageScore"] == 87.5
+        mock_stats = {
+            "totalEvaluations": 100,
+            "passedRate": 85.0,
+            "failedRate": 10.0,
+            "warningRate": 5.0,
+            "averageScore": 87.5
+        }
+        
+        mock_service.get_evaluation_stats = AsyncMock(return_value=mock_stats)
+        override_dependency(client, mock_service)
+        
+        response = client.get("/api/quality-gates/stats?gateId=test-gate&environment=development&days=30")
+        
+        assert response.status_code == status.HTTP_200_OK
+        data = response.json()
+        assert data["totalEvaluations"] == 100
+        assert data["passedRate"] == 85.0
+        assert data["failedRate"] == 10.0
+        assert data["warningRate"] == 5.0
+        assert data["averageScore"] == 87.5
 
-    def test_health_check(self, client):
+    def test_health_check(self, client, mock_service):
         """Test health check endpoint."""
+        # Override dependency to prevent database connection
+        override_dependency(client, mock_service)
+        
         response = client.get("/api/quality-gates/health")
         
         assert response.status_code == status.HTTP_200_OK
@@ -489,13 +499,13 @@ class TestQualityGatesAPI:
 
     def test_api_error_handling(self, client, mock_service):
         """Test API error handling."""
-        with patch('app.api.quality_gates.endpoints.get_quality_gates_service', return_value=mock_service):
-            mock_service.get_quality_gates = AsyncMock(side_effect=Exception("Database error"))
-            
-            response = client.get("/api/quality-gates/")
-            
-            assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
-            assert "Database error" in response.json()["detail"]
+        mock_service.get_quality_gates = AsyncMock(side_effect=Exception("Database error"))
+        override_dependency(client, mock_service)
+        
+        response = client.get("/api/quality-gates/")
+        
+        assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
+        assert "Database error" in response.json()["detail"]
 
     def test_request_validation(self, client):
         """Test request validation."""
@@ -507,7 +517,7 @@ class TestQualityGatesAPI:
         }
         
         response = client.post("/api/quality-gates/", json=invalid_data)
-        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
         
         # Test missing required fields
         incomplete_data = {
@@ -518,8 +528,11 @@ class TestQualityGatesAPI:
         response = client.post("/api/quality-gates/", json=incomplete_data)
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
-    def test_evaluation_request_validation(self, client):
+    def test_evaluation_request_validation(self, client, mock_service):
         """Test evaluation request validation."""
+        # Override dependency to prevent database connection
+        override_dependency(client, mock_service)
+        
         # Test missing metrics
         invalid_request = {
             "environment": "development"

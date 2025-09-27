@@ -47,6 +47,7 @@ from app.api.ssh_key_routes import router as ssh_key_router
 from app.api.summarization import router as summarization_router
 from app.api.todos import endpoints as todos_endpoints
 from app.api.tts import router as tts_router
+from app.api.testing import endpoints as testing_endpoints
 
 # Core API endpoints
 from app.core.api_endpoints import router as core_router
@@ -219,3 +220,6 @@ def _setup_routers(app: FastAPI) -> None:
 
     # SSH Key Management Router
     app.include_router(ssh_key_router)
+
+    # Testing Ecosystem Router
+    app.include_router(testing_endpoints.router)

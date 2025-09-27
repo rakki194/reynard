@@ -96,6 +96,13 @@ class PytestDBReporter:
     
     def pytest_runtest_logreport(self, report: TestReport):
         """Process a test report."""
+        # Handle skipped tests in setup phase
+        if report.when == 'setup' and report.outcome == 'skipped':
+            self.skipped_tests += 1
+            asyncio.run(self.store_test_result(report))
+            return
+        
+        # Handle other tests in call phase
         if report.when != 'call':
             return
         
@@ -111,6 +118,14 @@ class PytestDBReporter:
         
         # Store individual test result
         asyncio.run(self.store_test_result(report))
+    
+    def pytest_runtest_setup(self, item):
+        """Handle test setup - this is where skipped tests are reported."""
+        pass
+    
+    def pytest_runtest_teardown(self, item):
+        """Handle test teardown."""
+        pass
     
     async def create_test_run(self):
         """Create a test run in the database."""
@@ -128,7 +143,7 @@ class PytestDBReporter:
                     "passed_tests": 0,
                     "failed_tests": 0,
                     "skipped_tests": 0,
-                    "metadata": {
+                    "meta_data": {
                         "pytest_version": pytest.__version__,
                         "python_version": os.sys.version,
                         "start_time": self.start_time.isoformat() if self.start_time else None,
@@ -203,7 +218,7 @@ class PytestDBReporter:
                     "error_traceback": error_traceback,
                     "stdout": stdout,
                     "stderr": stderr,
-                    "metadata": {
+                    "meta_data": {
                         "pytest_outcome": report.outcome,
                         "pytest_when": report.when,
                         "pytest_sections": [str(section) for section in report.sections] if hasattr(report, 'sections') else [],
@@ -230,32 +245,27 @@ class PytestDBReporter:
             if self.start_time and self.end_time:
                 total_duration = (self.end_time - self.start_time).total_seconds() * 1000
             
+            # Calculate actual total tests from results
+            actual_total = self.passed_tests + self.failed_tests + self.skipped_tests + self.error_tests
+            
             # Update test run with final statistics
             response = requests.patch(
-                f"{self.api_base_url}/api/testing/test-runs/{self.test_run_id}",
+                f"{self.api_base_url}/api/testing/test-runs/{self.test_run_id}/status",
                 json={
+                    "status": "completed",
+                    "total_tests": actual_total,
                     "passed_tests": self.passed_tests,
                     "failed_tests": self.failed_tests,
-                    "skipped_tests": self.skipped_tests,
-                    "metadata": {
-                        "total_duration_ms": total_duration,
-                        "end_time": self.end_time.isoformat() if self.end_time else None,
-                        "exit_status": getattr(self.config, 'exitstatus', 0),
-                    }
+                    "skipped_tests": self.skipped_tests
                 },
                 timeout=30
             )
             
             if response.status_code == 200:
-                # Mark as completed
-                requests.patch(
-                    f"{self.api_base_url}/api/testing/test-runs/{self.test_run_id}/status",
-                    json={"status": "completed"},
-                    timeout=30
-                )
                 print(f"✅ Updated test run status: {self.test_run_id}")
+                print(f"📊 Final stats - Total: {actual_total}, Passed: {self.passed_tests}, Failed: {self.failed_tests}, Skipped: {self.skipped_tests}")
             else:
-                print(f"❌ Failed to update test run: {response.status_code}")
+                print(f"❌ Failed to update test run: {response.status_code} {response.text}")
                 
         except Exception as e:
             print(f"❌ Error updating test run status: {e}")
@@ -294,9 +304,9 @@ class PytestDBReporter:
 
 def pytest_configure(config: Config):
     """Register the database reporter plugin."""
-    if config.getoption('--db-reporter', default=False):
-        reporter = PytestDBReporter(config)
-        config.pluginmanager.register(reporter, 'db_reporter')
+    # Always register the plugin, but only activate if API is available
+    reporter = PytestDBReporter(config)
+    config.pluginmanager.register(reporter, 'db_reporter')
 
 
 def pytest_addoption(parser):

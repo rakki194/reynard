@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.generated.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "paths": {
+      "~/*": ["./src/*"],
+      "reynard-core": ["../../packages/core/src"],
+      "reynard-components-core": ["../../packages/components-core/src"],
+      "reynard-themes": ["../../packages/themes/src"],
+      "reynard-charts": ["../../packages/charts/src"],
+      "reynard-fluent-icons": ["../../packages/fluent-icons/src"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

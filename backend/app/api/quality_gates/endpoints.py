@@ -20,7 +20,7 @@ from typing import Optional, List, Dict, Any, Union
 from enum import Enum
 
 from fastapi import APIRouter, HTTPException, Depends, Query, status
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from sqlalchemy.orm import Session
 
 from app.services.quality_gates import QualityGatesService
@@ -72,13 +72,12 @@ class QualityGateResponse(BaseModel):
     updated_at: datetime
     conditions: List[Dict[str, Any]]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class QualityGateEvaluationRequest(BaseModel):
     metrics: Dict[str, Any] = Field(..., description="Metrics to evaluate against")
-    environment: str = Field("development", description="Environment to evaluate for")
+    environment: EnvironmentType = Field(EnvironmentType.DEVELOPMENT, description="Environment to evaluate for")
     evaluation_id: Optional[str] = Field(None, description="Custom evaluation ID")
 
 
@@ -220,6 +219,17 @@ async def get_quality_gates(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# Health Check - Must be before /{gate_id} route to avoid conflicts
+@router.get("/health")
+async def health_check():
+    """Health check endpoint for quality gates service."""
+    return {
+        "status": "healthy",
+        "service": "quality-gates",
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+
+
 @router.get("/{gate_id}", response_model=QualityGateResponse)
 async def get_quality_gate(
     gate_id: str,
@@ -270,7 +280,7 @@ async def update_quality_gate(
 ):
     """Update a quality gate."""
     try:
-        update_dict = {k: v for k, v in updates.dict().items() if v is not None}
+        update_dict = {k: v for k, v in updates.model_dump().items() if v is not None}
         gate = await service.update_quality_gate(gate_id, update_dict)
         
         if not gate:
@@ -506,13 +516,3 @@ async def get_evaluation_stats(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# Health Check
-
-@router.get("/health")
-async def health_check():
-    """Health check endpoint for quality gates service."""
-    return {
-        "status": "healthy",
-        "service": "quality-gates",
-        "timestamp": datetime.now(timezone.utc).isoformat()
-    }

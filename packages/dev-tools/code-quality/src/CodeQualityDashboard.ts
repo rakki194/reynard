@@ -7,7 +7,8 @@
  */
 
 import { CodeQualityAnalyzer } from "./CodeQualityAnalyzer";
-import { QualityGateManager, QualityGateResult } from "./QualityGateManager";
+import { DatabaseQualityGateManager } from "./DatabaseQualityGateManager";
+import { QualityGateResult } from "./types";
 import { SecurityAnalysisIntegration, SecurityAnalysisResult } from "./SecurityAnalysisIntegration";
 import { AnalysisResult } from "./types";
 
@@ -38,7 +39,7 @@ export class CodeQualityDashboard {
   private readonly refreshInterval: number;
   private state: DashboardState;
   private analyzer: CodeQualityAnalyzer;
-  private qualityGateManager: QualityGateManager;
+  private qualityGateManager: DatabaseQualityGateManager;
   private securityIntegration: SecurityAnalysisIntegration;
   private refreshTimer: NodeJS.Timeout | null = null;
 
@@ -57,7 +58,9 @@ export class CodeQualityDashboard {
     };
 
     this.analyzer = new CodeQualityAnalyzer(this.projectRoot);
-    this.qualityGateManager = new QualityGateManager(this.projectRoot);
+    const backendUrl = process.env.REYNARD_BACKEND_URL || "http://localhost:8000";
+    const apiKey = process.env.REYNARD_API_KEY;
+    this.qualityGateManager = new DatabaseQualityGateManager(backendUrl, apiKey);
     this.securityIntegration = new SecurityAnalysisIntegration(this.projectRoot);
   }
 

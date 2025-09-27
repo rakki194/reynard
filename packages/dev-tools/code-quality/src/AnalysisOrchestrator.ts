@@ -9,12 +9,12 @@ import { AIAnalysisEngine } from "./AIAnalysisEngine";
 import { BehavioralAnalysisEngine } from "./BehavioralAnalysisEngine";
 import { CodeQualityAnalyzer } from "./CodeQualityAnalyzer";
 import { EnhancedSecurityEngine } from "./EnhancedSecurityEngine";
-import { QualityGateManager } from "./QualityGateManager";
+import { DatabaseQualityGateManager } from "./DatabaseQualityGateManager";
 import { SecurityAnalysisIntegration } from "./SecurityAnalysisIntegration";
 
 export interface AnalysisSystem {
   analyzer: CodeQualityAnalyzer;
-  qualityGateManager: QualityGateManager;
+  qualityGateManager: DatabaseQualityGateManager;
   securityIntegration: SecurityAnalysisIntegration;
   aiEngine: AIAnalysisEngine;
   behavioralEngine: BehavioralAnalysisEngine;

@@ -1,46 +1,46 @@
 {
   "session_id": "test_session",
-  "start_time": "2025-09-27T10:17:46.371918+00:00",
-  "end_time": "2025-09-27T10:17:46.399031+00:00",
+  "start_time": "2025-09-27T10:38:34.737564+00:00",
+  "end_time": "2025-09-27T10:38:34.765850+00:00",
   "snapshots": [
     {
-      "timestamp": "2025-09-27T10:17:46.378316+00:00",
-      "rss_mb": 107.5078125,
-      "vms_mb": 121.58203125,
-      "percent": 1.3927129767430797,
-      "available_mb": 1649.60546875,
+      "timestamp": "2025-09-27T10:38:34.742651+00:00",
+      "rss_mb": 107.51171875,
+      "vms_mb": 120.6875,
+      "percent": 1.3927635803684248,
+      "available_mb": 867.1171875,
       "tracemalloc_mb": 0.000988006591796875,
-      "gc_objects": 62172,
+      "gc_objects": 62171,
       "context": "analysis_start"
     },
     {
-      "timestamp": "2025-09-27T10:17:46.383913+00:00",
-      "rss_mb": 108.0234375,
-      "vms_mb": 202.1328125,
-      "percent": 1.3993926552886102,
-      "available_mb": 1649.60546875,
+      "timestamp": "2025-09-27T10:38:34.749316+00:00",
+      "rss_mb": 108.03125,
+      "vms_mb": 201.578125,
+      "percent": 1.3994938625393,
+      "available_mb": 868.4375,
       "tracemalloc_mb": 0.025129318237304688,
-      "gc_objects": 62301,
+      "gc_objects": 62300,
       "context": "startup_begin"
     },
     {
-      "timestamp": "2025-09-27T10:17:46.388399+00:00",
+      "timestamp": "2025-09-27T10:38:34.753187+00:00",
       "rss_mb": 108.10546875,
-      "vms_mb": 202.1328125,
-      "percent": 1.4004553314208537,
-      "available_mb": 1649.60546875,
+      "vms_mb": 201.578125,
+      "percent": 1.4005059350461986,
+      "available_mb": 868.4375,
       "tracemalloc_mb": 0.02662372589111328,
-      "gc_objects": 62307,
+      "gc_objects": 62306,
       "context": "startup_complete"
     },
     {
-      "timestamp": "2025-09-27T10:17:46.398983+00:00",
-      "rss_mb": 108.15625,
-      "vms_mb": 202.1171875,
-      "percent": 1.4011131785503377,
-      "available_mb": 1649.5859375,
-      "tracemalloc_mb": 0.045154571533203125,
-      "gc_objects": 62343,
+      "timestamp": "2025-09-27T10:38:34.765804+00:00",
+      "rss_mb": 108.16015625,
+      "vms_mb": 201.5625,
+      "percent": 1.4011637821756826,
+      "available_mb": 869.7265625,
+      "tracemalloc_mb": 0.04509735107421875,
+      "gc_objects": 62342,
       "context": "analysis_complete"
     }
   ],
@@ -56,9 +56,9 @@
       "error": "'BackendAnalyzer' object has no attribute 'analyze_memory_hotspots'"
     },
     "memory_delta": {
-      "initial_mb": 108.0234375,
+      "initial_mb": 108.03125,
       "final_mb": 108.10546875,
-      "delta_mb": 0.08203125,
+      "delta_mb": 0.07421875,
       "gc_objects_delta": 6
     }
   },
