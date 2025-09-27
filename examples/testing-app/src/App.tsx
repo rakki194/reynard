@@ -8,7 +8,6 @@
 import { Component } from 'solid-js';
 import { ReynardProvider } from 'reynard-themes';
 import { NotificationsProvider, createNotificationsModule } from 'reynard-core';
-import 'reynard-themes/themes.css';
 import './styles/app.css';
 import Dashboard from './pages/Dashboard';
 

@@ -20,7 +20,7 @@ REDIS_DATA_DIR="/var/lib/redis"
 REDIS_CONF_DIR="/etc/redis"
 # Get project root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$SCRIPT_DIR"
+PROJECT_ROOT="${SCRIPT_DIR}"
 
 # Get Redis password from environment or .env file
 if [[ -f "${PROJECT_ROOT}/.env" ]]; then

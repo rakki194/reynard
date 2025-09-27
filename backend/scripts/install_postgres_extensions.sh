@@ -63,9 +63,9 @@ check_extension() {
     local db_name="$1"
     local extension="$2"
     
-    export PGPASSWORD="$POSTGRES_PASSWORD"
+    export PGPASSWORD="${POSTGRES_PASSWORD}"
     
-    if psql -h "$POSTGRES_HOST" -p "$POSTGRES_PORT" -U "$POSTGRES_USER" -d "$db_name" -t -c "SELECT 1 FROM pg_extension WHERE extname = '$extension';" 2>/dev/null | grep -q "1"; then
+    if psql -h "${POSTGRES_HOST}" -p "${POSTGRES_PORT}" -U "${POSTGRES_USER}" -d "${db_name}" -t -c "SELECT 1 FROM pg_extension WHERE extname = '${extension}';" 2>/dev/null | grep -q "1"; then
         return 0  # Extension exists
     else
         return 1  # Extension doesn't exist
@@ -77,13 +77,13 @@ total_installations=0
 successful_installations=0
 
 for db in "${DATABASES[@]}"; do
-    echo -e "\n${BLUE}📊 Processing database: $db${NC}"
+    echo -e "\n${BLUE}📊 Processing database: ${db}${NC}"
     
     for ext in "${EXTENSIONS[@]}"; do
-        if check_extension "$db" "$ext"; then
-            echo -e "${GREEN}✅ Extension $ext already installed in $db${NC}"
+        if check_extension "${db}" "${ext}"; then
+            echo -e "${GREEN}✅ Extension ${ext} already installed in ${db}${NC}"
         else
-            if install_extension_in_db "$db" "$ext"; then
+            if install_extension_in_db "${db}" "${ext}"; then
                 ((successful_installations++))
             fi
             ((total_installations++))
@@ -93,10 +93,10 @@ done
 
 # Summary
 echo -e "\n${BLUE}📋 Installation Summary:${NC}"
-echo -e "Total attempted installations: $total_installations"
-echo -e "Successful installations: $successful_installations"
+echo -e "Total attempted installations: ${total_installations}"
+echo -e "Successful installations: ${successful_installations}"
 
-if [[ $successful_installations -eq $total_installations ]]; then
+if [[ ${successful_installations} -eq ${total_installations} ]]; then
     echo -e "${GREEN}🎉 All extensions installed successfully!${NC}"
     exit 0
 else

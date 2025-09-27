@@ -5,6 +5,9 @@
  * the testing dashboard with modern design and excellent UX.
  */
 
+/* Import Reynard Themes */
+@import "reynard-themes/themes.css";
+
 /* CSS Variables for Theming */
 :root {
   --color-primary: #007bff;

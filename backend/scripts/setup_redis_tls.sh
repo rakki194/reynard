@@ -65,7 +65,7 @@ openssl x509 -req -in "${REDIS_TLS_DIR}/redis.csr" \
     -CAkey "${REDIS_TLS_DIR}/ca.key" \
     -CAcreateserial \
     -out "${REDIS_TLS_DIR}/redis.crt" \
-    -days ${CERT_VALIDITY_DAYS} \
+    -days "${CERT_VALIDITY_DAYS}" \
     -extensions v3_req \
     -extfile <(cat <<EOF
 [v3_req]
@@ -102,7 +102,7 @@ openssl x509 -req -in "${REDIS_TLS_DIR}/client.csr" \
     -CAkey "${REDIS_TLS_DIR}/ca.key" \
     -CAcreateserial \
     -out "${REDIS_TLS_DIR}/client.crt" \
-    -days ${CERT_VALIDITY_DAYS}
+    -days "${CERT_VALIDITY_DAYS}"
 
 chown "${REDIS_USER}:${REDIS_GROUP}" "${REDIS_TLS_DIR}/client.crt"
 chmod 644 "${REDIS_TLS_DIR}/client.crt"

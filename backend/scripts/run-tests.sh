@@ -103,30 +103,30 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Validate test type
-case $TEST_TYPE in
+case ${TEST_TYPE} in
     all|unit|integration|security|api|auth)
         ;;
     *)
-        print_error "Invalid test type: $TEST_TYPE"
+        print_error "Invalid test type: ${TEST_TYPE}"
         show_usage
         exit 1
         ;;
 esac
 
 # Validate report format
-case $REPORT_FORMAT in
+case ${REPORT_FORMAT} in
     html|xml|term)
         ;;
     *)
-        print_error "Invalid report format: $REPORT_FORMAT"
+        print_error "Invalid report format: ${REPORT_FORMAT}"
         show_usage
         exit 1
         ;;
 esac
 
 print_status "Starting Reynard Backend Test Suite"
-print_status "Test Type: $TEST_TYPE"
-print_status "Coverage: $COVERAGE"
+print_status "Test Type: ${TEST_TYPE}"
+print_status "Coverage: ${COVERAGE}"
 print_status "Verbose: ${VERBOSE}"
 print_status "Parallel: ${PARALLEL}"
 print_status "Report Format: ${REPORT_FORMAT}"
