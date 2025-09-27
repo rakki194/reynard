@@ -88,7 +88,7 @@ check_prerequisites() {
     fi
     
     # Check if we're in the right directory
-    if [ ! -f "package.json" ]; then
+    if [[ ! -f "package.json" ]; then
         print_error "package.json not found. Please run this script from the e2e directory."
         exit 1
     fi
@@ -108,19 +108,19 @@ clean_results() {
     print_status "Cleaning test results and reports..."
     
     # Remove test results
-    if [ -d "test-results" ]; then
+    if [[ -d "test-results" ]; then
         rm -rf test-results
         print_status "Removed test-results directory"
     fi
     
     # Remove playwright report
-    if [ -d "playwright-report" ]; then
+    if [[ -d "playwright-report" ]; then
         rm -rf playwright-report
         print_status "Removed playwright-report directory"
     fi
     
     # Remove results directory
-    if [ -d "results" ]; then
+    if [[ -d "results" ]; then
         rm -rf results
         print_status "Removed results directory"
     fi
@@ -155,7 +155,7 @@ start_games_demo() {
     done
     
     print_error "Failed to start Games Demo server"
-    kill $SERVER_PID 2>/dev/null || true
+    kill ${SERVER_PID} 2>/dev/null || true
     exit 1
 }
 
@@ -166,8 +166,8 @@ stop_games_demo() {
     # Kill any process running on port 3002
     if command -v lsof &> /dev/null; then
         PID=$(lsof -ti:3002)
-        if [ ! -z "$PID" ]; then
-            kill $PID 2>/dev/null || true
+        if [[ ! -z "${PID}" ]; then
+            kill ${PID} 2>/dev/null || true
             print_success "Games Demo server stopped"
         fi
     fi
@@ -178,45 +178,45 @@ run_tests() {
     print_status "Running Games Demo E2E tests..."
     
     # Build command
-    CMD="pnpm exec playwright test --config=$CONFIG_FILE"
+    CMD="pnpm exec playwright test --config=${CONFIG_FILE}"
     
     # Add browser filter if specified
-    if [ "$BROWSER" != "all" ]; then
-        CMD="$CMD --project=$BROWSER"
+    if [[ "${BROWSER}" != "all" ]; then
+        CMD="${CMD} --project=${BROWSER}"
     fi
     
     # Add headed mode
-    if [ "$HEADED" = true ]; then
-        CMD="$CMD --headed"
+    if [[ "${HEADED}" = true ]; then
+        CMD="${CMD} --headed"
     fi
     
     # Add debug mode
-    if [ "$DEBUG" = true ]; then
-        CMD="$CMD --debug"
+    if [[ "${DEBUG}" = true ]; then
+        CMD="${CMD} --debug"
     fi
     
     # Add UI mode
-    if [ "$UI" = true ]; then
-        CMD="$CMD --ui"
+    if [[ "${UI}" = true ]; then
+        CMD="${CMD} --ui"
     fi
     
     # Add specific test filters
-    if [ "$PERFORMANCE" = true ]; then
-        CMD="$CMD --grep='Performance'"
+    if [[ "${PERFORMANCE}" = true ]; then
+        CMD="${CMD} --grep='Performance'"
     fi
     
-    if [ "$STRESS" = true ]; then
-        CMD="$CMD --grep='Stress'"
+    if [[ "${STRESS}" = true ]; then
+        CMD="${CMD} --grep='Stress'"
     fi
     
-    print_status "Executing: $CMD"
+    print_status "Executing: ${CMD}"
     
     # Run the tests
-    if eval $CMD; then
+    if eval ${CMD}; then
         print_success "Tests completed successfully"
         
         # Show report if requested
-        if [ "$REPORT" = true ]; then
+        if [[ "${REPORT}" = true ]; then
             print_status "Opening test report..."
             pnpm exec playwright show-report
         fi
@@ -235,16 +235,16 @@ run_test_suite() {
     
     case $suite in
         "main")
-            pnpm exec playwright test --config=$CONFIG_FILE suites/games/games-demo.spec.ts
+            pnpm exec playwright test --config=${CONFIG_FILE} suites/games/games-demo.spec.ts
             ;;
         "roguelike")
-            pnpm exec playwright test --config=$CONFIG_FILE suites/games/roguelike-game.spec.ts
+            pnpm exec playwright test --config=${CONFIG_FILE} suites/games/roguelike-game.spec.ts
             ;;
         "3d-games")
-            pnpm exec playwright test --config=$CONFIG_FILE suites/games/3d-games.spec.ts
+            pnpm exec playwright test --config=${CONFIG_FILE} suites/games/3d-games.spec.ts
             ;;
         "performance")
-            pnpm exec playwright test --config=$CONFIG_FILE suites/games/games-performance.spec.ts
+            pnpm exec playwright test --config=${CONFIG_FILE} suites/games/games-performance.spec.ts
             ;;
         *)
             print_error "Unknown test suite: $suite"
@@ -321,7 +321,7 @@ main() {
     check_prerequisites
     
     # Install dependencies if needed
-    if [ ! -d "node_modules" ]; then
+    if [[ ! -d "node_modules" ]; then
         print_status "Installing dependencies..."
         pnpm install
     fi
@@ -333,8 +333,8 @@ main() {
     trap stop_games_demo EXIT
     
     # Run tests
-    if [ ! -z "$SUITE" ]; then
-        run_test_suite "$SUITE"
+    if [[ ! -z "${SUITE}" ]; then
+        run_test_suite "${SUITE}"
     else
         run_tests
     fi

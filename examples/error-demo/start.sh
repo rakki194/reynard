@@ -33,9 +33,9 @@ echo ""
 # Install Python dependencies
 #echo "📦 Installing Python dependencies..."
 #cd backend
-#if [ -f "requirements.txt" ]; then
+#if [[ -f "requirements.txt" ]; then
 #    pip3 install -r requirements.txt
-#    if [ $? -ne 0 ]; then
+#    if [[ $? -ne 0 ]; then
 #        echo "❌ Failed to install Python dependencies"
 #        exit 1
 #    fi

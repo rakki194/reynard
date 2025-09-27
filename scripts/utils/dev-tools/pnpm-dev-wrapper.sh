@@ -40,13 +40,13 @@ stop_all_servers() {
     for category in packages examples backend e2e; do
         local projects=$(jq -r ".$category | keys[]" "$(dirname "$0")/dev-server-config.json" 2>/dev/null || echo "")
         
-        if [ -n "$projects" ]; then
+        if [[ -n "$projects" ]; then
             while IFS= read -r project; do
                 local port=$(jq -r ".$category.\"$project\".port" "$(dirname "$0")/dev-server-config.json" 2>/dev/null)
                 
                 if command -v lsof >/dev/null 2>&1; then
                     local pids=$(lsof -ti ":$port" 2>/dev/null || echo "")
-                    if [ -n "$pids" ]; then
+                    if [[ -n "$pids" ]; then
                         echo -e "${YELLOW}   Stopping $project (port $port)...${NC}"
                         echo "$pids" | xargs kill -TERM 2>/dev/null || true
                         stopped_count=$((stopped_count + 1))
@@ -56,7 +56,7 @@ stop_all_servers() {
         fi
     done
     
-    if [ $stopped_count -eq 0 ]; then
+    if [[ $stopped_count -eq 0 ]; then
         echo -e "${GREEN}✅ No development servers were running${NC}"
     else
         echo -e "${GREEN}✅ Stopped $stopped_count development server(s)${NC}"
@@ -67,7 +67,7 @@ stop_all_servers() {
 case "${1:-}" in
     "dev")
         # Run the pre-dev hook
-        if [ -f "$(dirname "$0")/pre-dev" ]; then
+        if [[ -f "$(dirname "$0")/pre-dev" ]; then
             bash "$(dirname "$0")/pre-dev"
         fi
         

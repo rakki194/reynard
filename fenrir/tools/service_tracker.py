@@ -33,6 +33,8 @@ class ServiceTracker:
         self.dependencies: Dict[str, List[str]] = {}
         self.startup_timings: Dict[str, float] = {}
         self.service_status: Dict[str, str] = {}
+        self.service_registry: Dict[str, Any] = {}
+        self.startup_logs: List[Dict[str, Any]] = []
 
     def register_service(self, name: str, description: str, dependencies: List[str] = None,
                         startup_priority: int = 50, category: str = "core"):
@@ -250,6 +252,72 @@ class ServiceTracker:
             "error_services": error_services,
             "success_rate": ready_services / total_services if total_services > 0 else 0,
             "startup_order_length": len(self.startup_order),
+        }
+
+    async def analyze_service_startup(self) -> Dict[str, Any]:
+        """Async method to track service startup and return analysis results."""
+        # Simulate service startup tracking
+        services = [
+            ("config", "Configuration management", [], 100, "core"),
+            ("database", "Database connections", [], 90, "core"),
+            ("service_manager", "Service lifecycle", ["config"], 85, "core"),
+            ("ai_service", "AI service", ["config"], 60, "ai"),
+            ("rag_service", "RAG service", ["ai_service", "database"], 40, "rag"),
+        ]
+
+        startup_sequence = []
+        performance_issues = []
+
+        for name, description, dependencies, priority, category in services:
+            start_time = time.time()
+            # Register and track service startup
+            self.register_service(name, description, dependencies, priority, category)
+            if name in self.services:
+                self.services[name]["startup_time"] = start_time
+                self.services[name]["status"] = "starting"
+                self.startup_timings[name] = start_time
+                if name not in self.startup_order:
+                    self.startup_order.append(name)
+
+            # Simulate startup duration
+            startup_duration = {
+                "config": 0.1,
+                "database": 0.5,
+                "service_manager": 0.2,
+                "ai_service": 1.0,
+                "rag_service": 1.5,
+            }.get(name, 0.3)
+
+            await asyncio.sleep(0.01)  # Simulate async work
+
+            ready_time = time.time()
+            # Track service ready
+            if name in self.services:
+                self.services[name]["ready_time"] = ready_time
+                self.services[name]["status"] = "ready"
+                self.service_status[name] = "ready"
+
+            startup_sequence.append({
+                "name": name,
+                "startup_time": start_time,
+                "ready_time": ready_time,
+                "duration": ready_time - start_time,
+                "category": category
+            })
+
+            # Check for performance issues
+            if startup_duration > 1.0:
+                performance_issues.append({
+                    "service": name,
+                    "issue": "Slow startup",
+                    "duration": startup_duration,
+                    "threshold": 1.0
+                })
+
+        return {
+            "services": {name: self.services.get(name, {}) for name, _, _, _, _ in services},
+            "startup_sequence": startup_sequence,
+            "performance_issues": performance_issues
         }
 
 

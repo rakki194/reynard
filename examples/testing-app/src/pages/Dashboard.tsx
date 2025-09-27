@@ -6,6 +6,7 @@
  */
 
 import { Component, createSignal, createEffect, onMount, For, Show } from 'solid-js';
+import { useNavigate } from '@solidjs/router';
 import { useI18n } from 'reynard-themes';
 import { testingApi } from '../utils/api';
 import type { TestRun, DashboardStats, FilterOptions } from '../types/testing';
@@ -16,6 +17,7 @@ import { TestRunDetailModal } from '../components/TestRunDetailModal';
 
 const Dashboard: Component = () => {
   const { locale, isRTL } = useI18n();
+  const navigate = useNavigate();
   const [testRuns, setTestRuns] = createSignal<TestRun[]>([]);
   const [stats, setStats] = createSignal<DashboardStats | null>(null);
   const [loading, setLoading] = createSignal(true);
@@ -85,10 +87,23 @@ const Dashboard: Component = () => {
   };
 
   return (
-    <div class="dashboard" dir={isRTL() ? "rtl" : "ltr"}>
+    <div class="dashboard" dir={isRTL ? "rtl" : "ltr"}>
       <header class="dashboard-header">
-        <h1>🦦 Reynard Testing Dashboard</h1>
-        <p>Comprehensive view of all test results, benchmarks, and profiling data</p>
+        <div class="header-content">
+          <div class="header-text">
+            <h1>🦦 Reynard Testing Dashboard</h1>
+            <p>Comprehensive view of all test results, benchmarks, and profiling data</p>
+          </div>
+          <div class="header-actions">
+            <button 
+              class="nav-button quality-gates"
+              onClick={() => navigate('/quality-gates')}
+              title="Manage Quality Gates"
+            >
+              🦊 Quality Gates
+            </button>
+          </div>
+        </div>
       </header>
 
       <Show when={!apiAvailable()}>

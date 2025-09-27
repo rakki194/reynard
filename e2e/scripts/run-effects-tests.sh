@@ -19,15 +19,15 @@ NC='\033[0m' # No Color
 
 # Configuration
 TEST_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-RESULTS_DIR="$TEST_DIR/results/effects"
-CONFIG_FILE="$TEST_DIR/configs/playwright.config.effects.ts"
+RESULTS_DIR="${TEST_DIR}/results/effects"
+CONFIG_FILE="${TEST_DIR}/configs/playwright.config.effects.ts"
 
 # Create results directory
-mkdir -p "$RESULTS_DIR"
+mkdir -p "${RESULTS_DIR}"
 
-echo -e "${BLUE}📁 Test Directory:${NC} $TEST_DIR"
-echo -e "${BLUE}📊 Results Directory:${NC} $RESULTS_DIR"
-echo -e "${BLUE}⚙️  Config File:${NC} $CONFIG_FILE"
+echo -e "${BLUE}📁 Test Directory:${NC} ${TEST_DIR}"
+echo -e "${BLUE}📊 Results Directory:${NC} ${RESULTS_DIR}"
+echo -e "${BLUE}⚙️  Config File:${NC} ${CONFIG_FILE}"
 echo ""
 
 # Check if Playwright is installed
@@ -37,8 +37,8 @@ if ! command -v npx &> /dev/null; then
 fi
 
 # Check if config file exists
-if [ ! -f "$CONFIG_FILE" ]; then
-    echo -e "${RED}❌ Config file not found: $CONFIG_FILE${NC}"
+if [[ ! -f "${CONFIG_FILE}" ]; then
+    echo -e "${RED}❌ Config file not found: ${CONFIG_FILE}${NC}"
     exit 1
 fi
 
@@ -50,13 +50,13 @@ run_tests() {
     echo -e "${YELLOW}🧪 Running tests with $description...${NC}"
     
     npx playwright test \
-        --config="$CONFIG_FILE" \
+        --config="${CONFIG_FILE}" \
         --project="$browser" \
         --reporter=json,junit \
-        --output-dir="$RESULTS_DIR/$browser" \
+        --output-dir="${RESULTS_DIR}/$browser" \
         --timeout=60000
     
-    if [ $? -eq 0 ]; then
+    if [[ $? -eq 0 ]; then
         echo -e "${GREEN}✅ $description tests passed${NC}"
     else
         echo -e "${RED}❌ $description tests failed${NC}"
@@ -68,7 +68,7 @@ run_tests() {
 generate_summary() {
     echo -e "${BLUE}📊 Generating summary report...${NC}"
     
-    local summary_file="$RESULTS_DIR/test-summary.md"
+    local summary_file="${RESULTS_DIR}/test-summary.md"
     
     cat > "$summary_file" << EOF
 # 🦊 Effects Monitoring Test Summary
@@ -83,10 +83,10 @@ EOF
 
     # Check results for each browser
     for browser in chromium-effects firefox-effects webkit-effects; do
-        local browser_dir="$RESULTS_DIR/$browser"
-        if [ -d "$browser_dir" ]; then
+        local browser_dir="${RESULTS_DIR}/$browser"
+        if [[ -d "$browser_dir" ]; then
             local result_file="$browser_dir/results.json"
-            if [ -f "$result_file" ]; then
+            if [[ -f "$result_file" ]; then
                 local passed=$(jq '.stats.passed // 0' "$result_file" 2>/dev/null || echo "0")
                 local failed=$(jq '.stats.failed // 0' "$result_file" 2>/dev/null || echo "0")
                 local total=$(jq '.stats.total // 0' "$result_file" 2>/dev/null || echo "0")
@@ -127,9 +127,9 @@ EOF
 
 # Function to show results summary
 show_results_summary() {
-    echo -e "${BLUE}📊 Test results available in:${NC} $RESULTS_DIR"
-    echo -e "${BLUE}📋 JSON results:${NC} $RESULTS_DIR/effects-results.json"
-    echo -e "${BLUE}📋 JUnit results:${NC} $RESULTS_DIR/effects-results.xml"
+    echo -e "${BLUE}📊 Test results available in:${NC} ${RESULTS_DIR}"
+    echo -e "${BLUE}📋 JSON results:${NC} ${RESULTS_DIR}/effects-results.json"
+    echo -e "${BLUE}📋 JUnit results:${NC} ${RESULTS_DIR}/effects-results.xml"
 }
 
 # Main execution
@@ -149,7 +149,7 @@ main() {
     echo "🦊 Effects Monitoring Test Suite Complete"
     echo "========================================"
     
-    if [ "$overall_success" = true ]; then
+    if [[ "$overall_success" = true ]; then
         echo -e "${GREEN}✅ All tests passed successfully!${NC}"
         echo -e "${GREEN}🛡️  Cloudflare-style outages prevented!${NC}"
     else
@@ -159,10 +159,10 @@ main() {
     
     echo ""
     show_results_summary
-    echo -e "${BLUE}📋 Summary report:${NC} $RESULTS_DIR/test-summary.md"
+    echo -e "${BLUE}📋 Summary report:${NC} ${RESULTS_DIR}/test-summary.md"
     
     # Exit with appropriate code
-    if [ "$overall_success" = true ]; then
+    if [[ "$overall_success" = true ]; then
         exit 0
     else
         exit 1

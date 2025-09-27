@@ -60,7 +60,7 @@ print_status "Checking required services..."
 #
 # DETAILED REASONING:
 # 1. We use "if ! check_service" (ShellCheck SC2181 recommended pattern) instead of
-#    "check_service; if [ $? -ne 0 ]" (which SC2181 warns against)
+#    "check_service; if [[ $? -ne 0 ]" (which SC2181 warns against)
 # 2. The "if !" pattern disables set -e for this specific command, which is INTENTIONAL
 # 3. We want explicit error handling here - if the service check fails, we want to:
 #    - Print a specific error message

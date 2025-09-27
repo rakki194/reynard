@@ -45,7 +45,7 @@ fi
 # Test main nginx configuration
 echo "📋 Testing main nginx configuration..."
 test_nginx_config "nginx/nginx.conf" "Main nginx.conf"
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Main configuration is valid${NC}"
 else
     echo -e "${RED}❌ Main configuration has errors${NC}"
@@ -56,7 +56,7 @@ fi
 echo ""
 echo "🔧 Testing development configuration..."
 test_nginx_config "nginx/dev/reynard-dev.conf" "Development config"
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Development configuration is valid${NC}"
 else
     echo -e "${RED}❌ Development configuration has errors${NC}"
@@ -69,7 +69,7 @@ echo "🚀 Testing production configurations..."
 
 # Test full production config
 test_nginx_config "nginx/prod/reynard-prod.conf" "Full production config"
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Full production configuration is valid${NC}"
 else
     echo -e "${RED}❌ Full production configuration has errors${NC}"
@@ -78,7 +78,7 @@ fi
 
 # Test frontend-only config
 test_nginx_config "nginx/prod/frontend-only.conf" "Frontend-only config"
-if [ $? -eq 0 ]; then
+if [[ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Frontend-only configuration is valid${NC}"
 else
     echo -e "${RED}❌ Frontend-only configuration has errors${NC}"

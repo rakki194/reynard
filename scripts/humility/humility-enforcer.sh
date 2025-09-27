@@ -6,10 +6,10 @@ set -euo pipefail
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-DETECTOR_SCRIPT="$SCRIPT_DIR/humility-detector.py"
-LOG_FILE="$PROJECT_ROOT/.humility-enforcer.log"
-CONFIG_FILE="$SCRIPT_DIR/humility-config.json"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+DETECTOR_SCRIPT="${SCRIPT_DIR}/humility-detector.py"
+LOG_FILE="${PROJECT_ROOT}/.humility-enforcer.log"
+CONFIG_FILE="${SCRIPT_DIR}/humility-config.json"
 
 # Colors for output
 RED='\033[0;31m'
@@ -39,22 +39,22 @@ DEFAULT_CONFIG='{
 
 # Initialize configuration if it doesn't exist
 init_config() {
-    if [[ ! -f "$CONFIG_FILE" ]]; then
-        echo "$DEFAULT_CONFIG" > "$CONFIG_FILE"
-        echo -e "${BLUE}Initialized humility configuration at $CONFIG_FILE${NC}"
+    if [[ ! -f "${CONFIG_FILE}" ]]; then
+        echo "${DEFAULT_CONFIG}" > "${CONFIG_FILE}"
+        echo -e "${BLUE}Initialized humility configuration at ${CONFIG_FILE}${NC}"
     fi
 }
 
 # Load configuration
 load_config() {
-    if [[ -f "$CONFIG_FILE" ]]; then
-        ENABLED=$(jq -r '.enabled' "$CONFIG_FILE")
-        SEVERITY_THRESHOLD=$(jq -r '.severity_threshold' "$CONFIG_FILE")
-        FILE_EXTENSIONS=$(jq -r '.file_extensions | join(" ")' "$CONFIG_FILE")
-        EXCLUDE_PATTERNS=$(jq -r '.exclude_patterns | join("|")' "$CONFIG_FILE")
-        AUTO_FIX=$(jq -r '.auto_fix' "$CONFIG_FILE")
-        PRE_COMMIT_HOOK=$(jq -r '.pre_commit_hook' "$CONFIG_FILE")
-        CI_INTEGRATION=$(jq -r '.ci_integration' "$CONFIG_FILE")
+    if [[ -f "${CONFIG_FILE}" ]]; then
+        ENABLED=$(jq -r '.enabled' "${CONFIG_FILE}")
+        SEVERITY_THRESHOLD=$(jq -r '.severity_threshold' "${CONFIG_FILE}")
+        FILE_EXTENSIONS=$(jq -r '.file_extensions | join(" ")' "${CONFIG_FILE}")
+        EXCLUDE_PATTERNS=$(jq -r '.exclude_patterns | join("|")' "${CONFIG_FILE}")
+        AUTO_FIX=$(jq -r '.auto_fix' "${CONFIG_FILE}")
+        PRE_COMMIT_HOOK=$(jq -r '.pre_commit_hook' "${CONFIG_FILE}")
+        CI_INTEGRATION=$(jq -r '.ci_integration' "${CONFIG_FILE}")
     else
         # Use defaults
         ENABLED=true
@@ -73,7 +73,7 @@ log() {
     shift
     local message="$*"
     local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
-    echo "[$timestamp] [$level] $message" >> "$LOG_FILE"
+    echo "[$timestamp] [$level] $message" >> "${LOG_FILE}"
     
     case "$level" in
         "INFO")
@@ -118,14 +118,14 @@ run_detector() {
     
     log "INFO" "Running humility detector on: $path"
     
-    local cmd_args=("$DETECTOR_SCRIPT" "$path" "--format" "$format" "--min-severity" "$SEVERITY_THRESHOLD")
+    local cmd_args=("${DETECTOR_SCRIPT}" "$path" "--format" "$format" "--min-severity" "${SEVERITY_THRESHOLD}")
     
     if [[ -n "$output_file" ]]; then
         cmd_args+=("--output" "$output_file")
     fi
     
-    if [[ "$FILE_EXTENSIONS" != "null" ]]; then
-        cmd_args+=("--extensions" $FILE_EXTENSIONS)
+    if [[ "${FILE_EXTENSIONS}" != "null" ]]; then
+        cmd_args+=("--extensions" ${FILE_EXTENSIONS})
     fi
     
     if ! python3 "${cmd_args[@]}"; then
@@ -191,9 +191,9 @@ auto_fix() {
 
 # Install pre-commit hook
 install_pre_commit_hook() {
-    local hook_file="$PROJECT_ROOT/.git/hooks/pre-commit"
+    local hook_file="${PROJECT_ROOT}/.git/hooks/pre-commit"
     
-    if [[ "$PRE_COMMIT_HOOK" == "true" ]]; then
+    if [[ "${PRE_COMMIT_HOOK}" == "true" ]]; then
         log "INFO" "Installing pre-commit hook..."
         
         cat > "$hook_file" << 'EOF'
@@ -219,7 +219,7 @@ EOF
 
 # Remove pre-commit hook
 remove_pre_commit_hook() {
-    local hook_file="$PROJECT_ROOT/.git/hooks/pre-commit"
+    local hook_file="${PROJECT_ROOT}/.git/hooks/pre-commit"
     
     if [[ -f "$hook_file" ]]; then
         rm "$hook_file"
@@ -231,11 +231,11 @@ remove_pre_commit_hook() {
 
 # CI integration
 ci_check() {
-    if [[ "$CI_INTEGRATION" == "true" ]]; then
+    if [[ "${CI_INTEGRATION}" == "true" ]]; then
         log "INFO" "Running CI humility check..."
         
         local report_file=$(mktemp)
-        if run_detector "$PROJECT_ROOT" "$report_file" "json"; then
+        if run_detector "${PROJECT_ROOT}" "$report_file" "json"; then
             log "SUCCESS" "CI humility check passed"
             rm "$report_file"
             return 0
@@ -268,7 +268,7 @@ scan_path() {
         log "WARN" "Boastful language found in: $path"
         has_issues=true
         
-        if [[ "$auto_fix_mode" == "true" && "$AUTO_FIX" == "true" ]]; then
+        if [[ "$auto_fix_mode" == "true" && "${AUTO_FIX}" == "true" ]]; then
             log "INFO" "Attempting auto-fix..."
             
             # Extract files with issues and attempt to fix them
@@ -293,7 +293,7 @@ scan_path() {
     
     # Display report
     if [[ -f "$report_file" ]]; then
-        python3 "$DETECTOR_SCRIPT" "$path" --format text --min-severity "$SEVERITY_THRESHOLD" --score
+        python3 "${DETECTOR_SCRIPT}" "$path" --format text --min-severity "${SEVERITY_THRESHOLD}" --score
     fi
     
     rm -f "$report_file"
@@ -316,11 +316,11 @@ main() {
     check_dependencies
     
     # Create log file if it doesn't exist
-    touch "$LOG_FILE"
+    touch "${LOG_FILE}"
     
     case "$command" in
         "scan")
-            local path="${1:-$PROJECT_ROOT}"
+            local path="${1:-${PROJECT_ROOT}}"
             local auto_fix_mode="${2:-false}"
             scan_path "$path" "$auto_fix_mode"
             ;;
@@ -334,10 +334,10 @@ main() {
             ci_check
             ;;
         "config")
-            if [[ -f "$CONFIG_FILE" ]]; then
-                cat "$CONFIG_FILE" | jq .
+            if [[ -f "${CONFIG_FILE}" ]]; then
+                cat "${CONFIG_FILE}" | jq .
             else
-                log "ERROR" "Configuration file not found: $CONFIG_FILE"
+                log "ERROR" "Configuration file not found: ${CONFIG_FILE}"
                 exit 1
             fi
             ;;
@@ -364,7 +364,7 @@ Examples:
   $0 ci-check                      # Run CI check
 
 Configuration:
-  Edit $CONFIG_FILE to customize behavior
+  Edit ${CONFIG_FILE} to customize behavior
 
 EOF
             ;;

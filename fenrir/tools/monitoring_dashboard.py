@@ -21,8 +21,8 @@ import json
 sys.path.insert(0, str(Path(__file__).parent))
 
 from backend_analyzer import BackendAnalyzer
-from database_debugger import get_database_debugger
-from service_tracker import get_service_tracker
+from database_debugger import DatabaseDebugger
+from service_tracker import ServiceTracker
 
 logger = logging.getLogger(__name__)
 
@@ -33,10 +33,12 @@ class MonitoringDashboard:
     def __init__(self):
         """Initialize the monitoring dashboard."""
         self.backend_analyzer = BackendAnalyzer()
-        self.database_debugger = get_database_debugger()
-        self.service_tracker = get_service_tracker()
+        self.database_debugger = DatabaseDebugger()
+        self.service_tracker = ServiceTracker()
         self.start_time = time.time()
         self.monitoring_active = False
+        self.metrics: Dict[str, Any] = {}
+        self.alerts: List[Dict[str, Any]] = []
 
     async def start_monitoring(self, duration_seconds: int = 300):
         """Start comprehensive monitoring."""

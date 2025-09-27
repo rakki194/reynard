@@ -56,9 +56,9 @@ ENV_FILE=".env.production"
 echo -e "${BLUE}🚀 Starting Reynard Production Deployment...${NC}"
 
 # Check if .env.production exists
-if [ ! -f "$ENV_FILE" ]; then
-    echo -e "${RED}❌ Environment file $ENV_FILE not found!${NC}"
-    echo -e "${YELLOW}📝 Please create $ENV_FILE with your production configuration${NC}"
+if [[ ! -f "${ENV_FILE}" ]]; then
+    echo -e "${RED}❌ Environment file ${ENV_FILE} not found!${NC}"
+    echo -e "${YELLOW}📝 Please create ${ENV_FILE} with your production configuration${NC}"
     echo -e "${YELLOW}📋 See .env.production.example for reference${NC}"
     exit 1
 fi
@@ -69,7 +69,7 @@ export $(cat "${ENV_FILE}" | grep -v '^#' | xargs)
 # Validate required environment variables
 required_vars=("JWT_SECRET_KEY" "POSTGRES_DB" "POSTGRES_USER" "POSTGRES_PASSWORD" "REDIS_PASSWORD" "DOMAIN")
 for var in "${required_vars[@]}"; do
-    if [ -z "${!var}" ]; then
+    if [[ -z "${!var}" ]; then
         echo -e "${RED}❌ Required environment variable $var is not set!${NC}"
         exit 1
     fi

@@ -17,7 +17,7 @@ NC='\033[0m' # No Color
 CHANGELOG_FILE="CHANGELOG.md"
 # Get project root
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(dirname "${SCRIPT_DIR}")"
 DEBOUNCE_DELAY=2  # seconds
 
 # Function to log with timestamp

@@ -139,7 +139,7 @@ class TestServiceTracker:
         """Test service startup tracking."""
         tracker = ServiceTracker()
 
-        result = await tracker.track_service_startup()
+        result = await tracker.analyze_service_startup()
 
         assert result is not None
         assert "services" in result

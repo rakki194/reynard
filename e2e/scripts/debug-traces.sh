@@ -16,7 +16,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # Check if test-results directory exists
-if [ ! -d "test-results" ]; then
+if [[ ! -d "test-results" ]; then
     echo -e "${RED}❌ test-results directory not found. Run tests first:${NC}"
     echo "   pnpm run test:documentation"
     exit 1
@@ -48,7 +48,7 @@ find test-results -name "*.png" -type f
 
 echo ""
 echo -e "${BLUE}🌐 HTML Report Status:${NC}"
-if [ -f "results/documentation-validation-results/index.html" ]; then
+if [[ -f "results/documentation-validation-results/index.html" ]; then
     echo -e "${GREEN}✅ HTML report exists${NC}"
     echo "   Location: results/documentation-validation-results/index.html"
     echo "   Size: $(du -h results/documentation-validation-results/index.html | cut -f1)"

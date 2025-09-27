@@ -67,7 +67,7 @@ openssl x509 -req -in "${REDIS_TLS_DIR}/redis.csr" \
     -out "${REDIS_TLS_DIR}/redis.crt" \
     -days "${CERT_VALIDITY_DAYS}" \
     -extensions v3_req \
-    -extfile <(cat <<EOF
+    -extfile <(cat <<EOF || true
 [v3_req]
 basicConstraints = CA:FALSE
 keyUsage = nonRepudiation, digitalSignature, keyEncipherment

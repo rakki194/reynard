@@ -169,14 +169,14 @@ REDIS_TLS_DIR="/etc/redis/tls"
 PROJECT_ROOT="${PROJECT_ROOT}"
 
 # Get Redis password from .env file
-if [[ -f "\$PROJECT_ROOT/.env" ]]; then
-    REDIS_PASSWORD=\$(grep "REDIS_PASSWORD=" "\$PROJECT_ROOT/.env" | cut -d'=' -f2)
+if [[ -f "\${PROJECT_ROOT}/.env" ]]; then
+    REDIS_PASSWORD=\$(grep "REDIS_PASSWORD=" "\${PROJECT_ROOT}/.env" | cut -d'=' -f2)
 else
     echo "❌ .env file not found"
     exit 1
 fi
 
-if [[ -z "\$REDIS_PASSWORD" ]]; then
+if [[ -z "\${REDIS_PASSWORD}" ]]; then
     echo "❌ REDIS_PASSWORD not found in .env file"
     exit 1
 fi

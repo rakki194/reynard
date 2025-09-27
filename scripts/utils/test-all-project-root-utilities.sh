@@ -45,7 +45,7 @@ run_test() {
     echo -e "${BLUE}🧪 Testing: $test_name${NC}"
     
     if result=$(eval "$command" 2>/dev/null); then
-        if [ "$result" = "$expected" ]; then
+        if [[ "$result" = "$expected" ]; then
             echo -e "  ${GREEN}✅ PASS${NC}: $test_name"
             echo -e "    Expected: $expected"
             echo -e "    Got:      $result"
@@ -75,50 +75,50 @@ test_shell_utility() {
     
     # Test all shell functions and variables
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell PROJECT_ROOT" "echo \$PROJECT_ROOT" "$EXPECTED_PROJECT_ROOT" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell PROJECT_ROOT" "echo \${PROJECT_ROOT}" "${EXPECTED_PROJECT_ROOT}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell BACKEND_DIR" "echo \$BACKEND_DIR" "$EXPECTED_BACKEND_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell BACKEND_DIR" "echo \${BACKEND_DIR}" "${EXPECTED_BACKEND_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell E2E_DIR" "echo \$E2E_DIR" "$EXPECTED_E2E_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell E2E_DIR" "echo \${E2E_DIR}" "${EXPECTED_E2E_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell EXAMPLES_DIR" "echo \$EXAMPLES_DIR" "$EXPECTED_EXAMPLES_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell EXAMPLES_DIR" "echo \${EXAMPLES_DIR}" "${EXPECTED_EXAMPLES_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell SERVICES_DIR" "echo \$SERVICES_DIR" "$EXPECTED_SERVICES_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell SERVICES_DIR" "echo \${SERVICES_DIR}" "${EXPECTED_SERVICES_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell SCRIPTS_DIR" "echo \$SCRIPTS_DIR" "$EXPECTED_SCRIPTS_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell SCRIPTS_DIR" "echo \${SCRIPTS_DIR}" "${EXPECTED_SCRIPTS_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell EXPERIMENTAL_DIR" "echo \$EXPERIMENTAL_DIR" "$EXPECTED_EXPERIMENTAL_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell EXPERIMENTAL_DIR" "echo \${EXPERIMENTAL_DIR}" "${EXPECTED_EXPERIMENTAL_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell THIRD_PARTY_DIR" "echo \$THIRD_PARTY_DIR" "$EXPECTED_THIRD_PARTY_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell THIRD_PARTY_DIR" "echo \${THIRD_PARTY_DIR}" "${EXPECTED_THIRD_PARTY_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     # Test shell functions
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell get_backend_dir()" "get_backend_dir" "$EXPECTED_BACKEND_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell get_backend_dir()" "get_backend_dir" "${EXPECTED_BACKEND_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell get_e2e_dir()" "get_e2e_dir" "$EXPECTED_E2E_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell get_e2e_dir()" "get_e2e_dir" "${EXPECTED_E2E_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell get_examples_dir()" "get_examples_dir" "$EXPECTED_EXAMPLES_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell get_examples_dir()" "get_examples_dir" "${EXPECTED_EXAMPLES_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell get_services_dir()" "get_services_dir" "$EXPECTED_SERVICES_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell get_services_dir()" "get_services_dir" "${EXPECTED_SERVICES_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell get_scripts_dir()" "get_scripts_dir" "$EXPECTED_SCRIPTS_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell get_scripts_dir()" "get_scripts_dir" "${EXPECTED_SCRIPTS_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell get_experimental_dir()" "get_experimental_dir" "$EXPECTED_EXPERIMENTAL_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell get_experimental_dir()" "get_experimental_dir" "${EXPECTED_EXPERIMENTAL_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     shell_tests_total=$((shell_tests_total + 1))
-    run_test "Shell get_third_party_dir()" "get_third_party_dir" "$EXPECTED_THIRD_PARTY_DIR" && shell_tests_passed=$((shell_tests_passed + 1))
+    run_test "Shell get_third_party_dir()" "get_third_party_dir" "${EXPECTED_THIRD_PARTY_DIR}" && shell_tests_passed=$((shell_tests_passed + 1))
     
     echo -e "${PURPLE}Shell Tests: $shell_tests_passed/$shell_tests_total passed${NC}"
     echo
@@ -136,40 +136,40 @@ test_python_utility() {
     
     # Test Python functions and constants
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python get_project_root()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_project_root; print(str(get_project_root()))'" "$EXPECTED_PROJECT_ROOT" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python get_project_root()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_project_root; print(str(get_project_root()))'" "${EXPECTED_PROJECT_ROOT}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python PROJECT_ROOT constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import PROJECT_ROOT; print(str(PROJECT_ROOT))'" "$EXPECTED_PROJECT_ROOT" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python PROJECT_ROOT constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import PROJECT_ROOT; print(str(PROJECT_ROOT))'" "${EXPECTED_PROJECT_ROOT}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python get_backend_dir()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_backend_dir; print(str(get_backend_dir()))'" "$EXPECTED_BACKEND_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python get_backend_dir()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_backend_dir; print(str(get_backend_dir()))'" "${EXPECTED_BACKEND_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python BACKEND_DIR constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import BACKEND_DIR; print(str(BACKEND_DIR))'" "$EXPECTED_BACKEND_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python BACKEND_DIR constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import BACKEND_DIR; print(str(BACKEND_DIR))'" "${EXPECTED_BACKEND_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python get_e2e_dir()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_e2e_dir; print(str(get_e2e_dir()))'" "$EXPECTED_E2E_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python get_e2e_dir()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_e2e_dir; print(str(get_e2e_dir()))'" "${EXPECTED_E2E_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python E2E_DIR constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import E2E_DIR; print(str(E2E_DIR))'" "$EXPECTED_E2E_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python E2E_DIR constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import E2E_DIR; print(str(E2E_DIR))'" "${EXPECTED_E2E_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python get_examples_dir()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_examples_dir; print(str(get_examples_dir()))'" "$EXPECTED_EXAMPLES_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python get_examples_dir()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_examples_dir; print(str(get_examples_dir()))'" "${EXPECTED_EXAMPLES_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python EXAMPLES_DIR constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import EXAMPLES_DIR; print(str(EXAMPLES_DIR))'" "$EXPECTED_EXAMPLES_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python EXAMPLES_DIR constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import EXAMPLES_DIR; print(str(EXAMPLES_DIR))'" "${EXPECTED_EXAMPLES_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python get_experimental_dir()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_experimental_dir; print(str(get_experimental_dir()))'" "$EXPECTED_EXPERIMENTAL_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python get_experimental_dir()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_experimental_dir; print(str(get_experimental_dir()))'" "${EXPECTED_EXPERIMENTAL_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python EXPERIMENTAL_DIR constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import EXPERIMENTAL_DIR; print(str(EXPERIMENTAL_DIR))'" "$EXPECTED_EXPERIMENTAL_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python EXPERIMENTAL_DIR constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import EXPERIMENTAL_DIR; print(str(EXPERIMENTAL_DIR))'" "${EXPECTED_EXPERIMENTAL_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python get_papers_directory()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_papers_directory; print(str(get_papers_directory()))'" "$EXPECTED_PAPERS_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python get_papers_directory()" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_papers_directory; print(str(get_papers_directory()))'" "${EXPECTED_PAPERS_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     python_tests_total=$((python_tests_total + 1))
-    run_test "Python PAPERS_DIRECTORY constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import PAPERS_DIRECTORY; print(str(PAPERS_DIRECTORY))'" "$EXPECTED_PAPERS_DIR" && python_tests_passed=$((python_tests_passed + 1))
+    run_test "Python PAPERS_DIRECTORY constant" "cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import PAPERS_DIRECTORY; print(str(PAPERS_DIRECTORY))'" "${EXPECTED_PAPERS_DIR}" && python_tests_passed=$((python_tests_passed + 1))
     
     echo -e "${PURPLE}Python Tests: $python_tests_passed/$python_tests_total passed${NC}"
     echo
@@ -187,34 +187,34 @@ test_nodejs_utility() {
     
     # Test Node.js functions and constants
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js getProjectRoot()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getProjectRoot()))'" "$EXPECTED_PROJECT_ROOT" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js getProjectRoot()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getProjectRoot()))'" "${EXPECTED_PROJECT_ROOT}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js PROJECT_ROOT constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.PROJECT_ROOT))'" "$EXPECTED_PROJECT_ROOT" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js PROJECT_ROOT constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.PROJECT_ROOT))'" "${EXPECTED_PROJECT_ROOT}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js getBackendDir()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getBackendDir()))'" "$EXPECTED_BACKEND_DIR" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js getBackendDir()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getBackendDir()))'" "${EXPECTED_BACKEND_DIR}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js BACKEND_DIR constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.BACKEND_DIR))'" "$EXPECTED_BACKEND_DIR" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js BACKEND_DIR constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.BACKEND_DIR))'" "${EXPECTED_BACKEND_DIR}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js getE2EDir()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getE2EDir()))'" "$EXPECTED_E2E_DIR" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js getE2EDir()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getE2EDir()))'" "${EXPECTED_E2E_DIR}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js E2E_DIR constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.E2E_DIR))'" "$EXPECTED_E2E_DIR" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js E2E_DIR constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.E2E_DIR))'" "${EXPECTED_E2E_DIR}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js getExamplesDir()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getExamplesDir()))'" "$EXPECTED_EXAMPLES_DIR" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js getExamplesDir()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getExamplesDir()))'" "${EXPECTED_EXAMPLES_DIR}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js EXAMPLES_DIR constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.EXAMPLES_DIR))'" "$EXPECTED_EXAMPLES_DIR" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js EXAMPLES_DIR constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.EXAMPLES_DIR))'" "${EXPECTED_EXAMPLES_DIR}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js getPackagesDir()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getPackagesDir()))'" "$EXPECTED_PACKAGES_DIR" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js getPackagesDir()" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.getPackagesDir()))'" "${EXPECTED_PACKAGES_DIR}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     nodejs_tests_total=$((nodejs_tests_total + 1))
-    run_test "Node.js PACKAGES_DIR constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.PACKAGES_DIR))'" "$EXPECTED_PACKAGES_DIR" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
+    run_test "Node.js PACKAGES_DIR constant" "cd /home/kade/runeset/reynard && /usr/bin/node -e 'import(\"./scripts/utils/project-root.js\").then(m => console.log(m.PACKAGES_DIR))'" "${EXPECTED_PACKAGES_DIR}" && nodejs_tests_passed=$((nodejs_tests_passed + 1))
     
     echo -e "${PURPLE}Node.js Tests: $nodejs_tests_passed/$nodejs_tests_total passed${NC}"
     echo
@@ -236,11 +236,11 @@ test_cross_platform_consistency() {
     local python_root
     local nodejs_root
     
-    shell_root=$(source "$(dirname "$0")/project-root.sh" && echo "$PROJECT_ROOT")
+    shell_root=$(source "$(dirname "$0")/project-root.sh" && echo "${PROJECT_ROOT}")
     python_root=$(cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_project_root; print(str(get_project_root()))')
     nodejs_root=$(cd /home/kade/runeset/reynard && /usr/bin/node -e 'import("./scripts/utils/project-root.js").then(m => console.log(m.getProjectRoot()))')
     
-    if [ "$shell_root" = "$python_root" ] && [ "$python_root" = "$nodejs_root" ]; then
+    if [[ "$shell_root" = "$python_root" ]] && [ "$python_root" = "$nodejs_root" ]; then
         echo -e "  ${GREEN}✅ PASS${NC}: All platforms return same project root"
         echo -e "    Shell:   $shell_root"
         echo -e "    Python:  $python_root"
@@ -260,11 +260,11 @@ test_cross_platform_consistency() {
     local python_backend
     local nodejs_backend
     
-    shell_backend=$(source "$(dirname "$0")/project-root.sh" && echo "$BACKEND_DIR")
+    shell_backend=$(source "$(dirname "$0")/project-root.sh" && echo "${BACKEND_DIR}")
     python_backend=$(cd /home/kade/runeset/reynard/backend && python3 -c 'from app.core.project_root import get_backend_dir; print(str(get_backend_dir()))')
     nodejs_backend=$(cd /home/kade/runeset/reynard && /usr/bin/node -e 'import("./scripts/utils/project-root.js").then(m => console.log(m.getBackendDir()))')
     
-    if [ "$shell_backend" = "$python_backend" ] && [ "$python_backend" = "$nodejs_backend" ]; then
+    if [[ "$shell_backend" = "$python_backend" ]] && [ "$python_backend" = "$nodejs_backend" ]; then
         echo -e "  ${GREEN}✅ PASS${NC}: All platforms return same backend directory"
         echo -e "    Shell:   $shell_backend"
         echo -e "    Python:  $python_backend"
@@ -304,14 +304,14 @@ main() {
     # Print final summary
     echo -e "${BLUE}📊 Final Test Summary${NC}"
     echo -e "${BLUE}=====================${NC}"
-    echo -e "Shell Tests:           ${GREEN}$SHELL_TESTS_PASSED${NC} passed"
-    echo -e "Python Tests:          ${GREEN}$PYTHON_TESTS_PASSED${NC} passed"
-    echo -e "Node.js Tests:         ${GREEN}$NODEJS_TESTS_PASSED${NC} passed"
-    echo -e "Cross-Platform Tests:  ${GREEN}$CROSS_PLATFORM_TESTS_PASSED${NC} passed"
+    echo -e "Shell Tests:           ${GREEN}${SHELL_TESTS_PASSED}${NC} passed"
+    echo -e "Python Tests:          ${GREEN}${PYTHON_TESTS_PASSED}${NC} passed"
+    echo -e "Node.js Tests:         ${GREEN}${NODEJS_TESTS_PASSED}${NC} passed"
+    echo -e "Cross-Platform Tests:  ${GREEN}${CROSS_PLATFORM_TESTS_PASSED}${NC} passed"
     echo -e "Total Test Suites:     $total_tests"
     echo
     
-    if [ $total_tests_passed -gt 0 ]; then
+    if [[ $total_tests_passed -gt 0 ]; then
         echo -e "${GREEN}🎉 All project root utilities are working consistently!${NC}"
         echo -e "${GREEN}✅ Shell, Python, and Node.js utilities behave identically${NC}"
         exit 0
