@@ -23,7 +23,7 @@ on:
 
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '8.15.1'
+  PNPM_VERSION: '10.17.1'
 
 jobs:
   # 🦊 Frontend Linting (TypeScript, ESLint, Prettier)

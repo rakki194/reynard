@@ -17,7 +17,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **GitHub Actions pnpm Version Mismatch**: Fixed critical pnpm version mismatch between package.json (10.17.1) and GitHub Actions workflows (8.15.1) that was causing all CI/CD pipeline failures (Success-Advisor-8)
+
 ### Security
+
+## [0.24.0] - 2025-09-27
+
+### Fixed
+- **Pydantic Warning Fix**: Resolved protected namespace conflict in LLaMACppConfig by renaming `model_path` to `llama_model_path` to avoid `model_` prefix collision (Strategic-Fox-13)
+
+### Added
+- **Dev-Tools Consolidation**: Comprehensive consolidation of dev-tools packages into `catalyst` and `code-quality`
+- **FOXY Git Hooks System**: Flexible Orchestration for Xenial Yield - Replaced husky with custom git hooks system in `catalyst` package
+- **Unified Linting Framework**: Consolidated linting functionality with ESLint, Prettier, and custom orchestration
+- **Validation Engine**: Comprehensive file validation with regex, line count, and custom rule support
+- **Git Workflow Manager**: Automated git workflows with change analysis and commit generation
+- **Incremental Linting Service**: Real-time linting with file watching and queue management
+- **Comprehensive Test Suite**: Added Vitest tests for all new implementations
+- **TypeScript FOXY Installer**: Converted FOXY git hooks installer to TypeScript with proper error handling
+
+### Changed
+- **Package Structure**: Migrated `validation`, `incremental-linting`, and `git-automation` packages into `code-quality`
+- **Dependency Management**: Updated all package dependencies and removed deprecated packages
+- **Script Organization**: Consolidated development scripts and removed references to deprecated packages
+- **Git Hooks**: Replaced husky with FOXY git hooks system using `foxy` CLI
+
+### Deprecated
+- **Husky Integration**: Husky has been replaced with the FOXY git hooks system
+- **Individual Dev-Tools Packages**: `validation`, `incremental-linting`, and `git-automation` packages are now consolidated
+
+### Removed
+- **Husky Dependency**: Removed husky from package dependencies
+- **Deprecated Packages**: Removed `packages/dev-tools/validation`, `packages/dev-tools/incremental-linting`, and `packages/dev-tools/git-automation`
+- **Legacy Scripts**: Removed scripts referencing deprecated packages
+
+### Fixed
+- **Import Path Issues**: Fixed import paths in consolidated packages
+- **TypeScript Errors**: Resolved type checking issues in new implementations
+- **Build Configuration**: Updated Vite configurations for external dependencies
+- **FOXY Execution**: Fixed FOXY git hooks CLI command structure and execution
 
 ## [0.23.0] - 2025-09-26
 
