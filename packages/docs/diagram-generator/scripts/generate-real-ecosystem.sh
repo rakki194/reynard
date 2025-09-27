@@ -14,7 +14,7 @@ echo "🐉 Generating Real Reynard Ecosystem Diagram..."
 cd "$(dirname "$0")/.."
 
 # Ensure we're in the right directory
-if [ ! -f "package.json" ]; then
+if [[ ! -f "package.json" ]]; then
     echo "❌ Error: Not in diagram-generator package directory"
     exit 1
 fi

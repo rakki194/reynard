@@ -1,0 +1,679 @@
+#!/usr/bin/env python3
+"""Service Profiler
+==================
+
+Comprehensive profiling system for every active backend service, feature, and package.
+Provides detailed statistics and metrics for individual service analysis.
+
+Author: Reynard Development Team
+Version: 1.0.0
+"""
+
+import asyncio
+import logging
+import sys
+import time
+import psutil
+import gc
+import os
+import importlib
+import tracemalloc
+from pathlib import Path
+from typing import Dict, Any, List, Optional, Tuple
+from dataclasses import dataclass, asdict
+from datetime import datetime, timezone
+import json
+
+# Add backend to path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent / "backend"))
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class ServiceMetrics:
+    """Detailed metrics for a single service."""
+    name: str
+    enabled: bool
+    memory_mb: float
+    memory_percent: float
+    cpu_percent: float
+    startup_time_ms: float
+    import_time_ms: float
+    dependencies: List[str]
+    configuration: Dict[str, Any]
+    status: str
+    error_count: int
+    last_activity: Optional[datetime]
+    performance_score: float
+
+
+@dataclass
+class PackageMetrics:
+    """Detailed metrics for a Python package."""
+    name: str
+    enabled: bool
+    memory_mb: float
+    import_time_ms: float
+    version: str
+    dependencies: List[str]
+    modules_loaded: int
+    classes_loaded: int
+    functions_loaded: int
+    size_on_disk_mb: float
+
+
+@dataclass
+class FeatureMetrics:
+    """Detailed metrics for a backend feature."""
+    name: str
+    enabled: bool
+    memory_mb: float
+    services_used: List[str]
+    endpoints_count: int
+    configuration: Dict[str, Any]
+    performance_score: float
+    error_rate: float
+
+
+class ServiceProfiler:
+    """Comprehensive service profiling system."""
+
+    def __init__(self):
+        """Initialize the service profiler."""
+        self.start_time = time.time()
+        self.service_metrics: Dict[str, ServiceMetrics] = {}
+        self.package_metrics: Dict[str, PackageMetrics] = {}
+        self.feature_metrics: Dict[str, FeatureMetrics] = {}
+        self.enabled_services = self._get_enabled_services()
+        self.enabled_packages = self._get_enabled_packages()
+        self.enabled_features = self._get_enabled_features()
+
+    def _get_enabled_services(self) -> List[str]:
+        """Get list of enabled services from environment variables."""
+        enabled = []
+        service_mappings = {
+            'GATEKEEPER_ENABLED': 'gatekeeper',
+            'RAG_ENABLED': 'rag',
+            'OLLAMA_ENABLED': 'ollama',
+            'COMFY_ENABLED': 'comfy',
+            'NLWEB_ENABLED': 'nlweb',
+            'TTS_ENABLED': 'tts',
+            'ECS_WORLD_ENABLED': 'ecs_world',
+            'ECS_DATABASE_ENABLED': 'ecs_database',
+            'SECURITY_ENABLED': 'security',
+            'REDIS_ENABLED': 'redis',
+            'CACHING_ENABLED': 'caching',
+            'FILE_INDEXING_ENABLED': 'file_indexing',
+            'DEBUG_LOGGING_ENABLED': 'debug_logging',
+        }
+        
+        for env_var, service_name in service_mappings.items():
+            if os.getenv(env_var, 'false').lower() == 'true':
+                enabled.append(service_name)
+        
+        return enabled
+
+    def _get_enabled_packages(self) -> List[str]:
+        """Get list of enabled packages from environment variables."""
+        enabled = []
+        package_mappings = {
+            'PYTORCH_ENABLED': 'torch',
+            'TRANSFORMERS_ENABLED': 'transformers',
+            'NUMPY_ENABLED': 'numpy',
+            'PANDAS_ENABLED': 'pandas',
+            'SCIKIT_LEARN_ENABLED': 'sklearn',
+            'OPENCV_ENABLED': 'cv2',
+            'PILLOW_ENABLED': 'PIL',
+            'MATPLOTLIB_ENABLED': 'matplotlib',
+            'SEABORN_ENABLED': 'seaborn',
+            'PLOTLY_ENABLED': 'plotly',
+            'REQUESTS_ENABLED': 'requests',
+            'AIOHTTP_ENABLED': 'aiohttp',
+        }
+        
+        for env_var, package_name in package_mappings.items():
+            if os.getenv(env_var, 'false').lower() == 'true':
+                enabled.append(package_name)
+        
+        return enabled
+
+    def _get_enabled_features(self) -> List[str]:
+        """Get list of enabled features from environment variables."""
+        enabled = []
+        feature_mappings = {
+            'INDEXING_MEMORY_PROFILER_ENABLED': 'indexing_memory_profiler',
+            'RAG_CONTINUOUS_INDEXING_ENABLED': 'rag_continuous_indexing',
+            'EMBEDDING_BACKENDS_ENABLED': 'embedding_backends',
+            'EMBEDDING_OLLAMA_ENABLED': 'embedding_ollama',
+            'EMBEDDING_SENTENCE_TRANSFORMERS_ENABLED': 'embedding_sentence_transformers',
+            'EMBEDDING_OPENAI_ENABLED': 'embedding_openai',
+            'EMBEDDING_HUGGINGFACE_ENABLED': 'embedding_huggingface',
+            'PDF_PROCESSING_ENABLED': 'pdf_processing',
+            'MARKER_PACKAGE_ENABLED': 'marker_package',
+            'MARKER_LLM_ENHANCEMENT_ENABLED': 'marker_llm_enhancement',
+            'SECURITY_THREAT_DETECTION_ENABLED': 'security_threat_detection',
+        }
+        
+        for env_var, feature_name in feature_mappings.items():
+            if os.getenv(env_var, 'false').lower() == 'true':
+                enabled.append(feature_name)
+        
+        return enabled
+
+    async def profile_all_services(self) -> Dict[str, Any]:
+        """Profile all enabled services with detailed metrics."""
+        logger.info("Starting comprehensive service profiling...")
+        
+        # Start tracemalloc for precise memory tracking
+        tracemalloc.start()
+        
+        results = {
+            "profiling_session": {
+                "start_time": datetime.now(timezone.utc).isoformat(),
+                "total_services": len(self.enabled_services),
+                "total_packages": len(self.enabled_packages),
+                "total_features": len(self.enabled_features),
+            },
+            "services": {},
+            "packages": {},
+            "features": {},
+            "summary": {}
+        }
+        
+        # Profile each service individually
+        for service_name in self.enabled_services:
+            try:
+                service_metrics = await self._profile_service(service_name)
+                self.service_metrics[service_name] = service_metrics
+                results["services"][service_name] = asdict(service_metrics)
+            except Exception as e:
+                logger.error(f"Failed to profile service {service_name}: {e}")
+                results["services"][service_name] = {
+                    "name": service_name,
+                    "error": str(e),
+                    "status": "error"
+                }
+        
+        # Profile each package individually
+        for package_name in self.enabled_packages:
+            try:
+                package_metrics = await self._profile_package(package_name)
+                self.package_metrics[package_name] = package_metrics
+                results["packages"][package_name] = asdict(package_metrics)
+            except Exception as e:
+                logger.error(f"Failed to profile package {package_name}: {e}")
+                results["packages"][package_name] = {
+                    "name": package_name,
+                    "error": str(e),
+                    "status": "error"
+                }
+        
+        # Profile each feature individually
+        for feature_name in self.enabled_features:
+            try:
+                feature_metrics = await self._profile_feature(feature_name)
+                self.feature_metrics[feature_name] = feature_metrics
+                results["features"][feature_name] = asdict(feature_metrics)
+            except Exception as e:
+                logger.error(f"Failed to profile feature {feature_name}: {e}")
+                results["features"][feature_name] = {
+                    "name": feature_name,
+                    "error": str(e),
+                    "status": "error"
+                }
+        
+        # Generate summary statistics
+        results["summary"] = self._generate_summary()
+        
+        # Stop tracemalloc
+        tracemalloc.stop()
+        
+        results["profiling_session"]["end_time"] = datetime.now(timezone.utc).isoformat()
+        results["profiling_session"]["duration_seconds"] = time.time() - self.start_time
+        
+        logger.info("Service profiling completed successfully")
+        return results
+
+    async def _profile_service(self, service_name: str) -> ServiceMetrics:
+        """Profile a single service with detailed metrics."""
+        logger.info(f"Profiling service: {service_name}")
+        
+        start_time = time.time()
+        start_memory = psutil.Process().memory_info().rss / 1024 / 1024
+        
+        # Get service configuration
+        config = self._get_service_configuration(service_name)
+        
+        # Measure import time
+        import_start = time.time()
+        try:
+            service_module = self._import_service_module(service_name)
+            import_time = (time.time() - import_start) * 1000
+        except Exception as e:
+            logger.warning(f"Could not import service {service_name}: {e}")
+            service_module = None
+            import_time = 0
+        
+        # Measure startup time
+        startup_start = time.time()
+        try:
+            if service_module:
+                # Try to initialize the service
+                service_instance = self._initialize_service(service_name, service_module)
+                startup_time = (time.time() - startup_start) * 1000
+            else:
+                startup_time = 0
+                service_instance = None
+        except Exception as e:
+            logger.warning(f"Could not initialize service {service_name}: {e}")
+            startup_time = 0
+            service_instance = None
+        
+        # Measure final memory usage
+        end_memory = psutil.Process().memory_info().rss / 1024 / 1024
+        memory_delta = end_memory - start_memory
+        
+        # Get dependencies
+        dependencies = self._get_service_dependencies(service_name)
+        
+        # Calculate performance score
+        performance_score = self._calculate_service_performance_score(
+            memory_delta, startup_time, import_time
+        )
+        
+        return ServiceMetrics(
+            name=service_name,
+            enabled=True,
+            memory_mb=memory_delta,
+            memory_percent=(memory_delta / psutil.virtual_memory().total) * 100,
+            cpu_percent=psutil.Process().cpu_percent(),
+            startup_time_ms=startup_time,
+            import_time_ms=import_time,
+            dependencies=dependencies,
+            configuration=config,
+            status="active" if service_instance else "inactive",
+            error_count=0,  # TODO: Implement error tracking
+            last_activity=datetime.now(timezone.utc),
+            performance_score=performance_score
+        )
+
+    async def _profile_package(self, package_name: str) -> PackageMetrics:
+        """Profile a single package with detailed metrics."""
+        logger.info(f"Profiling package: {package_name}")
+        
+        start_time = time.time()
+        start_memory = psutil.Process().memory_info().rss / 1024 / 1024
+        
+        # Measure import time
+        import_start = time.time()
+        try:
+            package_module = importlib.import_module(package_name)
+            import_time = (time.time() - import_start) * 1000
+        except Exception as e:
+            logger.warning(f"Could not import package {package_name}: {e}")
+            package_module = None
+            import_time = 0
+        
+        # Measure memory usage
+        end_memory = psutil.Process().memory_info().rss / 1024 / 1024
+        memory_delta = end_memory - start_memory
+        
+        # Get package information
+        version = self._get_package_version(package_name)
+        dependencies = self._get_package_dependencies(package_name)
+        modules_loaded = len(sys.modules) if package_module else 0
+        classes_loaded = self._count_package_classes(package_module) if package_module else 0
+        functions_loaded = self._count_package_functions(package_module) if package_module else 0
+        size_on_disk = self._get_package_size(package_name)
+        
+        return PackageMetrics(
+            name=package_name,
+            enabled=True,
+            memory_mb=memory_delta,
+            import_time_ms=import_time,
+            version=version,
+            dependencies=dependencies,
+            modules_loaded=modules_loaded,
+            classes_loaded=classes_loaded,
+            functions_loaded=functions_loaded,
+            size_on_disk_mb=size_on_disk
+        )
+
+    async def _profile_feature(self, feature_name: str) -> FeatureMetrics:
+        """Profile a single feature with detailed metrics."""
+        logger.info(f"Profiling feature: {feature_name}")
+        
+        start_memory = psutil.Process().memory_info().rss / 1024 / 1024
+        
+        # Get feature configuration
+        config = self._get_feature_configuration(feature_name)
+        
+        # Get services used by this feature
+        services_used = self._get_feature_services(feature_name)
+        
+        # Count endpoints
+        endpoints_count = self._count_feature_endpoints(feature_name)
+        
+        # Measure memory usage
+        end_memory = psutil.Process().memory_info().rss / 1024 / 1024
+        memory_delta = end_memory - start_memory
+        
+        # Calculate performance score
+        performance_score = self._calculate_feature_performance_score(
+            memory_delta, len(services_used), endpoints_count
+        )
+        
+        return FeatureMetrics(
+            name=feature_name,
+            enabled=True,
+            memory_mb=memory_delta,
+            services_used=services_used,
+            endpoints_count=endpoints_count,
+            configuration=config,
+            performance_score=performance_score,
+            error_rate=0.0  # TODO: Implement error rate tracking
+        )
+
+    def _get_service_configuration(self, service_name: str) -> Dict[str, Any]:
+        """Get configuration for a service."""
+        config_mappings = {
+            'rag': {
+                'RAG_ENABLED': os.getenv('RAG_ENABLED'),
+                'RAG_CONTINUOUS_INDEXING_ENABLED': os.getenv('RAG_CONTINUOUS_INDEXING_ENABLED'),
+                'INDEXING_MEMORY_PROFILER_ENABLED': os.getenv('INDEXING_MEMORY_PROFILER_ENABLED'),
+            },
+            'ollama': {
+                'OLLAMA_ENABLED': os.getenv('OLLAMA_ENABLED'),
+                'OLLAMA_BASE_URL': os.getenv('OLLAMA_BASE_URL'),
+            },
+            'gatekeeper': {
+                'GATEKEEPER_ENABLED': os.getenv('GATEKEEPER_ENABLED'),
+            },
+            'redis': {
+                'REDIS_ENABLED': os.getenv('REDIS_ENABLED'),
+                'REDIS_URL': os.getenv('REDIS_URL'),
+            },
+        }
+        
+        return config_mappings.get(service_name, {})
+
+    def _get_feature_configuration(self, feature_name: str) -> Dict[str, Any]:
+        """Get configuration for a feature."""
+        config_mappings = {
+            'indexing_memory_profiler': {
+                'INDEXING_MEMORY_PROFILER_ENABLED': os.getenv('INDEXING_MEMORY_PROFILER_ENABLED'),
+            },
+            'rag_continuous_indexing': {
+                'RAG_CONTINUOUS_INDEXING_ENABLED': os.getenv('RAG_CONTINUOUS_INDEXING_ENABLED'),
+            },
+            'embedding_backends': {
+                'EMBEDDING_BACKENDS_ENABLED': os.getenv('EMBEDDING_BACKENDS_ENABLED'),
+                'EMBEDDING_OLLAMA_ENABLED': os.getenv('EMBEDDING_OLLAMA_ENABLED'),
+            },
+        }
+        
+        return config_mappings.get(feature_name, {})
+
+    def _import_service_module(self, service_name: str):
+        """Import a service module."""
+        module_mappings = {
+            'rag': 'app.services.rag.rag_service',
+            'ollama': 'app.services.ai.ollama_service',
+            'gatekeeper': 'app.services.gatekeeper.gatekeeper_service',
+            'redis': 'app.core.redis_cache',
+            'caching': 'app.core.redis_cache',
+            'file_indexing': 'app.services.rag.indexing',
+            'debug_logging': 'app.core.debug_logging',
+            'security': 'app.security',
+            'ecs_world': 'app.ecs.world',
+            'ecs_database': 'app.ecs.database',
+            'comfy': 'app.services.comfy.comfy_service',
+            'nlweb': 'app.services.nlweb.nlweb_service',
+            'tts': 'app.services.tts.tts_service',
+        }
+        
+        module_path = module_mappings.get(service_name)
+        if module_path:
+            return importlib.import_module(module_path)
+        return None
+
+    def _initialize_service(self, service_name: str, service_module):
+        """Initialize a service instance."""
+        # This is a simplified initialization - in practice, you'd need
+        # to handle the specific initialization patterns for each service
+        try:
+            if hasattr(service_module, 'Service'):
+                return service_module.Service()
+            elif hasattr(service_module, 'create_service'):
+                return service_module.create_service()
+            else:
+                return None
+        except Exception as e:
+            logger.warning(f"Could not initialize service {service_name}: {e}")
+            return None
+
+    def _get_service_dependencies(self, service_name: str) -> List[str]:
+        """Get dependencies for a service."""
+        dependency_mappings = {
+            'rag': ['database', 'redis', 'embedding_backends'],
+            'ollama': ['requests', 'aiohttp'],
+            'gatekeeper': ['database', 'redis'],
+            'redis': [],
+            'caching': ['redis'],
+            'file_indexing': ['rag', 'database'],
+            'debug_logging': [],
+            'security': ['database'],
+            'ecs_world': ['database', 'redis'],
+            'ecs_database': ['database'],
+            'comfy': ['requests', 'aiohttp'],
+            'nlweb': ['requests', 'aiohttp'],
+            'tts': ['requests', 'aiohttp'],
+        }
+        
+        return dependency_mappings.get(service_name, [])
+
+    def _get_feature_services(self, feature_name: str) -> List[str]:
+        """Get services used by a feature."""
+        service_mappings = {
+            'indexing_memory_profiler': ['rag', 'file_indexing'],
+            'rag_continuous_indexing': ['rag', 'file_indexing'],
+            'embedding_backends': ['rag', 'ollama'],
+            'embedding_ollama': ['ollama', 'rag'],
+            'embedding_sentence_transformers': ['rag'],
+            'embedding_openai': ['rag'],
+            'embedding_huggingface': ['rag'],
+            'pdf_processing': ['file_indexing'],
+            'marker_package': ['file_indexing'],
+            'marker_llm_enhancement': ['ollama', 'rag'],
+            'security_threat_detection': ['security'],
+        }
+        
+        return service_mappings.get(feature_name, [])
+
+    def _get_package_version(self, package_name: str) -> str:
+        """Get version of a package."""
+        try:
+            package_module = importlib.import_module(package_name)
+            if hasattr(package_module, '__version__'):
+                return package_module.__version__
+            return "unknown"
+        except Exception:
+            return "not_installed"
+
+    def _get_package_dependencies(self, package_name: str) -> List[str]:
+        """Get dependencies of a package."""
+        # This is a simplified implementation
+        # In practice, you'd use pkg_resources or importlib.metadata
+        return []
+
+    def _count_package_classes(self, package_module) -> int:
+        """Count classes in a package module."""
+        if not package_module:
+            return 0
+        
+        count = 0
+        for name in dir(package_module):
+            obj = getattr(package_module, name)
+            if isinstance(obj, type):
+                count += 1
+        return count
+
+    def _count_package_functions(self, package_module) -> int:
+        """Count functions in a package module."""
+        if not package_module:
+            return 0
+        
+        count = 0
+        for name in dir(package_module):
+            obj = getattr(package_module, name)
+            if callable(obj) and not isinstance(obj, type):
+                count += 1
+        return count
+
+    def _get_package_size(self, package_name: str) -> float:
+        """Get size of a package on disk in MB."""
+        try:
+            package_module = importlib.import_module(package_name)
+            if hasattr(package_module, '__file__'):
+                package_path = Path(package_module.__file__).parent
+                total_size = sum(f.stat().st_size for f in package_path.rglob('*') if f.is_file())
+                return total_size / (1024 * 1024)  # Convert to MB
+            return 0.0
+        except Exception:
+            return 0.0
+
+    def _count_feature_endpoints(self, feature_name: str) -> int:
+        """Count endpoints for a feature."""
+        # This is a simplified implementation
+        # In practice, you'd analyze the FastAPI router for the feature
+        endpoint_mappings = {
+            'rag': 5,  # /query, /config, /index, /search, /health
+            'ollama': 4,  # /chat, /models, /generate, /health
+            'gatekeeper': 3,  # /auth, /validate, /health
+            'redis': 2,  # /cache, /health
+            'caching': 2,  # /cache, /health
+            'file_indexing': 3,  # /index, /status, /health
+            'debug_logging': 1,  # /logs
+            'security': 4,  # /scan, /validate, /audit, /health
+            'ecs_world': 6,  # /world, /entities, /systems, /events, /time, /health
+            'ecs_database': 3,  # /entities, /systems, /health
+            'comfy': 4,  # /text2img, /workflow, /queue, /health
+            'nlweb': 3,  # /suggest, /proxy, /health
+            'tts': 2,  # /synthesize, /health
+        }
+        
+        return endpoint_mappings.get(feature_name, 0)
+
+    def _calculate_service_performance_score(self, memory_mb: float, startup_time_ms: float, import_time_ms: float) -> float:
+        """Calculate performance score for a service (0-100, higher is better)."""
+        # Penalize high memory usage, slow startup, and slow imports
+        memory_score = max(0, 100 - (memory_mb * 2))  # 2 points per MB
+        startup_score = max(0, 100 - (startup_time_ms / 10))  # 1 point per 10ms
+        import_score = max(0, 100 - (import_time_ms / 5))  # 1 point per 5ms
+        
+        return (memory_score + startup_score + import_score) / 3
+
+    def _calculate_feature_performance_score(self, memory_mb: float, services_count: int, endpoints_count: int) -> float:
+        """Calculate performance score for a feature (0-100, higher is better)."""
+        # Penalize high memory usage and complexity
+        memory_score = max(0, 100 - (memory_mb * 2))
+        complexity_score = max(0, 100 - (services_count * 5) - (endpoints_count * 2))
+        
+        return (memory_score + complexity_score) / 2
+
+    def _generate_summary(self) -> Dict[str, Any]:
+        """Generate summary statistics."""
+        total_services = len(self.service_metrics)
+        total_packages = len(self.package_metrics)
+        total_features = len(self.feature_metrics)
+        
+        total_memory = sum(service.memory_mb for service in self.service_metrics.values())
+        total_startup_time = sum(service.startup_time_ms for service in self.service_metrics.values())
+        total_import_time = sum(service.import_time_ms for service in self.service_metrics.values())
+        
+        avg_performance_score = (
+            sum(service.performance_score for service in self.service_metrics.values()) / total_services
+            if total_services > 0 else 0
+        )
+        
+        # Find top memory consumers
+        top_memory_services = sorted(
+            self.service_metrics.values(),
+            key=lambda x: x.memory_mb,
+            reverse=True
+        )[:5]
+        
+        # Find slowest services
+        slowest_services = sorted(
+            self.service_metrics.values(),
+            key=lambda x: x.startup_time_ms,
+            reverse=True
+        )[:5]
+        
+        return {
+            "total_services": total_services,
+            "total_packages": total_packages,
+            "total_features": total_features,
+            "total_memory_mb": total_memory,
+            "total_startup_time_ms": total_startup_time,
+            "total_import_time_ms": total_import_time,
+            "average_performance_score": avg_performance_score,
+            "top_memory_consumers": [
+                {
+                    "name": service.name,
+                    "memory_mb": service.memory_mb,
+                    "performance_score": service.performance_score
+                }
+                for service in top_memory_services
+            ],
+            "slowest_services": [
+                {
+                    "name": service.name,
+                    "startup_time_ms": service.startup_time_ms,
+                    "performance_score": service.performance_score
+                }
+                for service in slowest_services
+            ],
+            "system_health": self._calculate_system_health()
+        }
+
+    def _calculate_system_health(self) -> Dict[str, Any]:
+        """Calculate overall system health metrics."""
+        active_services = sum(1 for service in self.service_metrics.values() if service.status == "active")
+        total_services = len(self.service_metrics)
+        
+        avg_memory = sum(service.memory_mb for service in self.service_metrics.values()) / total_services if total_services > 0 else 0
+        avg_startup_time = sum(service.startup_time_ms for service in self.service_metrics.values()) / total_services if total_services > 0 else 0
+        
+        # Health score based on various factors
+        health_score = 100
+        if avg_memory > 100:  # High memory usage
+            health_score -= 20
+        if avg_startup_time > 1000:  # Slow startup
+            health_score -= 20
+        if active_services < total_services:  # Some services inactive
+            health_score -= 10
+        
+        return {
+            "overall_health_score": max(0, health_score),
+            "active_services": active_services,
+            "total_services": total_services,
+            "service_uptime_percentage": (active_services / total_services * 100) if total_services > 0 else 0,
+            "average_memory_usage_mb": avg_memory,
+            "average_startup_time_ms": avg_startup_time,
+            "health_status": "excellent" if health_score >= 90 else "good" if health_score >= 70 else "fair" if health_score >= 50 else "poor"
+        }
+
+
+async def main():
+    """Main function for testing the service profiler."""
+    profiler = ServiceProfiler()
+    results = await profiler.profile_all_services()
+    
+    print("=== SERVICE PROFILING RESULTS ===")
+    print(json.dumps(results, indent=2, default=str))
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

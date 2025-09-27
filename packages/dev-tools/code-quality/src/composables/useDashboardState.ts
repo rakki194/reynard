@@ -6,7 +6,7 @@
 
 import { createSignal, onMount } from "solid-js";
 import { CodeQualityAnalyzer } from "../CodeQualityAnalyzer";
-import { QualityGateManager, QualityGateResult } from "../QualityGateManager";
+import { DatabaseQualityGateManager, QualityGateResult } from "../DatabaseQualityGateManager";
 import { SecurityAnalysisIntegration, SecurityAnalysisResult } from "../SecurityAnalysisIntegration";
 import { AnalysisResult } from "../types";
 import { useAutoRefresh } from "./useAutoRefresh";
@@ -42,7 +42,9 @@ export function useDashboardState(props: DashboardProps) {
 
   // Initialize components
   const analyzer = new CodeQualityAnalyzer(props.projectRoot);
-  const qualityGateManager = new QualityGateManager(props.projectRoot);
+  const backendUrl = process.env.REYNARD_BACKEND_URL || "http://localhost:8000";
+  const apiKey = process.env.REYNARD_API_KEY;
+  const qualityGateManager = new DatabaseQualityGateManager(backendUrl, apiKey);
   const securityIntegration = new SecurityAnalysisIntegration(props.projectRoot);
 
   // Use auto-refresh composable
@@ -59,9 +61,9 @@ export function useDashboardState(props: DashboardProps) {
   /**
    * 🦊 Run quality gates evaluation if enabled
    */
-  const runQualityGatesEvaluation = (metrics: any): QualityGateResult[] => {
+  const runQualityGatesEvaluation = async (metrics: any): Promise<QualityGateResult[]> => {
     if (!props.showQualityGates) return [];
-    return qualityGateManager.evaluateQualityGates(metrics);
+    return await qualityGateManager.evaluateQualityGates(metrics);
   };
 
   /**
@@ -76,7 +78,7 @@ export function useDashboardState(props: DashboardProps) {
 
       const [securityResult, qualityGateResults] = await Promise.all([
         runSecurityAnalysis(files),
-        Promise.resolve(runQualityGatesEvaluation(analysisResult.metrics)),
+        runQualityGatesEvaluation(analysisResult.metrics),
       ]);
 
       setState(prev => ({

@@ -403,6 +403,30 @@ class Fuzzy(BaseFuzzer):
 
         return await self.profiler.run_database_profiling(session_id)
 
+    async def run_detailed_service_analysis(self, session_id: str | None = None) -> dict:
+        """Run detailed analysis of all active backend services, packages, and features.
+
+        *whiskers twitch with strategic precision* Analyzes every active service,
+        package, and feature with comprehensive metrics and performance scoring.
+
+        Args:
+            session_id: Optional session identifier
+
+        Returns:
+            Detailed service analysis results
+        """
+        if not self.profiling_enabled:
+            console.print("[red]Profiling not enabled. Call enable_profiling() first.[/red]")
+            return {"error": "Profiling not enabled"}
+
+        console.print(Panel.fit(
+            "[bold blue]🔍 DETAILED SERVICE ANALYSIS[/bold blue]\n"
+            "Comprehensive profiling of all active services, packages, and features",
+            border_style="blue"
+        ))
+
+        return await self.profiler.run_detailed_service_profiling(session_id)
+
     def save_profiling_session(self, output_path: str | None = None) -> str | None:
         """Save the current profiling session to file.
 

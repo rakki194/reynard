@@ -1,4 +1,4 @@
-# FENRIR Profiling & Exploit Testing Suite
+# 🐺 FENRIR Profiling & Exploit Testing Suite
 
 Comprehensive profiling, debugging, and security testing suite for the Reynard backend system. Fenrir provides strategic memory analysis, database monitoring, service tracking, and exploit testing capabilities integrated with the reynard_e2e database.
 
@@ -552,7 +552,7 @@ graph LR
 
 ## Advanced Security Testing Capabilities
 
-### 🐺 LLM Exploitation Arsenal
+### 🐺💣 LLM Exploitation Arsenal
 
 The Fenrir LLM Exploitation Arsenal represents the most sophisticated security testing framework for AI-powered systems, implementing cutting-edge techniques from academic research and real-world attack vectors.
 

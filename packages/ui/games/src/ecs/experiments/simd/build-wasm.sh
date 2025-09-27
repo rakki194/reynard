@@ -36,7 +36,7 @@ wasm-pack build \
 echo "✅ WebAssembly build complete!"
 
 # Check if the build was successful
-if [ -f "../pkg/ecs_simd.js" ]; then
+if [[ -f "../pkg/ecs_simd.js" ]]; then
     echo "✅ Generated files:"
     ls -la ../pkg/
 else

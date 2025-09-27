@@ -7,8 +7,7 @@
  */
 
 import { CodeQualityAnalyzer } from "./CodeQualityAnalyzer";
-import { DatabaseQualityGateManager } from "./DatabaseQualityGateManager";
-import { QualityGateResult } from "./types";
+import { DatabaseQualityGateManager, QualityGateResult } from "./DatabaseQualityGateManager";
 import { SecurityAnalysisIntegration, SecurityAnalysisResult } from "./SecurityAnalysisIntegration";
 import { AnalysisResult } from "./types";
 
@@ -101,7 +100,7 @@ export class CodeQualityDashboard {
       const securityResult = await this.securityIntegration.runSecurityAnalysis(files);
 
       // Evaluate quality gates
-      const qualityGateResults = this.qualityGateManager.evaluateQualityGates(analysisResult.metrics);
+      const qualityGateResults = await this.qualityGateManager.evaluateQualityGates(analysisResult.metrics);
 
       this.state = {
         currentAnalysis: analysisResult,

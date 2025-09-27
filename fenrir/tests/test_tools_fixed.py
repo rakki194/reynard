@@ -93,8 +93,8 @@ class TestDatabaseDebugger:
         debugger = DatabaseDebugger()
 
         assert debugger is not None
-        assert hasattr(debugger, 'calls')
-        assert hasattr(debugger, 'connections')
+        assert hasattr(debugger, 'connection_logs')
+        assert hasattr(debugger, 'query_logs')
 
     @pytest.mark.asyncio
     async def test_analyze_connection_pools(self):

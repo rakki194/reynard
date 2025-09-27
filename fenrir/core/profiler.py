@@ -46,6 +46,7 @@ try:
     from ..tools.database_debugger import DatabaseDebugger
     from ..tools.service_tracker import ServiceTracker
     from ..tools.monitoring_dashboard import create_monitoring_dashboard
+    from ..tools.service_profiler import ServiceProfiler
     BACKEND_TOOLS_AVAILABLE = True
 except ImportError as e:
     # Fallback to backend directory if tools haven't been moved yet
@@ -54,6 +55,7 @@ except ImportError as e:
         from backend.database_debugger import DatabaseDebugger
         from backend.service_tracker import ServiceTracker
         from backend.monitoring_dashboard import create_monitoring_dashboard
+        from backend.service_profiler import ServiceProfiler
         BACKEND_TOOLS_AVAILABLE = True
     except ImportError:
         logging.warning(f"Backend tools not available: {e}")
@@ -652,6 +654,55 @@ class FenrirProfiler:
         """
         self.profiler = MemoryProfiler(session_id)
         return await self.profiler.profile_database_connections()
+
+    async def run_detailed_service_profiling(self, session_id: Optional[str] = None) -> Dict[str, Any]:
+        """Run detailed profiling of all active services, packages, and features.
+
+        Args:
+            session_id: Optional session identifier
+
+        Returns:
+            Detailed service profiling results
+        """
+        if not BACKEND_TOOLS_AVAILABLE:
+            return {"error": "Backend tools not available"}
+
+        console.print("🔍 [bold blue]Running Detailed Service Profiling[/bold blue]")
+        
+        # Initialize service profiler
+        service_profiler = ServiceProfiler()
+        
+        # Run comprehensive profiling
+        results = await service_profiler.profile_all_services()
+        
+        # Add session information
+        results["session_id"] = session_id or "detailed-service-profiling"
+        results["timestamp"] = datetime.now(timezone.utc).isoformat()
+        
+        # Display summary
+        summary = results.get("summary", {})
+        console.print(f"📊 [green]Profiled {summary.get('total_services', 0)} services, "
+                     f"{summary.get('total_packages', 0)} packages, "
+                     f"{summary.get('total_features', 0)} features[/green]")
+        
+        if summary.get("top_memory_consumers"):
+            console.print("🔥 [yellow]Top Memory Consumers:[/yellow]")
+            for consumer in summary["top_memory_consumers"][:3]:
+                console.print(f"  • {consumer['name']}: {consumer['memory_mb']:.1f}MB "
+                             f"(Score: {consumer['performance_score']:.1f})")
+        
+        if summary.get("slowest_services"):
+            console.print("🐌 [yellow]Slowest Services:[/yellow]")
+            for service in summary["slowest_services"][:3]:
+                console.print(f"  • {service['name']}: {service['startup_time_ms']:.1f}ms "
+                             f"(Score: {service['performance_score']:.1f})")
+        
+        health = summary.get("system_health", {})
+        health_score = health.get("overall_health_score", 0)
+        health_status = health.get("health_status", "unknown")
+        console.print(f"💚 [green]System Health: {health_score:.1f}/100 ({health_status})[/green]")
+        
+        return results
 
     def save_last_session(self, output_path: Optional[Path] = None) -> Optional[Path]:
         """Save the last profiling session.

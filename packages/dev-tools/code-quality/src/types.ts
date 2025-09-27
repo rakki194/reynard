@@ -112,10 +112,30 @@ export interface FileAnalysis {
 export type QualityGateStatus = "PASSED" | "FAILED" | "WARN";
 
 export interface QualityGateResult {
+  gateId: string;
+  gateName: string;
+  status: QualityGateStatus;
+  conditions: QualityGateConditionResult[];
+  overallScore: number;
+  passedConditions: number;
+  totalConditions: number;
+  failedConditions: number;
+  warningConditions: number;
+  evaluationId?: string;
+}
+
+export interface QualityGateConditionResult {
   condition: QualityGateCondition;
   status: QualityGateStatus;
   actualValue: number | string;
   threshold: number | string;
+  message: string;
+}
+
+export interface QualityGateConfiguration {
+  gates: QualityGate[];
+  defaultGate: string;
+  environments: Record<string, string>;
 }
 
 // Emoji and Roleplay Scanning Types

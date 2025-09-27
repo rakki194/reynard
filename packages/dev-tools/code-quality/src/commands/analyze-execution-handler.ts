@@ -6,7 +6,7 @@
  */
 
 import { CodeQualityAnalyzer } from "../CodeQualityAnalyzer";
-import { QualityGateManager } from "../QualityGateManager";
+import { DatabaseQualityGateManager } from "../DatabaseQualityGateManager";
 import { SecurityAnalysisIntegration } from "../SecurityAnalysisIntegration";
 import { AnalyzeOptions } from "./analyze-command";
 
@@ -22,7 +22,9 @@ export interface AnalysisExecutionResult {
  */
 export async function executeAnalysis(options: AnalyzeOptions): Promise<AnalysisExecutionResult> {
   const analyzer = new CodeQualityAnalyzer(options.project);
-  const qualityGateManager = new QualityGateManager(options.project);
+  const backendUrl = process.env.REYNARD_BACKEND_URL || "http://localhost:8000";
+  const apiKey = process.env.REYNARD_API_KEY;
+  const qualityGateManager = new DatabaseQualityGateManager(backendUrl, apiKey);
   const securityIntegration = new SecurityAnalysisIntegration(options.project);
 
   // Load quality gate configuration
@@ -71,7 +73,7 @@ async function runSecurityAnalysisIfRequested(
  */
 async function evaluateQualityGates(
   options: AnalyzeOptions,
-  qualityGateManager: QualityGateManager,
+  qualityGateManager: DatabaseQualityGateManager,
   analysisResult: any
 ): Promise<any[]> {
   if (options.qualityGates !== false) {

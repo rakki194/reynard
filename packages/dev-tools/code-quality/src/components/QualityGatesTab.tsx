@@ -6,7 +6,7 @@
 
 import { Grid, GridItem } from "reynard-ui";
 import { Component, For, Show } from "solid-js";
-import { QualityGateResult } from "../QualityGateManager";
+import { QualityGateResult } from "../DatabaseQualityGateManager";
 
 interface QualityGatesTabProps {
   qualityGateResults: QualityGateResult[];

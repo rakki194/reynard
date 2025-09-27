@@ -76,6 +76,14 @@ async def run_profiling_mode(mode: str, session_id: str = None, output_path: str
             if verbose:
                 console.print("Database analysis completed")
 
+        if mode == "services" or mode == "all":
+            console.print("\n[bold blue]🔍 Running Detailed Service Analysis...[/bold blue]")
+            service_results = await fuzzer.run_detailed_service_analysis(session_id)
+            results["service_analysis"] = service_results
+
+            if verbose:
+                console.print("Detailed service analysis completed")
+
         # Save results if output path specified
         if output_path:
             with open(output_path, 'w') as f:
@@ -106,13 +114,14 @@ Examples:
   python -m fenrir.profile --mode memory
   python -m fenrir.profile --mode startup --output startup_results.json
   python -m fenrir.profile --mode database --verbose
+  python -m fenrir.profile --mode services --session-id service_analysis
   python -m fenrir.profile --mode all --session-id production_analysis
         """
     )
 
     parser.add_argument(
         "--mode",
-        choices=["memory", "startup", "database", "all"],
+        choices=["memory", "startup", "database", "services", "all"],
         default="all",
         help="Profiling mode to run"
     )

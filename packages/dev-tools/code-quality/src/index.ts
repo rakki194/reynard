@@ -58,13 +58,12 @@ import { AnalysisOrchestrator } from "./AnalysisOrchestrator";
 import { BehavioralAnalysisEngine } from "./BehavioralAnalysisEngine";
 import { CodeQualityAnalyzer } from "./CodeQualityAnalyzer";
 import { EnhancedSecurityEngine } from "./EnhancedSecurityEngine";
-import { DatabaseQualityGateManager } from "./DatabaseQualityGateManager";
-import { QualityGateResult } from "./types";
+import { DatabaseQualityGateManager, QualityGateResult } from "./DatabaseQualityGateManager";
 import { SecurityAnalysisIntegration } from "./SecurityAnalysisIntegration";
 import { FileAnalysis } from "./types";
 
-export { QualityGateManager } from "./QualityGateManager";
-export type { QualityGateConditionResult, QualityGateConfiguration } from "./QualityGateManager";
+export { DatabaseQualityGateManager } from "./DatabaseQualityGateManager";
+export type { QualityGateConditionResult, QualityGateConfiguration } from "./types";
 
 export { SecurityAnalysisIntegration } from "./SecurityAnalysisIntegration";
 export type {
@@ -100,7 +99,9 @@ export {
  */
 export function createCodeQualitySystem(projectRoot: string) {
   const analyzer = new CodeQualityAnalyzer(projectRoot);
-  const qualityGateManager = new QualityGateManager(projectRoot);
+  const backendUrl = process.env.REYNARD_BACKEND_URL || "http://localhost:8000";
+  const apiKey = process.env.REYNARD_API_KEY;
+  const qualityGateManager = new DatabaseQualityGateManager(backendUrl, apiKey);
   const securityIntegration = new SecurityAnalysisIntegration(projectRoot);
   const aiEngine = new AIAnalysisEngine();
   const behavioralEngine = new BehavioralAnalysisEngine(projectRoot);
@@ -155,7 +156,7 @@ export async function quickAnalysis(
 
   let qualityGateResults: QualityGateResult[] = [];
   if (includeQualityGates) {
-    qualityGateResults = system.qualityGateManager.evaluateQualityGates(analysisResult.metrics, environment);
+    qualityGateResults = await system.qualityGateManager.evaluateQualityGates(analysisResult.metrics, environment);
   }
 
   return {

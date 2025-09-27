@@ -1539,6 +1539,9 @@ importers:
 
   examples/testing-app:
     dependencies:
+      reynard-animation:
+        specifier: workspace:*
+        version: link:../../packages/ui/animation
       reynard-api-client:
         specifier: workspace:*
         version: link:../../packages/services/api-client
@@ -1566,6 +1569,9 @@ importers:
       reynard-fluent-icons:
         specifier: workspace:*
         version: link:../../packages/ui/fluent-icons
+      reynard-i18n:
+        specifier: workspace:*
+        version: link:../../packages/core/i18n
       reynard-themes:
         specifier: workspace:*
         version: link:../../packages/ui/themes

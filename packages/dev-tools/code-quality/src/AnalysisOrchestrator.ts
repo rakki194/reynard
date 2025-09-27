@@ -60,7 +60,7 @@ export class AnalysisOrchestrator {
     const securityResult = await this.system.securityIntegration.runSecurityAnalysis(files);
 
     // Evaluate quality gates
-    const qualityGateResults = this.system.qualityGateManager.evaluateQualityGates(analysisResult.metrics, environment);
+    const qualityGateResults = await this.system.qualityGateManager.evaluateQualityGates(analysisResult.metrics, environment);
 
     return {
       analysis: analysisResult,
@@ -142,7 +142,7 @@ export class AnalysisOrchestrator {
     await this.system.qualityGateManager.loadConfiguration();
 
     // Create default quality gates if none exist
-    const gates = this.system.qualityGateManager.getQualityGates();
+    const gates = await this.system.qualityGateManager.getQualityGates();
     if (gates.length === 0) {
       await this.system.qualityGateManager.createReynardQualityGates();
     }
