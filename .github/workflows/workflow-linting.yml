@@ -50,16 +50,14 @@ jobs:
       - name: 🔍 Run actionlint
         run: |
           echo "🔍 Validating GitHub Actions workflows..."
-          actionlint .github/workflows/*.yml
+          find .github/workflows -name "*.yml" -type f -exec actionlint {} \;
 
       - name: 🧪 Test workflow syntax
         run: |
           echo "🧪 Testing workflow syntax..."
-          for workflow in .github/workflows/*.yml; do
-            if [[ -f "${workflow}" ]]; then
-              echo "Testing ${workflow}..."
-              actionlint "${workflow}" --format github
-            fi
+          find .github/workflows -name "*.yml" -type f | while read -r workflow; do
+            echo "Testing ${workflow}..."
+            actionlint "${workflow}" --format github
           done
 
       - name: 📊 Generate workflow report
